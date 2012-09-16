@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/el-api-2.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/el-impl-2.2.1-b05.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jsf-api-2.0.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jsf-impl-2.0.9.jar"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/v2"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jboss-el-2.0.2.CR1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jboss-el-api-2.0.0.BETA1.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

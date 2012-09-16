@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
   <application>uni-ruse-autoservice</application>
-  <version>1-1</version>
+  <version>1-2</version>
 
   <!--
     Allows App Engine to send multiple requests to one instance in parallel:
@@ -14,6 +14,17 @@
   </system-properties>
   
   <sessions-enabled>true</sessions-enabled>
+  
+  <static-files>
+	  <include path="/resources/**" />
+  </static-files>
+  
+  <resource-files>
+        <include path="/**" />
+        <exclude path="/resources/**" />
+        <exclude path="/META-INF/**" />
+        <exclude path="/WEB-INF/appengine-generated/**" />
+    </resource-files>
   
   <!--
     HTTP Sessions are disabled by default. To enable HTTP sessions specify:

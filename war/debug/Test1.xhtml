@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+<h:head>
+<title>Test page 1</title>
+</h:head>
+
+<h:body>
+<h1>
+#{Test1.saveOK}
+</h1>
+
+<h:form>
+<table>
+	<tr>
+		<td><h:outputLabel value="testBool" for="testBool" /></td>
+		<td><h:inputText value="#{Test1.testBool}" id="testBool"/></td>
+	</tr>
+	
+	<tr>
+		<td><h:outputLabel value="testByte" for="testByte" /></td>
+		<td><h:inputText value="#{Test1.testByte}" id="testByte"/></td>
+	</tr>
+	
+	<tr>
+		<td><h:outputLabel value="testDate" for="testDate"/></td>
+		<td>
+			<h:inputText value="#{Test1.testDate}" id="testDate">
+				<f:convertDateTime pattern="dd.MM.yyyy" />
+			</h:inputText>
+		</td>
+	</tr>
+	
+	<tr>
+		<td><h:outputLabel value="testDouble" for="testDouble" /></td>
+		<td><h:inputText value="#{Test1.testDouble}" id="testDouble"/></td>
+	</tr>
+	
+	<tr>
+		<td><h:outputLabel value="testFloat" for="testFloat" /></td>
+		<td><h:inputText value="#{Test1.testFloat}" id="testFloat"/></td>
+	</tr>
+	
+	<tr>
+		<td><h:outputLabel value="testInteger" for="testInteger" /></td>
+		<td><h:inputText value="#{Test1.testInteger}" id="testInteger"/></td>
+	</tr>
+	
+	<tr>
+		<td><h:outputLabel value="testLong" for="testLong" /></td>
+		<td><h:inputText value="#{Test1.testLong}" id="testLong"/></td>
+	</tr>
+	
+	<tr>
+		<td><h:outputLabel value="testShort" for="testShort" /></td>
+		<td><h:inputText value="#{Test1.testShort}" id="testShort"/></td>
+	</tr>
+	
+	<tr>
+		<td><h:outputLabel value="testStringLong" for="testStringLong" /></td>
+		<td><h:inputText value="#{Test1.testStringLong}" id="testStringLong"/></td>
+	</tr>
+	
+	<tr>
+		<td><h:outputLabel value="testStringShort" for="testStringShort" /></td>
+		<td><h:inputText value="#{Test1.testStringShort}" id="testStringShort"/></td>
+	</tr>
+	
+</table>
+
+<h:commandButton value="Submit" action="#{Test1.saveIt()}" />
+<h:commandButton value="Read" action="#{Test1.readFirst()}" />
+
+</h:form>
+</h:body>
+
+
+</html>
