@@ -1,0 +1,104 @@
+package model;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import model.util.EntityHelper;
+import model.util.LimitedString;
+
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+
+public class SparePartsDelivery {
+	
+	private Key autoserviceID;
+	private LimitedString documentNumber = new LimitedString(50);
+	private Date documentDate;
+	private Date deliveryDate;
+	private LimitedString status = new LimitedString(1, true); // TODO - define the values!!!
+	private LimitedString paymentNumber = new LimitedString(30);
+	
+	private static final String PARENT_FIELD = "autoserviceID";
+	
+	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
+			new String[] {"IGNORED_FIELDS"}));
+	
+	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
+			new String[] {"paymentNumber"}));
+	
+	public Entity makeEntity() {
+		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	}
+	
+	public static SparePartsDelivery readEntity(Entity entity) {
+		SparePartsDelivery sparePartsDelivery = new SparePartsDelivery();
+		return EntityHelper.readIt(entity, sparePartsDelivery, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	}
+
+	public Key getAutoserviceID() {
+		return autoserviceID;
+	}
+
+	public void setAutoserviceID(Key autoserviceID) {
+		this.autoserviceID = autoserviceID;
+	}
+
+	public String getDocumentNumber() {
+		return documentNumber.getString();
+	}
+
+	public void setDocumentNumber(String documentNumber) {
+		this.documentNumber.setString(documentNumber);
+	}
+
+	public Date getDocumentDate() {
+		return documentDate;
+	}
+
+	public void setDocumentDate(Date documentDate) {
+		this.documentDate = documentDate;
+	}
+
+	public Date getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	public void setDeliveryDate(Date deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+
+	public String getStatus() {
+		return status.getString();
+	}
+
+	public void setStatus(String status) {
+		this.status.setString(status);
+	}
+
+	public String getPaymentNumber() {
+		return paymentNumber.getString();
+	}
+
+	public void setPaymentNumber(String paymentNumber) {
+		this.paymentNumber.setString(paymentNumber);
+	}
+	
+}
+
+/*
+CREATE TABLE Spare_Parts_Delivery ( 
+	Spare_Parts_Delivery_ID BIGINT NOT NULL,
+	Autoservice_ID BIGINT NOT NULL,
+	Document_Number VARCHAR(50) NOT NULL,
+	Document_Date DATE NOT NULL,
+	Delivery_Date DATE NOT NULL,
+	Status SMALLINT NOT NULL,
+	Payment_Number VARCHAR(30)
+);
+
+ALTER TABLE Spare_Parts_Delivery ADD CONSTRAINT PK_Spare_Parts_Delivery 
+	PRIMARY KEY (Spare_Parts_Delivery_ID);
+*/
+

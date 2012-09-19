@@ -15,7 +15,7 @@ import com.google.appengine.api.datastore.Key;
 public class Diagnosis {
 	
 	private Key autoserviceID;
-	private Key vehicle;
+	private Key vehicleID;
 	private Key employee_ID;
 	private Date date;
 	private Double price;
@@ -47,12 +47,12 @@ public class Diagnosis {
 		this.autoserviceID = autoserviceID;
 	}
 
-	public Key getVehicle() {
-		return vehicle;
+	public Key getVehicleID() {
+		return vehicleID;
 	}
 
-	public void setVehicle(Key vehicle) {
-		this.vehicle = vehicle;
+	public void setVehicleID(Key vehicleID) {
+		this.vehicleID = vehicleID;
 	}
 
 	public Key getEmployee_ID() {
