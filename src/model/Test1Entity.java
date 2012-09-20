@@ -159,10 +159,8 @@ public class Test1Entity {
 					DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 					datastore.put(entity);
 				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -181,12 +179,10 @@ public class Test1Entity {
 					field.set(this, entity.getProperty(field.getName()));
 					System.out.print(" ... OK");
 				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
 					System.out.print(" ... IllegalArgumentException");
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
 					System.out.print(" ... IllegalAccessException");
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
