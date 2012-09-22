@@ -16,6 +16,6 @@ http://team2-strawberry.googlecode.com/files/01-IssueTracker.PNG
 
 http://team2-strawberry.googlecode.com/files/02-IssueTracker.PNG
 
-На картинките отгоре и отдолу е показано как могат да се включват, изключват и *подреждат* колоните на данните на задачите.
+На картинките отгоре и отдолу е показано как могат да се включват, изключват и *подреждат* колоните на данните на задачите. Имената на колоните от които можете да избирате са показани на първата картинка.
 
 http://team2-strawberry.googlecode.com/files/03-IssueTracker.PNG
