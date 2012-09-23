@@ -52,4 +52,26 @@
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.jsf</url-pattern>
   </servlet-mapping>
+  <filter>
+  	<filter-name>UTF8 Filter</filter-name>
+  	<filter-class>controller.common.UTF8Filter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>UTF8 Filter</filter-name>
+  	<url-pattern>*</url-pattern>
+  </filter-mapping>
+  <!-- TODO - вероятно на admin, cron и debug филтрите трябва да са различни
+  http://k2java.blogspot.com/2011/04/servlet-filter-mapping-exclude-pattern.html
+  <filter>
+  	<filter-name>Security Filter</filter-name>
+  	<filter-class>controller.common.SecurityFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>Security Filter</filter-name>
+  	<url-pattern>/admin/*</url-pattern>
+  	<url-pattern>/users/*</url-pattern>
+  	<url-pattern>/resources/admin/*</url-pattern>
+  	<url-pattern>/resources/users/*</url-pattern>
+  </filter-mapping>
+  -->
 </web-app>
