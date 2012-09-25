@@ -5,7 +5,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
 import model.util.EntityHelper;
@@ -13,6 +15,9 @@ import model.util.LimitedString;
 
 
 public class Appointment {
+	
+	private Entity thisEntity;
+	private Autoservice autoservice;
 	
 	private Key autoserviceID;
 	private Long issuedCode; 
@@ -23,7 +28,7 @@ public class Appointment {
 	private static final String PARENT_FIELD = "autoserviceID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS"}));
+			new String[] {"IGNORED_FIELDS", "thisEntity", "autoservice"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] { "clientName", "phoneNumber" }));
@@ -34,7 +39,30 @@ public class Appointment {
 	
 	public static Appointment readEntity(Entity entity) {
 		Appointment appointment = new Appointment();
+		appointment.thisEntity = entity;
 		return EntityHelper.readIt(entity, appointment, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	}
+	
+	public static Appointment readEntity(Key key) {
+		Entity entity;
+		if (key == null) {
+			throw new NullPointerException("Argument \"key\" is null!");
+		}
+		
+		try {
+			entity = DatastoreServiceFactory.getDatastoreService().get(key);
+		} catch (EntityNotFoundException e) {
+			throw new RuntimeException("Entity with key " + key.toString() + " was not found!");
+		}
+		
+		return readEntity(entity);
+	}
+	
+	public Key getID() {
+		if (thisEntity == null) {
+			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
+		}
+		return thisEntity.getKey();
 	}
 
 	public Key getAutoserviceID() {
@@ -43,6 +71,24 @@ public class Appointment {
 
 	public void setAutoserviceID(Key autoserviceID) {
 		this.autoserviceID = autoserviceID;
+	}
+	
+	public Autoservice getAutoservice() {
+		if (autoservice == null) {
+			autoservice = Autoservice.readEntity(this.autoserviceID);
+		}
+		
+		return autoservice;
+	}
+	
+	public void setAutoservice(Autoservice autoservice) {
+		this.autoservice = autoservice;
+		
+		if (autoservice == null) {
+			autoserviceID = null;
+		} else {
+			autoserviceID = autoservice.getID();
+		}
 	}
 
 	public long getIssuedCode() {

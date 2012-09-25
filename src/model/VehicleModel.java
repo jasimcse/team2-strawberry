@@ -7,10 +7,15 @@ import java.util.Set;
 import model.util.EntityHelper;
 import model.util.LimitedString;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
 
 public class VehicleModel {
+	
+	private Entity thisEntity;
 	
 	private LimitedString brand = new LimitedString(50);
 	private LimitedString model = new LimitedString(50);
@@ -19,7 +24,7 @@ public class VehicleModel {
 	private static final String PARENT_FIELD = null; // TODO - така ли да остава?
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS"}));
+			new String[] {"IGNORED_FIELDS", "thisEntity"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"characteristics"}));
@@ -30,7 +35,30 @@ public class VehicleModel {
 	
 	public static VehicleModel readEntity(Entity entity) {
 		VehicleModel vehicleModel = new VehicleModel();
+		vehicleModel.thisEntity = entity;
 		return EntityHelper.readIt(entity, vehicleModel, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	}
+	
+	public static VehicleModel readEntity(Key key) {
+		Entity entity;
+		if (key == null) {
+			throw new NullPointerException("Argument \"key\" is null!");
+		}
+		
+		try {
+			entity = DatastoreServiceFactory.getDatastoreService().get(key);
+		} catch (EntityNotFoundException e) {
+			throw new RuntimeException("Entity with key " + key.toString() + " was not found!");
+		}
+		
+		return readEntity(entity);
+	}
+	
+	public Key getID() {
+		if (thisEntity == null) {
+			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
+		}
+		return thisEntity.getKey();
 	}
 
 	public String getBrand() {

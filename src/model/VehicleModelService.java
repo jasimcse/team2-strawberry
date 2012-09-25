@@ -6,10 +6,16 @@ import java.util.Set;
 
 import model.util.EntityHelper;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
 public class VehicleModelService {
+	
+	private Entity thisEntity;
+	private VehicleModel vehicleModel;
+	private Service service;
 	
 	private Key vehicleModelID;
 	private Key serviceID;
@@ -20,7 +26,7 @@ public class VehicleModelService {
 	private static final String PARENT_FIELD = "vehicleModelID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS"}));
+			new String[] {"IGNORED_FIELDS", "thisEntity", "vehicleModel", "service"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
@@ -31,7 +37,30 @@ public class VehicleModelService {
 	
 	public static VehicleModelService readEntity(Entity entity) {
 		VehicleModelService vehicleModelService = new VehicleModelService();
+		vehicleModelService.thisEntity = entity;
 		return EntityHelper.readIt(entity, vehicleModelService, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	}
+	
+	public static VehicleModelService readEntity(Key key) {
+		Entity entity;
+		if (key == null) {
+			throw new NullPointerException("Argument \"key\" is null!");
+		}
+		
+		try {
+			entity = DatastoreServiceFactory.getDatastoreService().get(key);
+		} catch (EntityNotFoundException e) {
+			throw new RuntimeException("Entity with key " + key.toString() + " was not found!");
+		}
+		
+		return readEntity(entity);
+	}
+	
+	public Key getID() {
+		if (thisEntity == null) {
+			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
+		}
+		return thisEntity.getKey();
 	}
 
 	public Key getVehicleModelID() {
@@ -41,6 +70,24 @@ public class VehicleModelService {
 	public void setVehicleModelID(Key vehicleModelID) {
 		this.vehicleModelID = vehicleModelID;
 	}
+	
+	public VehicleModel getVehicleModel() {
+		if (vehicleModel == null) {
+			vehicleModel = VehicleModel.readEntity(this.vehicleModelID);
+		}
+		
+		return vehicleModel;
+	}
+	
+	public void setVehicleModel(VehicleModel vehicleModel) {
+		this.vehicleModel = vehicleModel;
+		
+		if (vehicleModel == null) {
+			vehicleModelID = null;
+		} else {
+			vehicleModelID = vehicleModel.getID();
+		}
+	}
 
 	public Key getServiceID() {
 		return serviceID;
@@ -48,6 +95,24 @@ public class VehicleModelService {
 
 	public void setServiceID(Key serviceID) {
 		this.serviceID = serviceID;
+	}
+	
+	public Service getService() {
+		if (service == null) {
+			service = Service.readEntity(this.serviceID);
+		}
+		
+		return service;
+	}
+	
+	public void setService(Service service) {
+		this.service = service;
+		
+		if (service == null) {
+			serviceID = null;
+		} else {
+			serviceID = service.getID();
+		}
 	}
 
 	public double getDurationHour() {

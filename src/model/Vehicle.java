@@ -8,10 +8,17 @@ import java.util.Set;
 import model.util.EntityHelper;
 import model.util.LimitedString;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
 public class Vehicle {
+	
+	private Entity thisEntity;
+	private Client client;
+	private VehicleModel vehicleModel;
+	private WarrantyConditions warrantyConditions;
 	
 	private Key clientID;
 	private Key vehicleModelID;
@@ -25,7 +32,7 @@ public class Vehicle {
 	private static final String PARENT_FIELD = "clientID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS"}));
+			new String[] {"IGNORED_FIELDS", "thisEntity", "client", "vehicleModel", "warrantyConditions"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"warrantyConditionsID", "warrantyOK", "purchaseDate"}));
@@ -36,7 +43,30 @@ public class Vehicle {
 	
 	public static Vehicle readEntity(Entity entity) {
 		Vehicle vehicle = new Vehicle();
+		vehicle.thisEntity = entity;
 		return EntityHelper.readIt(entity, vehicle, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	}
+	
+	public static Vehicle readEntity(Key key) {
+		Entity entity;
+		if (key == null) {
+			throw new NullPointerException("Argument \"key\" is null!");
+		}
+		
+		try {
+			entity = DatastoreServiceFactory.getDatastoreService().get(key);
+		} catch (EntityNotFoundException e) {
+			throw new RuntimeException("Entity with key " + key.toString() + " was not found!");
+		}
+		
+		return readEntity(entity);
+	}
+	
+	public Key getID() {
+		if (thisEntity == null) {
+			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
+		}
+		return thisEntity.getKey();
 	}
 
 	public Key getClientID() {
@@ -46,6 +76,24 @@ public class Vehicle {
 	public void setClientID(Key clientID) {
 		this.clientID = clientID;
 	}
+	
+	public Client getClient() {
+		if (client == null) {
+			client = Client.readEntity(this.clientID);
+		}
+		
+		return client;
+	}
+	
+	public void setClient(Client client) {
+		this.client = client;
+		
+		if (client == null) {
+			clientID = null;
+		} else {
+			clientID = client.getID();
+		}
+	}
 
 	public Key getVehicleModelID() {
 		return vehicleModelID;
@@ -54,6 +102,24 @@ public class Vehicle {
 	public void setVehicleModelID(Key vehicleModelID) {
 		this.vehicleModelID = vehicleModelID;
 	}
+	
+	public VehicleModel getVehicleModel() {
+		if (vehicleModel == null) {
+			vehicleModel = VehicleModel.readEntity(this.vehicleModelID);
+		}
+		
+		return vehicleModel;
+	}
+	
+	public void setVehicleModel(VehicleModel vehicleModel) {
+		this.vehicleModel = vehicleModel;
+		
+		if (vehicleModel == null) {
+			vehicleModelID = null;
+		} else {
+			vehicleModelID = vehicleModel.getID();
+		}
+	}
 
 	public Key getWarrantyConditionsID() {
 		return warrantyConditionsID;
@@ -61,6 +127,24 @@ public class Vehicle {
 
 	public void setWarrantyConditionsID(Key warrantyConditionsID) {
 		this.warrantyConditionsID = warrantyConditionsID;
+	}
+	
+	public WarrantyConditions getWarrantyConditions() {
+		if (warrantyConditions == null) {
+			warrantyConditions = WarrantyConditions.readEntity(this.warrantyConditionsID);
+		}
+		
+		return warrantyConditions;
+	}
+	
+	public void setWarrantyConditions(WarrantyConditions warrantyConditions) {
+		this.warrantyConditions = warrantyConditions;
+		
+		if (warrantyConditions == null) {
+			warrantyConditionsID = null;
+		} else {
+			warrantyConditionsID = warrantyConditions.getID();
+		}
 	}
 
 	public String getVIN() {

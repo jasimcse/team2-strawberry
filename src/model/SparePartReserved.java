@@ -6,10 +6,16 @@ import java.util.Set;
 
 import model.util.EntityHelper;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
 public class SparePartReserved {
+	
+	private Entity thisEntity;
+	private ClientOrder clientOrder;
+	private SparePart sparePart;
 	
 	private Key clientOrderID;
 	private Key sparePartID;
@@ -18,7 +24,7 @@ public class SparePartReserved {
 	private static final String PARENT_FIELD = "clientOrderID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS"}));
+			new String[] {"IGNORED_FIELDS", "thisEntity", "clientOrder", "sparePart"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
@@ -29,7 +35,30 @@ public class SparePartReserved {
 	
 	public static SparePartReserved readEntity(Entity entity) {
 		SparePartReserved sparePartReserved = new SparePartReserved();
+		sparePartReserved.thisEntity = entity;
 		return EntityHelper.readIt(entity, sparePartReserved, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	}
+	
+	public static SparePartReserved readEntity(Key key) {
+		Entity entity;
+		if (key == null) {
+			throw new NullPointerException("Argument \"key\" is null!");
+		}
+		
+		try {
+			entity = DatastoreServiceFactory.getDatastoreService().get(key);
+		} catch (EntityNotFoundException e) {
+			throw new RuntimeException("Entity with key " + key.toString() + " was not found!");
+		}
+		
+		return readEntity(entity);
+	}
+	
+	public Key getID() {
+		if (thisEntity == null) {
+			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
+		}
+		return thisEntity.getKey();
 	}
 
 	public Key getClientOrderID() {
@@ -39,6 +68,24 @@ public class SparePartReserved {
 	public void setClientOrderID(Key clientOrderID) {
 		this.clientOrderID = clientOrderID;
 	}
+	
+	public ClientOrder getClientOrder() {
+		if (clientOrder == null) {
+			clientOrder = ClientOrder.readEntity(this.clientOrderID);
+		}
+		
+		return clientOrder;
+	}
+	
+	public void setVehicle(ClientOrder clientOrder) {
+		this.clientOrder = clientOrder;
+		
+		if (clientOrder == null) {
+			clientOrderID = null;
+		} else {
+			clientOrderID = clientOrder.getID();
+		}
+	}
 
 	public Key getSparePartID() {
 		return sparePartID;
@@ -46,6 +93,24 @@ public class SparePartReserved {
 
 	public void setSparePartID(Key sparePartID) {
 		this.sparePartID = sparePartID;
+	}
+	
+	public SparePart getSparePart() {
+		if (sparePart == null) {
+			sparePart = SparePart.readEntity(this.sparePartID);
+		}
+		
+		return sparePart;
+	}
+	
+	public void setSparePart(SparePart sparePart) {
+		this.sparePart = sparePart;
+		
+		if (sparePart == null) {
+			sparePartID = null;
+		} else {
+			sparePartID = sparePart.getID();
+		}
 	}
 
 	public double getQuantity() {

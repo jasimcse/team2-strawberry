@@ -8,22 +8,30 @@ import java.util.Set;
 import model.util.EntityHelper;
 import model.util.LimitedString;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
 public class SparePartsDelivery {
+	
+	public static final String NOT_PAYED = "1";
+	public static final String PAYED = "2";
+	
+	private Entity thisEntity;
+	private Autoservice autoservice;
 	
 	private Key autoserviceID;
 	private LimitedString documentNumber = new LimitedString(50);
 	private Date documentDate;
 	private Date deliveryDate;
-	private LimitedString status = new LimitedString(1, true); // TODO - define the values!!!
+	private LimitedString status = new LimitedString(1, true);
 	private LimitedString paymentNumber = new LimitedString(30);
 	
 	private static final String PARENT_FIELD = "autoserviceID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS"}));
+			new String[] {"IGNORED_FIELDS", "thisEntity", "autoservice"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"paymentNumber"}));
@@ -34,7 +42,30 @@ public class SparePartsDelivery {
 	
 	public static SparePartsDelivery readEntity(Entity entity) {
 		SparePartsDelivery sparePartsDelivery = new SparePartsDelivery();
+		sparePartsDelivery.thisEntity = entity;
 		return EntityHelper.readIt(entity, sparePartsDelivery, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	}
+	
+	public static SparePartsDelivery readEntity(Key key) {
+		Entity entity;
+		if (key == null) {
+			throw new NullPointerException("Argument \"key\" is null!");
+		}
+		
+		try {
+			entity = DatastoreServiceFactory.getDatastoreService().get(key);
+		} catch (EntityNotFoundException e) {
+			throw new RuntimeException("Entity with key " + key.toString() + " was not found!");
+		}
+		
+		return readEntity(entity);
+	}
+	
+	public Key getID() {
+		if (thisEntity == null) {
+			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
+		}
+		return thisEntity.getKey();
 	}
 
 	public Key getAutoserviceID() {
@@ -43,6 +74,24 @@ public class SparePartsDelivery {
 
 	public void setAutoserviceID(Key autoserviceID) {
 		this.autoserviceID = autoserviceID;
+	}
+	
+	public Autoservice getAutoservice() {
+		if (autoservice == null) {
+			autoservice = Autoservice.readEntity(this.autoserviceID);
+		}
+		
+		return autoservice;
+	}
+	
+	public void setAutoservice(Autoservice autoservice) {
+		this.autoservice = autoservice;
+		
+		if (autoservice == null) {
+			autoserviceID = null;
+		} else {
+			autoserviceID = autoservice.getID();
+		}
 	}
 
 	public String getDocumentNumber() {
@@ -74,7 +123,11 @@ public class SparePartsDelivery {
 	}
 
 	public void setStatus(String status) {
-		this.status.setString(status);
+		if (PAYED.equals(status) || NOT_PAYED.equals(status)) {
+			this.status.setString(status);
+		} else {
+			throw new RuntimeException("The string doesn't match any of possible values");
+		}
 	}
 
 	public String getPaymentNumber() {

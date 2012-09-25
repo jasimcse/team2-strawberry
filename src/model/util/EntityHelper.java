@@ -29,7 +29,7 @@ public class EntityHelper {
 		
 		// parameters check
 		if (from == null) {
-			throw new IllegalArgumentException("Argument \"from\" is null!");
+			throw new NullPointerException("Argument \"from\" is null!");
 		}
 		if (ignored == null) {
 			ignored = new HashSet<String>();
@@ -49,11 +49,11 @@ public class EntityHelper {
 			try {
 				entity = new Entity(classLocal.getName(), (Key)classLocal.getDeclaredField(parent).get(from));
 			} catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException("Parent field not found", e);
+				throw new RuntimeException("Parent field not found", e);
 			} catch (IllegalAccessException e) {
-				throw new IllegalArgumentException("Parent field not found", e);
+				throw new RuntimeException("Parent field not found", e);
 			} catch (NoSuchFieldException e) {
-				throw new IllegalArgumentException("Parent field not found", e);
+				throw new RuntimeException("Parent field not found", e);
 			}
 		}
 		
@@ -77,10 +77,10 @@ public class EntityHelper {
 		
 		// parameters check
 		if (entity == null) {
-			throw new IllegalArgumentException("Argument \"entity\" is null!");
+			throw new NullPointerException("Argument \"entity\" is null!");
 		}
 		if (from == null) {
-			throw new IllegalArgumentException("Argument \"from\" is null!");
+			throw new NullPointerException("Argument \"from\" is null!");
 		}
 		if (ignored == null) {
 			ignored = new HashSet<String>();
@@ -103,12 +103,12 @@ public class EntityHelper {
 				try {
 					valueObject = field.get(from); 
 				} catch (IllegalArgumentException e) {
-					throw new IllegalArgumentException("Can't populate the field " + name + "!", e);
+					throw new RuntimeException("Can't populate the field " + name + "!", e);
 				} catch (IllegalAccessException e) {
-					throw new IllegalArgumentException("Can't populate the field " + name + "!", e);
+					throw new RuntimeException("Can't populate the field " + name + "!", e);
 				}
 				if ((valueObject == null) && (!nullables.contains(name))) {
-					throw new IllegalArgumentException("The field " + name + " is declared to be not null!");
+					throw new RuntimeException("The field " + name + " is declared to be not null!");
 				}
 				
 				if (valueObject instanceof LimitedString) {
@@ -135,10 +135,10 @@ public class EntityHelper {
 		
 		// parameters check
 		if (entity == null) {
-			throw new IllegalArgumentException("Argument \"entity\" is null!");
+			throw new NullPointerException("Argument \"entity\" is null!");
 		}
 		if (to == null) {
-			throw new IllegalArgumentException("Argument \"to\" is null!");
+			throw new NullPointerException("Argument \"to\" is null!");
 		}
 		if (ignored == null) {
 			ignored = new HashSet<String>();
@@ -165,7 +165,7 @@ public class EntityHelper {
 				}
 				
 				if ((valueObject == null) && (!nullables.contains(name))) {
-					throw new IllegalArgumentException("The field " + name + " is declared to be not null!");
+					throw new RuntimeException("The field " + name + " is declared to be not null!");
 				}
 				
 				try {
@@ -175,9 +175,9 @@ public class EntityHelper {
 						field.set(to, valueObject);
 					}
 				} catch (IllegalArgumentException e) {
-					throw new IllegalArgumentException("Can't set the field " + name + "!", e);
+					throw new RuntimeException("Can't set the field " + name + "!", e);
 				} catch (IllegalAccessException e) {
-					throw new IllegalArgumentException("Can't set the field " + name + "!", e);
+					throw new RuntimeException("Can't set the field " + name + "!", e);
 				}
 			}
 		}
