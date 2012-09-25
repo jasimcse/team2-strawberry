@@ -6,10 +6,16 @@ import java.util.Set;
 
 import model.util.EntityHelper;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
 public class WarehouseOrderPart {
+	
+	private Entity thisEntity;
+	private WarehouseOrder warehouseOrder;
+	private SparePart sparePart;
 	
 	private Key warehouseOrderID;
 	private Key sparePartID;
@@ -20,7 +26,7 @@ public class WarehouseOrderPart {
 	private static final String PARENT_FIELD = "warehouseOrderID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS"}));
+			new String[] {"IGNORED_FIELDS", "thisEntity", "warehouseOrder", "sparePart"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
@@ -31,7 +37,30 @@ public class WarehouseOrderPart {
 	
 	public static WarehouseOrderPart readEntity(Entity entity) {
 		WarehouseOrderPart warehouseOrderPart = new WarehouseOrderPart();
+		warehouseOrderPart.thisEntity = entity;
 		return EntityHelper.readIt(entity, warehouseOrderPart, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	}
+	
+	public static WarehouseOrderPart readEntity(Key key) {
+		Entity entity;
+		if (key == null) {
+			throw new NullPointerException("Argument \"key\" is null!");
+		}
+		
+		try {
+			entity = DatastoreServiceFactory.getDatastoreService().get(key);
+		} catch (EntityNotFoundException e) {
+			throw new RuntimeException("Entity with key " + key.toString() + " was not found!");
+		}
+		
+		return readEntity(entity);
+	}
+	
+	public Key getID() {
+		if (thisEntity == null) {
+			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
+		}
+		return thisEntity.getKey();
 	}
 
 	public Key getWarehouseOrderID() {
@@ -41,6 +70,24 @@ public class WarehouseOrderPart {
 	public void setWarehouseOrderID(Key warehouseOrderID) {
 		this.warehouseOrderID = warehouseOrderID;
 	}
+	
+	public WarehouseOrder getWarehouseOrder() {
+		if (warehouseOrder == null) {
+			warehouseOrder = WarehouseOrder.readEntity(this.warehouseOrderID);
+		}
+		
+		return warehouseOrder;
+	}
+	
+	public void setWarehouseOrder(WarehouseOrder warehouseOrder) {
+		this.warehouseOrder = warehouseOrder;
+		
+		if (warehouseOrder == null) {
+			warehouseOrderID = null;
+		} else {
+			warehouseOrderID = warehouseOrder.getID();
+		}
+	}
 
 	public Key getSparePartID() {
 		return sparePartID;
@@ -48,6 +95,24 @@ public class WarehouseOrderPart {
 
 	public void setSparePartID(Key sparePartID) {
 		this.sparePartID = sparePartID;
+	}
+	
+	public SparePart getSparePart() {
+		if (sparePart == null) {
+			sparePart = SparePart.readEntity(this.sparePartID);
+		}
+		
+		return sparePart;
+	}
+	
+	public void setSparePart(SparePart sparePart) {
+		this.sparePart = sparePart;
+		
+		if (sparePart == null) {
+			sparePartID = null;
+		} else {
+			sparePartID = sparePart.getID();
+		}
 	}
 
 	public double getOrderedQuantity() {

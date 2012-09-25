@@ -5,7 +5,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
 import model.util.EntityHelper;
@@ -13,12 +15,22 @@ import model.util.LimitedString;
 
 public class ClientNotification {
 	
+	public static final String NEED_TO_CALL = "1";
+	public static final String SUCCESS = "2";
+	public static final String UNSUCCESS = "3";
+	
+	private Entity thisEntity;
+	private Client client;
+	private Employee employee;
+	private Vehicle vehicle;
+	private ClientOrder clientOrder;
+	
 	private Key clientID;
 	private Date timestamp;
 	private Key employeeID;
 	private Key vehicleID; // може да е null, ако ще се пращат промоционални съобщения например
 	private Key clientOrderID;
-	private LimitedString status = new LimitedString(1, true);  // TODO - define the values!!!
+	private LimitedString status = new LimitedString(1, true);
 	private LimitedString notes = new LimitedString(500);
 	private LimitedString mail = new LimitedString(50);
 	private LimitedString phoneNumber = new LimitedString(15);
@@ -26,7 +38,7 @@ public class ClientNotification {
 	private static final String PARENT_FIELD = "clientID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS"}));
+			new String[] {"IGNORED_FIELDS", "thisEntity", "client", "employee", "vehicle", "clientOrder"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"employeeID", "vehicleID", "clientOrderID", "notes", "mail", "phoneNumber"}));
@@ -37,7 +49,30 @@ public class ClientNotification {
 	
 	public static ClientNotification readEntity(Entity entity) {
 		ClientNotification clientNotification = new ClientNotification();
+		clientNotification.thisEntity = entity;
 		return EntityHelper.readIt(entity, clientNotification, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	}
+	
+	public static ClientNotification readEntity(Key key) {
+		Entity entity;
+		if (key == null) {
+			throw new NullPointerException("Argument \"key\" is null!");
+		}
+		
+		try {
+			entity = DatastoreServiceFactory.getDatastoreService().get(key);
+		} catch (EntityNotFoundException e) {
+			throw new RuntimeException("Entity with key " + key.toString() + " was not found!");
+		}
+		
+		return readEntity(entity);
+	}
+	
+	public Key getID() {
+		if (thisEntity == null) {
+			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
+		}
+		return thisEntity.getKey();
 	}
 
 	public Key getClientID() {
@@ -46,6 +81,24 @@ public class ClientNotification {
 
 	public void setClientID(Key clientID) {
 		this.clientID = clientID;
+	}
+	
+	public Client getClient() {
+		if (client == null) {
+			client = Client.readEntity(this.clientID);
+		}
+		
+		return client;
+	}
+	
+	public void setClient(Client client) {
+		this.client = client;
+		
+		if (client == null) {
+			clientID = null;
+		} else {
+			clientID = client.getID();
+		}
 	}
 
 	public Date getTimestamp() {
@@ -63,6 +116,24 @@ public class ClientNotification {
 	public void setEmployeeID(Key employeeID) {
 		this.employeeID = employeeID;
 	}
+	
+	public Employee getEmployee() {
+		if (employee == null) {
+			employee = Employee.readEntity(this.employeeID);
+		}
+		
+		return employee;
+	}
+	
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+		
+		if (employee == null) {
+			employeeID = null;
+		} else {
+			employeeID = employee.getID();
+		}
+	}
 
 	public Key getVehicleID() {
 		return vehicleID;
@@ -70,6 +141,24 @@ public class ClientNotification {
 
 	public void setVehicleID(Key vehicleID) {
 		this.vehicleID = vehicleID;
+	}
+	
+	public Vehicle getVehicle() {
+		if (vehicle == null) {
+			vehicle = Vehicle.readEntity(this.vehicleID);
+		}
+		
+		return vehicle;
+	}
+	
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
+		
+		if (vehicle == null) {
+			vehicleID = null;
+		} else {
+			vehicleID = vehicle.getID();
+		}
 	}
 
 	public Key getClientOrderID() {
@@ -79,13 +168,35 @@ public class ClientNotification {
 	public void setClientOrderID(Key clientOrderID) {
 		this.clientOrderID = clientOrderID;
 	}
+	
+	public ClientOrder getClientOrder() {
+		if (clientOrder == null) {
+			clientOrder = ClientOrder.readEntity(this.clientOrderID);
+		}
+		
+		return clientOrder;
+	}
+	
+	public void setVehicle(ClientOrder clientOrder) {
+		this.clientOrder = clientOrder;
+		
+		if (clientOrder == null) {
+			clientOrderID = null;
+		} else {
+			clientOrderID = clientOrder.getID();
+		}
+	}
 
 	public String getStatus() {
 		return status.getString();
 	}
 
 	public void setStatus(String status) {
-		this.status.setString(status);
+		if (NEED_TO_CALL.equals(status) || SUCCESS.equals(status) || UNSUCCESS.equals(status)) {
+			this.status.setString(status);
+		} else {
+			throw new RuntimeException("The string doesn't match any of possible values");
+		}
 	}
 
 	public String getNotes() {

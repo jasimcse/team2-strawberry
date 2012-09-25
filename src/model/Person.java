@@ -7,10 +7,15 @@ import java.util.Set;
 import model.util.EntityHelper;
 import model.util.LimitedString;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
 public class Person {
+	
+	private Entity thisEntity;
+	private Client client;
 	
 	private Key clientID;
 	private LimitedString name = new LimitedString(50);
@@ -19,7 +24,7 @@ public class Person {
 	private static final String PARENT_FIELD = "clientID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS"}));
+			new String[] {"IGNORED_FIELDS", "thisEntity", "client"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
@@ -30,7 +35,30 @@ public class Person {
 	
 	public static Person readEntity(Entity entity) {
 		Person person = new Person();
+		person.thisEntity = entity;
 		return EntityHelper.readIt(entity, person, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	}
+	
+	public static Person readEntity(Key key) {
+		Entity entity;
+		if (key == null) {
+			throw new NullPointerException("Argument \"key\" is null!");
+		}
+		
+		try {
+			entity = DatastoreServiceFactory.getDatastoreService().get(key);
+		} catch (EntityNotFoundException e) {
+			throw new RuntimeException("Entity with key " + key.toString() + " was not found!");
+		}
+		
+		return readEntity(entity);
+	}
+	
+	public Key getID() {
+		if (thisEntity == null) {
+			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
+		}
+		return thisEntity.getKey();
 	}
 
 	public Key getClientID() {
@@ -39,6 +67,24 @@ public class Person {
 
 	public void setClientID(Key clientID) {
 		this.clientID = clientID;
+	}
+	
+	public Client getClient() {
+		if (client == null) {
+			client = Client.readEntity(this.clientID);
+		}
+		
+		return client;
+	}
+	
+	public void setClient(Client client) {
+		this.client = client;
+		
+		if (client == null) {
+			clientID = null;
+		} else {
+			clientID = client.getID();
+		}
 	}
 
 	public String getName() {

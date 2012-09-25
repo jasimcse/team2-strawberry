@@ -6,11 +6,17 @@ import java.util.Set;
 
 import model.util.EntityHelper;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
 
 public class DiagnosisService {
+	
+	private Entity thisEntity;
+	private Diagnosis diagnosis;
+	private Service service;
 	
 	private Key diagnosisID;
 	private Key serviceID;
@@ -29,7 +35,30 @@ public class DiagnosisService {
 	
 	public static DiagnosisService readEntity(Entity entity) {
 		DiagnosisService diagnosisService = new DiagnosisService();
+		diagnosisService.thisEntity = entity;
 		return EntityHelper.readIt(entity, diagnosisService, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	}
+	
+	public static DiagnosisService readEntity(Key key) {
+		Entity entity;
+		if (key == null) {
+			throw new NullPointerException("Argument \"key\" is null!");
+		}
+		
+		try {
+			entity = DatastoreServiceFactory.getDatastoreService().get(key);
+		} catch (EntityNotFoundException e) {
+			throw new RuntimeException("Entity with key " + key.toString() + " was not found!");
+		}
+		
+		return readEntity(entity);
+	}
+	
+	public Key getID() {
+		if (thisEntity == null) {
+			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
+		}
+		return thisEntity.getKey();
 	}
 
 	public Key getDiagnosisID() {
@@ -39,6 +68,24 @@ public class DiagnosisService {
 	public void setDiagnosisID(Key diagnosisID) {
 		this.diagnosisID = diagnosisID;
 	}
+	
+	public Diagnosis getDiagnosis() {
+		if (diagnosis == null) {
+			diagnosis = Diagnosis.readEntity(this.diagnosisID);
+		}
+		
+		return diagnosis;
+	}
+	
+	public void setDiagnosis(Diagnosis diagnosis) {
+		this.diagnosis = diagnosis;
+		
+		if (diagnosis == null) {
+			diagnosisID = null;
+		} else {
+			diagnosisID = diagnosis.getID();
+		}
+	}
 
 	public Key getServiceID() {
 		return serviceID;
@@ -46,6 +93,24 @@ public class DiagnosisService {
 
 	public void setServiceID(Key serviceID) {
 		this.serviceID = serviceID;
+	}
+	
+	public Service getService() {
+		if (service == null) {
+			service = Service.readEntity(this.serviceID);
+		}
+		
+		return service;
+	}
+	
+	public void setService(Service service) {
+		this.service = service;
+		
+		if (service == null) {
+			serviceID = null;
+		} else {
+			serviceID = service.getID();
+		}
 	}
 	
 }

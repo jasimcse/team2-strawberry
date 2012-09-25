@@ -7,11 +7,22 @@ import java.util.Set;
 import model.util.EntityHelper;
 import model.util.LimitedString;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 // TODO - да се преименува на Works, например?
 public class EmployeeAutoservice {
+	
+	private Entity thisEntity;
+	private Autoservice autoservice;
+	private Employee employee;
 	
 	private Key autoserviceID;
 	private Key employeeID;
@@ -22,18 +33,35 @@ public class EmployeeAutoservice {
 	private static final String PARENT_FIELD = "autoserviceID"; // TODO - така ли да остава?
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS"}));
+			new String[] {"IGNORED_FIELDS", "thisEntity", "autoservice", "employee"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
 	
 	public Entity makeEntity() {
-		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+		thisEntity = EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+		return thisEntity;
 	}
 	
 	public static EmployeeAutoservice readEntity(Entity entity) {
 		EmployeeAutoservice employeeAutoservice = new EmployeeAutoservice();
+		employeeAutoservice.thisEntity = entity;
 		return EntityHelper.readIt(entity, employeeAutoservice, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	}
+	
+	public static EmployeeAutoservice readEntity(Key key) {
+		Entity entity;
+		if (key == null) {
+			throw new NullPointerException("Argument \"key\" is null!");
+		}
+		
+		try {
+			entity = DatastoreServiceFactory.getDatastoreService().get(key);
+		} catch (EntityNotFoundException e) {
+			throw new RuntimeException("Entity with key " + key.toString() + " was not found!");
+		}
+		
+		return readEntity(entity);
 	}
 
 	public Key getAutoserviceID() {
@@ -42,6 +70,25 @@ public class EmployeeAutoservice {
 
 	public void setAutoserviceID(Key autoserviceID) {
 		this.autoserviceID = autoserviceID;
+		autoservice = null;
+	}
+	
+	public Autoservice getAutoservice() {
+		if (autoservice == null) {
+			autoservice = Autoservice.readEntity(this.autoserviceID);
+		}
+		
+		return autoservice;
+	}
+	
+	public void setAutoservice(Autoservice autoservice) {
+		this.autoservice = autoservice;
+		
+		if (autoservice == null) {
+			autoserviceID = null;
+		} else {
+			autoserviceID = autoservice.getID();
+		}
 	}
 
 	public Key getEmployeeID() {
@@ -50,6 +97,24 @@ public class EmployeeAutoservice {
 
 	public void setEmployeeID(Key employeeID) {
 		this.employeeID = employeeID;
+	}
+	
+	public Employee getEmployee() {
+		if (employee == null) {
+			employee = Employee.readEntity(this.employeeID);
+		}
+		
+		return employee;
+	}
+	
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+		
+		if (employee == null) {
+			employeeID = null;
+		} else {
+			employeeID = employee.getID();
+		}
 	}
 
 	public String getUsername() {
@@ -65,7 +130,7 @@ public class EmployeeAutoservice {
 	}
 
 	public void setPassword(String password) {
-		this.password.setString(password);
+		this.password.setString(scramblePassword(password));
 	}
 
 	public String getPosition() {
@@ -74,6 +139,25 @@ public class EmployeeAutoservice {
 
 	public void setPosition(String position) {
 		this.position.setString(position);
+	}
+	
+	private static String scramblePassword(String password) {
+		//TODO - scramble it or hash it, maybe with salt and pepper :)
+		return new String(password);
+	}
+	
+	public static EmployeeAutoservice checkCredentials(String username, String password) {
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Query query = new Query(EmployeeAutoservice.class.getName());
+		FilterPredicate filterUsername = new FilterPredicate("username", FilterOperator.EQUAL, username);
+		FilterPredicate filterPassword = new FilterPredicate("password", FilterOperator.EQUAL, scramblePassword(password));
+		query.setFilter(CompositeFilterOperator.and(filterUsername, filterPassword));
+		
+		Entity entity = datastore.prepare(query).asSingleEntity();
+		if (entity == null) {
+			return null;
+		}
+		return EmployeeAutoservice.readEntity(entity);
 	}
 	
 }

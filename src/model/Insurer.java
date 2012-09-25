@@ -7,9 +7,14 @@ import java.util.Set;
 import model.util.EntityHelper;
 import model.util.LimitedString;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.Key;
 
 public class Insurer {
+	
+	private Entity thisEntity;
 	
 	private LimitedString name = new LimitedString(100);
 	private LimitedString addressCity = new LimitedString(30);
@@ -25,7 +30,7 @@ public class Insurer {
 	private static final String PARENT_FIELD = null; // TODO - така ли да остава?
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS"}));
+			new String[] {"IGNORED_FIELDS", "thisEntity"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"VATNumber"}));
@@ -36,7 +41,30 @@ public class Insurer {
 	
 	public static Insurer readEntity(Entity entity) {
 		Insurer insurer = new Insurer();
+		insurer.thisEntity = entity;
 		return EntityHelper.readIt(entity, insurer, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	}
+	
+	public static Insurer readEntity(Key key) {
+		Entity entity;
+		if (key == null) {
+			throw new NullPointerException("Argument \"key\" is null!");
+		}
+		
+		try {
+			entity = DatastoreServiceFactory.getDatastoreService().get(key);
+		} catch (EntityNotFoundException e) {
+			throw new RuntimeException("Entity with key " + key.toString() + " was not found!");
+		}
+		
+		return readEntity(entity);
+	}
+	
+	public Key getID() {
+		if (thisEntity == null) {
+			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
+		}
+		return thisEntity.getKey();
 	}
 
 	public String getName() {
