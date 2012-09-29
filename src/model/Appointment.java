@@ -16,7 +16,9 @@ import model.util.LimitedString;
 
 public class Appointment {
 	
-	private Entity thisEntity;
+	//TODO - makeEntity и подобните да се направят private ???
+	
+	private Entity thisEntity; // TODO - това да се замени само с ключ към Entity-то ??? 
 	private Autoservice autoservice;
 	
 	private Key autoserviceID;
@@ -28,10 +30,12 @@ public class Appointment {
 	private static final String PARENT_FIELD = "autoserviceID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS", "thisEntity", "autoservice"}));
+			new String[] {"IGNORED_FIELDS", "thisEntity", "autoservice"})); // TODO - add PARENT_FIELD and NULLABLE_FIELDS
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] { "clientName", "phoneNumber" }));
+	
+	// TODO - add writeToDB!
 	
 	public Entity makeEntity() {
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);

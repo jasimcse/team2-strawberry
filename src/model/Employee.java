@@ -1,7 +1,9 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import model.util.EntityHelper;
@@ -10,7 +12,11 @@ import model.util.LimitedString;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 public class Employee {
 	
@@ -26,10 +32,19 @@ public class Employee {
 	private static final String PARENT_FIELD = null; // TODO - така ли да остава?
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS", "thisEntity"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
+	
+	public void writeToDB() {
+		if (thisEntity == null) {
+			DatastoreServiceFactory.getDatastoreService().put(makeEntity());
+		} else {
+			EntityHelper.populateIt(thisEntity, this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+			DatastoreServiceFactory.getDatastoreService().put(thisEntity);
+		}
+	}
 	
 	public Entity makeEntity() {
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
@@ -54,6 +69,16 @@ public class Employee {
 		}
 		
 		return readEntity(entity);
+	}
+	
+	private static List<Employee> readList(List<Entity> listToRead) {
+		List<Employee> newList =  new ArrayList<Employee>();
+		
+		for (Entity entity : listToRead) {
+			newList.add(readEntity(entity));
+		}
+		
+		return newList;
 	}
 	
 	public Key getID() {
@@ -109,6 +134,42 @@ public class Employee {
 
 	public void setMail(String mail) {
 		this.mail.setString(mail);
+	}
+	
+	private static PreparedQuery getPreparedQueryAll() { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Employee.class.getName()).
+					   addSort("__key__"));
+	}
+	
+	private static PreparedQuery getPreparedQueryByName(String name) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Employee.class.getName()).
+					   addSort("__key__").
+					   setFilter(new Query.FilterPredicate("name", FilterOperator.EQUAL, name)));
+	}
+	
+	public static List<Employee> queryGetAll(int offset, int count) {
+		List<Entity> oldList = getPreparedQueryAll().
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll() {
+		return getPreparedQueryAll().countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<Employee> queryGetByName(String name, int offset, int count) {
+		List<Entity> oldList = getPreparedQueryByName(name).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetByName(String name) {
+		return getPreparedQueryByName(name).
+				countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

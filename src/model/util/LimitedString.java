@@ -72,5 +72,9 @@ public class LimitedString {
 	public String getString() {
 		return str;
 	}
+	
+	public void clearString() {
+		str = null;
+	}
 
 }

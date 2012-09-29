@@ -1,23 +1,25 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import model.util.EntityHelper;
 import model.util.LimitedString;
 
-import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 
-// TODO - да се преименува на Works, например?
 public class EmployeeAutoservice {
 	
 	private Entity thisEntity;
@@ -33,7 +35,7 @@ public class EmployeeAutoservice {
 	private static final String PARENT_FIELD = "autoserviceID"; // TODO - така ли да остава?
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS", "thisEntity", "autoservice", "employee"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "autoservice", "employee"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
@@ -41,6 +43,15 @@ public class EmployeeAutoservice {
 	public Entity makeEntity() {
 		thisEntity = EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 		return thisEntity;
+	}
+	
+	public void writeToDB() {
+		if (thisEntity == null) {
+			DatastoreServiceFactory.getDatastoreService().put(makeEntity());
+		} else {
+			EntityHelper.populateIt(thisEntity, this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+			DatastoreServiceFactory.getDatastoreService().put(thisEntity);
+		}
 	}
 	
 	public static EmployeeAutoservice readEntity(Entity entity) {
@@ -62,6 +73,16 @@ public class EmployeeAutoservice {
 		}
 		
 		return readEntity(entity);
+	}
+	
+	private static List<EmployeeAutoservice> readList(List<Entity> listToRead) {
+		List<EmployeeAutoservice> newList =  new ArrayList<EmployeeAutoservice>();
+		
+		for (Entity entity : listToRead) {
+			newList.add(readEntity(entity));
+		}
+		
+		return newList;
 	}
 
 	public Key getAutoserviceID() {
@@ -146,18 +167,71 @@ public class EmployeeAutoservice {
 		return new String(password);
 	}
 	
+	//TODO - rename and convert it ?
 	public static EmployeeAutoservice checkCredentials(String username, String password) {
-		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		Query query = new Query(EmployeeAutoservice.class.getName());
-		FilterPredicate filterUsername = new FilterPredicate("username", FilterOperator.EQUAL, username);
-		FilterPredicate filterPassword = new FilterPredicate("password", FilterOperator.EQUAL, scramblePassword(password));
-		query.setFilter(CompositeFilterOperator.and(filterUsername, filterPassword));
 		
-		Entity entity = datastore.prepare(query).asSingleEntity();
-		if (entity == null) {
+		if (countGetByUsernamePassword(username, password) == 1) {
+			return queryGetByUsernamePassword(username, password, 0, 1).get(0);
+		} else {
 			return null;
 		}
-		return EmployeeAutoservice.readEntity(entity);
+		
+	}
+	
+	private static PreparedQuery getPreparedQueryAll() { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(EmployeeAutoservice.class.getName()).
+				       addSort("__key__"));
+	}
+	
+	private static PreparedQuery getPreparedQueryByUsername(String name) {
+		return DatastoreServiceFactory.getDatastoreService().
+				prepare(new Query(EmployeeAutoservice.class.getName()).
+						addSort("__key__").
+						setFilter(new Query.FilterPredicate("username", FilterOperator.EQUAL, name)));
+	}
+	private static PreparedQuery getPreparedQueryByUsernamePassword(String username, String password) {
+		return DatastoreServiceFactory.getDatastoreService().
+				prepare(new Query(EmployeeAutoservice.class.getName()).
+						addSort("__key__").
+						setFilter(CompositeFilterOperator.and(
+								new FilterPredicate("username", FilterOperator.EQUAL, username),
+								new FilterPredicate("password", FilterOperator.EQUAL, scramblePassword(password)))));
+	}
+	
+	public static List<EmployeeAutoservice> queryGetAll(int offset, int count) {
+		List<Entity> oldList = getPreparedQueryAll().
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll() {
+		return getPreparedQueryAll().countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<EmployeeAutoservice> queryGetByUsername(String username, int offset, int count) {
+		List<Entity> oldList = getPreparedQueryByUsername(username).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetByUsername(String username) {
+		return getPreparedQueryByUsername(username).
+				countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<EmployeeAutoservice> queryGetByUsernamePassword(String username, String password, int offset, int count) {
+		List<Entity> oldList = getPreparedQueryByUsernamePassword(username, password).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetByUsernamePassword(String username, String password) {
+		return getPreparedQueryByUsernamePassword(username, password).
+				countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

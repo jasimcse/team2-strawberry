@@ -47,7 +47,9 @@ public class EntityHelper {
 			entity = new Entity(classLocal.getName());
 		} else {
 			try {
-				entity = new Entity(classLocal.getName(), (Key)classLocal.getDeclaredField(parent).get(from));
+				Field field = classLocal.getDeclaredField(parent);
+				field.setAccessible(true);
+				entity = new Entity(classLocal.getName(), (Key)field.get(from));
 			} catch (IllegalArgumentException e) {
 				throw new RuntimeException("Parent field not found", e);
 			} catch (IllegalAccessException e) {
@@ -170,7 +172,11 @@ public class EntityHelper {
 				
 				try {
 					if (field.get(to) instanceof LimitedString) {
-						((LimitedString)field.get(to)).setString((String)valueObject);
+						if (valueObject == null) {
+							((LimitedString)field.get(to)).clearString();
+						} else {
+							((LimitedString)field.get(to)).setString((String)valueObject);
+						}
 					} else {
 						field.set(to, valueObject);
 					}
@@ -184,5 +190,5 @@ public class EntityHelper {
 		
 		return to;
 	}
-
+	
 }

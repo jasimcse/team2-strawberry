@@ -7,6 +7,10 @@ import model.EmployeeAutoservice;
 import com.google.appengine.api.datastore.Key;
 
 
+/**
+ * Съхранява данните на логнатия потребител
+ *
+ */
 @ManagedBean(name="currentEmployee")
 @SessionScoped
 public class CurrentEmployee {
