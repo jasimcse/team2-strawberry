@@ -11,40 +11,42 @@
 </head>
 
 <h:body>
-	<div id="headerSection">
-		<div class="title">Заглавие</div>
-		<div id="loginSection">
+	<div id="topSection">
+		<div class="title" style="float: left;">Заглавие и други неща</div>
+	
+		<div id="loginSection" style="float: right;">
+		
 			<h:form name="loginForm">
-				<h:commandLink id="logoutLink" action="#{login.logout()}"
-					value="#{userMsg.logout}"
-					rendered="#{login.loggedIn == true}" />
+				<h:panelGroup rendered="#{loginController.isLoggedIn()}">
+					<h:commandLink action="#{loginController.logout()}"
+						value="Log Out" />
+				</h:panelGroup>
+			
+				<h:panelGroup rendered="#{!loginController.isLoggedIn()}">
+				
+					<h:inputText maxlength="50" required="true" value="#{loginController.username}" />
+					<br />
+					<h:inputSecret maxlength="50" required="true" value="#{loginController.password}" />
+					<br />
+					<h:panelGroup rendered="#{!empty loginController.errorMessage}" >
+						<h:outputText value="#{loginController.errorMessage}" />
+						<br />
+					</h:panelGroup>
+					<h:commandButton action="#{loginController.login()}" value="Log In" />
+				
+				</h:panelGroup>
 			</h:form>
 		</div>
 	</div>
-		
-	<ui:include src="/templates/bar.xhtml" />
-		
-	<div id="pageContent">
-		<div class="articleTitle">
-			<ui:insert name="title" />
+	<div id="bottomSection" style="clear: both;">
+		<div id="leftSection" style="float: left; width: 100px;">
+			<ui:insert name="menu" />
 		</div>
-		<div class="articleContent">
-			<ui:insert name="body" />
+		<div id="centralSection" style="overflow: hidden;">
+			<ui:insert name="pageContent" />
 		</div>
 	</div>
+		
 </h:body>
 
-<ui:composition template="">
-	<ui:define name="head">
-	</ui:define>
-	
-	<ui:define name="header">
-	</ui:define>
-	<ui:define name="content">
-	    Add your content here or delete to use the default
-	</ui:define>
-	<ui:define name="footer">
-	    Add your footer here or delete to use the default
-	</ui:define>
-</ui:composition>
 </html>
