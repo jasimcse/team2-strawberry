@@ -8,7 +8,7 @@ import javax.faces.bean.RequestScoped;
 /**
  * 
  * Контролер занимаващ се с логване и разлогване
- *
+ * 
  */
 @ManagedBean(name="loginController")
 @RequestScoped
