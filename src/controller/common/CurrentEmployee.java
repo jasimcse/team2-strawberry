@@ -1,5 +1,7 @@
 package controller.common;
 
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import model.EmployeeAutoservice;
@@ -11,16 +13,16 @@ import com.google.appengine.api.datastore.Key;
  * Съхранява данните на логнатия потребител
  *
  */
+@SuppressWarnings("serial")
 @ManagedBean(name="currentEmployee")
 @SessionScoped
-public class CurrentEmployee {
+public class CurrentEmployee implements Serializable {
 	
 	private EmployeeAutoservice employeeAutoservice;
 	
 	/**
 	 * checks for correct username and password;
-	 *  - if correct the user information is stored in this object; the user is considered logged in from now on
-	 *  - if not  -> throw RuntimeException
+	 * if correct, the user information is stored in this object; the user is considered logged in from now on
 	 *   
 	 * @return -1/0 = No such user / user has been logged in
 	 */
