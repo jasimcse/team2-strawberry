@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+
+	<ui:define name="headSection">
+		
+	</ui:define>
+
+	<ui:define name="pageContent">
+		<h:form>
+			<h:outputLabel value="Име">
+				<h:inputText value="#{dobavqneNaSlujitel.name}" required="true" maxlength="50" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Фамилия">
+				<h:inputText value="#{dobavqneNaSlujitel.family}" required="true" maxlength="50" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Град">
+				<h:inputText value="#{dobavqneNaSlujitel.addressCity}" required="true" maxlength="30" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Адрес">
+				<h:inputText value="#{dobavqneNaSlujitel.addressLine}" required="true" maxlength="100" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Електронна поща">
+				<h:inputText value="#{dobavqneNaSlujitel.mail}" required="true" maxlength="15" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Телефонен номер">
+				<h:inputText value="#{dobavqneNaSlujitel.phoneNumber}" required="true" maxlength="50"/>
+			</h:outputLabel>
+			<br />
+			<h:commandButton action="#{dobavqneNaSlujitel.writeIt()}" value="Добави" />
+			<br />
+			<h:outputText value="#{dobavqneNaSlujitel.errorMessage}"/>
+		</h:form>
+	    
+	</ui:define>
+	
+</ui:composition>
+</html>
