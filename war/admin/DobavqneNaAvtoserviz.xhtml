@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="pageContent">
+	    <h:form>
+	    <h:outputLabel value="Наименование*">
+	    	<h:inputText id="name" value="#{dobavqneNaAvtoserviz.name}" maxlength="30" 
+	    		required="true" requiredMessage="задължително поле!" />
+	    	<h:message for="name" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Населено място*">
+	    	<h:inputText id="city" value="#{dobavqneNaAvtoserviz.addressCity}" maxlength="30" 
+	    		required="true" requiredMessage="задължително поле!"/>
+	    	<h:message for="city" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Адрес*">
+	    	<h:inputText id="address" value="#{dobavqneNaAvtoserviz.addressLine}" maxlength="100" 
+	    		required="true" requiredMessage="задължително поле!"/>
+	    	<h:message for="address" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Телефонен номер*">
+	    	<h:inputText id="phone" value="#{dobavqneNaAvtoserviz.phoneNumber}" maxlength="15" 
+	    		required="true" requiredMessage="задължително поле!"/>
+	    	<h:message for="phone" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Адрес на електронната поща*">
+	    	<h:inputText id="mail" value="#{dobavqneNaAvtoserviz.mail}" maxlength="50" 
+	    		required="true" requiredMessage="задължително поле!"/>
+	    	<h:message for="mail" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Номер на банковата сметка*">
+	    	<h:inputText id="iban" value="#{dobavqneNaAvtoserviz.IBANNumber}" maxlength="30" 
+	    		required="true" requiredMessage="задължително поле!"/>
+	    	<h:message for="iban" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Банков код*">
+	    	<h:inputText id="swiftcode" value="#{dobavqneNaAvtoserviz.SWIFTCode}" maxlength="20" 
+	    		required="true" requiredMessage="задължително поле!"/>
+	    	<h:message for="swiftcode" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Единен идентификационен код (ЕИК)*">
+	    	<h:inputText id="regnumber" value="#{dobavqneNaAvtoserviz.registrationNumber}" maxlength="9" 
+	    		required="true" requiredMessage="задължително поле!"/>
+	    	<h:message for="regnumber" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="ДДС номер">
+	    	<h:inputText id="vat" value="#{dobavqneNaAvtoserviz.VATNumber}" maxlength="11" 
+	    		required="false"/>
+	    	<h:message for="vat" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	
+	    <h:commandButton value="Запази" action="#{dobavqneNaAvtoserviz.addAutoserviz()}"/> 
+	    <br />
+	    <h:outputText value="#{dobavqneNaAvtoserviz.errorMessage}"/>
+	    
+	    </h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>
