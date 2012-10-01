@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -12,7 +13,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
-public class InsurerRequest {
+@SuppressWarnings("serial")
+public class InsurerRequest implements Serializable {
 	
 	private Entity thisEntity;
 	private Insurer insurer;

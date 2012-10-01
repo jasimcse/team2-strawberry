@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +12,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
-public class SparePartBad {
+@SuppressWarnings("serial")
+public class SparePartBad implements Serializable {
 	
 	private Entity thisEntity;
 	private Autoservice autoservice;

@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,8 +12,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
-
-public class DiagnosisPart {
+@SuppressWarnings("serial")
+public class DiagnosisPart implements Serializable {
 	
 	private Entity thisEntity;
 	private Diagnosis diagnosis;

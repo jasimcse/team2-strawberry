@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -13,7 +14,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
-public class SparePartsDelivery {
+@SuppressWarnings("serial")
+public class SparePartsDelivery implements Serializable {
 	
 	public static final String NOT_PAYED = "1";
 	public static final String PAYED = "2";

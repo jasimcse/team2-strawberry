@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,8 +19,8 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import model.util.EntityHelper;
 import model.util.LimitedString;
 
-
-public class Autoservice {
+@SuppressWarnings("serial")
+public class Autoservice implements Serializable {
 	
 	private Entity thisEntity;
 	
