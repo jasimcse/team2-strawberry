@@ -44,11 +44,11 @@ public class Employee implements Serializable {
 	
 	public void writeToDB() {
 		if (thisEntity == null) {
-			DatastoreServiceFactory.getDatastoreService().put(makeEntity());
+			thisEntity = makeEntity();
 		} else {
 			EntityHelper.populateIt(thisEntity, this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
-			DatastoreServiceFactory.getDatastoreService().put(thisEntity);
 		}
+		DatastoreServiceFactory.getDatastoreService().put(thisEntity);
 	}
 	
 	public Entity makeEntity() {

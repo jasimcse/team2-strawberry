@@ -44,6 +44,15 @@ public class Client implements Serializable {
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 	}
 	
+	public void writeToDB() {
+		if (thisEntity == null) {
+			thisEntity = makeEntity();
+		} else {
+			EntityHelper.populateIt(thisEntity, this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+		}
+		DatastoreServiceFactory.getDatastoreService().put(thisEntity);
+	}
+	
 	public static Client readEntity(Entity entity) {
 		Client client = new Client();
 		client.thisEntity = entity;
