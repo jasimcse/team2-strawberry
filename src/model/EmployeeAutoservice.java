@@ -32,7 +32,7 @@ public class EmployeeAutoservice {
 	private LimitedString password = new LimitedString(50); // TODO - така ли да остава ?
 	private LimitedString position = new LimitedString(30);
 	
-	private static final String PARENT_FIELD = "autoserviceID"; // TODO - така ли да остава?
+	private static final String PARENT_FIELD = "autoserviceID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "autoservice", "employee"}));
@@ -180,19 +180,19 @@ public class EmployeeAutoservice {
 	
 	private static PreparedQuery getPreparedQueryAll() { 
 		return DatastoreServiceFactory.getDatastoreService().
-			   prepare(new Query(EmployeeAutoservice.class.getName()).
+			   prepare(new Query(EmployeeAutoservice.class.getCanonicalName()).
 				       addSort("__key__"));
 	}
 	
 	private static PreparedQuery getPreparedQueryByUsername(String name) {
 		return DatastoreServiceFactory.getDatastoreService().
-				prepare(new Query(EmployeeAutoservice.class.getName()).
+				prepare(new Query(EmployeeAutoservice.class.getCanonicalName()).
 						addSort("__key__").
 						setFilter(new Query.FilterPredicate("username", FilterOperator.EQUAL, name)));
 	}
 	private static PreparedQuery getPreparedQueryByUsernamePassword(String username, String password) {
 		return DatastoreServiceFactory.getDatastoreService().
-				prepare(new Query(EmployeeAutoservice.class.getName()).
+				prepare(new Query(EmployeeAutoservice.class.getCanonicalName()).
 						addSort("__key__").
 						setFilter(CompositeFilterOperator.and(
 								new FilterPredicate("username", FilterOperator.EQUAL, username),

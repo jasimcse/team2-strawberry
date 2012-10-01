@@ -70,7 +70,7 @@ public class DobavqneNaSlujitel {
 		slujitel.writeToDB();
 		
 		// clean the data
-		slujitel= new Employee();
+		slujitel = new Employee();
 		
 		// set the message
 		errorMessage = "Служителят беше добавен успешно!";

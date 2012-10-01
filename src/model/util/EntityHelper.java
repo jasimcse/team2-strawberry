@@ -4,8 +4,11 @@ import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Query;
 
 /**
  * 
@@ -13,6 +16,37 @@ import com.google.appengine.api.datastore.Key;
  *
  */
 public class EntityHelper {
+	
+	/*
+	private static Entity parentAutoservice;
+	private static Entity parentEmployee;
+	*/
+	/**
+	 * инициализира базата данни;
+	 * създава Entity групи, за да може повечето заявки да са "Strong consistent", а не "Eventual consistent"
+	 * т.е. след като се направи запис в базата, веднага след това да може да се види какво е записано, а не след няколко секунди 
+	 * 
+	 */
+	/*public static void initializeDataStore() {
+		Entity ent;
+		DatastoreService store = DatastoreServiceFactory.getDatastoreService();
+		
+		ent = store.prepare(new Query("ParentAutoservice").setKeysOnly()).asSingleEntity();
+		if (ent != null) {
+			ent = new Entity("ParentAutoservice");
+			store.put(ent);
+		}
+		parentAutoservice = ent;
+		
+		ent = store.prepare(new Query("ParentEmployee").setKeysOnly()).asSingleEntity();
+		if (ent != null) {
+			ent = new Entity("ParentEmployee");
+			store.put(ent);
+		}
+		parentEmployee = ent;
+		
+	}*/
+	
 	
 	/**
 	 * Построява Entity oбект от данните на обект от Data Model-а
@@ -44,12 +78,12 @@ public class EntityHelper {
 		
 		// Entity creation
 		if (parent == null) {
-			entity = new Entity(classLocal.getName());
+			entity = new Entity(classLocal.getCanonicalName());
 		} else {
 			try {
 				Field field = classLocal.getDeclaredField(parent);
 				field.setAccessible(true);
-				entity = new Entity(classLocal.getName(), (Key)field.get(from));
+				entity = new Entity(classLocal.getCanonicalName(), (Key)field.get(from));
 			} catch (IllegalArgumentException e) {
 				throw new RuntimeException("Parent field not found", e);
 			} catch (IllegalAccessException e) {

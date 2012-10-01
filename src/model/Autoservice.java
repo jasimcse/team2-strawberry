@@ -166,13 +166,13 @@ public class Autoservice {
 	
 	private static PreparedQuery getPreparedQueryAll() { 
 		return DatastoreServiceFactory.getDatastoreService().
-			   prepare(new Query(Autoservice.class.getName()).
+			   prepare(new Query(Autoservice.class.getCanonicalName()).
 				       addSort("__key__"));
 	}
 	
 	private static PreparedQuery getPreparedQueryByName(String name) {
 		return DatastoreServiceFactory.getDatastoreService().
-				prepare(new Query(Autoservice.class.getName()).
+				prepare(new Query(Autoservice.class.getCanonicalName()).
 						addSort("__key__").
 						setFilter(new Query.FilterPredicate("name", FilterOperator.EQUAL, name)));
 	}
