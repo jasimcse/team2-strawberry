@@ -32,6 +32,15 @@ public class WarrantyConditions implements Serializable {
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"otherConditions"}));
 	
+	public void writeToDB() {
+		if (thisEntity == null) {
+			thisEntity = makeEntity();
+		} else {
+			EntityHelper.populateIt(thisEntity, this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+		}
+		DatastoreServiceFactory.getDatastoreService().put(thisEntity);
+	}
+	
 	public Entity makeEntity() {
 		warrantyConditionsParentID = EntityHelper.getWarrantyConditionsParent();
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);

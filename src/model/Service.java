@@ -31,6 +31,15 @@ public class Service implements Serializable {
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
 	
+	public void writeToDB() {
+		if (thisEntity == null) {
+			thisEntity = makeEntity();
+		} else {
+			EntityHelper.populateIt(thisEntity, this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+		}
+		DatastoreServiceFactory.getDatastoreService().put(thisEntity);
+	}
+	
 	public Entity makeEntity() {
 		serviceParentID = EntityHelper.getServiceParent();
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);

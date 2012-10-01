@@ -42,18 +42,18 @@ public class EmployeeAutoservice implements Serializable {
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
 	
+	public void writeToDB() {
+		if (thisEntity == null) {
+			thisEntity = makeEntity();
+		} else {
+			EntityHelper.populateIt(thisEntity, this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+		}
+		DatastoreServiceFactory.getDatastoreService().put(thisEntity);
+	}
+	
 	public Entity makeEntity() {
 		thisEntity = EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 		return thisEntity;
-	}
-	
-	public void writeToDB() {
-		if (thisEntity == null) {
-			DatastoreServiceFactory.getDatastoreService().put(makeEntity());
-		} else {
-			EntityHelper.populateIt(thisEntity, this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
-			DatastoreServiceFactory.getDatastoreService().put(thisEntity);
-		}
 	}
 	
 	public static EmployeeAutoservice readEntity(Entity entity) {
