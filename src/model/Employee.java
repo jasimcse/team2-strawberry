@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,7 +19,9 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 
-public class Employee {
+
+@SuppressWarnings("serial")
+public class Employee implements Serializable {
 	
 	private Entity thisEntity;
 	
@@ -138,13 +141,13 @@ public class Employee {
 	
 	private static PreparedQuery getPreparedQueryAll() { 
 		return DatastoreServiceFactory.getDatastoreService().
-			   prepare(new Query(Employee.class.getName()).
+			   prepare(new Query(Employee.class.getCanonicalName()).
 					   addSort("__key__"));
 	}
 	
 	private static PreparedQuery getPreparedQueryByName(String name) { 
 		return DatastoreServiceFactory.getDatastoreService().
-			   prepare(new Query(Employee.class.getName()).
+			   prepare(new Query(Employee.class.getCanonicalName()).
 					   addSort("__key__").
 					   setFilter(new Query.FilterPredicate("name", FilterOperator.EQUAL, name)));
 	}

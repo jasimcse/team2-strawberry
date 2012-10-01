@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+
+	<ui:define name="headSection">
+		
+	</ui:define>
+
+	<ui:define name="pageContent">
+		<h:form>
+			
+			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+			<h:dataTable
+				rows="#{configurationProperties.getPageSize()}"
+				value="#{aktualiziraneNaSlujitel.spisukSlujiteli}"
+			    first="0"
+			    var="curr"
+			    rowClasses="#{aktualiziraneNaSlujitel.rowStyleClasses}">
+				
+				<h:column>
+					<f:facet name="header">Име</f:facet>
+					#{curr.name}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Фамилия</f:facet>
+					#{curr.family}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Град</f:facet>
+					#{curr.addressCity}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Адрес</f:facet>
+					#{curr.addressLine}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Електронна поща</f:facet>
+					#{curr.mail}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Телефонен номер</f:facet>
+					#{curr.phoneNumber}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Промени</f:facet>
+					<h:commandLink action="#{aktualiziraneNaSlujitel.selectRow(curr)}" value="Промени" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Избери</f:facet>
+					<!-- TODO - да се оправи -->
+					<h:commandLink value="Избери" />
+				</h:column>
+				
+				<f:facet name="footer">
+					<h:panelGroup rendered="#{!empty aktualiziraneNaSlujitel.pagesList}">
+						<!-- предишна страница -->
+						<h:commandLink rendered="#{aktualiziraneNaSlujitel.page - 1 ge 0}"
+							action="#{aktualiziraneNaSlujitel.setPage(aktualiziraneNaSlujitel.page - 1)}"
+							value="&lt;&lt;" />
+							
+						<!-- други страници -->
+						<ui:repeat value="#{aktualiziraneNaSlujitel.pagesList}" var="currPage">
+							<h:commandLink
+								rendered="#{aktualiziraneNaSlujitel.getPage() ne currPage.intValue() - 1}"
+								action="#{aktualiziraneNaSlujitel.setPage(currPage.intValue()-1)}"
+								value="#{currPage}" />
+								
+							<h:outputText
+								rendered="#{aktualiziraneNaSlujitel.getPage() eq currPage.intValue() - 1}"
+								value="#{currPage}" />
+								
+							<h:outputText value=" " />
+						</ui:repeat>
+						
+						<!-- следваща страница -->
+						<h:commandLink rendered="#{aktualiziraneNaSlujitel.page + 1 lt aktualiziraneNaSlujitel.pagesCount}"
+							action="#{aktualiziraneNaSlujitel.setPage(aktualiziraneNaSlujitel.page + 1)}"
+							value="&gt;&gt;" />
+							
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="#{empty aktualiziraneNaSlujitel.pagesList}" style="color: red; font-weight: bold;">
+						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
+						<br />
+						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
+					</h:panelGroup>
+				</f:facet>
+				 
+			</h:dataTable>
+			</h:form>
+			
+			<h:form>
+		
+			<h:outputLabel value="Име*">
+				<h:inputText id="name" value="#{aktualiziraneNaSlujitel.name}" maxlength="50"
+					required="true" requiredMessage="задължително поле!" 
+					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
+				<h:message for="name" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Фамилия*">
+				<h:inputText id="family" value="#{aktualiziraneNaSlujitel.family}" maxlength="50"
+					required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
+				<h:message for="family" />
+			</h:outputLabel>
+			
+			<br />
+			<h:outputLabel value="Град*">
+				<h:inputText id="city" value="#{aktualiziraneNaSlujitel.addressCity}" maxlength="30"
+					required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
+				<h:message for="city" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Адрес*">
+				<h:inputText id="adress" value="#{aktualiziraneNaSlujitel.addressLine}" maxlength="100"
+					required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
+				<h:message for="adress" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Електронна поща*">
+				<h:inputText id="mail" value="#{aktualiziraneNaSlujitel.mail}" maxlength="15"
+					required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
+				<h:message for="mail" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Телефонен номер*">
+				<h:inputText id="phone" value="#{aktualiziraneNaSlujitel.phoneNumber}" maxlength="50"
+					required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
+				<h:message for="phone" />
+			</h:outputLabel>
+			
+			<br />
+			<h:commandButton action="#{aktualiziraneNaSlujitel.writeIt()}" value="Промени"
+				disabled="#{!aktualiziraneNaSlujitel.rowSelected}" />
+				
+			<br />
+			<h:outputText value="#{aktualiziraneNaSlujitel.errorMessage}"/>
+		</h:form>
+	    
+	</ui:define>
+	
+</ui:composition>
+</html>

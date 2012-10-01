@@ -1,5 +1,7 @@
 package model.util;
 
+import java.io.Serializable;
+
 /**
  * 
  * Wrapper на класът String
@@ -7,7 +9,8 @@ package model.util;
  * По подразбиране началния стринг е <b>null</b>
  *
  */
-public class LimitedString {
+@SuppressWarnings("serial")
+public class LimitedString implements Serializable {
 	
 	private int limit=0;
 	private boolean exact=false;

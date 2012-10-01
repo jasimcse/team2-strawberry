@@ -13,7 +13,7 @@ import com.google.appengine.api.datastore.Key;
 import model.util.EntityHelper;
 import model.util.LimitedString;
 
-
+//TODO - да имплементира Seriaziable ???
 public class Appointment {
 	
 	//TODO - makeEntity и подобните да се направят private ???
