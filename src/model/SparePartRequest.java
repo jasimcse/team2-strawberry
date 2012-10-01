@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +13,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
-public class SparePartRequest {
+@SuppressWarnings("serial")
+public class SparePartRequest implements Serializable {
 	
 	public static final String NEW = "1";
 	public static final String COMPLETED = "2";

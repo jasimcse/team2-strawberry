@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -13,8 +14,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
-
-public class ClientOrder {
+@SuppressWarnings("serial")
+public class ClientOrder implements Serializable {
 	
 	public static final String HALTED = "1";
 	public static final String PROCESSING = "2";

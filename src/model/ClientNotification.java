@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -13,7 +14,8 @@ import com.google.appengine.api.datastore.Key;
 import model.util.EntityHelper;
 import model.util.LimitedString;
 
-public class ClientNotification {
+@SuppressWarnings("serial")
+public class ClientNotification implements Serializable {
 	
 	public static final String NEED_TO_CALL = "1";
 	public static final String SUCCESS = "2";

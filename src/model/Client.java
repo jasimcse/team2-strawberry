@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,8 +13,8 @@ import com.google.appengine.api.datastore.Key;
 import model.util.EntityHelper;
 import model.util.LimitedString;
 
-
-public class Client {
+@SuppressWarnings("serial")
+public class Client implements Serializable {
 	
 	public static final String PERSON = "P";
 	public static final String COMPANY = "C";

@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -13,12 +14,16 @@ import com.google.appengine.api.datastore.Key;
 import model.util.EntityHelper;
 import model.util.LimitedString;
 
-//TODO - да имплементира Seriaziable ???
-public class Appointment {
+
+@SuppressWarnings("serial")
+public class Appointment implements Serializable {
 	
 	//TODO - makeEntity и подобните да се направят private ???
 	
-	private Entity thisEntity; // TODO - това да се замени само с ключ към Entity-то ??? 
+	/* TODO - това да се замени само с ключ към Entity-то ???
+	 * понеже и без това ще се прави заявка за да се провери версията на Entity-то при запис
+	 */
+	private Entity thisEntity; 
 	private Autoservice autoservice;
 	
 	private Key autoserviceID;
