@@ -38,7 +38,7 @@ public class ClientNotification {
 	private static final String PARENT_FIELD = "clientID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS", "thisEntity", "client", "employee", "vehicle", "clientOrder"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "client", "employee", "vehicle", "clientOrder"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"employeeID", "vehicleID", "clientOrderID", "notes", "mail", "phoneNumber"}));

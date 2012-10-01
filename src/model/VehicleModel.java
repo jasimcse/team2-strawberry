@@ -17,19 +17,22 @@ public class VehicleModel {
 	
 	private Entity thisEntity;
 	
+	@SuppressWarnings("unused")
+	private Key vehicleModelParentID;
 	private LimitedString brand = new LimitedString(50);
 	private LimitedString model = new LimitedString(50);
 	private Text characteristics;
 	
-	private static final String PARENT_FIELD = null; // TODO - така ли да остава?
+	private static final String PARENT_FIELD = "vehicleParentID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS", "thisEntity"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"characteristics"}));
 	
 	public Entity makeEntity() {
+		vehicleModelParentID = EntityHelper.getVehicleModelParent();
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 	}
 	

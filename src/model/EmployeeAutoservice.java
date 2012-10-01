@@ -35,7 +35,7 @@ public class EmployeeAutoservice {
 	private static final String PARENT_FIELD = "autoserviceID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "autoservice", "employee"}));
+			new String[] {"PARENT_FIELD", "PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "autoservice", "employee"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
@@ -167,32 +167,21 @@ public class EmployeeAutoservice {
 		return new String(password);
 	}
 	
-	//TODO - rename and convert it ?
-	public static EmployeeAutoservice checkCredentials(String username, String password) {
-		
-		if (countGetByUsernamePassword(username, password) == 1) {
-			return queryGetByUsernamePassword(username, password, 0, 1).get(0);
-		} else {
-			return null;
-		}
-		
-	}
-	
 	private static PreparedQuery getPreparedQueryAll() { 
 		return DatastoreServiceFactory.getDatastoreService().
-			   prepare(new Query(EmployeeAutoservice.class.getCanonicalName()).
+			   prepare(new Query(EmployeeAutoservice.class.getSimpleName()).
 				       addSort("__key__"));
 	}
 	
 	private static PreparedQuery getPreparedQueryByUsername(String name) {
 		return DatastoreServiceFactory.getDatastoreService().
-				prepare(new Query(EmployeeAutoservice.class.getCanonicalName()).
+				prepare(new Query(EmployeeAutoservice.class.getSimpleName()).
 						addSort("__key__").
 						setFilter(new Query.FilterPredicate("username", FilterOperator.EQUAL, name)));
 	}
 	private static PreparedQuery getPreparedQueryByUsernamePassword(String username, String password) {
 		return DatastoreServiceFactory.getDatastoreService().
-				prepare(new Query(EmployeeAutoservice.class.getCanonicalName()).
+				prepare(new Query(EmployeeAutoservice.class.getSimpleName()).
 						addSort("__key__").
 						setFilter(CompositeFilterOperator.and(
 								new FilterPredicate("username", FilterOperator.EQUAL, username),

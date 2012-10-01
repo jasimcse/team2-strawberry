@@ -25,6 +25,8 @@ public class Employee implements Serializable {
 	
 	private Entity thisEntity;
 	
+	@SuppressWarnings("unused")
+	private Key employeeParentID;
 	private LimitedString name = new LimitedString(50);
 	private LimitedString family = new LimitedString(50);
 	private LimitedString addressCity = new LimitedString(30);
@@ -32,7 +34,7 @@ public class Employee implements Serializable {
 	private LimitedString phoneNumber = new LimitedString(15);
 	private LimitedString mail = new LimitedString(50);
 	
-	private static final String PARENT_FIELD = null; // TODO - така ли да остава?
+	private static final String PARENT_FIELD = "employeeParentID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity"}));
@@ -50,6 +52,7 @@ public class Employee implements Serializable {
 	}
 	
 	public Entity makeEntity() {
+		employeeParentID = EntityHelper.getEmployeeParent();
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 	}
 	
@@ -141,13 +144,15 @@ public class Employee implements Serializable {
 	
 	private static PreparedQuery getPreparedQueryAll() { 
 		return DatastoreServiceFactory.getDatastoreService().
-			   prepare(new Query(Employee.class.getCanonicalName()).
+			   prepare(new Query(Employee.class.getSimpleName()).
+					   setAncestor(EntityHelper.getEmployeeParent()).
 					   addSort("__key__"));
 	}
 	
 	private static PreparedQuery getPreparedQueryByName(String name) { 
 		return DatastoreServiceFactory.getDatastoreService().
-			   prepare(new Query(Employee.class.getCanonicalName()).
+			   prepare(new Query(Employee.class.getSimpleName()).
+					   setAncestor(EntityHelper.getEmployeeParent()).
 					   addSort("__key__").
 					   setFilter(new Query.FilterPredicate("name", FilterOperator.EQUAL, name)));
 	}

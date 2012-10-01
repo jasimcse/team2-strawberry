@@ -20,6 +20,8 @@ public class Client {
 	
 	private Entity thisEntity;
 	
+	@SuppressWarnings("unused")
+	private Key clientParentID;
 	private LimitedString personCompany = new LimitedString(1, true);
 	private LimitedString addressCity = new LimitedString(30);
 	private LimitedString addressLine = new LimitedString(100);
@@ -28,15 +30,16 @@ public class Client {
 	private LimitedString IBANNumber = new LimitedString(30);
 	private LimitedString SWIFTCode = new LimitedString(20);
 	
-	private static final String PARENT_FIELD = null; // TODO - така ли да остава?
+	private static final String PARENT_FIELD = "clientParentID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS", "thisEntity"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"phoneNumber", "mail", "IBANNumber", "SWIFTCode"}));
 	
 	public Entity makeEntity() {
+		clientParentID = EntityHelper.getClientParent();
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 	}
 	

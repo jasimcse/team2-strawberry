@@ -25,7 +25,7 @@ public class LoginController {
 
 	public void login() {
 		if (currentEmployee.login(username, password) == -1) {
-			errorMessage = "Login failed!";
+			errorMessage = "Грешка!";
 		}
 	}
 

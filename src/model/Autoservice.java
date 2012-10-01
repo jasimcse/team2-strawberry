@@ -23,6 +23,8 @@ public class Autoservice {
 	
 	private Entity thisEntity;
 	
+	@SuppressWarnings("unused")
+	private Key autoserviceParentID;
 	private LimitedString name = new LimitedString(100);
 	private LimitedString addressCity = new LimitedString(30);
 	private LimitedString addressLine = new LimitedString(100);
@@ -33,7 +35,7 @@ public class Autoservice {
 	private LimitedString registrationNumber = new LimitedString(9, true);
 	private LimitedString VATNumber = new LimitedString(11, true);
 	
-	private static final String PARENT_FIELD = null; // TODO - така ли да остава?
+	private static final String PARENT_FIELD = "autoserviceParentID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity"}));
@@ -51,6 +53,7 @@ public class Autoservice {
 	}
 	
 	public Entity makeEntity() {
+		autoserviceParentID = EntityHelper.getAutoserviceParent();
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 	}
 	
@@ -166,13 +169,15 @@ public class Autoservice {
 	
 	private static PreparedQuery getPreparedQueryAll() { 
 		return DatastoreServiceFactory.getDatastoreService().
-			   prepare(new Query(Autoservice.class.getCanonicalName()).
+			   prepare(new Query(Autoservice.class.getSimpleName()).
+					   setAncestor(EntityHelper.getAutoserviceParent()).
 				       addSort("__key__"));
 	}
 	
 	private static PreparedQuery getPreparedQueryByName(String name) {
 		return DatastoreServiceFactory.getDatastoreService().
-				prepare(new Query(Autoservice.class.getCanonicalName()).
+				prepare(new Query(Autoservice.class.getSimpleName()).
+						setAncestor(EntityHelper.getAutoserviceParent()).
 						addSort("__key__").
 						setFilter(new Query.FilterPredicate("name", FilterOperator.EQUAL, name)));
 	}
