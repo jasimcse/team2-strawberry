@@ -17,35 +17,170 @@ import com.google.appengine.api.datastore.Query;
  */
 public class EntityHelper {
 	
-	/*
-	private static Entity parentAutoservice;
-	private static Entity parentEmployee;
-	*/
+	private static Key autoserviceParentKey;
+	private static Key employeeParentKey;
+	private static Key clientParentKey;
+	private static Key insurerParentKey;
+	private static Key serviceParentKey;
+	private static Key sparePartParentKey;
+	private static Key sparePartGroupParentKey;
+	private static Key supplierParentKey;
+	private static Key vehicleModelParentKey;
+	private static Key warrantyConditionsParentKey;
+	
+	
 	/**
 	 * инициализира базата данни;
 	 * създава Entity групи, за да може повечето заявки да са "Strong consistent", а не "Eventual consistent"
 	 * т.е. след като се направи запис в базата, веднага след това да може да се види какво е записано, а не след няколко секунди 
 	 * 
 	 */
-	/*public static void initializeDataStore() {
+	public static void initializeDataStore() {
 		Entity ent;
 		DatastoreService store = DatastoreServiceFactory.getDatastoreService();
 		
-		ent = store.prepare(new Query("ParentAutoservice").setKeysOnly()).asSingleEntity();
-		if (ent != null) {
-			ent = new Entity("ParentAutoservice");
+		ent = store.prepare(new Query("AutoserviceParent").setKeysOnly()).asSingleEntity();
+		if (ent == null) {
+			ent = new Entity("AutoserviceParent");
 			store.put(ent);
 		}
-		parentAutoservice = ent;
+		autoserviceParentKey = ent.getKey();
 		
-		ent = store.prepare(new Query("ParentEmployee").setKeysOnly()).asSingleEntity();
-		if (ent != null) {
-			ent = new Entity("ParentEmployee");
+		ent = store.prepare(new Query("EmployeeParent").setKeysOnly()).asSingleEntity();
+		if (ent == null) {
+			ent = new Entity("EmployeeParent");
 			store.put(ent);
 		}
-		parentEmployee = ent;
+		employeeParentKey = ent.getKey();
 		
-	}*/
+		ent = store.prepare(new Query("ClientParent").setKeysOnly()).asSingleEntity();
+		if (ent == null) {
+			ent = new Entity("ClientParent");
+			store.put(ent);
+		}
+		clientParentKey = ent.getKey();
+		
+		ent = store.prepare(new Query("InsurerParent").setKeysOnly()).asSingleEntity();
+		if (ent == null) {
+			ent = new Entity("InsurerParent");
+			store.put(ent);
+		}
+		insurerParentKey = ent.getKey();
+		
+		ent = store.prepare(new Query("ServiceParent").setKeysOnly()).asSingleEntity();
+		if (ent == null) {
+			ent = new Entity("ServiceParent");
+			store.put(ent);
+		}
+		serviceParentKey = ent.getKey();
+		
+		ent = store.prepare(new Query("SparePartParent").setKeysOnly()).asSingleEntity();
+		if (ent == null) {
+			ent = new Entity("SparePartParent");
+			store.put(ent);
+		}
+		sparePartParentKey = ent.getKey();
+		
+		ent = store.prepare(new Query("SparePartGroupParent").setKeysOnly()).asSingleEntity();
+		if (ent == null) {
+			ent = new Entity("SparePartGroupParent");
+			store.put(ent);
+		}
+		sparePartGroupParentKey = ent.getKey();
+		
+		ent = store.prepare(new Query("SupplierParent").setKeysOnly()).asSingleEntity();
+		if (ent == null) {
+			ent = new Entity("SupplierParent");
+			store.put(ent);
+		}
+		supplierParentKey = ent.getKey();
+		
+		ent = store.prepare(new Query("VehicleModelParent").setKeysOnly()).asSingleEntity();
+		if (ent == null) {
+			ent = new Entity("VehicleModelParent");
+			store.put(ent);
+		}
+		vehicleModelParentKey = ent.getKey();
+		
+		ent = store.prepare(new Query("WarrantyConditionsParent").setKeysOnly()).asSingleEntity();
+		if (ent == null) {
+			ent = new Entity("WarrantyConditionsParent");
+			store.put(ent);
+		}
+		warrantyConditionsParentKey = ent.getKey();
+		
+	}
+	
+	
+	public static Key getAutoserviceParent() {
+		if (autoserviceParentKey == null) {
+			throw new RuntimeException("Autoservice Parent Key is NULL!");
+		}
+		return autoserviceParentKey;
+	}
+	
+	public static Key getEmployeeParent() {
+		if (employeeParentKey == null) {
+			throw new RuntimeException("Employee Parent Key is NULL!");
+		}
+		return employeeParentKey;
+	}
+	
+	public static Key getClientParent() {
+		if (clientParentKey == null) {
+			throw new RuntimeException("Client Parent Key is NULL!");
+		}
+		return clientParentKey;
+	}
+	
+	public static Key getInsurerParent() {
+		if (insurerParentKey == null) {
+			throw new RuntimeException("Insurer Parent Key is NULL!");
+		}
+		return insurerParentKey;
+	}
+	
+	public static Key getServiceParent() {
+		if (serviceParentKey == null) {
+			throw new RuntimeException("Service Parent Key is NULL!");
+		}
+		return serviceParentKey;
+	}
+	
+	public static Key getSparePartParent() {
+		if (sparePartParentKey == null) {
+			throw new RuntimeException("SparePart Parent Key is NULL!");
+		}
+		return sparePartParentKey;
+	}
+	
+	public static Key getSparePartGroupParent() {
+		if (sparePartGroupParentKey == null) {
+			throw new RuntimeException("SparePart Parent Key is NULL!");
+		}
+		return sparePartGroupParentKey;
+	}
+	
+	public static Key getSupplierParent() {
+		if (supplierParentKey == null) {
+			throw new RuntimeException("Supplier Parent Key is NULL!");
+		}
+		return supplierParentKey;
+	}
+	
+	public static Key getVehicleModelParent() {
+		if (vehicleModelParentKey == null) {
+			throw new RuntimeException("Vehicle Model Parent Key is NULL!");
+		}
+		return vehicleModelParentKey;
+	}
+	
+	public static Key getWarrantyConditionsParent() {
+		if (warrantyConditionsParentKey == null) {
+			throw new RuntimeException("Warranty Conditions Parent Key is NULL!");
+		}
+		return warrantyConditionsParentKey;
+	}
 	
 	
 	/**
@@ -78,12 +213,12 @@ public class EntityHelper {
 		
 		// Entity creation
 		if (parent == null) {
-			entity = new Entity(classLocal.getCanonicalName());
+			entity = new Entity(classLocal.getSimpleName());
 		} else {
 			try {
 				Field field = classLocal.getDeclaredField(parent);
 				field.setAccessible(true);
-				entity = new Entity(classLocal.getCanonicalName(), (Key)field.get(from));
+				entity = new Entity(classLocal.getSimpleName(), (Key)field.get(from));
 			} catch (IllegalArgumentException e) {
 				throw new RuntimeException("Parent field not found", e);
 			} catch (IllegalAccessException e) {

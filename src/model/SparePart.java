@@ -17,21 +17,24 @@ public class SparePart {
 	private Entity thisEntity;
 	private SparePartGroup sparePartGroup;
 	
+	@SuppressWarnings("unused")
+	private Key sparePartParentID;
 	private Key sparePartGroupID;
 	private LimitedString description = new LimitedString(500);
 	private Double deliveryPrice;
 	private Double salePrice;
 	private LimitedString measuringUnit = new LimitedString(100);
 	
-	private static final String PARENT_FIELD = null; // TODO - така ли да остава?
+	private static final String PARENT_FIELD = "sparePartParentID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS", "thisEntity", "sparePartGroup"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "sparePartGroup"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
 	
 	public Entity makeEntity() {
+		sparePartParentID = EntityHelper.getSparePartParent();
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 	}
 	

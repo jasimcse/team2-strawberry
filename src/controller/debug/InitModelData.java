@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import model.Autoservice;
 import model.Employee;
 import model.EmployeeAutoservice;
+import model.util.EntityHelper;
 
 
 /**
@@ -22,6 +23,10 @@ public class InitModelData extends HttpServlet {
      */
     public InitModelData() {
         super();
+        
+        // TODO - да се измести от тук
+        // Инициализира базата данни
+        EntityHelper.initializeDataStore();
         
         addAdministratorAccount();
     }

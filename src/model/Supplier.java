@@ -16,6 +16,8 @@ public class Supplier {
 	
 	private Entity thisEntity;
 	
+	@SuppressWarnings("unused")
+	private Key supplierParentID;
 	private LimitedString name = new LimitedString(100);
 	private LimitedString addressCity = new LimitedString(30);
 	private LimitedString addressLine = new LimitedString(100);
@@ -27,15 +29,16 @@ public class Supplier {
 	private LimitedString VATNumber = new LimitedString(11, true);
 	private LimitedString contactPerson = new LimitedString(100);
 	
-	private static final String PARENT_FIELD = null; // TODO - така ли да остава?
+	private static final String PARENT_FIELD = "supplierParentID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS", "thisEntity"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"VATNumber"}));
 	
 	public Entity makeEntity() {
+		supplierParentID = EntityHelper.getSupplierParent();
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 	}
 	

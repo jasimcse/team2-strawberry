@@ -29,7 +29,11 @@ public class CurrentEmployee implements Serializable {
 	public int login(String username, String password) {
 		
 		// query to search the DB
-		employeeAutoservice = EmployeeAutoservice.checkCredentials(username, password);
+		if (EmployeeAutoservice.countGetByUsernamePassword(username, password) == 1) {
+			employeeAutoservice = EmployeeAutoservice.queryGetByUsernamePassword(username, password, 0, 1).get(0);
+		} else {
+			employeeAutoservice = null;
+		}
 		
 		if (employeeAutoservice == null) {
 			// no such credentials

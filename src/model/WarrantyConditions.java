@@ -16,19 +16,22 @@ public class WarrantyConditions {
 	
 	private Entity thisEntity;
 	
+	@SuppressWarnings("unused")
+	private Key warrantyConditionsParentID;
 	private Long months;
 	private Long mileage;
 	private LimitedString otherConditions = new LimitedString(500);
 	
-	private static final String PARENT_FIELD = null; // TODO - така ли да остава?
+	private static final String PARENT_FIELD = "warrantyConditionsParentID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"otherConditions"}));
 	
 	public Entity makeEntity() {
+		warrantyConditionsParentID = EntityHelper.getWarrantyConditionsParent();
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 	}
 	

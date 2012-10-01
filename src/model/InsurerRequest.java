@@ -27,10 +27,10 @@ public class InsurerRequest {
 	private static final String PARENT_FIELD = "vehicleID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS", "thisEntity", "insurer", "vehicle", "diagnosis"}));
+			new String[] {"IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "insurer", "vehicle", "diagnosis"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"diagnosisID"}));
+			new String[] {"PARENT_FIELD", "diagnosisID"}));
 	
 	public Entity makeEntity() {
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);

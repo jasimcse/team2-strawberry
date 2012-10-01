@@ -16,18 +16,21 @@ public class Service {
 	
 	private Entity thisEntity;
 	
+	@SuppressWarnings("unused")
+	private Key serviceParentID;
 	private LimitedString description = new LimitedString(100);
 	private Double priceHour;
 	
-	private static final String PARENT_FIELD = null; // TODO - така ли да остава?
+	private static final String PARENT_FIELD = "serviceParentID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS", "thisEntity"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
 	
 	public Entity makeEntity() {
+		serviceParentID = EntityHelper.getServiceParent();
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 	}
 	

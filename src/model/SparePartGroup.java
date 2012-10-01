@@ -18,15 +18,18 @@ public class SparePartGroup {
 	
 	private LimitedString description = new LimitedString(100);
 	
-	private static final String PARENT_FIELD = null; // TODO - така ли да остава?
+	@SuppressWarnings("unused")
+	private Key sparePartGroupParentID;
+	private static final String PARENT_FIELD = "sparePartGroupParentID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS", "thisEntity"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
 	
 	public Entity makeEntity() {
+		sparePartGroupParentID = EntityHelper.getSparePartGroupParent();
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 	}
 	
