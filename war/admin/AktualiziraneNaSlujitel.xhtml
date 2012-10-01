@@ -13,6 +13,26 @@
 	</ui:define>
 
 	<ui:define name="pageContent">
+	
+		<h:form>
+			<h:panelGroup>
+				<h:outputLabel value="Име">
+					<h:inputText value="" maxlength="50" />
+				</h:outputLabel>
+				<br />
+				<h:outputLabel value="Фамилия">
+					<h:inputText value="" maxlength="50" />
+				</h:outputLabel>
+				<br />
+				<h:outputLabel value="Автосервиз">
+					<h:inputText value="" maxlength="50" />
+				</h:outputLabel>
+				
+				<br />
+				<h:commandButton value="Търси" disabled="true" /> &lt;---- Да се направи
+			</h:panelGroup>
+		</h:form>
+	
 		<h:form>
 			
 			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
