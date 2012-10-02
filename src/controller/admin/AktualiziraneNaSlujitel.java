@@ -3,11 +3,14 @@ package controller.admin;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import controller.common.ConfigurationProperties;
+import controller.common.InterPageDataRequest;
 
 import model.Employee;
 
@@ -17,15 +20,29 @@ import model.Employee;
 @ViewScoped
 public class AktualiziraneNaSlujitel implements Serializable {
 
+	private Stack<InterPageDataRequest> dataRequestStack;
+	
 	private Employee slujitel = new Employee();
 	private int page = 0;
 	private int pagesCount;
 	private List<Employee> spisukSlujiteli;
 	private int rowsCount;
+	private InterPageDataRequest dataRequest;
 	
 	private String errorMessage;
 	
+	@SuppressWarnings("unchecked")
 	public AktualiziraneNaSlujitel() {
+		
+		dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
+		
+		if (dataRequestStack != null) {
+			dataRequest = dataRequestStack.peek();
+			if (!FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath().equals(dataRequest.dataPage)) {
+				dataRequest = null;
+			}
+		}
+		
 		readList();
 	}
 
@@ -151,5 +168,23 @@ public class AktualiziraneNaSlujitel implements Serializable {
 		return spisukSlujiteli.contains(slujitel);
 	}
 	
+	public String goToAdd() {
+		return "DobavqneNaSlujitel.jsf?faces-redirect=true";
+	}
+
+	public boolean isChoosingAlowed() {
+		return (dataRequest != null);
+	}
+	
+	public String chooseEmployee(Employee employee) {
+		if (dataRequest == null) {
+			throw new RuntimeException("Don't do that bastard!");
+		}
+		
+		dataRequest.requestedObject = employee;
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
+		
+		return dataRequest.returnPage + "?faces-redirect=true";
+	}
 	
 }

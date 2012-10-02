@@ -29,7 +29,8 @@
 				</h:outputLabel>
 				
 				<br />
-				<h:commandButton value="Търси" disabled="true" /> &lt;---- Да се направи
+				<h:commandButton value="Търси" disabled="true" />
+				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
 			</h:panelGroup>
 		</h:form>
 	
@@ -78,10 +79,9 @@
 					<h:commandLink action="#{aktualiziraneNaSlujitel.selectRow(curr)}" value="Промени" />
 				</h:column>
 				
-				<h:column>
+				<h:column rendered="#{aktualiziraneNaSlujitel.choosingAlowed}">
 					<f:facet name="header">Избери</f:facet>
-					<!-- TODO - да се оправи -->
-					<h:commandLink value="Избери" />
+					<h:commandLink action="#{aktualiziraneNaSlujitel.chooseEmployee(curr)}" value="Избери" />
 				</h:column>
 				
 				<f:facet name="footer">
@@ -170,6 +170,11 @@
 			<br />
 			<h:commandButton action="#{aktualiziraneNaSlujitel.writeIt()}" value="Промени"
 				disabled="#{!aktualiziraneNaSlujitel.rowSelected}" />
+			
+			<h:commandButton action="#{aktualiziraneNaSlujitel.deselectRow()}" value="Отмени"
+				disabled="#{!aktualiziraneNaSlujitel.rowSelected}" />
+				
+			<h:commandButton action="#{aktualiziraneNaSlujitel.goToAdd()}" value="Добавави" />
 				
 			<br />
 			<h:outputText value="#{aktualiziraneNaSlujitel.errorMessage}"/>

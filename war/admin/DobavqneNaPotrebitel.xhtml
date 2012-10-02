@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+
+	<ui:define name="headSection">
+		
+	</ui:define>
+
+	<ui:define name="pageContent">
+		<h:form>
+			<h:outputLabel value="Име*">
+				<h:inputText id="name" value="#{dobavqneNaPotrebitel.employeeName}" maxlength="50"
+					required="true" requiredMessage="задължително поле!"
+					readonly="true" />
+				<h:message for="name" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Фамилия*">
+				<h:inputText id="family" value="#{dobavqneNaPotrebitel.employeeFamily}" maxlength="50"
+					required="true" requiredMessage="задължително поле!"
+					readonly="true" />
+				<h:message for="family" />
+			</h:outputLabel>
+			<br />
+			<h:commandButton action="#{dobavqneNaPotrebitel.chooseEmployee()}" value="Избери служител" />
+			
+			<!-- 
+			<br />
+			<h:commandButton action="#{dobavqneNaSlujitel.writeIt()}" value="Добави" />
+			<br />
+			<h:outputText value="#{dobavqneNaSlujitel.errorMessage}"/>
+			 -->
+		</h:form>
+	    
+	</ui:define>
+	
+</ui:composition>
+</html>

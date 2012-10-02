@@ -17,16 +17,18 @@ public class UsersMenuController implements Serializable {
 	
 	private static final MenuEntry DobavqneNaSlujitel = new MenuEntry("Добавяне на служител", "/admin/DobavqneNaSlujitel.jsf");
 	private static final MenuEntry AktualiziraneNaSlujitel = new MenuEntry("Актуализиране на служител", "/admin/AktualiziraneNaSlujitel.jsf");
+	private static final MenuEntry DobavqneNaAvtoserviz = new MenuEntry("Добавяне на автосервиз", "/admin/DobavqneNaAvtoserviz.jsf");
+	private static final MenuEntry AktualiziraneNaAvtoserviz = new MenuEntry("Актуализиране на служител", "/admin/AktualiziraneNaAvtoserviz.jsf");
 	
 	private static final List<MenuEntry> ALL_MENU_ENTRIES =
 			Collections.unmodifiableList(new ArrayList<MenuEntry>(Arrays.asList(
 			    new MenuEntry[] {
 			    		DobavqneNaSlujitel,
 			    		AktualiziraneNaSlujitel,
-			    		new MenuEntry("test1", "/test1.jsf"), 
-			    		new MenuEntry("test100", "hop/test100.html"),
+			    		DobavqneNaAvtoserviz,
+			    		AktualiziraneNaAvtoserviz,
 			    		})));
-	
+	/*
 	private static final List<MenuEntry> ADMINISTRATOR_MENU =
 			Collections.unmodifiableList(new ArrayList<MenuEntry>(Arrays.asList(
 			    new MenuEntry[] {
@@ -34,9 +36,11 @@ public class UsersMenuController implements Serializable {
 			    		new MenuEntry("test1", "/test1.jsf"), 
 			    		new MenuEntry("test100", "hop/test100.html"),
 			    		})));
-
+	*/
+	
 	public static List<MenuEntry> getMenu(String position) {
-		return ADMINISTRATOR_MENU;
+		//TODO - get the menu for the concrete user position
+		return ALL_MENU_ENTRIES;
 	}
 	
 	public static String getPageTitle(String path) {
