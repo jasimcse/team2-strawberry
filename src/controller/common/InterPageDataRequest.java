@@ -1,12 +1,15 @@
 package controller.common;
 
+import java.io.Serializable;
+
 
 /**
  * 
  * служи за искане на данни от една страница и последващо връщане на исканите данни
  *
  */
-public class InterPageDataRequest {
+@SuppressWarnings("serial")
+public class InterPageDataRequest implements Serializable {
 
 	/**
 	 * съхранява данните на обекта който е поискал данни,

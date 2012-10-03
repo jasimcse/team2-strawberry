@@ -16,26 +16,41 @@
 		<h:form>
 			<h:outputLabel value="Име*">
 				<h:inputText id="name" value="#{dobavqneNaPotrebitel.employeeName}" maxlength="50"
-					required="true" requiredMessage="задължително поле!"
 					readonly="true" />
 				<h:message for="name" />
 			</h:outputLabel>
 			<br />
 			<h:outputLabel value="Фамилия*">
 				<h:inputText id="family" value="#{dobavqneNaPotrebitel.employeeFamily}" maxlength="50"
-					required="true" requiredMessage="задължително поле!"
 					readonly="true" />
 				<h:message for="family" />
 			</h:outputLabel>
 			<br />
 			<h:commandButton action="#{dobavqneNaPotrebitel.chooseEmployee()}" value="Избери служител" />
+			<br />
 			
-			<!-- 
+			<h:selectOneMenu value="#{dobavqneNaPotrebitel.autoserviceID}">
+				<f:selectItems value="#{dobavqneNaPotrebitel.autoservices}" var="currentAutoservice" 
+    				itemLabel="#{currentAutoservice.name}" itemValue="#{currentAutoservice.ID}" />
+			</h:selectOneMenu>
 			<br />
-			<h:commandButton action="#{dobavqneNaSlujitel.writeIt()}" value="Добави" />
+			<h:outputLabel value="Потребителско име*">
+				<h:inputText id="username" value="#{dobavqneNaPotrebitel.username}" maxlength="50"
+					required="#{not empty param[dobavqneNaPotrebitel.addButton.clientId]}" requiredMessage="задължително поле!" />
+				<h:message for="username" />
+			</h:outputLabel>
 			<br />
-			<h:outputText value="#{dobavqneNaSlujitel.errorMessage}"/>
-			 -->
+			<h:outputLabel value="Позиция*">
+				<h:inputText id="position" value="#{dobavqneNaPotrebitel.position}" maxlength="30"
+					required="#{not empty param[dobavqneNaPotrebitel.addButton.clientId]}" requiredMessage="задължително поле!" />
+				<h:message for="position" />
+			</h:outputLabel>
+			
+			<br />
+			<h:commandButton binding="#{dobavqneNaPotrebitel.addButton}" action="#{dobavqneNaPotrebitel.writeIt()}"
+				value="Добави" />
+			<br />
+			<h:outputText value="#{dobavqneNaPotrebitel.errorMessage}"/>
 		</h:form>
 	    
 	</ui:define>

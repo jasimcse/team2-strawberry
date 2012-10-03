@@ -98,7 +98,9 @@ public class EmployeeAutoservice implements Serializable {
 	
 	public Autoservice getAutoservice() {
 		if (autoservice == null) {
-			autoservice = Autoservice.readEntity(this.autoserviceID);
+			if (this.autoserviceID != null) {
+				autoservice = Autoservice.readEntity(this.autoserviceID);
+			}
 		}
 		
 		return autoservice;
@@ -124,7 +126,9 @@ public class EmployeeAutoservice implements Serializable {
 	
 	public Employee getEmployee() {
 		if (employee == null) {
-			employee = Employee.readEntity(this.employeeID);
+			if (this.employeeID != null) { // TODO - разпространи го и на другите
+				employee = Employee.readEntity(this.employeeID);
+			}
 		}
 		
 		return employee;
