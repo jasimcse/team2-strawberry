@@ -95,7 +95,7 @@
 						<ui:repeat value="#{aktualiziraneNaSlujitel.pagesList}" var="currPage">
 							<h:commandLink
 								rendered="#{aktualiziraneNaSlujitel.getPage() ne currPage.intValue() - 1}"
-								action="#{aktualiziraneNaSlujitel.setPage(currPage.intValue()-1)}"
+								action="#{aktualiziraneNaSlujitel.setPage(currPage.intValue() - 1)}"
 								value="#{currPage}" />
 								
 							<h:outputText
@@ -174,7 +174,7 @@
 			<h:commandButton action="#{aktualiziraneNaSlujitel.deselectRow()}" value="Отмени"
 				disabled="#{!aktualiziraneNaSlujitel.rowSelected}" />
 				
-			<h:commandButton action="#{aktualiziraneNaSlujitel.goToAdd()}" value="Добавави" />
+			<h:commandButton action="#{aktualiziraneNaSlujitel.goToAdd()}" value="Добави" />
 				
 			<br />
 			<h:outputText value="#{aktualiziraneNaSlujitel.errorMessage}"/>

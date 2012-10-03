@@ -5,4 +5,9 @@
    xsi:schemaLocation="
       http://java.sun.com/xml/ns/javaee
       http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+	<converter>
+		<converter-for-class>com.google.appengine.api.datastore.Key</converter-for-class>
+		<converter-class>controller.common.ConvertorKeyString</converter-class>
+	</converter>
+      
 </faces-config>
