@@ -8,74 +8,179 @@
 
 <ui:composition template="/common/template.xhtml">
 	
+	<ui:define name="headSection">
+		
+	</ui:define>
 
 	<ui:define name="pageContent">
+	
+		<h:form>
+			
+			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+			<h:dataTable
+				rows="#{configurationProperties.getPageSize()}"
+				value="#{aktualiziraneNaAvtoserviz.spisukAvtoservizi}"
+			    first="0"
+			    var="curr"
+			    rowClasses="#{aktualiziraneNaAvtoserviz.rowStyleClasses}">
+				
+				<h:column>
+					<f:facet name="header">Наименование на сервиза</f:facet>
+					#{curr.name}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Населено място</f:facet>
+					#{curr.addressCity}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Адрес</f:facet>
+					#{curr.addressLine}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Телефонен номер</f:facet>
+					#{curr.phoneNumber}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Електронна поща</f:facet>
+					#{curr.mail}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Промени</f:facet>
+					<h:commandLink action="#{aktualiziraneNaAvtoserviz.selectRow(curr)}" value="Промени" />
+				</h:column>
+				
+				<h:column rendered="#{aktualiziraneNaAvtoserviz.choosingAlowed}">
+					<f:facet name="header">Избери</f:facet>
+					<h:commandLink action="#{aktualiziraneNaAvtoserviz.chooseAutoservice(curr)}" value="Избери" />
+				</h:column>
+				
+				<f:facet name="footer">
+					<h:panelGroup rendered="#{!empty aktualiziraneNaAvtoserviz.pagesList}">
+						<!-- предишна страница -->
+						<h:commandLink rendered="#{aktualiziraneNaAvtoserviz.page - 1 ge 0}"
+							action="#{aktualiziraneNaAvtoserviz.setPage(aktualiziraneNaAvtoserviz.page - 1)}"
+							value="&lt;&lt;" />
+							
+						<!-- други страници -->
+						<ui:repeat value="#{aktualiziraneNaAvtoserviz.pagesList}" var="currPage">
+							<h:commandLink
+								rendered="#{aktualiziraneNaAvtoserviz.getPage() ne currPage.intValue() - 1}"
+								action="#{aktualiziraneNaAvtoserviz.setPage(currPage.intValue()-1)}"
+								value="#{currPage}" />
+								
+							<h:outputText
+								rendered="#{aktualiziraneNaAvtoserviz.getPage() eq currPage.intValue() - 1}"
+								value="#{currPage}" />
+								
+							<h:outputText value=" " />
+						</ui:repeat>
+						
+						<!-- следваща страница -->
+						<h:commandLink rendered="#{aktualiziraneNaAvtoserviz.page + 1 lt aktualiziraneNaAvtoserviz.pagesCount}"
+							action="#{aktualiziraneNaAvtoserviz.setPage(aktualiziraneNaAvtoserviz.page + 1)}"
+							value="&gt;&gt;" />
+							
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="#{empty aktualiziraneNaAvtoserviz.pagesList}" style="color: red; font-weight: bold;">
+						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
+						<br />
+						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
+					</h:panelGroup>
+				</f:facet>
+				 
+			</h:dataTable>
+			</h:form>
+			
 	    <h:form>
+	    
 	    <h:outputLabel value="Наименование*">
 	    	<h:inputText id="name" value="#{aktualiziraneNaAvtoserviz.name}" maxlength="30" 
-	    		required="true" requiredMessage="задължително поле!" /> 
+	    		required="true" requiredMessage="задължително поле!" 
+	    		readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" /> 
 	    	<h:message for="name" />
 	    </h:outputLabel> 
 	    <br />
 	    
 	    <h:outputLabel value="Населено място*">
 	    	<h:inputText id="city" value="#{aktualiziraneNaAvtoserviz.addressCity}" maxlength="30" 
-	    		required="true" requiredMessage="задължително поле!"/>
+	    		required="true" requiredMessage="задължително поле!"
+	    		readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
 	    	<h:message for="city" />
 	    </h:outputLabel> 
 	    <br />
 	    
 	    <h:outputLabel value="Адрес*">
 	    	<h:inputText id="address" value="#{aktualiziraneNaAvtoserviz.addressLine}" maxlength="100" 
-	    		required="true" requiredMessage="задължително поле!"/>
+	    		required="true" requiredMessage="задължително поле!"
+	    		readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
 	    	<h:message for="address" />
 	    </h:outputLabel> 
 	    <br />
 	    
 	    <h:outputLabel value="Телефонен номер*">
 	    	<h:inputText id="phone" value="#{aktualiziraneNaAvtoserviz.phoneNumber}" maxlength="15" 
-	    		required="true" requiredMessage="задължително поле!"/>
+	    		required="true" requiredMessage="задължително поле!"
+	    		readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
 	    	<h:message for="phone" />
 	    </h:outputLabel> 
 	    <br />
 	    
 	    <h:outputLabel value="Адрес на електронната поща*">
 	    	<h:inputText id="mail" value="#{aktualiziraneNaAvtoserviz.mail}" maxlength="50" 
-	    		required="true" requiredMessage="задължително поле!"/>
+	    		required="true" requiredMessage="задължително поле!"
+	    		readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
 	    	<h:message for="mail" />
 	    </h:outputLabel> 
 	    <br />
 	    
 	    <h:outputLabel value="Номер на банковата сметка*">
 	    	<h:inputText id="iban" value="#{aktualiziraneNaAvtoserviz.IBANNumber}" maxlength="30" 
-	    		required="true" requiredMessage="задължително поле!"/>
+	    		required="true" requiredMessage="задължително поле!"
+	    		readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
 	    	<h:message for="iban" />
 	    </h:outputLabel> 
 	    <br />
 	    
 	    <h:outputLabel value="Банков код*">
 	    	<h:inputText id="swiftcode" value="#{aktualiziraneNaAvtoserviz.SWIFTCode}" maxlength="20" 
-	    		required="true" requiredMessage="задължително поле!"/>
+	    		required="true" requiredMessage="задължително поле!"
+	    		readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
 	    	<h:message for="swiftcode" />
 	    </h:outputLabel> 
 	    <br />
 	    
 	    <h:outputLabel value="Единен идентификационен код (ЕИК)*">
 	    	<h:inputText id="regnumber" value="#{aktualiziraneNaAvtoserviz.registrationNumber}" maxlength="9" 
-	    		required="true" requiredMessage="задължително поле!"/>
+	    		required="true" requiredMessage="задължително поле!"
+	    		readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
 	    	<h:message for="regnumber" />
 	    </h:outputLabel> 
 	    <br />
 	    
 	    <h:outputLabel value="ДДС номер">
 	    	<h:inputText id="vat" value="#{aktualiziraneNaAvtoserviz.VATNumber}" maxlength="11" 
-	    		required="false"/>
+	    		required="false" readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
 	    	<h:message for="vat" />
 	    </h:outputLabel> 
 	    <br />
 	    
 	
-	    <h:commandButton value="Запази" action="#{aktualiziraneNaAvtoserviz.saveAutoserviz()}"/> 
+	     
+	    <br />
+			 <h:commandButton value="Запази" action="#{aktualiziraneNaAvtoserviz.saveAutoserviz()}"
+				disabled="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
+			
+			<h:commandButton action="#{aktualiziraneNaAvtoserviz.deselectRow()}" value="Отмени"
+				disabled="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
+				
+			<h:commandButton action="#{aktualiziraneNaAvtoserviz.goToAdd()}" value="Добави" />
+			
 	    <br />
 	    <h:outputText value="#{aktualiziraneNaAvtoserviz.errorMessage}"/>
 	    
