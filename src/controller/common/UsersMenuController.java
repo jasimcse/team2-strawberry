@@ -18,7 +18,9 @@ public class UsersMenuController implements Serializable {
 	private static final MenuEntry DobavqneNaSlujitel = new MenuEntry("Добавяне на служител", "/admin/DobavqneNaSlujitel.jsf");
 	private static final MenuEntry AktualiziraneNaSlujitel = new MenuEntry("Актуализиране на служител", "/admin/AktualiziraneNaSlujitel.jsf");
 	private static final MenuEntry DobavqneNaAvtoserviz = new MenuEntry("Добавяне на автосервиз", "/admin/DobavqneNaAvtoserviz.jsf");
-	private static final MenuEntry AktualiziraneNaAvtoserviz = new MenuEntry("Актуализиране на служител", "/admin/AktualiziraneNaAvtoserviz.jsf");
+	private static final MenuEntry AktualiziraneNaAvtoserviz = new MenuEntry("Актуализиране на автосервиз", "/admin/AktualiziraneNaAvtoserviz.jsf");
+	private static final MenuEntry DobavqneNaPotrebitel = new MenuEntry("Добавяне на потребител", "/admin/DobavqneNaPotrebitel.jsf");
+	
 	
 	private static final List<MenuEntry> ALL_MENU_ENTRIES =
 			Collections.unmodifiableList(new ArrayList<MenuEntry>(Arrays.asList(
@@ -27,6 +29,7 @@ public class UsersMenuController implements Serializable {
 			    		AktualiziraneNaSlujitel,
 			    		DobavqneNaAvtoserviz,
 			    		AktualiziraneNaAvtoserviz,
+			    		DobavqneNaPotrebitel,
 			    		})));
 	/*
 	private static final List<MenuEntry> ADMINISTRATOR_MENU =
