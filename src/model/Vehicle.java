@@ -90,7 +90,9 @@ public class Vehicle implements Serializable {
 	
 	public Client getClient() {
 		if (client == null) {
-			client = Client.readEntity(this.clientID);
+			if (this.clientID != null) {
+				client = Client.readEntity(this.clientID);
+			}
 		}
 		
 		return client;
@@ -116,7 +118,9 @@ public class Vehicle implements Serializable {
 	
 	public VehicleModel getVehicleModel() {
 		if (vehicleModel == null) {
-			vehicleModel = VehicleModel.readEntity(this.vehicleModelID);
+			if (this.vehicleModelID != null) {
+				vehicleModel = VehicleModel.readEntity(this.vehicleModelID);
+			}
 		}
 		
 		return vehicleModel;
@@ -142,7 +146,9 @@ public class Vehicle implements Serializable {
 	
 	public WarrantyConditions getWarrantyConditions() {
 		if (warrantyConditions == null) {
-			warrantyConditions = WarrantyConditions.readEntity(this.warrantyConditionsID);
+			if (this.warrantyConditionsID != null) {
+				warrantyConditions = WarrantyConditions.readEntity(this.warrantyConditionsID);
+			}
 		}
 		
 		return warrantyConditions;

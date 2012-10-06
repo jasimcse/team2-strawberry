@@ -89,7 +89,9 @@ public class SparePartsDelivery implements Serializable {
 	
 	public Autoservice getAutoservice() {
 		if (autoservice == null) {
-			autoservice = Autoservice.readEntity(this.autoserviceID);
+			if (this.autoserviceID != null) {
+				autoservice = Autoservice.readEntity(this.autoserviceID);
+			}
 		}
 		
 		return autoservice;

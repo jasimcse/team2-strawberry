@@ -81,7 +81,9 @@ public class DiagnosisService implements Serializable {
 	
 	public Diagnosis getDiagnosis() {
 		if (diagnosis == null) {
-			diagnosis = Diagnosis.readEntity(this.diagnosisID);
+			if (this.diagnosisID != null) {
+				diagnosis = Diagnosis.readEntity(this.diagnosisID);
+			}
 		}
 		
 		return diagnosis;
@@ -107,7 +109,9 @@ public class DiagnosisService implements Serializable {
 	
 	public Service getService() {
 		if (service == null) {
-			service = Service.readEntity(this.serviceID);
+			if (this.serviceID != null) {
+				service = Service.readEntity(this.serviceID);
+			}
 		}
 		
 		return service;

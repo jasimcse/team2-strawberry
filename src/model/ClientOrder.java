@@ -100,7 +100,9 @@ public class ClientOrder implements Serializable {
 	
 	public Autoservice getAutoservice() {
 		if (autoservice == null) {
-			autoservice = Autoservice.readEntity(this.autoserviceID);
+			if (this.autoserviceID != null) {
+				autoservice = Autoservice.readEntity(this.autoserviceID);
+			}
 		}
 		
 		return autoservice;
@@ -126,7 +128,9 @@ public class ClientOrder implements Serializable {
 	
 	public Client getClient() {
 		if (client == null) {
-			client = Client.readEntity(this.clientID);
+			if (this.clientID != null) {
+				client = Client.readEntity(this.clientID);
+			}
 		}
 		
 		return client;
@@ -152,7 +156,9 @@ public class ClientOrder implements Serializable {
 	
 	public Vehicle getVehicle() {
 		if (vehicle == null) {
-			vehicle = Vehicle.readEntity(this.vehicleID);
+			if (this.vehicleID != null) {
+				vehicle = Vehicle.readEntity(this.vehicleID);
+			}
 		}
 		
 		return vehicle;
@@ -170,7 +176,9 @@ public class ClientOrder implements Serializable {
 	
 	public Employee getEmployee() {
 		if (employee == null) {
-			employee = Employee.readEntity(this.employeeID);
+			if (this.employeeID != null) {
+				employee = Employee.readEntity(this.employeeID);
+			}
 		}
 		
 		return employee;

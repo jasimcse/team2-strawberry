@@ -90,7 +90,9 @@ public class ClientOrderService implements Serializable {
 	
 	public ClientOrder getClientOrder() {
 		if (clientOrder == null) {
-			clientOrder = ClientOrder.readEntity(this.clientOrderID);
+			if (this.clientOrderID != null) {
+				clientOrder = ClientOrder.readEntity(this.clientOrderID);
+			}
 		}
 		
 		return clientOrder;
@@ -116,7 +118,9 @@ public class ClientOrderService implements Serializable {
 	
 	public Service getService() {
 		if (service == null) {
-			service = Service.readEntity(this.serviceID);
+			if (this.serviceID != null) {
+				service =Service.readEntity(this.serviceID);
+			}
 		}
 		
 		return service;
@@ -142,7 +146,9 @@ public class ClientOrderService implements Serializable {
 	
 	public Employee getEmployee() {
 		if (employee == null) {
-			employee = Employee.readEntity(this.employeeID);
+			if (this.employeeID != null) {
+				employee = Employee.readEntity(this.employeeID);
+			}
 		}
 		
 		return employee;

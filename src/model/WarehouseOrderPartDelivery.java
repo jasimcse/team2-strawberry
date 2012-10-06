@@ -83,7 +83,9 @@ public class WarehouseOrderPartDelivery implements Serializable {
 	
 	public WarehouseOrder getWarehouseOrder() {
 		if (warehouseOrder == null) {
-			warehouseOrder = WarehouseOrder.readEntity(this.warehouseOrderID);
+			if (this.warehouseOrderID != null) {
+				warehouseOrder = WarehouseOrder.readEntity(this.warehouseOrderID);
+			}
 		}
 		
 		return warehouseOrder;
@@ -109,7 +111,9 @@ public class WarehouseOrderPartDelivery implements Serializable {
 	
 	public SparePart getSparePart() {
 		if (sparePart == null) {
-			sparePart = SparePart.readEntity(this.sparePartID);
+			if (this.sparePartID != null) {
+				sparePart = SparePart.readEntity(this.sparePartID);
+			}
 		}
 		
 		return sparePart;

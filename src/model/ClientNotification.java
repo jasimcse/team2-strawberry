@@ -96,7 +96,9 @@ public class ClientNotification implements Serializable {
 	
 	public Client getClient() {
 		if (client == null) {
-			client = Client.readEntity(this.clientID);
+			if (this.clientID != null) {
+				client = Client.readEntity(this.clientID);
+			}
 		}
 		
 		return client;
@@ -130,7 +132,9 @@ public class ClientNotification implements Serializable {
 	
 	public Employee getEmployee() {
 		if (employee == null) {
-			employee = Employee.readEntity(this.employeeID);
+			if (this.employeeID != null) {
+				employee = Employee.readEntity(this.employeeID);
+			}
 		}
 		
 		return employee;
@@ -156,7 +160,9 @@ public class ClientNotification implements Serializable {
 	
 	public Vehicle getVehicle() {
 		if (vehicle == null) {
-			vehicle = Vehicle.readEntity(this.vehicleID);
+			if (this.vehicleID != null) {
+				vehicle = Vehicle.readEntity(this.vehicleID);
+			}
 		}
 		
 		return vehicle;
@@ -182,7 +188,9 @@ public class ClientNotification implements Serializable {
 	
 	public ClientOrder getClientOrder() {
 		if (clientOrder == null) {
-			clientOrder = ClientOrder.readEntity(this.clientOrderID);
+			if (this.clientOrderID != null) {
+				clientOrder = ClientOrder.readEntity(this.clientOrderID);
+			}
 		}
 		
 		return clientOrder;

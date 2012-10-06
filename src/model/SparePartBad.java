@@ -78,7 +78,9 @@ public class SparePartBad implements Serializable {
 	
 	public Autoservice getAutoservice() {
 		if (autoservice == null) {
-			autoservice = Autoservice.readEntity(this.autoserviceID);
+			if (this.autoserviceID != null) {
+				autoservice = Autoservice.readEntity(this.autoserviceID);
+			}
 		}
 		
 		return autoservice;
@@ -108,7 +110,9 @@ public class SparePartBad implements Serializable {
 	
 	public SparePart getSparePart() {
 		if (sparePart == null) {
-			sparePart = SparePart.readEntity(this.sparePartID);
+			if (this.sparePartID != null) {
+				sparePart = SparePart.readEntity(this.sparePartID);
+			}
 		}
 		
 		return sparePart;

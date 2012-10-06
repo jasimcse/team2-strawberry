@@ -82,7 +82,9 @@ public class VehicleModelSparePart implements Serializable {
 	
 	public VehicleModel getVehicleModel() {
 		if (vehicleModel == null) {
-			vehicleModel = VehicleModel.readEntity(this.vehicleModelID);
+			if (this.vehicleModelID != null) {
+				vehicleModel = VehicleModel.readEntity(this.vehicleModelID);
+			}
 		}
 		
 		return vehicleModel;
@@ -108,7 +110,9 @@ public class VehicleModelSparePart implements Serializable {
 	
 	public SparePart getSparePart() {
 		if (sparePart == null) {
-			sparePart = SparePart.readEntity(this.sparePartID);
+			if (this.sparePartID != null) {
+				sparePart = SparePart.readEntity(this.sparePartID);
+			}
 		}
 		
 		return sparePart;

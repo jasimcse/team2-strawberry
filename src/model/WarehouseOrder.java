@@ -90,7 +90,9 @@ public class WarehouseOrder implements Serializable {
 	
 	public Autoservice getAutoservice() {
 		if (autoservice == null) {
-			autoservice = Autoservice.readEntity(this.autoserviceID);
+			if (this.autoserviceID != null) {
+				autoservice = Autoservice.readEntity(this.autoserviceID);
+			}
 		}
 		
 		return autoservice;
@@ -116,7 +118,9 @@ public class WarehouseOrder implements Serializable {
 	
 	public Supplier getSupplier() {
 		if (supplier == null) {
-			supplier = Supplier.readEntity(this.supplierID);
+			if (this.supplierID != null) {
+				supplier = Supplier.readEntity(this.supplierID);
+			}
 		}
 		
 		return supplier;
@@ -142,7 +146,9 @@ public class WarehouseOrder implements Serializable {
 	
 	public Employee getEmployee() {
 		if (employee == null) {
-			employee = Employee.readEntity(this.employeeID);
+			if (this.employeeID != null) {
+				employee = Employee.readEntity(this.employeeID);
+			}
 		}
 		
 		return employee;

@@ -126,7 +126,7 @@ public class EmployeeAutoservice implements Serializable {
 	
 	public Employee getEmployee() {
 		if (employee == null) {
-			if (this.employeeID != null) { // TODO - разпространи го и на другите
+			if (this.employeeID != null) {
 				employee = Employee.readEntity(this.employeeID);
 			}
 		}
