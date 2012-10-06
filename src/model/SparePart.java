@@ -31,6 +31,7 @@ public class SparePart implements Serializable {
 	private Double deliveryPrice;
 	private Double salePrice;
 	private LimitedString measuringUnit = new LimitedString(100);
+	private LimitedString foreignID = new LimitedString(50);
 	
 	private static final String PARENT_FIELD = "sparePartParentID";
 	
@@ -152,6 +153,14 @@ public class SparePart implements Serializable {
 		this.measuringUnit.setString(measuringUnit);
 	}
 	
+	public String getForeignID() {
+		return foreignID.getString();
+	}
+
+	public void setForeignID(String foreignID) {
+		this.foreignID.setString(foreignID);
+	}
+	
 	private static PreparedQuery getPreparedQueryAll() { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(SparePart.class.getSimpleName()).
@@ -179,7 +188,8 @@ CREATE TABLE Spare_Part (
 	Description VARCHAR(500) NOT NULL,
 	Delivery_Price FLOAT NOT NULL,
 	Sale_Price FLOAT NOT NULL,
-	Measuring_Unit VARCHAR(100) NOT NULL
+	Measuring_Unit VARCHAR(100) NOT NULL,
+	Foreign_ID VARCHAR(50) NOT NULL
 );
 
 ALTER TABLE Spare_Part ADD CONSTRAINT PK_Spare_Part 

@@ -28,6 +28,7 @@ public class WarrantyConditions implements Serializable {
 	private Long months;
 	private Long mileage;
 	private LimitedString otherConditions = new LimitedString(500);
+	private LimitedString foreignID = new LimitedString(50);
 	
 	private static final String PARENT_FIELD = "warrantyConditionsParentID";
 	
@@ -113,6 +114,14 @@ public class WarrantyConditions implements Serializable {
 		this.otherConditions.setString(otherConditions);
 	}
 	
+	public String getForeignID() {
+		return foreignID.getString();
+	}
+
+	public void setForeignID(String foreignID) {
+		this.foreignID.setString(foreignID);
+	}
+
 	private static PreparedQuery getPreparedQueryAll() { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(WarrantyConditions.class.getSimpleName()).
@@ -138,7 +147,8 @@ CREATE TABLE Warranty_Conditions (
 	Warranty_ID BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 0, INCREMENT BY 1),
 	Months INTEGER NOT NULL,
 	Mileage INTEGER NOT NULL,
-	Other_Conditions VARCHAR(500)
+	Other_Conditions VARCHAR(500),
+	Foreign_ID VARCHAR(50) NOT NULL
 );
 
 ALTER TABLE Warranty_Conditions ADD CONSTRAINT PK_Warranty_Conditions 
