@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://serverCommunication.controller/" xmlns:tns="http://serverCommunication.controller/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="createOrUpdateWarrantyConditions" type="tns:createOrUpdateWarrantyConditions"/>
+
+  <xs:element name="createOrUpdateWarrantyConditionsResponse" type="tns:createOrUpdateWarrantyConditionsResponse"/>
+
+  <xs:complexType name="createOrUpdateWarrantyConditions">
+    <xs:sequence>
+      <xs:element name="ID" type="xs:string" minOccurs="0"/>
+      <xs:element name="months" type="xs:long"/>
+      <xs:element name="milage" type="xs:long"/>
+      <xs:element name="otherConditions" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateWarrantyConditionsResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+
