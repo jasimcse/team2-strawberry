@@ -35,6 +35,7 @@ public class Client implements Serializable {
 	private LimitedString mail = new LimitedString(50);
 	private LimitedString IBANNumber = new LimitedString(30);
 	private LimitedString SWIFTCode = new LimitedString(20);
+	private LimitedString foreignID = new LimitedString(50);
 	
 	private static final String PARENT_FIELD = "clientParentID";
 	
@@ -159,6 +160,14 @@ public class Client implements Serializable {
 		this.SWIFTCode.setString(sWIFTCode);
 	}
 	
+	public String getForeignID() {
+		return foreignID.getString();
+	}
+
+	public void setForeignID(String foreignID) {
+		this.foreignID.setString(foreignID);
+	}
+	
 	private static PreparedQuery getPreparedQueryAll() { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(Client.class.getSimpleName()).
@@ -188,7 +197,8 @@ CREATE TABLE Client (
 	E_Mail VARCHAR(50),
 	Person_Company CHAR(1) NOT NULL,
 	IBAN_Number VARCHAR(30),
-	SWIFT_Code VARCHAR(20)
+	SWIFT_Code VARCHAR(20),
+	Foreign_ID VARCHAR(50) NOT NULL
 );
 
 ALTER TABLE Client ADD CONSTRAINT PK_Client 

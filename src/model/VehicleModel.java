@@ -29,6 +29,7 @@ public class VehicleModel implements Serializable {
 	private LimitedString brand = new LimitedString(50);
 	private LimitedString model = new LimitedString(50);
 	private Text characteristics;
+	private LimitedString foreignID = new LimitedString(50);
 	
 	private static final String PARENT_FIELD = "vehicleModelParentID";
 	
@@ -114,6 +115,14 @@ public class VehicleModel implements Serializable {
 		this.characteristics = new Text(characteristics);
 	}
 	
+	public String getForeignID() {
+		return foreignID.getString();
+	}
+
+	public void setForeignID(String foreignID) {
+		this.foreignID.setString(foreignID);
+	}
+	
 	private static PreparedQuery getPreparedQueryAll() { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(VehicleModel.class.getSimpleName()).
@@ -134,12 +143,13 @@ public class VehicleModel implements Serializable {
 	
 }
 
-/*
+/*	
 CREATE TABLE Vehicle_Model ( 
 	Vehicle_Model_ID BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 0, INCREMENT BY 1),
 	Brand VARCHAR(50) NOT NULL,
 	Model VARCHAR(50) NOT NULL,
-	Characteristics CLOB
+	Characteristics CLOB,
+	Foreign_ID VARCHAR(50) NOT NULL
 );
 
 ALTER TABLE Vehicle_Model ADD CONSTRAINT PK_Vehicle_Model 

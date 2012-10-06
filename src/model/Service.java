@@ -27,6 +27,7 @@ public class Service implements Serializable {
 	private Key serviceParentID;
 	private LimitedString description = new LimitedString(100);
 	private Double priceHour;
+	private LimitedString foreignID = new LimitedString(50);
 	
 	private static final String PARENT_FIELD = "serviceParentID";
 	
@@ -104,6 +105,14 @@ public class Service implements Serializable {
 		this.priceHour = Double.valueOf(priceHour);
 	}
 	
+	public String getForeignID() {
+		return foreignID.getString();
+	}
+
+	public void setForeignID(String foreignID) {
+		this.foreignID.setString(foreignID);
+	}
+	
 	private static PreparedQuery getPreparedQueryAll() { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(Service.class.getSimpleName()).
@@ -128,7 +137,8 @@ public class Service implements Serializable {
 CREATE TABLE Service ( 
 	Service_ID BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 0, INCREMENT BY 1),
 	Description VARCHAR(100) NOT NULL,
-	Price_Hour FLOAT NOT NULL
+	Price_Hour FLOAT NOT NULL,
+	Foreign_ID VARCHAR(50) NOT NULL
 );
 
 ALTER TABLE Service ADD CONSTRAINT PK_Service 

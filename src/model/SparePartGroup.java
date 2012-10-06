@@ -24,6 +24,7 @@ public class SparePartGroup implements Serializable {
 	private Entity thisEntity;
 	
 	private LimitedString description = new LimitedString(100);
+	private LimitedString foreignID = new LimitedString(50);
 	
 	@SuppressWarnings("unused")
 	private Key sparePartGroupParentID;
@@ -95,6 +96,14 @@ public class SparePartGroup implements Serializable {
 		this.description.setString(description);
 	}
 	
+	public String getForeignID() {
+		return foreignID.getString();
+	}
+
+	public void setForeignID(String foreignID) {
+		this.foreignID.setString(foreignID);
+	}
+	
 	private static PreparedQuery getPreparedQueryAll() { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(SparePartGroup.class.getSimpleName()).
@@ -118,7 +127,8 @@ public class SparePartGroup implements Serializable {
 /*
 CREATE TABLE Spare_Part_Group ( 
 	Spare_Part_Group_ID BIGINT NOT NULL,
-	Description VARCHAR(100) NOT NULL
+	Description VARCHAR(100) NOT NULL,
+	Foreign_ID VARCHAR(50) NOT NULL
 );
 
 ALTER TABLE Spare_Part_Group ADD CONSTRAINT PK_Spare_Part_Group 
