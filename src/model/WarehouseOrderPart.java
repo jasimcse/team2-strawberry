@@ -1,8 +1,10 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import model.util.EntityHelper;
@@ -10,7 +12,10 @@ import model.util.EntityHelper;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 
 @SuppressWarnings("serial")
 public class WarehouseOrderPart implements Serializable {
@@ -65,6 +70,16 @@ public class WarehouseOrderPart implements Serializable {
 		}
 		
 		return readEntity(entity);
+	}
+	
+	private static List<WarehouseOrderPart> readList(List<Entity> listToRead) {
+		List<WarehouseOrderPart> newList =  new ArrayList<WarehouseOrderPart>();
+		
+		for (Entity entity : listToRead) {
+			newList.add(readEntity(entity));
+		}
+		
+		return newList;
 	}
 	
 	public Key getID() {
@@ -144,6 +159,24 @@ public class WarehouseOrderPart implements Serializable {
 
 	public void setDeliveredQuantity(double deliveredQuantity) {
 		this.deliveredQuantity = Double.valueOf(deliveredQuantity);
+	}
+	
+	private static PreparedQuery getPreparedQueryAll(Key warehouseOrderID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(WarehouseOrderPart.class.getSimpleName()).
+					   setAncestor(warehouseOrderID).
+				       addSort("__key__"));
+	}
+	
+	public static List<WarehouseOrderPart> queryGetAll(int offset, int count, Key warehouseOrderID) {
+		List<Entity> oldList = getPreparedQueryAll(warehouseOrderID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll(Key warehouseOrderID) {
+		return getPreparedQueryAll(warehouseOrderID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

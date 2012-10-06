@@ -1,14 +1,19 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 
 import model.util.EntityHelper;
 import model.util.LimitedString;
@@ -77,6 +82,16 @@ public class Client implements Serializable {
 		return readEntity(entity);
 	}
 	
+	private static List<Client> readList(List<Entity> listToRead) {
+		List<Client> newList =  new ArrayList<Client>();
+		
+		for (Entity entity : listToRead) {
+			newList.add(readEntity(entity));
+		}
+		
+		return newList;
+	}
+	
 	public Key getID() {
 		if (thisEntity == null) {
 			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
@@ -142,6 +157,24 @@ public class Client implements Serializable {
 
 	public void setSWIFTCode(String sWIFTCode) {
 		this.SWIFTCode.setString(sWIFTCode);
+	}
+	
+	private static PreparedQuery getPreparedQueryAll() { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Client.class.getSimpleName()).
+					   setAncestor(EntityHelper.getClientParent()).
+				       addSort("__key__"));
+	}
+	
+	public static List<Client> queryGetAll(int offset, int count) {
+		List<Entity> oldList = getPreparedQueryAll().
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll() {
+		return getPreparedQueryAll().countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

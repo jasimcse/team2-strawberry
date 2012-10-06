@@ -1,8 +1,10 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import model.util.EntityHelper;
@@ -10,7 +12,10 @@ import model.util.EntityHelper;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 
 @SuppressWarnings("serial")
 public class SparePartAvailable implements Serializable {
@@ -63,6 +68,16 @@ public class SparePartAvailable implements Serializable {
 		}
 		
 		return readEntity(entity);
+	}
+	
+	private static List<SparePartAvailable> readList(List<Entity> listToRead) {
+		List<SparePartAvailable> newList =  new ArrayList<SparePartAvailable>();
+		
+		for (Entity entity : listToRead) {
+			newList.add(readEntity(entity));
+		}
+		
+		return newList;
 	}
 	
 	public Key getID() {
@@ -134,6 +149,24 @@ public class SparePartAvailable implements Serializable {
 
 	public void setQuantity(double quantity) {
 		this.quantity = Double.valueOf(quantity);
+	}
+	
+	private static PreparedQuery getPreparedQueryAll(Key autoserviceID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(SparePartAvailable.class.getSimpleName()).
+					   setAncestor(autoserviceID).
+				       addSort("__key__"));
+	}
+	
+	public static List<SparePartAvailable> queryGetAll(int offset, int count, Key autoserviceID) {
+		List<Entity> oldList = getPreparedQueryAll(autoserviceID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll(Key autoserviceID) {
+		return getPreparedQueryAll(autoserviceID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }
