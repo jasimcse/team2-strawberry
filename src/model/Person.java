@@ -1,8 +1,10 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import model.util.EntityHelper;
@@ -11,7 +13,10 @@ import model.util.LimitedString;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 
 @SuppressWarnings("serial")
 public class Person implements Serializable {
@@ -65,6 +70,16 @@ public class Person implements Serializable {
 		return readEntity(entity);
 	}
 	
+	private static List<Person> readList(List<Entity> listToRead) {
+		List<Person> newList =  new ArrayList<Person>();
+		
+		for (Entity entity : listToRead) {
+			newList.add(readEntity(entity));
+		}
+		
+		return newList;
+	}
+	
 	public Key getID() {
 		if (thisEntity == null) {
 			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
@@ -114,6 +129,24 @@ public class Person implements Serializable {
 
 	public void setFamily(String family) {
 		this.family.setString(family);
+	}
+	
+	private static PreparedQuery getPreparedQueryAll(Key clientID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Person.class.getSimpleName()).
+					   setAncestor(clientID).
+				       addSort("__key__"));
+	}
+	
+	public static List<Person> queryGetAll(int offset, int count, Key clientID) {
+		List<Entity> oldList = getPreparedQueryAll(clientID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll(Key clientID) {
+		return getPreparedQueryAll(clientID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

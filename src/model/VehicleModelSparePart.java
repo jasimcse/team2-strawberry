@@ -1,8 +1,10 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import model.util.EntityHelper;
@@ -10,7 +12,10 @@ import model.util.EntityHelper;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 
 @SuppressWarnings("serial")
 public class VehicleModelSparePart implements Serializable {
@@ -63,6 +68,16 @@ public class VehicleModelSparePart implements Serializable {
 		}
 		
 		return readEntity(entity);
+	}
+	
+	private static List<VehicleModelSparePart> readList(List<Entity> listToRead) {
+		List<VehicleModelSparePart> newList =  new ArrayList<VehicleModelSparePart>();
+		
+		for (Entity entity : listToRead) {
+			newList.add(readEntity(entity));
+		}
+		
+		return newList;
 	}
 	
 	public Key getID() {
@@ -126,6 +141,24 @@ public class VehicleModelSparePart implements Serializable {
 		} else {
 			sparePartID = sparePart.getID();
 		}
+	}
+	
+	private static PreparedQuery getPreparedQueryAll(Key vehicleModelID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(VehicleModelSparePart.class.getSimpleName()).
+					   setAncestor(vehicleModelID).
+				       addSort("__key__"));
+	}
+	
+	public static List<VehicleModelSparePart> queryGetAll(int offset, int count, Key vehicleModelID) {
+		List<Entity> oldList = getPreparedQueryAll(vehicleModelID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll(Key vehicleModelID) {
+		return getPreparedQueryAll(vehicleModelID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

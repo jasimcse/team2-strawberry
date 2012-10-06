@@ -1,9 +1,11 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import model.util.EntityHelper;
@@ -12,7 +14,10 @@ import model.util.LimitedString;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 
 @SuppressWarnings("serial")
 public class Vehicle implements Serializable {
@@ -71,6 +76,16 @@ public class Vehicle implements Serializable {
 		}
 		
 		return readEntity(entity);
+	}
+	
+	private static List<Vehicle> readList(List<Entity> listToRead) {
+		List<Vehicle> newList =  new ArrayList<Vehicle>();
+		
+		for (Entity entity : listToRead) {
+			newList.add(readEntity(entity));
+		}
+		
+		return newList;
 	}
 	
 	public Key getID() {
@@ -202,6 +217,26 @@ public class Vehicle implements Serializable {
 
 	public void setPurchaseDate(Date purchaseDate) {
 		this.purchaseDate = purchaseDate;
+	}
+	
+	private static PreparedQuery getPreparedQueryAll(Key clientID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Vehicle.class.getSimpleName()).
+					   setAncestor(clientID).
+				       addSort("__key__"));
+	}
+	
+	//TODO - да се дава възможност да се разглеждата всички ?
+	
+	public static List<Vehicle> queryGetAll(int offset, int count, Key clientID) {
+		List<Entity> oldList = getPreparedQueryAll(clientID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll(Key clientID) {
+		return getPreparedQueryAll(clientID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

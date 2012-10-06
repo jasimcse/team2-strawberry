@@ -1,8 +1,10 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import model.util.EntityHelper;
@@ -11,7 +13,10 @@ import model.util.LimitedString;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 
 @SuppressWarnings("serial")
 public class ClientOrderPart implements Serializable {
@@ -72,6 +77,16 @@ public class ClientOrderPart implements Serializable {
 		}
 		
 		return readEntity(entity);
+	}
+	
+	private static List<ClientOrderPart> readList(List<Entity> listToRead) {
+		List<ClientOrderPart> newList =  new ArrayList<ClientOrderPart>();
+		
+		for (Entity entity : listToRead) {
+			newList.add(readEntity(entity));
+		}
+		
+		return newList;
 	}
 	
 	public Key getID() {
@@ -165,6 +180,23 @@ public class ClientOrderPart implements Serializable {
 		}
 	}
 	
+	private static PreparedQuery getPreparedQueryAll(Key clientOrderID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(ClientOrderPart.class.getSimpleName()).
+					   setAncestor(clientOrderID).
+				       addSort("__key__"));
+	}
+	
+	public static List<ClientOrderPart> queryGetAll(int offset, int count, Key clientOrderID) {
+		List<Entity> oldList = getPreparedQueryAll(clientOrderID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll(Key clientOrderID) {
+		return getPreparedQueryAll(clientOrderID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
 	
 }
 

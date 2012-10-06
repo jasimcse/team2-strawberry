@@ -1,8 +1,10 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import model.util.EntityHelper;
@@ -11,7 +13,10 @@ import model.util.LimitedString;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Text;
 
 @SuppressWarnings("serial")
@@ -25,7 +30,7 @@ public class VehicleModel implements Serializable {
 	private LimitedString model = new LimitedString(50);
 	private Text characteristics;
 	
-	private static final String PARENT_FIELD = "vehicleParentID";
+	private static final String PARENT_FIELD = "vehicleModelParentID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity"}));
@@ -68,6 +73,16 @@ public class VehicleModel implements Serializable {
 		return readEntity(entity);
 	}
 	
+	private static List<VehicleModel> readList(List<Entity> listToRead) {
+		List<VehicleModel> newList =  new ArrayList<VehicleModel>();
+		
+		for (Entity entity : listToRead) {
+			newList.add(readEntity(entity));
+		}
+		
+		return newList;
+	}
+	
 	public Key getID() {
 		if (thisEntity == null) {
 			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
@@ -97,6 +112,24 @@ public class VehicleModel implements Serializable {
 
 	public void setCharacteristics(String characteristics) {
 		this.characteristics = new Text(characteristics);
+	}
+	
+	private static PreparedQuery getPreparedQueryAll() { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(VehicleModel.class.getSimpleName()).
+					   setAncestor(EntityHelper.getVehicleModelParent()).
+				       addSort("__key__"));
+	}
+	
+	public static List<VehicleModel> queryGetAll(int offset, int count) {
+		List<Entity> oldList = getPreparedQueryAll().
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll() {
+		return getPreparedQueryAll().countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

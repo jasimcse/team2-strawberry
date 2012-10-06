@@ -1,8 +1,10 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import model.util.EntityHelper;
@@ -10,7 +12,10 @@ import model.util.EntityHelper;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 
 @SuppressWarnings("serial")
 public class VehicleModelService implements Serializable {
@@ -65,6 +70,16 @@ public class VehicleModelService implements Serializable {
 		}
 		
 		return readEntity(entity);
+	}
+	
+	private static List<VehicleModelService> readList(List<Entity> listToRead) {
+		List<VehicleModelService> newList =  new ArrayList<VehicleModelService>();
+		
+		for (Entity entity : listToRead) {
+			newList.add(readEntity(entity));
+		}
+		
+		return newList;
 	}
 	
 	public Key getID() {
@@ -152,6 +167,24 @@ public class VehicleModelService implements Serializable {
 
 	public void setMilageToNext(long milageToNext) {
 		this.milageToNext = Long.valueOf(milageToNext);
+	}
+	
+	private static PreparedQuery getPreparedQueryAll(Key vehicleModelID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(VehicleModelService.class.getSimpleName()).
+					   setAncestor(vehicleModelID).
+				       addSort("__key__"));
+	}
+	
+	public static List<VehicleModelService> queryGetAll(int offset, int count, Key vehicleModelID) {
+		List<Entity> oldList = getPreparedQueryAll(vehicleModelID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll(Key vehicleModelID) {
+		return getPreparedQueryAll(vehicleModelID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

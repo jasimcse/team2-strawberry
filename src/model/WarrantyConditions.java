@@ -1,8 +1,10 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import model.util.EntityHelper;
@@ -11,7 +13,10 @@ import model.util.LimitedString;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 
 @SuppressWarnings("serial")
 public class WarrantyConditions implements Serializable {
@@ -67,6 +72,16 @@ public class WarrantyConditions implements Serializable {
 		return readEntity(entity);
 	}
 	
+	private static List<WarrantyConditions> readList(List<Entity> listToRead) {
+		List<WarrantyConditions> newList =  new ArrayList<WarrantyConditions>();
+		
+		for (Entity entity : listToRead) {
+			newList.add(readEntity(entity));
+		}
+		
+		return newList;
+	}
+	
 	public Key getID() {
 		if (thisEntity == null) {
 			throw new RuntimeException("There is no entity loaded! Maybe you should call makeEntity() first.");
@@ -96,6 +111,24 @@ public class WarrantyConditions implements Serializable {
 
 	public void setOtherConditions(String otherConditions) {
 		this.otherConditions.setString(otherConditions);
+	}
+	
+	private static PreparedQuery getPreparedQueryAll() { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(WarrantyConditions.class.getSimpleName()).
+					   setAncestor(EntityHelper.getWarrantyConditionsParent()).
+				       addSort("__key__"));
+	}
+	
+	public static List<WarrantyConditions> queryGetAll(int offset, int count) {
+		List<Entity> oldList = getPreparedQueryAll().
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll() {
+		return getPreparedQueryAll().countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }
