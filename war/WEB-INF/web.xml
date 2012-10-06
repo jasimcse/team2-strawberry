@@ -55,6 +55,14 @@
     <servlet-class>controller.debug.InitModelData</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  <servlet>
+    <servlet-name>ElectronicShop SOAP Handler Servlet</servlet-name>
+    <servlet-class>controller.serverCommunication.ElectronicShopSOAP</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ElectronicShop SOAP Handler Servlet</servlet-name>
+    <url-pattern>/soap/ElectronicShopService.soap</url-pattern>
+  </servlet-mapping>
   <filter>
     <filter-name>UTF8 Filter</filter-name>
     <filter-class>controller.common.UTF8Filter</filter-class>
