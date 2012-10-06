@@ -34,7 +34,9 @@ public class Client implements Serializable {
 	private static final String PARENT_FIELD = "clientParentID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS",
+					      "PERSON", "COMPANY",
+					      "thisEntity"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"phoneNumber", "mail", "IBANNumber", "SWIFTCode"}));
