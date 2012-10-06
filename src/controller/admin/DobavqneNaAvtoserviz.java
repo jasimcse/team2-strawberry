@@ -92,7 +92,7 @@ public class DobavqneNaAvtoserviz {
 		return errorMessage;
 	}
 	
-	public void addAutoserviz()
+	public void addAutoservice()
 	{
 		serviz.writeToDB();
 		serviz = new Autoservice();
