@@ -84,7 +84,9 @@ public class VehicleModelService implements Serializable {
 	
 	public VehicleModel getVehicleModel() {
 		if (vehicleModel == null) {
-			vehicleModel = VehicleModel.readEntity(this.vehicleModelID);
+			if (this.vehicleModelID != null) {
+				vehicleModel = VehicleModel.readEntity(this.vehicleModelID);
+			}
 		}
 		
 		return vehicleModel;
@@ -110,7 +112,9 @@ public class VehicleModelService implements Serializable {
 	
 	public Service getService() {
 		if (service == null) {
-			service = Service.readEntity(this.serviceID);
+			if (this.serviceID != null) {
+				service = Service.readEntity(this.serviceID);
+			}
 		}
 		
 		return service;

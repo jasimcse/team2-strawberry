@@ -89,7 +89,9 @@ public class ClientOrderPart implements Serializable {
 	
 	public ClientOrder getClientOrder() {
 		if (clientOrder == null) {
-			clientOrder = ClientOrder.readEntity(this.clientOrderID);
+			if (this.clientOrderID != null) {
+				clientOrder = ClientOrder.readEntity(this.clientOrderID);
+			}
 		}
 		
 		return clientOrder;
@@ -115,7 +117,9 @@ public class ClientOrderPart implements Serializable {
 	
 	public SparePart getSparePart() {
 		if (sparePart == null) {
-			sparePart = SparePart.readEntity(this.sparePartID);
+			if (this.sparePartID != null) {
+				sparePart = SparePart.readEntity(this.sparePartID);
+			}
 		}
 		
 		return sparePart;

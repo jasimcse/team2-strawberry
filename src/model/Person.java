@@ -82,7 +82,9 @@ public class Person implements Serializable {
 	
 	public Client getClient() {
 		if (client == null) {
-			client = Client.readEntity(this.clientID);
+			if (this.clientID != null) {
+				client = Client.readEntity(this.clientID);
+			}
 		}
 		
 		return client;

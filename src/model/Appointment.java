@@ -21,7 +21,7 @@ public class Appointment implements Serializable {
 	//TODO - makeEntity и подобните да се направ€т private ???
 	
 	/* TODO - това да се замени само с ключ към Entity-то ???
-	 * понеже и без това ще се прави за€вка за да се провери верси€та на Entity-то при запис
+	 * понеже и без това ще се прави за€вка, за да се провери верси€та на Entity-то при запис
 	 */
 	private Entity thisEntity; 
 	private Autoservice autoservice;
@@ -91,7 +91,9 @@ public class Appointment implements Serializable {
 	
 	public Autoservice getAutoservice() {
 		if (autoservice == null) {
-			autoservice = Autoservice.readEntity(this.autoserviceID);
+			if (this.autoserviceID != null) {
+				autoservice = Autoservice.readEntity(this.autoserviceID);
+			}
 		}
 		
 		return autoservice;

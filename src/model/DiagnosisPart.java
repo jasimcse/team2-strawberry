@@ -82,7 +82,9 @@ public class DiagnosisPart implements Serializable {
 	
 	public Diagnosis getDiagnosis() {
 		if (diagnosis == null) {
-			diagnosis = Diagnosis.readEntity(this.diagnosisID);
+			if (this.diagnosisID != null) {
+				diagnosis = Diagnosis.readEntity(this.diagnosisID);
+			}
 		}
 		
 		return diagnosis;
@@ -108,7 +110,9 @@ public class DiagnosisPart implements Serializable {
 	
 	public SparePart getSparePart() {
 		if (sparePart == null) {
-			sparePart = SparePart.readEntity(this.sparePartID);
+			if (this.sparePartID != null) {
+				sparePart = SparePart.readEntity(this.sparePartID);
+			}
 		}
 		
 		return sparePart;

@@ -87,7 +87,9 @@ public class SparePart implements Serializable {
 	
 	public SparePartGroup getSparePartGroup() {
 		if (sparePartGroup == null) {
-			sparePartGroup = SparePartGroup.readEntity(this.sparePartGroupID);
+			if (this.sparePartGroupID != null) {
+				sparePartGroup = SparePartGroup.readEntity(this.sparePartGroupID);
+			}
 		}
 		
 		return sparePartGroup;

@@ -85,7 +85,9 @@ public class InsurerRequest implements Serializable {
 	
 	public Insurer getInsurer() {
 		if (insurer == null) {
-			insurer = Insurer.readEntity(this.insurerID);
+			if (this.insurerID != null) {
+				insurer = Insurer.readEntity(this.insurerID);
+			}
 		}
 		
 		return insurer;
@@ -111,7 +113,9 @@ public class InsurerRequest implements Serializable {
 	
 	public Vehicle getVehicle() {
 		if (vehicle == null) {
-			vehicle = Vehicle.readEntity(this.vehicleID);
+			if (this.vehicleID != null) {
+				vehicle = Vehicle.readEntity(this.vehicleID);
+			}
 		}
 		
 		return vehicle;
@@ -145,7 +149,9 @@ public class InsurerRequest implements Serializable {
 	
 	public Diagnosis getDiagnosis() {
 		if (diagnosis == null) {
-			diagnosis = Diagnosis.readEntity(this.diagnosisID);
+			if (this.diagnosisID != null) {
+				diagnosis = Diagnosis.readEntity(this.diagnosisID);
+			}
 		}
 		
 		return diagnosis;

@@ -82,13 +82,15 @@ public class SparePartReserved implements Serializable {
 	
 	public ClientOrder getClientOrder() {
 		if (clientOrder == null) {
-			clientOrder = ClientOrder.readEntity(this.clientOrderID);
+			if (this.clientOrderID != null) {
+				clientOrder = ClientOrder.readEntity(this.clientOrderID);
+			}
 		}
 		
 		return clientOrder;
 	}
 	
-	public void setVehicle(ClientOrder clientOrder) {
+	public void setClientOrder(ClientOrder clientOrder) {
 		this.clientOrder = clientOrder;
 		
 		if (clientOrder == null) {
@@ -108,7 +110,9 @@ public class SparePartReserved implements Serializable {
 	
 	public SparePart getSparePart() {
 		if (sparePart == null) {
-			sparePart = SparePart.readEntity(this.sparePartID);
+			if (this.sparePartID != null) {
+				sparePart = SparePart.readEntity(this.sparePartID);
+			}
 		}
 		
 		return sparePart;
