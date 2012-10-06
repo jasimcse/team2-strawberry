@@ -262,9 +262,11 @@ public class ClientNotification implements Serializable {
 	private static PreparedQuery getPreparedQueryAll(Key clientID) { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(ClientNotification.class.getSimpleName()).
-					   setAncestor(clientID). // TODO - да се види винаги ли ще е така ?
+					   setAncestor(clientID).
 				       addSort("__key__"));
 	}
+	
+	// TODO - да се дава възможност да се разглеждата всички ?
 	
 	public static List<ClientNotification> queryGetAll(int offset, int count, Key clientID) {
 		List<Entity> oldList = getPreparedQueryAll(clientID).

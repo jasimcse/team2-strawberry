@@ -195,6 +195,7 @@ public class EntityHelper {
 	 * 
 	 */
 	public static Entity buildIt(Object from, String parent, Set<String> ignored, Set<String> nullables) {
+		Object valueObject = null;
 		
 		// parameters check
 		if (from == null) {
@@ -218,7 +219,11 @@ public class EntityHelper {
 			try {
 				Field field = classLocal.getDeclaredField(parent);
 				field.setAccessible(true);
-				entity = new Entity(classLocal.getSimpleName(), (Key)field.get(from));
+				valueObject = field.get(from); 
+				if ((valueObject == null) && (!nullables.contains(parent))) {
+					throw new RuntimeException("The parent field " + parent + " is declared to be not null!");
+				}
+				entity = new Entity(classLocal.getSimpleName(), (Key)valueObject);
 			} catch (IllegalArgumentException e) {
 				throw new RuntimeException("Parent field not found", e);
 			} catch (IllegalAccessException e) {
