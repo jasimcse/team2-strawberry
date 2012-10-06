@@ -33,7 +33,9 @@ public class SparePartsDelivery implements Serializable {
 	private static final String PARENT_FIELD = "autoserviceID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "autoservice"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS",
+					      "NOT_PAYED", "PAYED",
+					      "thisEntity", "autoservice"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"paymentNumber"}));
