@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="headSection">
+		
+	</ui:define>
+
+	<ui:define name="pageContent">
+	
+		<h:form>
+			<h:panelGroup>
+				<h:outputLabel value="Наименование">
+					<h:inputText value="" maxlength="100" />
+				</h:outputLabel>
+				
+				<br />
+				<h:commandButton value="Търси" disabled="true" />
+				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
+			</h:panelGroup>
+		</h:form>
+	
+		<h:form>
+			
+			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+			<h:dataTable
+				rows="#{configurationProperties.getPageSize()}"
+				value="#{aktualiziraneNaZastrahovatel.spisukZastrahovateli}"
+			    first="0"
+			    var="curr"
+			    rowClasses="#{aktualiziraneNaZastrahovatel.rowStyleClasses}">
+				
+				<h:column>
+					<f:facet name="header">Наименование</f:facet>
+					#{curr.name}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Лице за контакт</f:facet>
+					#{curr.contactPerson}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Населено място</f:facet>
+					#{curr.addressCity}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Адрес</f:facet>
+					#{curr.addressLine}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Електронна поща</f:facet>
+					#{curr.mail}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Телефонен номер</f:facet>
+					#{curr.phoneNumber}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Номер на банковата сметка</f:facet>
+					#{curr.IBANNumber}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Банков код</f:facet>
+					#{curr.SWIFTCode}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">ЕИК</f:facet>
+					#{curr.registrationNumber}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">ДДС номер</f:facet>
+					#{curr.VATNumber}
+				</h:column>
+				
+				
+				<h:column>
+					<f:facet name="header">Промени</f:facet>
+					<h:commandLink action="#{aktualiziraneNaZastrahovatel.selectRow(curr)}" value="Промени" />
+				</h:column>
+				
+				<h:column rendered="#{aktualiziraneNaZastrahovatel.choosingAlowed}">
+					<f:facet name="header">Избери</f:facet>
+					<h:commandLink action="#{aktualiziraneNaZastrahovatel.chooseAutoservice(curr)}" value="Избери" />
+				</h:column>
+				
+				<f:facet name="footer">
+					<h:panelGroup rendered="#{!empty aktualiziraneNaZastrahovatel.pagesList}">
+						<!-- предишна страница -->
+						<h:commandLink rendered="#{aktualiziraneNaZastrahovatel.page - 1 ge 0}"
+							action="#{aktualiziraneNaZastrahovatel.setPage(aktualiziraneNaZastrahovatel.page - 1)}"
+							value="&lt;&lt;" />
+							
+						<!-- други страници -->
+						<ui:repeat value="#{aktualiziraneNaZastrahovatel.pagesList}" var="currPage">
+							<h:commandLink
+								rendered="#{aktualiziraneNaZastrahovatel.getPage() ne currPage.intValue() - 1}"
+								action="#{aktualiziraneNaZastrahovatel.setPage(currPage.intValue()-1)}"
+								value="#{currPage}" />
+								
+							<h:outputText
+								rendered="#{aktualiziraneNaZastrahovatel.getPage() eq currPage.intValue() - 1}"
+								value="#{currPage}" />
+								
+							<h:outputText value=" " />
+						</ui:repeat>
+						
+						<!-- следваща страница -->
+						<h:commandLink rendered="#{aktualiziraneNaZastrahovatel.page + 1 lt aktualiziraneNaZastrahovatel.pagesCount}"
+							action="#{aktualiziraneNaZastrahovatel.setPage(aktualiziraneNaZastrahovatel.page + 1)}"
+							value="&gt;&gt;" />
+							
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="#{empty aktualiziraneNaZastrahovatel.pagesList}" style="color: red; font-weight: bold;">
+						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
+						<br />
+						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
+					</h:panelGroup>
+				</f:facet>
+				 
+			</h:dataTable>
+		</h:form>
+			
+	    <h:form>
+
+			<h:outputLabel value="Наименование*">
+				<h:inputText id="name" value="#{aktualiziraneNaZastrahovatel.name}"
+					maxlength="100" required="true"	requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
+				<h:message for="name" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Лице за контакт*">
+				<h:inputText id="contactPerson"
+					value="#{aktualiziraneNaZastrahovatel.contactPerson}" maxlength="100"
+					required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
+				<h:message for="contactPerson" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Населено място*">
+				<h:inputText id="city"
+					value="#{aktualiziraneNaZastrahovatel.addressCity}" maxlength="30"
+					required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
+				<h:message for="city" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Адрес*">
+				<h:inputText id="address"
+					value="#{aktualiziraneNaZastrahovatel.addressLine}" maxlength="100"
+					required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
+				<h:message for="address" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Електронна поща*">
+				<h:inputText id="mail" value="#{aktualiziraneNaZastrahovatel.mail}"
+					maxlength="50" required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
+				<h:message for="mail" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Телефонен номер*">
+				<h:inputText id="phone"
+					value="#{aktualiziraneNaZastrahovatel.phoneNumber}" maxlength="15"
+					required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
+				<h:message for="phone" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Номер на банковата сметка*">
+				<h:inputText id="IBANNumber"
+					value="#{aktualiziraneNaZastrahovatel.IBANNumber}" maxlength="30"
+					required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
+				<h:message for="IBANNumber" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Банков код*">
+				<h:inputText id="SWIFT" value="#{aktualiziraneNaZastrahovatel.SWIFTCode}"
+					maxlength="20" required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
+				<h:message for="SWIFT" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="Единен идентификационен код (ЕИК)*">
+				<h:inputText id="regnumber"
+					value="#{aktualiziraneNaZastrahovatel.registrationNumber}" maxlength="9"
+					required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
+				<h:message for="regnumber" />
+			</h:outputLabel>
+			<br />
+			<h:outputLabel value="ДДС номер">
+				<h:inputText id="vat" value="#{aktualiziraneNaZastrahovatel.VATNumber}"
+					maxlength="11" required="false"
+					readonly="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
+				<h:message for="vat" />
+			</h:outputLabel>
+			<br />
+
+			<h:commandButton value="Запази" action="#{aktualiziraneNaZastrahovatel.writeIt()}"
+				disabled="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
+			
+			<h:commandButton action="#{aktualiziraneNaZastrahovatel.deselectRow()}" value="Отмени"
+				disabled="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
+				
+			<h:commandButton action="#{aktualiziraneNaZastrahovatel.goToAdd()}" value="Добави" />
+			
+			<br />
+			<h:outputText value="#{dobavqneNaZastrahovatel.errorMessage}" />
+
+		</h:form>
+	    
+	</ui:define>
+	
+</ui:composition>
+</html>

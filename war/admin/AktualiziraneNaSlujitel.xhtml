@@ -55,7 +55,7 @@
 				</h:column>
 				
 				<h:column>
-					<f:facet name="header">Град</f:facet>
+					<f:facet name="header">Населено място</f:facet>
 					#{curr.addressCity}
 				</h:column>
 				
@@ -147,10 +147,10 @@
 			</h:outputLabel>
 			<br />
 			<h:outputLabel value="Адрес*">
-				<h:inputText id="adress" value="#{aktualiziraneNaSlujitel.addressLine}" maxlength="100"
+				<h:inputText id="address" value="#{aktualiziraneNaSlujitel.addressLine}" maxlength="100"
 					required="true" requiredMessage="задължително поле!"
 					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
-				<h:message for="adress" />
+				<h:message for="address" />
 			</h:outputLabel>
 			<br />
 			<h:outputLabel value="Електронна поща*">

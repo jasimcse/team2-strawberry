@@ -24,7 +24,6 @@ public class Supplier implements SupplierInterface {
 
 	static final private Logger logger = Logger.getLogger(Insurer.class.getName());
 	
-	// TODO - to be tested
 	@Override
 	public boolean createOrUpdateSparePartSupplier(
 			String supplierID,

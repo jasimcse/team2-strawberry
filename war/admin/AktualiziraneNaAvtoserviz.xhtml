@@ -25,7 +25,7 @@
 			    rowClasses="#{aktualiziraneNaAvtoserviz.rowStyleClasses}">
 				
 				<h:column>
-					<f:facet name="header">Наименование на сервиза</f:facet>
+					<f:facet name="header">Наименование</f:facet>
 					#{curr.name}
 				</h:column>
 				
@@ -131,7 +131,7 @@
 	    </h:outputLabel> 
 	    <br />
 	    
-	    <h:outputLabel value="Адрес на електронната поща*">
+	    <h:outputLabel value="Електронната поща*">
 	    	<h:inputText id="mail" value="#{aktualiziraneNaAvtoserviz.mail}" maxlength="50" 
 	    		required="true" requiredMessage="задължително поле!"
 	    		readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
@@ -173,13 +173,13 @@
 	
 	     
 	    <br />
-			 <h:commandButton value="Запази" action="#{aktualiziraneNaAvtoserviz.saveAutoserviz()}"
-				disabled="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
+		<h:commandButton value="Запази" action="#{aktualiziraneNaAvtoserviz.saveAutoserviz()}"
+			disabled="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
+		
+		<h:commandButton action="#{aktualiziraneNaAvtoserviz.deselectRow()}" value="Отмени"
+			disabled="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
 			
-			<h:commandButton action="#{aktualiziraneNaAvtoserviz.deselectRow()}" value="Отмени"
-				disabled="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
-				
-			<h:commandButton action="#{aktualiziraneNaAvtoserviz.goToAdd()}" value="Добави" />
+		<h:commandButton action="#{aktualiziraneNaAvtoserviz.goToAdd()}" value="Добави" />
 			
 	    <br />
 	    <h:outputText value="#{aktualiziraneNaAvtoserviz.errorMessage}"/>
