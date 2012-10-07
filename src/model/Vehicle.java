@@ -18,9 +18,13 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 @SuppressWarnings("serial")
 public class Vehicle implements Serializable {
+	
+	public static final String WARRANTY_YES = "1";
+	public static final String WARRANTY_NO = "2";
 	
 	private Entity thisEntity;
 	private Client client;
@@ -39,7 +43,9 @@ public class Vehicle implements Serializable {
 	private static final String PARENT_FIELD = "clientID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "client", "vehicleModel", "warrantyConditions"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS",
+					      "WARRANTY_YES", "WARRANTY_NO",
+					      "thisEntity", "client", "vehicleModel", "warrantyConditions"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"warrantyConditionsID", "warrantyOK", "purchaseDate"}));
@@ -208,7 +214,11 @@ public class Vehicle implements Serializable {
 	}
 
 	public void setWarrantyOK(String warrantyOK) {
-		this.warrantyOK.setString(warrantyOK);
+		if (WARRANTY_YES.equals(warrantyOK) || WARRANTY_NO.equals(warrantyOK)) {
+			this.warrantyOK.setString(warrantyOK);
+		} else {
+			throw new RuntimeException("The string doesn't match any of possible values");
+		}
 	}
 
 	public Date getPurchaseDate() {
@@ -226,6 +236,21 @@ public class Vehicle implements Serializable {
 				       addSort("__key__"));
 	}
 	
+	private static PreparedQuery getPreparedQueryByVIN(String VIN) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Vehicle.class.getSimpleName()).
+				       addSort("__key__").
+				       setFilter(new Query.FilterPredicate("VIN", FilterOperator.EQUAL, VIN)));
+	}
+	
+	private static PreparedQuery getPreparedQueryByVIN(Key clientID, String VIN) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Vehicle.class.getSimpleName()).
+					   setAncestor(clientID).
+				       addSort("__key__").
+				       setFilter(new Query.FilterPredicate("VIN", FilterOperator.EQUAL, VIN)));
+	}
+	
 	//TODO - да се дава възможност да се разглеждата всички ?
 	
 	public static List<Vehicle> queryGetAll(int offset, int count, Key clientID) {
@@ -237,6 +262,30 @@ public class Vehicle implements Serializable {
 	
 	public static int countGetAll(Key clientID) {
 		return getPreparedQueryAll(clientID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<Vehicle> queryGetByVIN(String VIN, int offset, int count) {
+		List<Entity> oldList = getPreparedQueryByVIN(VIN).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetByVIN(String VIN) {
+		return getPreparedQueryByVIN(VIN).
+				countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<Vehicle> queryGetByVIN(String VIN, int offset, int count, Key clientID) {
+		List<Entity> oldList = getPreparedQueryByVIN(clientID, VIN).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetByVIN(String VIN, Key clientID) {
+		return getPreparedQueryByVIN(clientID, VIN).
+				countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

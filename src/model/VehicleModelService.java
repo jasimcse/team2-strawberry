@@ -16,6 +16,7 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 @SuppressWarnings("serial")
 public class VehicleModelService implements Serializable {
@@ -176,6 +177,14 @@ public class VehicleModelService implements Serializable {
 				       addSort("__key__"));
 	}
 	
+	private static PreparedQuery getPreparedQueryByService(Key vehicleModelID, Key serviceID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(VehicleModelService.class.getSimpleName()).
+					   setAncestor(vehicleModelID).
+				       addSort("__key__").
+				       setFilter(new Query.FilterPredicate("serviceID", FilterOperator.EQUAL, serviceID)));
+	}
+	
 	public static List<VehicleModelService> queryGetAll(int offset, int count, Key vehicleModelID) {
 		List<Entity> oldList = getPreparedQueryAll(vehicleModelID).
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
@@ -185,6 +194,18 @@ public class VehicleModelService implements Serializable {
 	
 	public static int countGetAll(Key vehicleModelID) {
 		return getPreparedQueryAll(vehicleModelID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<VehicleModelService> queryGetByService(Key ServiceID, int offset, int count, Key vehicleModelID) {
+		List<Entity> oldList = getPreparedQueryByService(vehicleModelID, ServiceID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetByService(Key serviceID, Key vehicleModelID) {
+		return getPreparedQueryByService(vehicleModelID, serviceID).
+				countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

@@ -1,13 +1,188 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xs:schema version="1.0" targetNamespace="http://serverCommunication.controller/" xmlns:tns="http://serverCommunication.controller/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema version="1.0" targetNamespace="http://SOAPServer.serverCommunication.controller/" xmlns:tns="http://SOAPServer.serverCommunication.controller/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="createOrUpdateCompany" type="tns:createOrUpdateCompany"/>
+
+  <xs:element name="createOrUpdateCompanyResponse" type="tns:createOrUpdateCompanyResponse"/>
+
+  <xs:element name="createOrUpdatePerson" type="tns:createOrUpdatePerson"/>
+
+  <xs:element name="createOrUpdatePersonResponse" type="tns:createOrUpdatePersonResponse"/>
+
+  <xs:element name="createOrUpdateService" type="tns:createOrUpdateService"/>
+
+  <xs:element name="createOrUpdateServiceResponse" type="tns:createOrUpdateServiceResponse"/>
+
+  <xs:element name="createOrUpdateSparePart" type="tns:createOrUpdateSparePart"/>
+
+  <xs:element name="createOrUpdateSparePartGroup" type="tns:createOrUpdateSparePartGroup"/>
+
+  <xs:element name="createOrUpdateSparePartGroupResponse" type="tns:createOrUpdateSparePartGroupResponse"/>
+
+  <xs:element name="createOrUpdateSparePartResponse" type="tns:createOrUpdateSparePartResponse"/>
+
+  <xs:element name="createOrUpdateVehicle" type="tns:createOrUpdateVehicle"/>
+
+  <xs:element name="createOrUpdateVehicleModel" type="tns:createOrUpdateVehicleModel"/>
+
+  <xs:element name="createOrUpdateVehicleModelPart" type="tns:createOrUpdateVehicleModelPart"/>
+
+  <xs:element name="createOrUpdateVehicleModelPartResponse" type="tns:createOrUpdateVehicleModelPartResponse"/>
+
+  <xs:element name="createOrUpdateVehicleModelResponse" type="tns:createOrUpdateVehicleModelResponse"/>
+
+  <xs:element name="createOrUpdateVehicleModelService" type="tns:createOrUpdateVehicleModelService"/>
+
+  <xs:element name="createOrUpdateVehicleModelServiceResponse" type="tns:createOrUpdateVehicleModelServiceResponse"/>
+
+  <xs:element name="createOrUpdateVehicleResponse" type="tns:createOrUpdateVehicleResponse"/>
 
   <xs:element name="createOrUpdateWarrantyConditions" type="tns:createOrUpdateWarrantyConditions"/>
 
   <xs:element name="createOrUpdateWarrantyConditionsResponse" type="tns:createOrUpdateWarrantyConditionsResponse"/>
 
+  <xs:complexType name="createOrUpdateSparePartGroup">
+    <xs:sequence>
+      <xs:element name="electronicShopID" type="xs:string" minOccurs="0"/>
+      <xs:element name="sparePartGroupID" type="xs:string" minOccurs="0"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateSparePartGroupResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateVehicleModelPart">
+    <xs:sequence>
+      <xs:element name="electronicShopID" type="xs:string" minOccurs="0"/>
+      <xs:element name="vehicleModelID" type="xs:string" minOccurs="0"/>
+      <xs:element name="sparePartID" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateVehicleModelPartResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateCompany">
+    <xs:sequence>
+      <xs:element name="electronicShopID" type="xs:string" minOccurs="0"/>
+      <xs:element name="clientID" type="xs:string" minOccurs="0"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="contactPerson" type="xs:string" minOccurs="0"/>
+      <xs:element name="addressCity" type="xs:string" minOccurs="0"/>
+      <xs:element name="addressLine" type="xs:string" minOccurs="0"/>
+      <xs:element name="phoneNumber" type="xs:string" minOccurs="0"/>
+      <xs:element name="mail" type="xs:string" minOccurs="0"/>
+      <xs:element name="IBANNumber" type="xs:string" minOccurs="0"/>
+      <xs:element name="SWIFTCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="registrationNumber" type="xs:string" minOccurs="0"/>
+      <xs:element name="VATNumber" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateCompanyResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateVehicle">
+    <xs:sequence>
+      <xs:element name="electronicShopID" type="xs:string" minOccurs="0"/>
+      <xs:element name="VIN" type="xs:string" minOccurs="0"/>
+      <xs:element name="clientID" type="xs:string" minOccurs="0"/>
+      <xs:element name="vehicleModelID" type="xs:string" minOccurs="0"/>
+      <xs:element name="warrantyConditionsID" type="xs:string" minOccurs="0"/>
+      <xs:element name="engineNumber" type="xs:string" minOccurs="0"/>
+      <xs:element name="plateNumber" type="xs:string" minOccurs="0"/>
+      <xs:element name="purchaseDate" type="xs:dateTime" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateVehicleResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdatePerson">
+    <xs:sequence>
+      <xs:element name="electronicShopID" type="xs:string" minOccurs="0"/>
+      <xs:element name="clientID" type="xs:string" minOccurs="0"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="family" type="xs:string" minOccurs="0"/>
+      <xs:element name="addressCity" type="xs:string" minOccurs="0"/>
+      <xs:element name="addressLine" type="xs:string" minOccurs="0"/>
+      <xs:element name="phoneNumber" type="xs:string" minOccurs="0"/>
+      <xs:element name="mail" type="xs:string" minOccurs="0"/>
+      <xs:element name="IBANNumber" type="xs:string" minOccurs="0"/>
+      <xs:element name="SWIFTCode" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdatePersonResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateVehicleModel">
+    <xs:sequence>
+      <xs:element name="electronicShopID" type="xs:string" minOccurs="0"/>
+      <xs:element name="vehicleModelID" type="xs:string" minOccurs="0"/>
+      <xs:element name="brand" type="xs:string" minOccurs="0"/>
+      <xs:element name="model" type="xs:string" minOccurs="0"/>
+      <xs:element name="characteristics" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateVehicleModelResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateService">
+    <xs:sequence>
+      <xs:element name="electronicShopID" type="xs:string" minOccurs="0"/>
+      <xs:element name="serviceID" type="xs:string" minOccurs="0"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateServiceResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateSparePart">
+    <xs:sequence>
+      <xs:element name="electronicShopID" type="xs:string" minOccurs="0"/>
+      <xs:element name="sparePartID" type="xs:string" minOccurs="0"/>
+      <xs:element name="sparePartGroupID" type="xs:string" minOccurs="0"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="deliveryPrice" type="xs:double"/>
+      <xs:element name="measuringUnit" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateSparePartResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="createOrUpdateWarrantyConditions">
     <xs:sequence>
-      <xs:element name="ID" type="xs:string" minOccurs="0"/>
+      <xs:element name="electronicShopID" type="xs:string" minOccurs="0"/>
+      <xs:element name="warrantyConditionsID" type="xs:string" minOccurs="0"/>
       <xs:element name="months" type="xs:long"/>
       <xs:element name="milage" type="xs:long"/>
       <xs:element name="otherConditions" type="xs:string" minOccurs="0"/>
@@ -15,6 +190,23 @@
   </xs:complexType>
 
   <xs:complexType name="createOrUpdateWarrantyConditionsResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateVehicleModelService">
+    <xs:sequence>
+      <xs:element name="electronicShopID" type="xs:string" minOccurs="0"/>
+      <xs:element name="vehicleModelID" type="xs:string" minOccurs="0"/>
+      <xs:element name="serviceID" type="xs:string" minOccurs="0"/>
+      <xs:element name="durationHour" type="xs:double"/>
+      <xs:element name="monthsToNext" type="xs:long"/>
+      <xs:element name="milageToNext" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createOrUpdateVehicleModelServiceResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:boolean"/>
     </xs:sequence>

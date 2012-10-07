@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://SOAPServer.serverCommunication.controller/" xmlns:tns="http://SOAPServer.serverCommunication.controller/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="createInsurerRequest" type="tns:createInsurerRequest"/>
+
+  <xs:element name="createInsurerRequestResponse" type="tns:createInsurerRequestResponse"/>
+
+  <xs:complexType name="createInsurerRequest">
+    <xs:sequence>
+      <xs:element name="insurerID" type="xs:string" minOccurs="0"/>
+      <xs:element name="VIN" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createInsurerRequestResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

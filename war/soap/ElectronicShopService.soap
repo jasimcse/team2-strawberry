@@ -1,3 +1,9 @@
 няма никаква роля освен да показва, че SOAP съобщения от електронния магазин се изпращат на този адрес
 
 това къде да се пращат съобщенията зависи от настройката в съответния WSDL файл
+
+
+
+<soap:address location="http://uni-ruse-autoservice.appspot.com/soap/ElectronicShopService.soap"/>
+
+<soap:address location="http://localhost:8888/soap/ElectronicShopService.soap"/>

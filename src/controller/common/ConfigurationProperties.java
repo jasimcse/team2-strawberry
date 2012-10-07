@@ -21,4 +21,8 @@ public class ConfigurationProperties implements Serializable {
 	public static int getPageSize() {
 		return 20;
 	}
+	
+	public static String getElectronicShopID() {
+		return "electronicShop1";
+	}
 }

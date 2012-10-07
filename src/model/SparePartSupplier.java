@@ -17,6 +17,7 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 
 @SuppressWarnings("serial")
@@ -29,6 +30,7 @@ public class SparePartSupplier implements Serializable {
 	
 	private Key supplierID;
 	private Key sparePartID;
+	private Double deliveryPrice;
 	private LimitedString foreignID = new LimitedString(50);
 	
 private static final String PARENT_FIELD = "supplierID";
@@ -149,6 +151,14 @@ private static final String PARENT_FIELD = "supplierID";
 		}
 	}
 	
+	public double getDeliveryPrice() {
+		return deliveryPrice.doubleValue();
+	}
+
+	public void setDeliveryPrice(double deliveryPrice) {
+		this.deliveryPrice = Double.valueOf(deliveryPrice);
+	}
+	
 	public String getForeignID() {
 		return foreignID.getString();
 	}
@@ -164,6 +174,14 @@ private static final String PARENT_FIELD = "supplierID";
 				       addSort("__key__"));
 	}
 	
+	private static PreparedQuery getPreparedQueryByForeignID(Key supplierID, String foreignID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(SparePartSupplier.class.getSimpleName()).
+					   setAncestor(supplierID).
+				       addSort("__key__").
+				       setFilter(new Query.FilterPredicate("foreignID", FilterOperator.EQUAL, foreignID)));
+	}
+	
 	public static List<SparePartSupplier> queryGetAll(int offset, int count, Key supplierID) {
 		List<Entity> oldList = getPreparedQueryAll(supplierID).
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
@@ -175,12 +193,24 @@ private static final String PARENT_FIELD = "supplierID";
 		return getPreparedQueryAll(supplierID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
+	public static List<SparePartSupplier> queryGetByForeignID(String foreignID, int offset, int count, Key supplierID) {
+		List<Entity> oldList = getPreparedQueryByForeignID(supplierID, foreignID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetByForeignID(String foreignID, Key supplierID) {
+		return getPreparedQueryByForeignID(supplierID, foreignID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
 }
 
 /*
 CREATE TABLE Spare_Part_Supplier ( 
 	Supplier_ID BIGINT NOT NULL,
 	Spare_Part_ID BIGINT NOT NULL,
+	Delivery_Price FLOAT NOT NULL,
 	Foreign_ID VARCHAR(10) NOT NULL
 );
 
@@ -189,7 +219,7 @@ ALTER TABLE Spare_Part_Supplier ADD CONSTRAINT PK_Spare_Part_Supplier
 
 
 ALTER TABLE Spare_Part_Supplier ADD CONSTRAINT FK_Spare_Part_Supplier_Spare_Part 
-	FOREIGN KEY (Spare_Part_ID) REFERENCES Spare_Part (Spare_Part_ID);
+	FOREIGN KEY (Spare_Part_ID) REFERENCES Spare_Part (Spare_Part_ID)
 
 ALTER TABLE Spare_Part_Supplier ADD CONSTRAINT FK_Spare_Part_Supplier_Supplier 
 	FOREIGN KEY (Supplier_ID) REFERENCES Supplier (Supplier_ID);

@@ -57,11 +57,27 @@
   </servlet>
   <servlet>
     <servlet-name>ElectronicShop SOAP Handler Servlet</servlet-name>
-    <servlet-class>controller.serverCommunication.ElectronicShopSOAP</servlet-class>
+    <servlet-class>controller.serverCommunication.SOAPServer.ElectronicShopSOAP</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ElectronicShop SOAP Handler Servlet</servlet-name>
     <url-pattern>/soap/ElectronicShopService.soap</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Insurer SOAP Handler Servlet</servlet-name>
+    <servlet-class>controller.serverCommunication.SOAPServer.InsurerSOAP</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Insurer SOAP Handler Servlet</servlet-name>
+    <url-pattern>/soap/InsurerService.soap</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Supplier SOAP Handler Servlet</servlet-name>
+    <servlet-class>controller.serverCommunication.SOAPServer.SupplierSOAP</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Supplier SOAP Handler Servlet</servlet-name>
+    <url-pattern>/soap/SupplierService.soap</url-pattern>
   </servlet-mapping>
   <filter>
     <filter-name>UTF8 Filter</filter-name>

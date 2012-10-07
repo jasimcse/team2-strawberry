@@ -14,6 +14,7 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 import model.util.EntityHelper;
 import model.util.LimitedString;
@@ -175,6 +176,14 @@ public class Client implements Serializable {
 				       addSort("__key__"));
 	}
 	
+	private static PreparedQuery getPreparedQueryByForeignID(String foreignID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Client.class.getSimpleName()).
+					   setAncestor(EntityHelper.getClientParent()).
+				       addSort("__key__").
+				       setFilter(new Query.FilterPredicate("foreignID", FilterOperator.EQUAL, foreignID)));
+	}
+	
 	public static List<Client> queryGetAll(int offset, int count) {
 		List<Entity> oldList = getPreparedQueryAll().
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
@@ -184,6 +193,17 @@ public class Client implements Serializable {
 	
 	public static int countGetAll() {
 		return getPreparedQueryAll().countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<Client> queryGetByForeignID(String foreignID, int offset, int count) {
+		List<Entity> oldList = getPreparedQueryByForeignID(foreignID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetByForeignID(String foreignID) {
+		return getPreparedQueryByForeignID(foreignID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }
