@@ -34,10 +34,10 @@ public class InsurerRequest implements Serializable {
 	private static final String PARENT_FIELD = "vehicleID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "insurer", "vehicle", "diagnosis"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "insurer", "vehicle", "diagnosis"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"PARENT_FIELD", "diagnosisID"}));
+			new String[] {"diagnosisID"}));
 	
 	public void writeToDB() {
 		if (thisEntity == null) {

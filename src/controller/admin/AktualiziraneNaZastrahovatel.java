@@ -9,7 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
 import model.Insurer;
 import controller.common.ConfigurationProperties;
@@ -46,8 +46,13 @@ public class AktualiziraneNaZastrahovatel implements Serializable {
 		readList();
 	}
 	
-	public Key getID() {
-		return zastrahovatel.getID();
+	public String getID() {
+		if (isRowSelected()) {
+			return KeyFactory.keyToString(zastrahovatel.getID());
+		} else {
+			return null;
+			
+		}
 	}
 
 	public String getName() {

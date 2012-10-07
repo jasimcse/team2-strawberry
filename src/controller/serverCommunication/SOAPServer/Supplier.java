@@ -35,6 +35,9 @@ public class Supplier implements SupplierInterface {
 		model.Supplier supplier;
 		try {
 			Key supplierKey = KeyFactory.stringToKey(supplierID);
+			if (!supplierKey.getKind().equals(model.Supplier.class.getSimpleName())) {
+				throw new Exception();
+			}
 			supplier = model.Supplier.readEntity(supplierKey);
 		} catch(Exception e) {
 			logger.log(Level.WARNING, "supplierID \"" + supplierID + "\" not known!", e);
