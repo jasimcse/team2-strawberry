@@ -23,7 +23,6 @@ public class Insurer implements InsurerInterface {
 	
 	static final private Logger logger = Logger.getLogger(Insurer.class.getName());
 
-	// TODO - to be tested
 	@Override
 	public boolean createInsurerRequest(
 			String insurerID,
@@ -33,6 +32,9 @@ public class Insurer implements InsurerInterface {
 		model.Insurer insurer;
 		try {
 			Key insurerKey = KeyFactory.stringToKey(insurerID);
+			if (!insurerKey.getKind().equals(model.Insurer.class.getSimpleName())) {
+				throw new Exception();
+			}
 			insurer = model.Insurer.readEntity(insurerKey);
 		} catch(Exception e) {
 			logger.log(Level.WARNING, "insurerID \"" + insurerID + "\" not known!", e);
