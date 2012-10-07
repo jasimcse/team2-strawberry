@@ -1,9 +1,15 @@
 package controller.debug;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
+
+import controller.serverCommunication.SOAPServer.ElectronicShopInterface;
 
 import model.Test1Entity;
 
@@ -111,8 +117,21 @@ public class Test1 {
 		return null;
 	}
 	
-	public String doNothing(String str) {
-		local.setTestInteger(18);
+	public String doNothing() {
+		URL url;
+		QName qualifiedName;
+		try {
+			url = new URL("http://localhost:8888/wsdl/ElectronicShopService.wsdl");
+			qualifiedName = new QName("http://serverCommunication.controller/", "ElectronicShopService");
+			Service service = Service.create(url, qualifiedName);
+			ElectronicShopInterface eshop = service.getPort(ElectronicShopInterface.class);
+			local.setTestBool(eshop.createOrUpdateWarrantyConditions("electronicShop1", "testID", 11, 9999, "eha eha"));
+			local.setTestStringShort(eshop.toString());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		
+		
 		return null;
 		//return "../index.jsf?faces-redirect=true";
 	}
