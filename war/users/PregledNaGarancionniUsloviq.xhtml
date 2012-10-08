@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="headSection">
+		
+	</ui:define>
+
+	<ui:define name="pageContent">
+	
+		<h:form>
+			
+			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+			<h:dataTable
+				rows="#{configurationProperties.getPageSize()}"
+				value="#{pregledNaGarancionniUsloviq.spisukGarancionniUsloviq}"
+			    first="0"
+			    var="curr"
+			    rowClasses="#{pregledNaGarancionniUsloviq.rowStyleClasses}">
+				
+				<h:column>
+					<f:facet name="header">Месеци гаранция</f:facet>
+					#{curr.months}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Километри гаранция</f:facet>
+					#{curr.mileage}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Други гаранционни условия</f:facet>
+					#{curr.otherConditions}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Прегледай</f:facet>
+					<h:commandLink action="#{pregledNaGarancionniUsloviq.selectRow(curr)}" value="Прегледай" />
+				</h:column>
+				
+				<f:facet name="footer">
+					<h:panelGroup rendered="#{!empty pregledNaGarancionniUsloviq.pagesList}">
+						<!-- предишна страница -->
+						<h:commandLink rendered="#{pregledNaGarancionniUsloviq.page - 1 ge 0}"
+							action="#{pregledNaGarancionniUsloviq.setPage(pregledNaGarancionniUsloviq.page - 1)}"
+							value="&lt;&lt;" />
+							
+						<!-- други страници -->
+						<ui:repeat value="#{pregledNaGarancionniUsloviq.pagesList}" var="currPage">
+							<h:commandLink
+								rendered="#{pregledNaGarancionniUsloviq.getPage() ne currPage.intValue() - 1}"
+								action="#{pregledNaGarancionniUsloviq.setPage(currPage.intValue()-1)}"
+								value="#{currPage}" />
+								
+							<h:outputText
+								rendered="#{pregledNaGarancionniUsloviq.getPage() eq currPage.intValue() - 1}"
+								value="#{currPage}" />
+								
+							<h:outputText value=" " />
+						</ui:repeat>
+						
+						<!-- следваща страница -->
+						<h:commandLink rendered="#{pregledNaGarancionniUsloviq.page + 1 lt pregledNaGarancionniUsloviq.pagesCount}"
+							action="#{pregledNaGarancionniUsloviq.setPage(pregledNaGarancionniUsloviq.page + 1)}"
+							value="&gt;&gt;" />
+							
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="#{empty pregledNaGarancionniUsloviq.pagesList}" style="color: red; font-weight: bold;">
+						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
+						<br />
+						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
+					</h:panelGroup>
+				</f:facet>
+				 
+			</h:dataTable>
+		</h:form>
+		
+		<h:form>
+	    
+			<h:outputLabel value="Месеци гаранция">
+				<h:inputText id="months"
+					value="#{pregledNaGarancionniUsloviq.months}" readonly="true" />
+				<h:message for="months" />
+			</h:outputLabel>
+			<br />
+
+			<h:outputLabel value="Километри гаранция*">
+				<h:inputText id="milage" 
+					value="#{pregledNaGarancionniUsloviq.mileage}" readonly="true" />
+				<h:message for="milage" />
+			</h:outputLabel>
+			<br />
+
+			<h:outputLabel value="Други гаранционни условия">
+				<h:inputTextarea id="otherConditions"
+					value="#{pregledNaGarancionniUsloviq.otherConditions}" readonly="true" />
+				<h:message for="otherConditions" />
+			</h:outputLabel>
+			<br />
+			
+			<h:commandButton action="#{pregledNaGarancionniUsloviq.deselectRow()}" value="Отмени"
+				disabled="#{!pregledNaGarancionniUsloviq.rowSelected}" />
+				
+			<br />
+			<h:outputText value="#{pregledNaGarancionniUsloviq.errorMessage}" />
+
+		</h:form>
+			
+	</ui:define>
+	
+</ui:composition>
+</html>
