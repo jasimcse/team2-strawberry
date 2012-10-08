@@ -42,8 +42,9 @@
 			</h:form>
 		</div>
 	</div>
+	
 	<div id="bottomSection" style="clear: both;">
-		<div id="leftSection" style="float: left; width: 100px;">
+		<div id="leftSection" style="float: left; width: 200px;">
 			<ui:repeat var="currEntry" value="#{usersMenuController.getMenu('UserPosition')}">
 				<h:outputLink value="#{currEntry.path}">#{currEntry.value}</h:outputLink>
 				<br />
