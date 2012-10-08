@@ -92,6 +92,9 @@ public class WarrantyConditions implements Serializable {
 	}
 
 	public long getMonths() {
+		if (months == null) {
+			return 0;
+		}
 		return months.longValue();
 	}
 
@@ -100,6 +103,9 @@ public class WarrantyConditions implements Serializable {
 	}
 
 	public long getMileage() {
+		if (mileage == null) {
+			return 0;
+		}
 		return mileage.longValue();
 	}
 

@@ -27,7 +27,8 @@ public class UsersMenuController implements Serializable {
 	private static final MenuEntry ElectronicShopService = new MenuEntry("Уеб услуга \"Електронен магазин\"", "/wsdl/ElectronicShopService.wsdl");
 	private static final MenuEntry InsurerService = new MenuEntry("Уеб услуга \"Застрахователи\"", "/wsdl/InsurerService.wsdl");
 	private static final MenuEntry SupplierService = new MenuEntry("Уеб услуга \"Доставчици на резервни части и консумативи\"", "/wsdl/SupplierService.wsdl");
-	
+	private static final MenuEntry ForTestingSeparator = new MenuEntry("------- За тестване -------", "");
+	private static final MenuEntry DobavqneNaGarancionniUsloviq = new MenuEntry("Добавяне на гаранционни условия", "/debug/DobavqneNaGarancionniUsloviq.jsf");
 	
 	
 	private static final List<MenuEntry> ALL_MENU_ENTRIES =
@@ -45,6 +46,8 @@ public class UsersMenuController implements Serializable {
 			    		ElectronicShopService,
 			    		InsurerService,
 			    		SupplierService,
+			    		ForTestingSeparator,
+			    		DobavqneNaGarancionniUsloviq,
 			    		})));
 	/*
 	private static final List<MenuEntry> ADMINISTRATOR_MENU =
