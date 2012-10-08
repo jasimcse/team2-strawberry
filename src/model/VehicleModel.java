@@ -109,6 +109,9 @@ public class VehicleModel implements Serializable {
 	}
 
 	public String getCharacteristics() {
+		if (characteristics == null) {
+			return null;
+		}
 		return characteristics.getValue();
 	}
 
