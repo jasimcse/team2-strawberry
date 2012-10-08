@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="pageContent">
+		<br />
+		<h:outputText value="Тази страница е само за тестване. По принцип данните трябва да идват от електронния магазин." 
+			style="color: red; font-weight: bold;"/>
+		<br />
+		<br />
+	    <h:form>
+			<h:outputLabel value="Ключ*">
+				<h:inputText id="ID"
+					value="#{dobavqneNaGarancionniUsloviq.foreignID}" maxlength="50"
+					required="true" requiredMessage="задължително поле!" />
+				<h:message for="ID" />
+			</h:outputLabel>
+			<br />
+
+			<h:outputLabel value="Месеци гаранция*">
+				<h:inputText id="months"
+					value="#{dobavqneNaGarancionniUsloviq.months}" required="true"
+					requiredMessage="задължително поле!">
+					<f:validateLongRange minimum="0" maximum="500" />
+				</h:inputText>
+				<h:message for="months" />
+			</h:outputLabel>
+			<br />
+
+			<h:outputLabel value="Километри гаранция*">
+				<h:inputText id="milage"
+					value="#{dobavqneNaGarancionniUsloviq.mileage}" required="true"
+					requiredMessage="задължително поле!">
+					<f:validateLongRange minimum="0" maximum="1000000" />
+				</h:inputText>
+				<h:message for="milage" />
+			</h:outputLabel>
+			<br />
+
+			<h:outputLabel value="Други гаранционни условия">
+				<h:inputText id="otherConditions"
+					value="#{dobavqneNaGarancionniUsloviq.otherConditions}"
+					maxlength="500" required="false" />
+				<h:message for="otherConditions" />
+			</h:outputLabel>
+			<br />
+
+			<h:commandButton value="Добави"
+				action="#{dobavqneNaGarancionniUsloviq.writeIt()}" /> &lt;--- добавя се чрез WSDL и SOAP затова може да се забави
+	    	<br />
+			<h:outputText value="#{dobavqneNaGarancionniUsloviq.errorMessage}" />
+
+		</h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>
