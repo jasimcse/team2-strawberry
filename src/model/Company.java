@@ -163,6 +163,20 @@ public class Company implements Serializable {
 		return readList(oldList);
 	}
 	
+	private static PreparedQuery getPreparedQueryAllM() { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Company.class.getSimpleName()).
+					   setAncestor(EntityHelper.getClientParent()).
+				       addSort("__key__"));
+	}
+	
+	public static List<Company> queryGetAllM(int offset, int count) {
+		List<Entity> oldList = getPreparedQueryAllM().
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
 	public static int countGetAll(Key clientID) {
 		return getPreparedQueryAll(clientID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}

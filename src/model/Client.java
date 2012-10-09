@@ -46,7 +46,7 @@ public class Client implements Serializable {
 					      "thisEntity"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"phoneNumber", "mail", "IBANNumber", "SWIFTCode"}));
+			new String[] {"phoneNumber", "mail", "IBANNumber", "SWIFTCode", "foreignID"}));
 	
 	public Entity makeEntity() {
 		clientParentID = EntityHelper.getClientParent();
