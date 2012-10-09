@@ -1,0 +1,320 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="headSection">
+		
+	</ui:define>
+
+	<ui:define name="pageContent">
+	
+		<h:form>
+			<h:panelGroup>
+				<h:outputLabel value="Име">
+					<h:inputText value="" maxlength="50" />
+				</h:outputLabel>
+				<br />
+				<h:outputLabel value="Фамилия">
+					<h:inputText value="" maxlength="50" />
+				</h:outputLabel>
+				<br />
+				<h:outputLabel value="Наименование на юриедическо лице">
+					<h:inputText value="" maxlength="100" />
+				</h:outputLabel>
+				
+				<br />
+				<h:commandButton value="Търси" disabled="true" />
+				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
+			</h:panelGroup>
+		</h:form>
+		
+		<h:form>
+			
+			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+			<h:dataTable
+				rows="#{configurationProperties.getPageSize()}"
+				value="#{aktualiziraneNaKlient.spisukPerson}"
+			    first="0"
+			    var="curr"
+			    rowClasses="#{aktualiziraneNaKlient.rowStyleClassesPerson}">
+				
+				
+				<h:column>
+					<f:facet name="header">Име</f:facet>
+					#{curr.name}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Фамилия</f:facet>
+					#{curr.family}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Населено място</f:facet>
+					#{curr.getClient().getAddressCity()}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Адрес</f:facet>
+					#{curr.getClient().getAddressLine()}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Телефонен номер</f:facet>
+					#{curr.getClient().getPhoneNumber()}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Електронна поща</f:facet>
+					#{curr.getClient().getMail()}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Промени</f:facet>
+					<h:commandLink action="#{aktualiziraneNaKlient.selectRowPerson(curr)}" value="Промени" />
+				</h:column>
+				
+				<h:column rendered="#{aktualiziraneNaKlient.choosingAlowedPerson}">
+					<f:facet name="header">Избери</f:facet>
+					<h:commandLink action="#{aktualiziraneNaKlient.chooseKlientPerson(curr)}" value="Избери" />
+				</h:column>
+				
+				<f:facet name="footer">
+					<h:panelGroup rendered="#{!empty aktualiziraneNaKlient.pagesListPerson}">
+						<!-- предишна страница -->
+						<h:commandLink rendered="#{aktualiziraneNaKlient.pagePerson - 1 ge 0}"
+							action="#{aktualiziraneNaKlient.setPagePerson(aktualiziraneNaKlient.pagePerson - 1)}"
+							value="&lt;&lt;" />
+							
+						<!-- други страници -->
+						<ui:repeat value="#{aktualiziraneNaKlient.pagesListPerson}" var="currPage">
+							<h:commandLink
+								rendered="#{aktualiziraneNaKlient.getPagePerson() ne currPage.intValue() - 1}"
+								action="#{aktualiziraneNaKlient.setPagePerson(currPage.intValue()-1)}"
+								value="#{currPage}" />
+								
+							<h:outputText
+								rendered="#{aktualiziraneNaKlient.getPagePerson() eq currPage.intValue() - 1}"
+								value="#{currPage}" />
+								
+							<h:outputText value=" " />
+						</ui:repeat>
+						
+						<!-- следваща страница -->
+						<h:commandLink rendered="#{aktualiziraneNaKlient.pagePerson + 1 lt aktualiziraneNaKlient.pagesCountPerson}"
+							action="#{aktualiziraneNaKlient.setPagePerson(aktualiziraneNaKlient.pagePerson + 1)}"
+							value="&gt;&gt;" />
+							
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="#{empty aktualiziraneNaKlient.pagesListPerson}" style="color: red; font-weight: bold;">
+						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
+						<br />
+						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
+					</h:panelGroup>
+				</f:facet>
+				 
+			</h:dataTable>
+			
+			
+			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+			<h:dataTable
+				rows="#{configurationProperties.getPageSize()}"
+				value="#{aktualiziraneNaKlient.spisukCompany}"
+			    first="0"
+			    var="curr"
+			    rowClasses="#{aktualiziraneNaKlient.rowStyleClassesCompany}">
+				
+				
+				<h:column>
+					<f:facet name="header">Наименовнаие</f:facet>
+					#{curr.name}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Населено място</f:facet>
+					#{curr.getClient().getAddressCity()}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Адрес</f:facet>
+					#{curr.getClient().getAddressLine()}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Телефонен номер</f:facet>
+					#{curr.getClient().getPhoneNumber()}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Електронна поща</f:facet>
+					#{curr.getClient().getMail()}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Промени</f:facet>
+					<h:commandLink action="#{aktualiziraneNaKlient.selectRowCompany(curr)}" value="Промени" />
+				</h:column>
+				
+				<h:column rendered="#{aktualiziraneNaKlient.choosingAlowedCompany}">
+					<f:facet name="header">Избери</f:facet>
+					<h:commandLink action="#{aktualiziraneNaKlient.chooseKlientCompany(curr)}" value="Избери" />
+				</h:column>
+				
+				<f:facet name="footer">
+					<h:panelGroup rendered="#{!empty aktualiziraneNaKlient.pagesListCompany}">
+						<!-- предишна страница -->
+						<h:commandLink rendered="#{aktualiziraneNaKlient.pageCompany - 1 ge 0}"
+							action="#{aktualiziraneNaKlient.setPageCompany(aktualiziraneNaKlient.pageCompany - 1)}"
+							value="&lt;&lt;" />
+							
+						<!-- други страници -->
+						<ui:repeat value="#{aktualiziraneNaKlient.pagesListCompany}" var="currPage">
+							<h:commandLink
+								rendered="#{aktualiziraneNaKlient.getPageCompany() ne currPage.intValue() - 1}"
+								action="#{aktualiziraneNaKlient.setPageCompany(currPage.intValue()-1)}"
+								value="#{currPage}" />
+								
+							<h:outputText
+								rendered="#{aktualiziraneNaKlient.getPageCompany() eq currPage.intValue() - 1}"
+								value="#{currPage}" />
+								
+							<h:outputText value=" " />
+						</ui:repeat>
+						
+						<!-- следваща страница -->
+						<h:commandLink rendered="#{aktualiziraneNaKlient.pageCompany + 1 lt aktualiziraneNaKlient.pagesCountCompany}"
+							action="#{aktualiziraneNaKlient.setPageCompany(aktualiziraneNaKlient.pageCompany + 1)}"
+							value="&gt;&gt;" />
+							
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="#{empty aktualiziraneNaKlient.pagesListCompany}" style="color: red; font-weight: bold;">
+						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
+						<br />
+						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
+					</h:panelGroup>
+				</f:facet>
+				 
+			</h:dataTable>	
+			
+			
+			
+			
+			
+		</h:form>
+
+	    <h:form>
+
+	    <h:outputLabel value="Име*">
+	    	<h:inputText id="personname" value="#{aktualiziraneNaKlient.personName}" maxlength="50" 
+	    		required="false" requiredMessage="задължително поле!" 
+	    		readonly="#{!aktualiziraneNaKlient.rowSelectedPerson}" />
+	    	<h:message for="personname" />
+	    </h:outputLabel> 
+	    
+		<h:outputLabel value="			Наименование на компанията*">
+	    	<h:inputText id="companyname" value="#{aktualiziraneNaKlient.companyName}" maxlength="100" 
+	    		required="false"  requiredMessage="задължително поле!" 
+	    		readonly="#{!aktualiziraneNaKlient.rowSelectedCompany}" />
+	    	<h:message for="companyname" />
+	    </h:outputLabel> 
+	    <br />
+	   
+	    <h:outputLabel value="Фамилия*">
+	    	<h:inputText id="family" value="#{aktualiziraneNaKlient.family}" maxlength="50" 
+	    		required="false"  requiredMessage="задължително поле!" 
+	    		readonly="#{!aktualiziraneNaKlient.rowSelectedPerson}" />
+	    	<h:message for="family" />
+	    </h:outputLabel> 
+	
+	    <h:outputLabel value="			Единен идентификационен код (ЕИК)*">
+	    	<h:inputText id="regnumber" value="#{aktualiziraneNaKlient.registrationNumber}" maxlength="9" 
+	    		required="false"  requiredMessage="задължително поле!" 
+	    		readonly="#{!aktualiziraneNaKlient.rowSelectedCompany}" />
+	    	<h:message for="regnumber" />
+	    </h:outputLabel> 
+	    <br />
+	   
+	    <h:outputLabel value="			ДДС номер">
+	    	<h:inputText id="vat" value="#{aktualiziraneNaKlient.VATNumber}" maxlength="11" 
+	    	readonly="#{!aktualiziraneNaKlient.rowSelectedCompany}" />
+	    	<h:message for="vat" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="			Лице за контакт">
+	    	<h:inputText id="contactperson" value="#{aktualiziraneNaKlient.contactPerson}" maxlength="100" 
+	    	readonly="#{!aktualiziraneNaKlient.rowSelectedCompany}" />
+	    	<h:message for="contactperson" />
+	    </h:outputLabel> 
+	    <br />
+	     
+	    <h:outputLabel value="Населено място*">
+	    	<h:inputText id="city" value="#{aktualiziraneNaKlient.addressCity}" maxlength="30" 
+	    		required="true" requiredMessage="задължително поле!" 
+	    		readonly="#{!aktualiziraneNaKlient.rowSelectedPerson and !aktualiziraneNaKlient.rowSelectedCompany}" />
+	    	<h:message for="city" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Адрес*">
+	    	<h:inputText id="address" value="#{aktualiziraneNaKlient.addressLine}" maxlength="100" 
+	    		required="true" requiredMessage="задължително поле!" 
+	    		readonly="#{!aktualiziraneNaKlient.rowSelectedPerson and !aktualiziraneNaKlient.rowSelectedCompany}"/>
+	    	<h:message for="address" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Телефонен номер">
+	    	<h:inputText id="phone" value="#{aktualiziraneNaKlient.phoneNumber}" maxlength="15" 
+	    	readonly="#{!aktualiziraneNaKlient.rowSelectedPerson and !aktualiziraneNaKlient.rowSelectedCompany}"/>
+	    	<h:message for="phone" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Адрес на електронната поща">
+	    	<h:inputText id="mail" value="#{aktualiziraneNaKlient.mail}" maxlength="50"
+	    	readonly="#{!aktualiziraneNaKlient.rowSelectedPerson and !aktualiziraneNaKlient.rowSelectedCompany}"/>
+	    	<h:message for="mail" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Номер на банковата сметка">
+	    	<h:inputText id="iban" value="#{aktualiziraneNaKlient.IBANNumber}" maxlength="30"
+	    	readonly="#{!aktualiziraneNaKlient.rowSelectedPerson and !aktualiziraneNaKlient.rowSelectedCompany}"/>
+	    	<h:message for="iban" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Банков код">
+	    	<h:inputText id="swiftcode" value="#{aktualiziraneNaKlient.SWIFTCode}" maxlength="20"
+	    	readonly="#{!aktualiziraneNaKlient.rowSelectedPerson and !aktualiziraneNaKlient.rowSelectedCompany}"/>
+	    	<h:message for="swiftcode" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <br />
+			 <h:commandButton value="Запази" action="#{aktualiziraneNaKlient.saveClient()}"
+				disabled="#{!aktualiziraneNaKlient.rowSelectedPerson and !aktualiziraneNaKlient.rowSelectedCompany}"/>
+			
+			<h:commandButton action="#{aktualiziraneNaKlient.deselectRow() }" value="Отмени"
+				disabled="#{!aktualiziraneNaKlient.rowSelectedPerson and !aktualiziraneNaKlient.rowSelectedCompany}"/>
+				
+			<h:commandButton action="#{aktualiziraneNaKlient.goToAdd()}" value="Добави" />
+			
+	    <br />
+	    <h:outputText value="#{aktualiziraneNaKlient.errorMessage}"/>
+	    
+	    </h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>
