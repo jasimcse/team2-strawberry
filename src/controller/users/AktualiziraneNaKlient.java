@@ -9,11 +9,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import com.google.appengine.api.datastore.Key;
 
 import model.Client;
-import model.Company;
-import model.Person;
 import controller.common.ConfigurationProperties;
 import controller.common.InterPageDataRequest;
 
@@ -23,24 +20,16 @@ import controller.common.InterPageDataRequest;
 public class AktualiziraneNaKlient implements Serializable {
 
 	private Client klient = new Client();
-	private Person person = new Person();
-	private Company company = new Company();
 	
 	private String errorMessage;
 	
-	//private List<Client> spisukKlienti;
-	private List<Person> spisukPerson;
-	private List<Company> spisukComapany;
+	private List<Client> spisukKlienti;
 
 	private Stack<InterPageDataRequest> dataRequestStack;
 	
-	private int pagePerson = 0;
-	private int pagesCountPerson;
-	private int rowsCountPerson;
-	
-	private int pageCompany = 0;
-	private int pagesCountCompany;
-	private int rowsCountCompany;
+	private int page = 0;
+	private int pagesCount;
+	private int rowsCount;
 	
 	private InterPageDataRequest dataRequest;
 
@@ -56,161 +45,143 @@ public class AktualiziraneNaKlient implements Serializable {
 			}
 		}
 		
-		readListPerson();
-		readListCompany();
+		readList();
 	}
-
-
-	public Key getID() {
-		return klient.getID();
-	}
-
-
-	public String getPersonCompany() {
-		return klient.getPersonCompany();
-	}
-
-
-	public void setPersonCompany(String personCompany) {
-		klient.setPersonCompany(personCompany);
-	}
-
-
+	
 	public String getAddressCity() {
 		return klient.getAddressCity();
 	}
-
 
 	public void setAddressCity(String addressCity) {
 		klient.setAddressCity(addressCity);
 	}
 
-
 	public String getAddressLine() {
 		return klient.getAddressLine();
 	}
-
 
 	public void setAddressLine(String addressLine) {
 		klient.setAddressLine(addressLine);
 	}
 
-
 	public String getPhoneNumber() {
 		return klient.getPhoneNumber();
 	}
-
 
 	public void setPhoneNumber(String phoneNumber) {
 		klient.setPhoneNumber(phoneNumber);
 	}
 
-
 	public String getMail() {
 		return klient.getMail();
 	}
-
 
 	public void setMail(String mail) {
 		klient.setMail(mail);
 	}
 
-
 	public String getIBANNumber() {
 		return klient.getIBANNumber();
 	}
-
 
 	public void setIBANNumber(String iBANNumber) {
 		klient.setIBANNumber(iBANNumber);
 	}
 
-
 	public String getSWIFTCode() {
 		return klient.getSWIFTCode();
 	}
 
-
 	public void setSWIFTCode(String sWIFTCode) {
 		klient.setSWIFTCode(sWIFTCode);
 	}
-
-
-	public String getPersonName() {
-		return person.getName();
-	}
-
-
-	public void setPersonName(String name) {
-		person.setName(name);
-	}
-
-
-	public String getFamily() {
-		return person.getFamily();
-	}
-
-
-	public void setFamily(String family) {
-		person.setFamily(family);
-	}
-
-
-	public String getCompanyName() {
-		return company.getName();
-	}
-
-	public void setCompanyName(String name) {
-		company.setName(name);
+	
+	public boolean isPerson() {
+		return (klient.getPerson() != null);
 	}
 	
-	public String getRegistrationNumber() {
-		return company.getRegistrationNumber();
-	}
-
-	public void setRegistrationNumber(String registrationNumber) {
-		if (!"".equals(registrationNumber)) 
-			company.setRegistrationNumber(registrationNumber);
-	}
-
-	public String getVATNumber() {
-		return company.getVATNumber();
-	}
-
-	public void setVATNumber(String VATNumber) {
-		if (!"".equals(VATNumber)) 
-		    company.setVATNumber(VATNumber);
-	}
-
-	public String getContactPerson() {
-		return company.getContactPerson();
-	}
-
-	public void setContactPerson(String contactPerson) {
-		company.setContactPerson(contactPerson);
+	public boolean isCompany() {
+		return (klient.getCompany() != null);
 	}
 	
+	public String getNamePerson() {
+		if (klient.getPerson() == null) {
+			return null;
+		}
+		return klient.getPerson().getName();
+	}
+
+	public void setNamePerson(String name) {
+		klient.getPerson().setName(name);
+	}
+	
+	public String getFamilyPerson() {
+		if (klient.getPerson() == null) {
+			return null;
+		}
+		return klient.getPerson().getFamily();
+	}
+
+	public void setFamilyPerson(String family) {
+		klient.getPerson().setFamily(family);
+	}
+	
+	public String getNameCompany() {
+		if (klient.getCompany() == null) {
+			return null;
+		}
+		return klient.getCompany().getName();
+	}
+
+	public void setNameCompany(String name) {
+		klient.getCompany().setName(name);
+	}
+	
+	public String getRegistrationNumberCompany() {
+		if (klient.getCompany() == null) {
+			return null;
+		}
+		return klient.getCompany().getRegistrationNumber();
+	}
+
+	public void setRegistrationNumberCompany(String registrationNumber) {
+		if (!"".equals(registrationNumber)) {
+			klient.getCompany().setRegistrationNumber(registrationNumber);
+		}
+	}
+
+	public String getVATNumberCompany() {
+		if (klient.getCompany() == null) {
+			return null;
+		}
+		return klient.getCompany().getVATNumber();
+	}
+
+	public void setVATNumberCompany(String VATNumber) {
+		if (!"".equals(VATNumber)) {
+			klient.getCompany().setVATNumber(VATNumber);
+		}
+	}
+	
+	public String getContactPersonCompany() {
+		if (klient.getCompany() == null) {
+			return null;
+		}
+		return klient.getCompany().getContactPerson();
+	}
+
+	public void setContactPersonCompany(String contactPerson) {
+		klient.getCompany().setContactPerson(contactPerson);
+	}
+
 	public String getErrorMessage() {
 		return errorMessage;
 	}
 	
-	
-	public String saveClient()
-	{
+	public String saveClient() {
 		klient.writeToDB();
-		if(klient.getPersonCompany().equals("P"))
-		{
-			person.writeToDB();
-			deselectRowPerson();
-		}
-		else
-		{
-			company.writeToDB();
-			deselectRowCompany();
-		}
 			
-		readListPerson();
-		readListCompany();
+		readList();
 		
 		// set the message
 		errorMessage = "Клиентът беше актуализиран успешно!";
@@ -218,39 +189,37 @@ public class AktualiziraneNaKlient implements Serializable {
 		return null;
 	}
 	
-	
-	public int getPagePerson() {
-		return pagePerson;
+	public int getPage() {
+		return page;
 	}
 
-	public void setPagePerson(int page) {
-		this.pagePerson = page;
-		readListPerson();
+	public void setPage(int page) {
+		this.page = page;
+		readList();
 	}
 
 
-	public List<Person> getSpisukPerson() {
-		return spisukPerson;
+	public List<Client> getSpisukKlienti() {
+		return spisukKlienti;
 	}
 
-	public int getPagesCountPerson() {
-		return pagesCountPerson;
+	public int getPagesCount() {
+		return pagesCount;
 	}
 
-	private void readListPerson() {
-		spisukPerson = Person.queryGetAllM(pagePerson * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
-		person = new Person();
-		rowsCountPerson = spisukPerson.size();
-		
-		pagesCountPerson = rowsCountPerson / ConfigurationProperties.getPageSize();
+	private void readList() {
+		spisukKlienti = Client.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
+		klient = new Client();
+		rowsCount = Client.countGetAll();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
 	}
 
 	
-	public String getRowStyleClassesPerson() {
+	public String getRowStyleClasses() {
 		StringBuilder strbuff = new StringBuilder();
 		
-		for (Person per : spisukPerson) {
-			if (person == per) {
+		for (Client cli : spisukKlienti) {
+			if (klient == cli) {
 				strbuff.append("selectedRow,");
 			} else {
 				strbuff.append("notSelectedRow,");
@@ -260,131 +229,44 @@ public class AktualiziraneNaKlient implements Serializable {
 		return strbuff.toString();
 	}
 	
-	public List<Integer> getPagesListPerson() {
+	public List<Integer> getPagesList() {
 		List<Integer> list = new ArrayList<Integer>();
 		
-		for (int i=0; i < pagesCountPerson; i++)
+		for (int i=0; i < pagesCount; i++)
 			list.add(Integer.valueOf(i+1));
 		
 		return list;
 	}
 	
-	public void selectRowPerson(Person per) {
-		deselectRowCompany();
-		person = per;
-		klient = person.getClient();
+	public void selectRow(Client client) {
+		klient = client;
 	}
 	
-	public void deselectRowPerson() {
+	public void deselectRow() {
 		klient = new Client();
-		person = new Person();
 	}
-	
 
-	public boolean isRowSelectedPerson() {
-		return spisukPerson.contains(person);
+	public boolean isRowSelected() {
+		return spisukKlienti.contains(klient);
 	}
 	
 	public String goToAdd() {
 		return "DobavqneNaKlient.jsf?faces-redirect=true";
 	}
 
-	public boolean isChoosingAlowedPerson() {
+	public boolean isChoosingAlowed() {
 		return (dataRequest != null);
 	}
 	
-	public String chooseKlient(Person per) {
+	public String chooseClient(Client client) {
 		if (dataRequest == null) {
 			throw new RuntimeException("Don't do that bastard!");
 		}
 		
-		dataRequest.requestedObject = per;
+		dataRequest.requestedObject = client;
 		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
 		
 		return dataRequest.returnPage + "?faces-redirect=true";
 	}
 	
-	public int getPageCompany() {
-		return pageCompany;
-	}
-
-	public void setPageCompany(int page) {
-		this.pageCompany = page;
-		readListCompany();
-	}
-
-
-	public List<Company> getSpisukCompany() {
-		return spisukComapany;
-	}
-
-	public int getPagesCountCompany() {
-		return pagesCountCompany;
-	}
-
-	private void readListCompany() {
-		spisukComapany = Company.queryGetAllM(pageCompany * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
-		company = new Company();
-		rowsCountCompany = spisukComapany.size();
-		
-		pagesCountCompany = rowsCountCompany / ConfigurationProperties.getPageSize();
-	}
-	
-	public String getRowStyleClassesCompany() {
-		StringBuilder strbuff = new StringBuilder();
-		
-		for (Company comp : spisukComapany) {
-			if (company == comp) {
-				strbuff.append("selectedRow,");
-			} else {
-				strbuff.append("notSelectedRow,");
-			}
-		}
-		
-		return strbuff.toString();
-	}
-	
-	public List<Integer> getPagesListCompany() {
-		List<Integer> list = new ArrayList<Integer>();
-		
-		for (int i=0; i < pagesCountCompany; i++)
-			list.add(Integer.valueOf(i+1));
-		
-		return list;
-	}
-	
-	public void selectRowCompany(Company comp) {
-		deselectRowPerson();
-		company = comp;
-		klient = company.getClient();
-	}
-	
-	public void deselectRowCompany() {
-		klient = new Client();
-		company = new Company();
-	}
-	
-
-	public void deselectRow() {
-		deselectRowPerson();
-		deselectRowCompany();
-	}
-	public boolean isRowSelectedCompany() {
-		return spisukComapany.contains(company);
-	}
-	
-	public boolean isChoosingAlowedCompany() {
-		return (dataRequest != null);
-	}
-	
-	public String chooseCompany(Company comp) {
-		if (dataRequest == null) {
-			throw new RuntimeException("Don't do that bastard!");
-		}
-		
-		dataRequest.requestedObject = comp;
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
-		
-		return dataRequest.returnPage + "?faces-redirect=true";
-	}
 }

@@ -229,6 +229,12 @@ public class Vehicle implements Serializable {
 		this.purchaseDate = purchaseDate;
 	}
 	
+	private static PreparedQuery getPreparedQueryAll() { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Vehicle.class.getSimpleName()).
+				       addSort("__key__"));
+	}
+	
 	private static PreparedQuery getPreparedQueryAll(Key clientID) { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(Vehicle.class.getSimpleName()).
@@ -251,7 +257,16 @@ public class Vehicle implements Serializable {
 				       setFilter(new Query.FilterPredicate("VIN", FilterOperator.EQUAL, VIN)));
 	}
 	
-	//TODO - да се дава възможност да се разглеждата всички ?
+	public static List<Vehicle> queryGetAll(int offset, int count) {
+		List<Entity> oldList = getPreparedQueryAll().
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll() {
+		return getPreparedQueryAll().countEntities(FetchOptions.Builder.withLimit(10000));
+	}
 	
 	public static List<Vehicle> queryGetAll(int offset, int count, Key clientID) {
 		List<Entity> oldList = getPreparedQueryAll(clientID).

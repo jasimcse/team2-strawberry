@@ -388,7 +388,6 @@ public class ElectronicShop implements ElectronicShopInterface {
 			p = pl.get(0);
 		}
 		try {
-			//TODO - да се изпълнят в транзакция ?
 			c.setForeignID(clientID);
 			c.setAddressCity(addressCity);
 			c.setAddressLine(addressLine);
@@ -396,13 +395,12 @@ public class ElectronicShop implements ElectronicShopInterface {
 			c.setPhoneNumber(phoneNumber);
 			c.setIBANNumber(IBANNumber);
 			c.setSWIFTCode(SWIFTCode);
-			c.setPersonCompany(Client.PERSON);
-			c.writeToDB();
 			
-			p.setClientID(c.getID());
 			p.setName(name);
 			p.setFamily(family);
-			p.writeToDB();
+			c.setPerson(p);
+			c.writeToDB();
+			
 		} catch (RuntimeException e) {
 			logger.log(Level.WARNING, "Can't write to DB!", e);
 			return false;
@@ -448,7 +446,6 @@ public class ElectronicShop implements ElectronicShopInterface {
 			cmpn = cmpnl.get(0);
 		}
 		try {
-			//TODO - да се изпълнят в транзакция ?
 			c.setForeignID(clientID);
 			c.setAddressCity(addressCity);
 			c.setAddressLine(addressLine);
@@ -456,17 +453,17 @@ public class ElectronicShop implements ElectronicShopInterface {
 			c.setPhoneNumber(phoneNumber);
 			c.setIBANNumber(IBANNumber);
 			c.setSWIFTCode(SWIFTCode);
-			c.setPersonCompany(Client.COMPANY);
-			c.writeToDB();
 
-			cmpn.setClientID(c.getID());
 			cmpn.setName(name);
 			cmpn.setContactPerson(contactPerson);
 			cmpn.setRegistrationNumber(registrationNumber);
 			if (!"".equals(VATNumber)) {
 				cmpn.setVATNumber(VATNumber);
 			}
-			cmpn.writeToDB();
+			c.setCompany(cmpn);
+			c.writeToDB();
+			
+			
 		} catch (RuntimeException e) {
 			logger.log(Level.WARNING, "Can't write to DB!", e);
 			return false;

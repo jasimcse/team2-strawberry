@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="headSection">
+		
+	</ui:define>
+
+	<ui:define name="pageContent">
+	
+		<h:form>
+			<h:panelGroup>
+				<h:outputLabel value="Марка на автомобила">
+					<h:inputText value="" maxlength="50" />
+				</h:outputLabel>
+				<br />
+				<h:outputLabel value="Модел на автомобила">
+					<h:inputText value="" maxlength="50" />
+				</h:outputLabel>
+				<br />
+				
+				<h:commandButton value="Търси" disabled="true" />
+				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
+			</h:panelGroup>
+		</h:form>
+		
+	
+		<h:form>
+			
+			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+			<h:dataTable
+				rows="#{configurationProperties.getPageSize()}"
+				value="#{pregledNaModelAvtomobil.spisukModeliAvtomobili}"
+			    first="0"
+			    var="curr"
+			    rowClasses="#{pregledNaModelAvtomobil.rowStyleClasses}">
+				
+				<h:column>
+					<f:facet name="header">Марка на автомобила</f:facet>
+					#{curr.brand}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Модел на автомобила</f:facet>
+					#{curr.model}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Прегледай</f:facet>
+					<h:commandLink action="#{pregledNaModelAvtomobil.selectRow(curr)}" value="Прегледай" />
+				</h:column>
+				
+				<h:column rendered="#{pregledNaModelAvtomobil.choosingAlowed}">
+					<f:facet name="header">Избери</f:facet>
+					<h:commandLink action="#{pregledNaModelAvtomobil.chooseVehicleModel(curr)}" value="Избери" />
+				</h:column>
+				
+				<f:facet name="footer">
+					<h:panelGroup rendered="#{!empty pregledNaModelAvtomobil.pagesList}">
+						<!-- предишна страница -->
+						<h:commandLink rendered="#{pregledNaModelAvtomobil.page - 1 ge 0}"
+							action="#{pregledNaModelAvtomobil.setPage(pregledNaModelAvtomobil.page - 1)}"
+							value="&lt;&lt;" />
+							
+						<!-- други страници -->
+						<ui:repeat value="#{pregledNaModelAvtomobil.pagesList}" var="currPage">
+							<h:commandLink
+								rendered="#{pregledNaModelAvtomobil.getPage() ne currPage.intValue() - 1}"
+								action="#{pregledNaModelAvtomobil.setPage(currPage.intValue()-1)}"
+								value="#{currPage}" />
+								
+							<h:outputText
+								rendered="#{pregledNaModelAvtomobil.getPage() eq currPage.intValue() - 1}"
+								value="#{currPage}" />
+								
+							<h:outputText value=" " />
+						</ui:repeat>
+						
+						<!-- следваща страница -->
+						<h:commandLink rendered="#{pregledNaModelAvtomobil.page + 1 lt pregledNaModelAvtomobil.pagesCount}"
+							action="#{pregledNaModelAvtomobil.setPage(pregledNaModelAvtomobil.page + 1)}"
+							value="&gt;&gt;" />
+							
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="#{empty pregledNaModelAvtomobil.pagesList}" style="color: red; font-weight: bold;">
+						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
+						<br />
+						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
+					</h:panelGroup>
+				</f:facet>
+				 
+			</h:dataTable>
+		</h:form>
+		
+		<h:form>
+	    
+			<h:outputLabel value="Марка на автомобила*">
+				<h:inputText id="brand"
+					value="#{pregledNaModelAvtomobil.brand}" readonly="true" />
+				<h:message for="brand" />
+			</h:outputLabel>
+			<br />
+
+			<h:outputLabel value="Модел на автомобила*">
+				<h:inputText id="model"
+					value="#{pregledNaModelAvtomobil.model}" readonly="true" />
+				<h:message for="model" />
+			</h:outputLabel>
+			<br />
+
+			<h:outputLabel value="Характеристики">
+				<h:inputTextarea id="characteristics"
+					value="#{pregledNaModelAvtomobil.characteristics}"
+					readonly="true" />
+				<h:message for="characteristics" />
+			</h:outputLabel>
+			<br />
+			
+			<h:commandButton action="#{pregledNaModelAvtomobil.deselectRow()}" value="Отмени"
+				disabled="#{!pregledNaModelAvtomobil.rowSelected}" />
+				
+		</h:form>
+			
+	</ui:define>
+	
+</ui:composition>
+</html>
