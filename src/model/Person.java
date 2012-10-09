@@ -143,24 +143,6 @@ public class Person implements Serializable {
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
 		
 		return readList(oldList);
-		
-		
-	}
-	
-	private static PreparedQuery getPreparedQueryAllM() { 
-		return DatastoreServiceFactory.getDatastoreService().
-			   prepare(new Query(Person.class.getSimpleName()).
-					   setAncestor(EntityHelper.getClientParent()).
-				       addSort("__key__"));
-	}
-	
-	public static List<Person> queryGetAllM(int offset, int count) {
-		List<Entity> oldList = getPreparedQueryAllM().
-				asList(FetchOptions.Builder.withOffset(offset).limit(count));
-		
-		return readList(oldList);
-		
-		
 	}
 	
 	public static int countGetAll(Key clientID) {

@@ -4,8 +4,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 
-import com.google.appengine.api.datastore.Key;
-
 
 import model.Client;
 import model.Company;
@@ -13,121 +11,176 @@ import model.Person;
 
 @ManagedBean(name="dobavqneNaKlient")
 @RequestScoped
-
 public class DobavqneNaKlient {
 
-	private Client klient = new Client();
-	private Person person = new Person();
-	private Company company = new Company();
+	private Client klientPerson;
+	private Client klientCompany;
 	
 	private transient UIComponent addPerson;
 	private transient UIComponent addCompany;
 	
 	private String errorMessage;
 	
-	public Key getID() {
-		return klient.getID();
-	}
-
-	public String getAddressCity() {
-		return klient.getAddressCity();
-	}
-
-	public void setAddressCity(String addressCity) {
-		klient.setAddressCity(addressCity);
-	}
-
-	public String getAddressLine() {
-		return klient.getAddressLine();
-	}
-
-	public void setAddressLine(String addressLine) {
-		klient.setAddressLine(addressLine);
-	}
-
-	public String getPhoneNumber() {
-		return klient.getPhoneNumber();
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		klient.setPhoneNumber(phoneNumber);
-	}
-
-	public String getMail() {
-		return klient.getMail();
-	}
-
-	public void setMail(String mail) {
-		klient.setMail(mail);
-	}
-
-	public String getIBANNumber() {
-		return klient.getIBANNumber();
-	}
-
-	public void setIBANNumber(String iBANNumber) {
-		klient.setIBANNumber(iBANNumber);
-	}
-
-	public String getSWIFTCode() {
-		return klient.getSWIFTCode();
-	}
-
-	public void setSWIFTCode(String sWIFTCode) {
-		klient.setSWIFTCode(sWIFTCode);
+	public DobavqneNaKlient() {
+		init();
 	}
 	
-	public String getPersonName() {
-		return person.getName();
+	private void init() {
+		klientPerson = new Client();
+		klientCompany = new Client();
+		klientPerson.setPerson(new Person());
+		klientCompany.setCompany(new Company());
+	}
+	
+	public String getAddressCityPerson() {
+		return klientPerson.getAddressCity();
 	}
 
-	public void setPersonName(String name) {
-		person.setName(name);
-		
+	public void setAddressCityPerson(String addressCity) {
+		klientPerson.setAddressCity(addressCity);
 	}
 
-	public String getFamily() {
-		return person.getFamily();
+	public String getAddressLinePerson() {
+		return klientPerson.getAddressLine();
 	}
 
-	public void setFamily(String family) {
-		person.setFamily(family);
+	public void setAddressLinePerson(String addressLine) {
+		klientPerson.setAddressLine(addressLine);
 	}
 
-	public String getCompanyName() {
-		return company.getName();
+	public String getPhoneNumberPerson() {
+		return klientPerson.getPhoneNumber();
 	}
 
-	public void setCompanyName(String name) {
-		company.setName(name);
+	public void setPhoneNumberPerson(String phoneNumber) {
+		klientPerson.setPhoneNumber(phoneNumber);
 	}
 
-	public String getRegistrationNumber() {
-		return company.getRegistrationNumber();
+	public String getMailPerson() {
+		return klientPerson.getMail();
 	}
 
-	public void setRegistrationNumber(String registrationNumber) {
+	public void setMailPerson(String mail) {
+		klientPerson.setMail(mail);
+	}
+
+	public String getIBANNumberPerson() {
+		return klientPerson.getIBANNumber();
+	}
+
+	public void setIBANNumberPerson(String iBANNumber) {
+		klientPerson.setIBANNumber(iBANNumber);
+	}
+
+	public String getSWIFTCodePerson() {
+		return klientPerson.getSWIFTCode();
+	}
+
+	public void setSWIFTCodePerson(String sWIFTCode) {
+		klientPerson.setSWIFTCode(sWIFTCode);
+	}
+	
+	public String getNamePerson() {
+		return klientPerson.getPerson().getName();
+	}
+
+	public void setNamePerson(String name) {
+		klientPerson.getPerson().setName(name);
+	}
+
+	public String getFamilyPerson() {
+		return klientPerson.getPerson().getFamily();
+	}
+
+	public void setFamilyPerson(String family) {
+		klientPerson.getPerson().setFamily(family);
+	}
+	
+	
+	
+	
+	public String getAddressCityCompany() {
+		return klientCompany.getAddressCity();
+	}
+
+	public void setAddressCityCompany(String addressCity) {
+		klientCompany.setAddressCity(addressCity);
+	}
+
+	public String getAddressLineCompany() {
+		return klientCompany.getAddressLine();
+	}
+
+	public void setAddressLineCompany(String addressLine) {
+		klientCompany.setAddressLine(addressLine);
+	}
+
+	public String getPhoneNumberCompany() {
+		return klientCompany.getPhoneNumber();
+	}
+
+	public void setPhoneNumberCompany(String phoneNumber) {
+		klientCompany.setPhoneNumber(phoneNumber);
+	}
+
+	public String getMailCompany() {
+		return klientCompany.getMail();
+	}
+
+	public void setMailCompany(String mail) {
+		klientCompany.setMail(mail);
+	}
+
+	public String getIBANNumberCompany() {
+		return klientCompany.getIBANNumber();
+	}
+
+	public void setIBANNumberCompany(String iBANNumber) {
+		klientCompany.setIBANNumber(iBANNumber);
+	}
+
+	public String getSWIFTCodeCompany() {
+		return klientCompany.getSWIFTCode();
+	}
+
+	public void setSWIFTCodeCompany(String sWIFTCode) {
+		klientCompany.setSWIFTCode(sWIFTCode);
+	}
+
+	public String getNameCompany() {
+		return klientCompany.getCompany().getName();
+	}
+
+	public void setNameCompany(String name) {
+		klientCompany.getCompany().setName(name);
+	}
+
+	public String getRegistrationNumberCompany() {
+		return klientCompany.getCompany().getRegistrationNumber();
+	}
+
+	public void setRegistrationNumberCompany(String registrationNumber) {
 		
 		if (!"".equals(registrationNumber)) 
-			company.setRegistrationNumber(registrationNumber);
+			klientCompany.getCompany().setRegistrationNumber(registrationNumber);
 	}
 
-	public String getVATNumber() {
-		return company.getVATNumber();
+	public String getVATNumberCompany() {
+		return klientCompany.getCompany().getVATNumber();
 	}
 
-	public void setVATNumber(String VATNumber) {
+	public void setVATNumberCompany(String VATNumber) {
 		
 		if (!"".equals(VATNumber)) 
-		    company.setVATNumber(VATNumber);
+			klientCompany.getCompany().setVATNumber(VATNumber);
 	}
 
-	public String getContactPerson() {
-		return company.getContactPerson();
+	public String getContactPersonCompany() {
+		return klientCompany.getCompany().getContactPerson();
 	}
 
-	public void setContactPerson(String contactPerson) {
-		company.setContactPerson(contactPerson);
+	public void setContactPersonCompany(String contactPerson) {
+		klientCompany.getCompany().setContactPerson(contactPerson);
 	}
 
 	public UIComponent getAddPerson() {
@@ -152,32 +205,17 @@ public class DobavqneNaKlient {
 
 	public void addPerson()
 	{
-		klient.setPersonCompany("P");
-		klient.writeToDB();
-		
+		klientPerson.writeToDB();
 
-		person.setClient(klient);
-		person.writeToDB();
-		
-		person = new Person();
-		company = new Company();
-		klient = new Client();
-
+		init();
 		
 		errorMessage = "Клиентът беше добавен успешно!";
 	}
 	
-	public void addCompany()
-	{
-		klient.setPersonCompany("C");
-		klient.writeToDB();
+	public void addCompany() {
+		klientCompany.writeToDB();
 		
-		company.setClient(klient);
-		company.writeToDB();
-	
-		person = new Person();
-		company = new Company();
-		klient = new Client();
+		init();
 
 		errorMessage = "Клиентът беше добавен успешно!";
 	}

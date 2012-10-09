@@ -11,98 +11,126 @@
 	
 	<ui:define name="pageContent">
 	    <h:form>
-
-		 
-	    <h:outputLabel value="Име*">
-	    	<h:inputText id="personname" value="#{dobavqneNaKlient.personName}" maxlength="50" 
-	    		required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}" requiredMessage="задължително поле!" />
-	    	<h:message for="personname" />
-	    </h:outputLabel> 
-	    
-	    
-		<h:outputLabel value="			Наименование на компанията*">
-	    	<h:inputText id="companyname" value="#{dobavqneNaKlient.companyName}" maxlength="100" 
-	    		required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}"  requiredMessage="задължително поле!" />
-	    	<h:message for="companyname" />
-	    </h:outputLabel> 
-	    <br />
-	   
-	    
-	    <h:outputLabel value="Фамилия*">
-	    	<h:inputText id="family" value="#{dobavqneNaKlient.family}" maxlength="50" 
-	    		required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}"  requiredMessage="задължително поле!" />
-	    	<h:message for="family" />
-	    </h:outputLabel> 
-	    
-	
-	    <h:outputLabel value="			Единен идентификационен код (ЕИК)*">
-	    	<h:inputText id="regnumber" value="#{dobavqneNaKlient.registrationNumber}" maxlength="9" 
-	    		required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}"  requiredMessage="задължително поле!" />
-	    	<h:message for="regnumber" />
-	    </h:outputLabel> 
-	    <br />
-	   
-	    <h:outputLabel value="			ДДС номер">
-	    	<h:inputText id="vat" value="#{dobavqneNaKlient.VATNumber}" maxlength="11" />
-	    	<h:message for="vat" />
-	    </h:outputLabel> 
-	    <br />
-	    
-	    <h:outputLabel value="			Лице за контакт">
-	    	<h:inputText id="contactperson" value="#{dobavqneNaKlient.contactPerson}" maxlength="100" />
-	    	<h:message for="contactperson" />
-	    </h:outputLabel> 
-	    <br />
-	     
-	    <h:outputLabel value="Населено място*">
-	    	<h:inputText id="city" value="#{dobavqneNaKlient.addressCity}" maxlength="30" 
-	    		required="true" requiredMessage="задължително поле!" />
-	    	<h:message for="city" />
-	    </h:outputLabel> 
-	    <br />
-	    
-	    <h:outputLabel value="Адрес*">
-	    	<h:inputText id="address" value="#{dobavqneNaKlient.addressLine}" maxlength="100" 
-	    		required="true" requiredMessage="задължително поле!" />
-	    	<h:message for="address" />
-	    </h:outputLabel> 
-	    <br />
-	    
-	    <h:outputLabel value="Телефонен номер">
-	    	<h:inputText id="phone" value="#{dobavqneNaKlient.phoneNumber}" maxlength="15" />
-	    	<h:message for="phone" />
-	    </h:outputLabel> 
-	    <br />
-	    
-	    <h:outputLabel value="Адрес на електронната поща">
-	    	<h:inputText id="mail" value="#{dobavqneNaKlient.mail}" maxlength="50"/>
-	    	<h:message for="mail" />
-	    </h:outputLabel> 
-	    <br />
-	    
-	    <h:outputLabel value="Номер на банковата сметка">
-	    	<h:inputText id="iban" value="#{dobavqneNaKlient.IBANNumber}" maxlength="30"/>
-	    	<h:message for="iban" />
-	    </h:outputLabel> 
-	    <br />
-	    
-	    <h:outputLabel value="Банков код">
-	    	<h:inputText id="swiftcode" value="#{dobavqneNaKlient.SWIFTCode}" maxlength="20"/>
-	    	<h:message for="swiftcode" />
-	    </h:outputLabel> 
-	    <br />
-	    
-	    <h:outputLabel value="Добави физическо лице">
-	    	<h:commandButton value="Добави" 
-	    	binding="#{dobavqneNaKlient.addPerson}" action="#{dobavqneNaKlient.addPerson()}"/> 
-	    </h:outputLabel>
-	    <br />
-	    
-	    <h:outputLabel value="Добави юридическо лице">
-	   		<h:commandButton value="Добави" 
-	   		binding="#{dobavqneNaKlient.addCompany}" action="#{dobavqneNaKlient.addCompany()}"/> 
-	    </h:outputLabel>
-	    <br />
+		
+			<table>
+				<tr>
+					<td>
+						<h:outputLabel value="Име*">
+					    	<h:inputText id="personname" value="#{dobavqneNaKlient.namePerson}" maxlength="50" 
+					    		required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}" requiredMessage="задължително поле!" />
+					    	<h:message for="personname" />
+					    </h:outputLabel>
+					    <br />
+					     <h:outputLabel value="Фамилия*">
+					    	<h:inputText id="family" value="#{dobavqneNaKlient.familyPerson}" maxlength="50" 
+					    		required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}"  requiredMessage="задължително поле!" />
+					    	<h:message for="family" />
+					    </h:outputLabel>
+					    <br />
+					    <h:outputLabel value="Населено място*">
+					    	<h:inputText id="cityPerson" value="#{dobavqneNaKlient.addressCityPerson}" maxlength="30" 
+					    		required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}" requiredMessage="задължително поле!" />
+					    	<h:message for="cityPerson" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Адрес*">
+					    	<h:inputText id="addressPerson" value="#{dobavqneNaKlient.addressLinePerson}" maxlength="100" 
+					    		required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}" requiredMessage="задължително поле!" />
+					    	<h:message for="addressPerson" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Телефонен номер">
+					    	<h:inputText id="phonePerson" value="#{dobavqneNaKlient.phoneNumberPerson}" maxlength="15" />
+					    	<h:message for="phonePerson" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Електронна поща">
+					    	<h:inputText id="mailPerson" value="#{dobavqneNaKlient.mailPerson}" maxlength="50"/>
+					    	<h:message for="mailPerson" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Номер на банковата сметка">
+					    	<h:inputText id="ibanPerson" value="#{dobavqneNaKlient.IBANNumberPerson}" maxlength="30"/>
+					    	<h:message for="ibanPerson" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Банков код">
+					    	<h:inputText id="swiftCodePerson" value="#{dobavqneNaKlient.SWIFTCodePerson}" maxlength="20"/>
+					    	<h:message for="swiftCodePerson" />
+					    </h:outputLabel> 
+					    <br />
+					    
+					    
+				    	<h:commandButton value="Добави физическо лице" 
+				    	binding="#{dobavqneNaKlient.addPerson}" action="#{dobavqneNaKlient.addPerson()}"/> 
+				    	
+					</td>
+					
+					<td>
+					
+						<h:outputLabel value="Наименование на компанията*">
+					    	<h:inputText id="companyname" value="#{dobavqneNaKlient.nameCompany}" maxlength="100" 
+					    		required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}"  requiredMessage="задължително поле!" />
+					    	<h:message for="companyname" />
+					    </h:outputLabel>
+					    <br />
+					     <h:outputLabel value="Единен идентификационен код (ЕИК)*">
+					    	<h:inputText id="regnumber" value="#{dobavqneNaKlient.registrationNumberCompany}" maxlength="9" 
+					    		required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}"  requiredMessage="задължително поле!" />
+					    	<h:message for="regnumber" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="ДДС номер">
+					    	<h:inputText id="vat" value="#{dobavqneNaKlient.VATNumberCompany}" maxlength="11" />
+					    	<h:message for="vat" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Лице за контакт">
+					    	<h:inputText id="contactperson" value="#{dobavqneNaKlient.contactPersonCompany}" maxlength="100" />
+					    	<h:message for="contactperson" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Населено място*">
+					    	<h:inputText id="cityCompany" value="#{dobavqneNaKlient.addressCityCompany}" maxlength="30" 
+					    		required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}" requiredMessage="задължително поле!" />
+					    	<h:message for="cityCompany" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Адрес*">
+					    	<h:inputText id="addressCompany" value="#{dobavqneNaKlient.addressLineCompany}" maxlength="100" 
+					    		required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}" requiredMessage="задължително поле!" />
+					    	<h:message for="addressCompany" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Телефонен номер">
+					    	<h:inputText id="phoneCompany" value="#{dobavqneNaKlient.phoneNumberCompany}" maxlength="15" />
+					    	<h:message for="phoneCompany" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Електронна поща">
+					    	<h:inputText id="mailCompany" value="#{dobavqneNaKlient.mailCompany}" maxlength="50"/>
+					    	<h:message for="mailCompany" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Номер на банковата сметка">
+					    	<h:inputText id="ibanCompany" value="#{dobavqneNaKlient.IBANNumberCompany}" maxlength="30"/>
+					    	<h:message for="ibanCompany" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Банков код">
+					    	<h:inputText id="swiftCodeCompany" value="#{dobavqneNaKlient.SWIFTCodeCompany}" maxlength="20"/>
+					    	<h:message for="swiftCodeCompany" />
+					    </h:outputLabel> 
+					    <br />
+					    
+					    
+				   		<h:commandButton value="Добави юридическо лице" 
+				   		binding="#{dobavqneNaKlient.addCompany}" action="#{dobavqneNaKlient.addCompany()}"/> 
+					    <br />
+					    
+					</td>
+				</tr>
+			</table>
 	    
 	    <h:outputText value="#{dobavqneNaKlient.errorMessage}"/>
 	    

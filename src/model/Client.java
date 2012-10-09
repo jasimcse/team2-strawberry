@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
@@ -15,6 +16,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Transaction;
 
 import model.util.EntityHelper;
 import model.util.LimitedString;
@@ -26,6 +28,7 @@ public class Client implements Serializable {
 	public static final String COMPANY = "C";
 	
 	private Entity thisEntity;
+	private Object personOrCompany;
 	
 	@SuppressWarnings("unused")
 	private Key clientParentID;
@@ -43,7 +46,7 @@ public class Client implements Serializable {
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS",
 					      "PERSON", "COMPANY",
-					      "thisEntity"}));
+					      "thisEntity", "personOrCompany"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"phoneNumber", "mail", "IBANNumber", "SWIFTCode", "foreignID"}));
@@ -54,12 +57,39 @@ public class Client implements Serializable {
 	}
 	
 	public void writeToDB() {
+		
+		if (personOrCompany instanceof Company) {
+			personCompany.setString(COMPANY);
+		} else if (personOrCompany instanceof Person) {
+			personCompany.setString(PERSON);
+		}
+		
 		if (thisEntity == null) {
 			thisEntity = makeEntity();
 		} else {
 			EntityHelper.populateIt(thisEntity, this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 		}
-		DatastoreServiceFactory.getDatastoreService().put(thisEntity);
+		
+		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
+		
+		Transaction transaction = dataStore.beginTransaction();
+		
+		try {
+			dataStore.put(thisEntity);
+			
+			if (personOrCompany instanceof Company) {
+				((Company)personOrCompany).setClientID(getID());
+				((Company)personOrCompany).writeToDB();
+			} else if (personOrCompany instanceof Person) {
+				((Person)personOrCompany).setClientID(getID());
+				((Person)personOrCompany).writeToDB();
+			}
+			transaction.commit();
+			
+		} catch (RuntimeException e) {
+			transaction.rollback();
+			throw e;
+		}
 	}
 	
 	public static Client readEntity(Entity entity) {
@@ -105,12 +135,52 @@ public class Client implements Serializable {
 		return personCompany.getString();
 	}
 
-	public void setPersonCompany(String personCompany) {
-		if (PERSON.equals(personCompany) || COMPANY.equals(personCompany)) {
-			this.personCompany.setString(personCompany);
-		} else {
-			throw new RuntimeException("The string doesn't match any of possible values");
+	public Person getPerson() {
+		if ((personOrCompany ==  null) &&
+			(thisEntity != null) &&
+			(PERSON.equals(personCompany.getString()))) {
+			if (Person.countGetAll(thisEntity.getKey()) != 1) {
+				throw new RuntimeException("More than one person linked to this client!");
+			}
+			List<Person> person = Person.queryGetAll(0, 1, thisEntity.getKey());
+			personOrCompany = person.get(0);
 		}
+		
+		if (personOrCompany instanceof Person) {
+			return (Person)personOrCompany;
+		}
+		return null;
+	}
+	
+	public void setPerson(Person person) {
+		if (personOrCompany != null) {
+			throw new RuntimeException("Person or Company has been already set. You can't reset it!");
+		}
+		personOrCompany = person;
+	}
+	
+	public Company getCompany() {
+		if ((personOrCompany ==  null) &&
+				(thisEntity != null) &&
+				(COMPANY.equals(personCompany.getString()))) {
+				if (Company.countGetAll(thisEntity.getKey()) != 1) {
+					throw new RuntimeException("More than one company linked to this client!");
+				}
+				List<Company> company = Company.queryGetAll(0, 1, thisEntity.getKey());
+				personOrCompany = company.get(0);
+			}
+		
+		if (personOrCompany instanceof Company) {
+			return (Company)personOrCompany;
+		}
+		return null;
+	}
+	
+	public void setCompany(Company company) {
+		if (personOrCompany != null) {
+			throw new RuntimeException("Person or Company has been already set. You can't reset it!");
+		}
+		personOrCompany = company;
 	}
 
 	public String getAddressCity() {
