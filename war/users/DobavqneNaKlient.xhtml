@@ -12,59 +12,48 @@
 	<ui:define name="pageContent">
 	    <h:form>
 
-		<h:outputLabel value="Изберете тип на клиент:">
-			<h:selectOneRadio id="clienttype" value="#{dobavqneNaKlient.personCompany}" onselect="#{dobavqneNaKlient.personCompany}">
-        		<f:selectItem id="item1" itemLabel="Физическо лице" itemValue="P" />
-        		<f:selectItem id="item2" itemLabel="Юридическо лице" itemValue="C" />
-    		</h:selectOneRadio>
-		</h:outputLabel>
-
+		 
 	    <h:outputLabel value="Име*">
 	    	<h:inputText id="personname" value="#{dobavqneNaKlient.personName}" maxlength="50" 
-	    		required="#{aktualiziraneNaKlient.isPersonCompany}" requiredMessage="задължително поле!" 
-	    		readonly="#{aktualiziraneNaKlient.isPersonCompany}" />
+	    		required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}" requiredMessage="задължително поле!" />
 	    	<h:message for="personname" />
 	    </h:outputLabel> 
-	    <br />
 	    
-	    <h:outputLabel value="Фамилия*">
-	    	<h:inputText id="family" value="#{dobavqneNaKlient.family}" maxlength="50" 
-	    		required="#{aktualiziraneNaKlient.isPersonCompany}" requiredMessage="задължително поле!" 
-	    		readonly="#{aktualiziraneNaKlient.isPersonCompany}" />
-	    	<h:message for="family" />
-	    </h:outputLabel> 
-	    <br />
 	    
-	    <h:outputLabel value="Наименование на компанията*">
+		<h:outputLabel value="			Наименование на компанията*">
 	    	<h:inputText id="companyname" value="#{dobavqneNaKlient.companyName}" maxlength="100" 
-	    		required="#{!aktualiziraneNaKlient.isPersonCompany}" requiredMessage="задължително поле!"
-				readonly="#{!aktualiziraneNaKlient.isPersonCompany}" />
+	    		required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}"  requiredMessage="задължително поле!" />
 	    	<h:message for="companyname" />
 	    </h:outputLabel> 
 	    <br />
+	   
 	    
-	    <h:outputLabel value="Единен идентификационен код (ЕИК)*">
+	    <h:outputLabel value="Фамилия*">
+	    	<h:inputText id="family" value="#{dobavqneNaKlient.family}" maxlength="50" 
+	    		required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}"  requiredMessage="задължително поле!" />
+	    	<h:message for="family" />
+	    </h:outputLabel> 
+	    
+	
+	    <h:outputLabel value="			Единен идентификационен код (ЕИК)*">
 	    	<h:inputText id="regnumber" value="#{dobavqneNaKlient.registrationNumber}" maxlength="9" 
-	    		required="#{!aktualiziraneNaKlient.isPersonCompany}" requiredMessage="задължително поле!" 
-	    		readonly="#{!aktualiziraneNaKlient.isPersonCompany}" />
+	    		required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}"  requiredMessage="задължително поле!" />
 	    	<h:message for="regnumber" />
 	    </h:outputLabel> 
 	    <br />
-	    
-	    <h:outputLabel value="ДДС номер">
-	    	<h:inputText id="vat" value="#{dobavqneNaKlient.VATNumber}" maxlength="11"  
-	    	readonly="#{!aktualiziraneNaKlient.isPersonCompany}" />
+	   
+	    <h:outputLabel value="			ДДС номер">
+	    	<h:inputText id="vat" value="#{dobavqneNaKlient.VATNumber}" maxlength="11" />
 	    	<h:message for="vat" />
 	    </h:outputLabel> 
 	    <br />
 	    
-	    <h:outputLabel value="Лице за контакт">
-	    	<h:inputText id="contactperson" value="#{dobavqneNaKlient.contactPerson}" maxlength="100"
-	    	readonly="#{!aktualiziraneNaKlient.isPersonCompany}" />
+	    <h:outputLabel value="			Лице за контакт">
+	    	<h:inputText id="contactperson" value="#{dobavqneNaKlient.contactPerson}" maxlength="100" />
 	    	<h:message for="contactperson" />
 	    </h:outputLabel> 
 	    <br />
-	    
+	     
 	    <h:outputLabel value="Населено място*">
 	    	<h:inputText id="city" value="#{dobavqneNaKlient.addressCity}" maxlength="30" 
 	    		required="true" requiredMessage="задължително поле!" />
@@ -80,7 +69,7 @@
 	    <br />
 	    
 	    <h:outputLabel value="Телефонен номер">
-	    	<h:inputText id="phone" value="#{dobavqneNaAvtoserviz.phoneNumber}" maxlength="15" />
+	    	<h:inputText id="phone" value="#{dobavqneNaKlient.phoneNumber}" maxlength="15" />
 	    	<h:message for="phone" />
 	    </h:outputLabel> 
 	    <br />
@@ -91,7 +80,7 @@
 	    </h:outputLabel> 
 	    <br />
 	    
-	    <h:outputLabel value="Номер на банковата сметка*">
+	    <h:outputLabel value="Номер на банковата сметка">
 	    	<h:inputText id="iban" value="#{dobavqneNaKlient.IBANNumber}" maxlength="30"/>
 	    	<h:message for="iban" />
 	    </h:outputLabel> 
@@ -103,8 +92,18 @@
 	    </h:outputLabel> 
 	    <br />
 	    
-	    <h:commandButton value="Добави" action="#{dobavqneNaKlient.addClient()}"/> 
+	    <h:outputLabel value="Добави физическо лице">
+	    	<h:commandButton value="Добави" 
+	    	binding="#{dobavqneNaKlient.addPerson}" action="#{dobavqneNaKlient.addPerson()}"/> 
+	    </h:outputLabel>
 	    <br />
+	    
+	    <h:outputLabel value="Добави юридическо лице">
+	   		<h:commandButton value="Добави" 
+	   		binding="#{dobavqneNaKlient.addCompany}" action="#{dobavqneNaKlient.addCompany()}"/> 
+	    </h:outputLabel>
+	    <br />
+	    
 	    <h:outputText value="#{dobavqneNaKlient.errorMessage}"/>
 	    
 	    </h:form>

@@ -2,6 +2,9 @@ package controller.users;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.component.UIComponent;
+
+import com.google.appengine.api.datastore.Key;
 
 
 import model.Client;
@@ -17,27 +20,15 @@ public class DobavqneNaKlient {
 	private Person person = new Person();
 	private Company company = new Company();
 	
-	private String errorMessage;
-
-	public DobavqneNaKlient() {
-		
-		klient.setPersonCompany("P");
-	}
-
-	public String getPersonCompany() {
-		return klient.getPersonCompany();
-	}
-
-	public void setPersonCompany(String personCompany) {
-		
-		klient.setPersonCompany(personCompany);
-	}
-
-	public boolean isPersonCompany()
-	{
-		return getPersonCompany().equals("P");
-	}
+	private transient UIComponent addPerson;
+	private transient UIComponent addCompany;
 	
+	private String errorMessage;
+	
+	public Key getID() {
+		return klient.getID();
+	}
+
 	public String getAddressCity() {
 		return klient.getAddressCity();
 	}
@@ -92,6 +83,7 @@ public class DobavqneNaKlient {
 
 	public void setPersonName(String name) {
 		person.setName(name);
+		
 	}
 
 	public String getFamily() {
@@ -100,10 +92,6 @@ public class DobavqneNaKlient {
 
 	public void setFamily(String family) {
 		person.setFamily(family);
-	}
-
-	public void setClient(Client client) {
-		company.setClient(client);
 	}
 
 	public String getCompanyName() {
@@ -142,25 +130,55 @@ public class DobavqneNaKlient {
 		company.setContactPerson(contactPerson);
 	}
 
+	public UIComponent getAddPerson() {
+		return addPerson;
+	}
+
+	public void setAddPerson(UIComponent addPerson) {
+		this.addPerson = addPerson;
+	}
+
+	public UIComponent getAddCompany() {
+		return addCompany;
+	}
+
+	public void setAddCompany(UIComponent addCompany) {
+		this.addCompany = addCompany;
+	}
+
 	public String getErrorMessage() {
 		return errorMessage;
 	}
 
-	public void addClient()
+	public void addPerson()
 	{
+		klient.setPersonCompany("P");
 		klient.writeToDB();
 		
-		if(klient.getPersonCompany().equals("P"))
-			person.writeToDB();
-		else
-			company.writeToDB();
-			
+
+		person.setClient(klient);
+		person.writeToDB();
 		
 		person = new Person();
 		company = new Company();
 		klient = new Client();
-		klient.setPersonCompany("P");
+
 		
+		errorMessage = "Клиентът беше добавен успешно!";
+	}
+	
+	public void addCompany()
+	{
+		klient.setPersonCompany("C");
+		klient.writeToDB();
+		
+		company.setClient(klient);
+		company.writeToDB();
+	
+		person = new Person();
+		company = new Company();
+		klient = new Client();
+
 		errorMessage = "Клиентът беше добавен успешно!";
 	}
 	
