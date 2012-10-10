@@ -31,12 +31,16 @@ public class DobavqneNaPotrebitel implements Serializable {
 
 	@SuppressWarnings("unchecked")
 	public DobavqneNaPotrebitel() {
+		// проверяваме дали се връщат данни от страница към която сме направили заявка
 		Stack<InterPageDataRequest> dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
 		
 		if (dataRequestStack != null) {
+			// има заявки; проверяваме дали са от текущата страница
 			InterPageDataRequest dataRequest = dataRequestStack.peek();
 			if (FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath().equals(dataRequest.returnPage)) {
+				// от текущата страница са; възстановяваме състоянието на страницата такова каквото е било при направата на заявката 
 				this.potrebitel = ((DobavqneNaPotrebitel)dataRequest.requestObject).potrebitel;
+				// добавяме си данните от заявката
 				this.potrebitel.setEmployee((Employee)dataRequest.requestedObject);
 			}
 		}
@@ -123,17 +127,30 @@ public class DobavqneNaPotrebitel implements Serializable {
 	}
 	
 	public String chooseEmployee() {
+		// инициализираме нов стек за заявки за данни към други страници
 	    Stack<InterPageDataRequest> dataRequestStack = new Stack<InterPageDataRequest>();
+	    
+	    // инициализираме си нова заявка за данни към други страници
 		InterPageDataRequest dataRequest = new InterPageDataRequest();
 		
+		// попълваме заявката
+		// записваме състоянието на текущия обекта, за да го възстановим след изпълнението на заявката
+		// т.е. ако потребителя е попълнил нещо в полетата, след като се върнем полетата ще са му попълнени пак със същите данни
 		dataRequest.requestObject = this;
+		// записваме текущата страница като страницата към която трябва да се върнат резултатите 
 		dataRequest.returnPage = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
+		// записваме страницата от която искаме данни
 		dataRequest.dataPage = "/admin/AktualiziraneNaSlujitel.jsf";
+		// зануляваме полето където ще бъдат попълнени данните
 		dataRequest.requestedObject = null;
 		
+		// слагаме заявката в стека
 		dataRequestStack.push(dataRequest);
+		// слагаме стека във flash-а; flash-а запазва данните записани в него до отварянето на друго view (друга страница)
+		// flash-а изтрива автоматично данните съхранявани в него след отварянето на следващото view
 		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
 		
+		// отиваме на страницата от която искаме данни
 		return dataRequest.dataPage + "?faces-redirect=true";
 	}
 	
