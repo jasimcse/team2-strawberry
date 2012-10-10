@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="headSection">
+		
+	</ui:define>
+
+	<ui:define name="pageContent">
+	
+		<h:form>
+			
+			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+			<h:dataTable
+				rows="#{configurationProperties.getPageSize()}"
+				value="#{aktualiziraneNaUsluga.spisukUslugi}"
+			    first="0"
+			    var="curr"
+			    rowClasses="#{aktualiziraneNaUsluga.rowStyleClasses}">
+				
+				<h:column>
+					<f:facet name="header">Наименование на услугата</f:facet>
+					#{curr.description}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Цена на услугата за час</f:facet>
+					#{curr.priceHour}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Промени</f:facet>
+					<h:commandLink action="#{aktualiziraneNaUsluga.selectRow(curr)}" value="Промени" />
+				</h:column>
+				
+				<f:facet name="footer">
+					<h:panelGroup rendered="#{!empty aktualiziraneNaUsluga.pagesList}">
+						<!-- предишна страница -->
+						<h:commandLink rendered="#{aktualiziraneNaUsluga.page - 1 ge 0}"
+							action="#{aktualiziraneNaUsluga.setPage(aktualiziraneNaUsluga.page - 1)}"
+							value="&lt;&lt;" />
+							
+						<!-- други страници -->
+						<ui:repeat value="#{aktualiziraneNaUsluga.pagesList}" var="currPage">
+							<h:commandLink
+								rendered="#{aktualiziraneNaUsluga.getPage() ne currPage.intValue() - 1}"
+								action="#{aktualiziraneNaUsluga.setPage(currPage.intValue()-1)}"
+								value="#{currPage}" />
+								
+							<h:outputText
+								rendered="#{aktualiziraneNaUsluga.getPage() eq currPage.intValue() - 1}"
+								value="#{currPage}" />
+								
+							<h:outputText value=" " />
+						</ui:repeat>
+						
+						<!-- следваща страница -->
+						<h:commandLink rendered="#{aktualiziraneNaUsluga.page + 1 lt aktualiziraneNaUsluga.pagesCount}"
+							action="#{aktualiziraneNaUsluga.setPage(aktualiziraneNaUsluga.page + 1)}"
+							value="&gt;&gt;" />
+							
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="#{empty aktualiziraneNaUsluga.pagesList}" style="color: red; font-weight: bold;">
+						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
+						<br />
+						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
+					</h:panelGroup>
+				</f:facet>
+				 
+			</h:dataTable>
+		</h:form>
+		
+		<h:form>
+	    
+			<h:outputLabel value="Наименование на услугата">
+				<h:inputText id="description"
+					value="#{aktualiziraneNaUsluga.description}" readonly="true" />
+				<h:message for="description" />
+			</h:outputLabel>
+			<br />
+
+			<h:outputLabel value="Цена на услугата за час*">
+				<h:inputText id="priceHour" 
+					value="#{aktualiziraneNaUsluga.priceHour}"
+					required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaUsluga.rowSelected}">
+						<f:validateDoubleRange minimum="0" maximum="10000" />
+				</h:inputText>
+				<h:message for="priceHour" />
+			</h:outputLabel>
+			<br />
+			
+			<h:commandButton value="Запази" action="#{aktualiziraneNaUsluga.writeIt()}"
+					disabled="#{!aktualiziraneNaUsluga.rowSelected}"/>
+
+			<h:commandButton action="#{aktualiziraneNaUsluga.deselectRow()}" value="Отмени"
+				disabled="#{!aktualiziraneNaUsluga.rowSelected}" />
+				
+			<br />
+			<h:outputText value="#{aktualiziraneNaUsluga.errorMessage}" />
+
+		</h:form>
+			
+	</ui:define>
+	
+</ui:composition>
+</html>

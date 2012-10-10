@@ -9,29 +9,28 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-
-import model.VehicleModel;
+import model.Service;
 import controller.common.ConfigurationProperties;
 import controller.common.InterPageDataRequest;
 
 @SuppressWarnings("serial")
-@ManagedBean(name="pregledNaModelAvtomobil")
+@ManagedBean(name="aktualiziraneNaUsluga")
 @ViewScoped
-public class PregledNaModelAvtomobil implements Serializable {
-
+public class AktualiziraneNaUsluga implements Serializable {
+	
 	private Stack<InterPageDataRequest> dataRequestStack;
 	
-	private VehicleModel modelAvtomobil = new VehicleModel();
+	private Service usluga = new Service();
 	private int page = 0;
 	private int pagesCount;
-	private List<VehicleModel> spisukModeliAvtomobili;
+	private List<Service> spisukUslugi;
 	private int rowsCount;
 	private InterPageDataRequest dataRequest;
 	
 	private String errorMessage;
 	
 	@SuppressWarnings("unchecked")
-	public PregledNaModelAvtomobil() {
+	public AktualiziraneNaUsluga() {
 		
 		// проверяваме дали има заявки записани във flash-а; записваме си стека със заявките, за да го възстановим след това
 		dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
@@ -49,16 +48,20 @@ public class PregledNaModelAvtomobil implements Serializable {
 		readList();
 	}
 	
-	public String getBrand() {
-		return modelAvtomobil.getBrand();
+	public String getDescription() {
+		return usluga.getDescription();
 	}
 
-	public String getModel() {
-		return modelAvtomobil.getModel();
+	public void setDescription(String description) {
+		usluga.setDescription(description);
 	}
 
-	public String getCharacteristics() {
-		return modelAvtomobil.getCharacteristics();
+	public double getPriceHour() {
+		return usluga.getPriceHour();
+	}
+
+	public void setPriceHour(double priceHour) {
+		usluga.setPriceHour(priceHour);
 	}
 
 	public String getErrorMessage() {
@@ -74,26 +77,37 @@ public class PregledNaModelAvtomobil implements Serializable {
 		readList();
 	}
 
-	public List<VehicleModel> getSpisukModeliAvtomobili() {
-		return spisukModeliAvtomobili;
+	public List<Service> getSpisukUslugi() {
+		return spisukUslugi;
 	}
 
 	public int getPagesCount() {
 		return pagesCount;
 	}
+	
+	public String writeIt() {
+		usluga.writeToDB();
+		
+		readList();
+		
+		// set the message
+		errorMessage = "Услугата беше актуализирана успешно!";
+		
+		return null;
+	}
 
 	private void readList() {
-		spisukModeliAvtomobili = VehicleModel.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
-		modelAvtomobil = new VehicleModel();
-		rowsCount = VehicleModel.countGetAll();
+		spisukUslugi = Service.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
+		usluga = new Service();
+		rowsCount = Service.countGetAll();
 		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
 	}
 	
 	public String getRowStyleClasses() {
 		StringBuilder strbuff = new StringBuilder();
 		
-		for (VehicleModel vm : spisukModeliAvtomobili) {
-			if (modelAvtomobil == vm) {
+		for (Service service : spisukUslugi) {
+			if (usluga == service) {
 				strbuff.append("selectedRow,");
 			} else {
 				strbuff.append("notSelectedRow,");
@@ -112,30 +126,30 @@ public class PregledNaModelAvtomobil implements Serializable {
 		return list;
 	}
 	
-	public void selectRow(VehicleModel vm) {
-		modelAvtomobil = vm;
+	public void selectRow(Service service) {
+		usluga = service;
 	}
 	
 	public void deselectRow() {
-		modelAvtomobil = new VehicleModel();
+		usluga = new Service();
 	}
 	
 	public boolean isRowSelected() {
-		return spisukModeliAvtomobili.contains(modelAvtomobil);
+		return spisukUslugi.contains(usluga);
 	}
 	
 	public boolean isChoosingAlowed() {
 		return (dataRequest != null);
 	}
 	
-	public String chooseVehicleModel(VehicleModel vehicleModel) {
+	public String chooseService(Service service) {
 		// проверка против грешно извикване
 		if (dataRequest == null) {
 			throw new RuntimeException("Don't do that bastard!");
 		}
 		
 		// слагаме исканите данни в заявката
-		dataRequest.requestedObject = vehicleModel;
+		dataRequest.requestedObject = service;
 		// слагаме стека който сме прочели в конструктора пак във flash-а
 		// забележка: данните за текущата заявка си стоят в стека; само сме добавили исканите данни
 		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
@@ -143,4 +157,5 @@ public class PregledNaModelAvtomobil implements Serializable {
 		// отиваме на страницата която е направила заявката
 		return dataRequest.returnPage + "?faces-redirect=true";
 	}
+
 }
