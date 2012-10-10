@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="pageContent">
+	    <h:form>
+
+	    <h:outputLabel value="Номер на рама*">
+	    	<h:inputText id="" value="#{dobavqneNaAvtomobil.VIN}" maxlength="17" 
+	    		required="true" requiredMessage="задължително поле!" />
+	    	<h:message for="" />
+	    </h:outputLabel> 
+	    <br />
+	    
+		<h:outputLabel value="Номер на двигател*">
+	    	<h:inputText id="" value="#{dobavqneNaAvtomobil.engineNumber}" maxlength="50" 
+	    		required="true" requiredMessage="задължително поле!" />
+	    	<h:message for="" />
+	    </h:outputLabel>
+	    <br />
+	    
+	    <h:outputLabel value="Регистрационен номер*">
+	    	<h:inputText id="" value="#{dobavqneNaAvtomobil.plateNumber}" maxlength="8" 
+	    		required="true" requiredMessage="задължително поле!" />
+	    	<h:message for="" />
+	    </h:outputLabel> 
+	    <br /> 
+	    
+	    TODO: combo
+	    <h:outputLabel value="Марка на автомобила">
+	    	<h:selectOneListbox onchange="#{dobavqneNaAvtomobil.}" ></h:selectOneListbox>
+	    	<h:inputText id="" value="#{dobavqneNaAvtomobil}" maxlength="50" 
+	    		required="" requiredMessage="задължително поле!" />
+	    	<h:message for="" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Модел на автомобила">
+	    	<h:inputText id="" value="#{dobavqneNaAvtomobil}" maxlength="50" 
+	    		required="" requiredMessage="задължително поле!" />
+	    	<h:message for="" />
+	    </h:outputLabel> 
+	   	<br />
+	    
+	    <h:outputLabel value="Код на типа гаранция">
+	    	<h:inputText id="" value="#{dobavqneNaAvtomobil.warrantyConditionsID}" maxlength="50" 
+	    		readonly="true" />
+	    	<h:message for="" />
+	    </h:outputLabel> 
+	    <h:outputLabel value="Гаранционни условия">
+	    	<h:commandButton value="Избери" 
+	    	binding="#{dobavqneNaAvtomobil}" action="#{dobavqneNaAvtomobil}"/> 
+	    </h:outputLabel>
+	    <br />
+	   
+	    
+	    <h:outputLabel value="Дата на закупуване">
+	    	<h:inputText id="" value="#{dobavqneNaAvtomobil}" maxlength="50"  />
+	    	<h:message for="" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Все още ли е гаранционен автомобила">
+	    	<h:inputText id="" value="#{dobavqneNaAvtomobil}" maxlength="50"  />
+	    	<h:message for="" />
+	    </h:outputLabel> 
+	    <br /> 
+	    
+	    <h:outputLabel value="Име и Фамилия на клиент (физ. лице)">
+	    	<h:inputText id="" value="#{dobavqneNaAvtomobil}" maxlength="50" 
+	    		required="" requiredMessage="задължително поле!" />
+	    	<h:message for="" />
+	    </h:outputLabel>
+	    <h:outputLabel value="Избери Клиент">
+	   		<h:commandButton value="Избери Клиент" 
+	   		binding="#{dobavqneNaAvtomobil}" action="#{dobavqneNaAvtomobil}"/> 
+	    </h:outputLabel>
+	    <br />
+	     
+	    <h:outputLabel value="Наименование на фирма (юрид. лице)">
+	    	<h:inputText id="" value="#{dobavqneNaAvtomobil}" maxlength="50" 
+	    		required="" requiredMessage="задължително поле!" />
+	    	<h:message for="" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    
+	    <h:outputLabel value="Добави">
+	   		<h:commandButton value="Добави" 
+	   		binding="#{dobavqneNaAvtomobil}" action="#{dobavqneNaAvtomobil.addAvtomobil()}"/> 
+	    </h:outputLabel>
+	    <br />
+	    
+	    <h:outputText value="#{dobavqneNaKlient.errorMessage}"/>
+	    
+	    </h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>
