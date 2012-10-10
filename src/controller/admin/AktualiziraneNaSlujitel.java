@@ -34,13 +34,17 @@ public class AktualiziraneNaSlujitel implements Serializable {
 	@SuppressWarnings("unchecked")
 	public AktualiziraneNaSlujitel() {
 		
+		// проверяваме дали има заявки записани във flash-а; записваме си стека със заявките, за да го възстановим след това
 		dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
 		
 		if (dataRequestStack != null) {
+			// има заявки във flash-а
+			// проверяваме дали заявката е към текущата страница
 			dataRequest = dataRequestStack.peek();
 			if (!FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath().equals(dataRequest.dataPage)) {
 				dataRequest = null;
 			}
+			// ако (dataRequest != null) значи има направена заявка към текущата страница и заявката се пази в dataRequest
 		}
 		
 		readList();
@@ -177,13 +181,18 @@ public class AktualiziraneNaSlujitel implements Serializable {
 	}
 	
 	public String chooseEmployee(Employee employee) {
+		// проверка против грешно извикване
 		if (dataRequest == null) {
 			throw new RuntimeException("Don't do that bastard!");
 		}
 		
+		// слагаме исканите данни в заявката
 		dataRequest.requestedObject = employee;
+		// слагаме стека който сме прочели в конструктора пак във flash-а
+		// забележка: данните за текущата заявка си стоят в стека; само сме добавили исканите данни
 		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
 		
+		// отиваме на страницата която е направила заявката
 		return dataRequest.returnPage + "?faces-redirect=true";
 	}
 	
