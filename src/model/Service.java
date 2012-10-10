@@ -99,6 +99,9 @@ public class Service implements Serializable {
 	}
 
 	public double getPriceHour() {
+		if (priceHour == null) {
+			return 0;
+		}
 		return priceHour.doubleValue();
 	}
 
