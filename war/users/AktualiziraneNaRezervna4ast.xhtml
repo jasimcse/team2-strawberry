@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="headSection">
+		
+	</ui:define>
+
+	<ui:define name="pageContent">
+	
+		<h:form>
+			<h:panelGroup>
+				<h:outputLabel value="Група на резервната част">
+					<h:selectOneMenu value="">
+						<f:selectItems value="#{aktualiziraneNaRezervna4ast.sparePartGroups}" var="currentSparePartGroup" 
+		    				itemLabel="#{currentSparePartGroup.description}" itemValue="#{currentSparePartGroup.ID}" />
+					</h:selectOneMenu>
+				</h:outputLabel>
+				<br />
+				
+				<h:outputLabel value="Модел автомобил за който става резервната част">
+					<h:selectOneMenu value="">
+						<f:selectItems value="#{aktualiziraneNaRezervna4ast.vehicleModels}" var="currentvehicleModel" 
+		    				itemLabel="#{currentvehicleModel.model}" itemValue="#{currentvehicleModel.ID}" />
+					</h:selectOneMenu>
+				</h:outputLabel>
+				
+				<br />
+				<h:commandButton value="Търси" disabled="true" />
+				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
+			</h:panelGroup>
+		</h:form>
+	
+		<h:form>
+			
+			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+			<h:dataTable
+				rows="#{configurationProperties.getPageSize()}"
+				value="#{aktualiziraneNaRezervna4ast.spisukRezervni4asti}"
+			    first="0"
+			    var="curr"
+			    rowClasses="#{aktualiziraneNaRezervna4ast.rowStyleClasses}">
+				
+				<h:column>
+					<f:facet name="header">Група на резервната част</f:facet>
+					#{curr.sparePartGroup.description}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Доставна цена</f:facet>
+					#{curr.deliveryPrice}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Продажна цена</f:facet>
+					#{curr.salePrice}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Мерна единица</f:facet>
+					#{curr.measuringUnit}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Промени</f:facet>
+					<h:commandLink action="#{aktualiziraneNaRezervna4ast.selectRow(curr)}" value="Промени" />
+				</h:column>
+				
+				<f:facet name="footer">
+					<h:panelGroup rendered="#{!empty aktualiziraneNaRezervna4ast.pagesList}">
+						<!-- предишна страница -->
+						<h:commandLink rendered="#{aktualiziraneNaRezervna4ast.page - 1 ge 0}"
+							action="#{aktualiziraneNaRezervna4ast.setPage(aktualiziraneNaRezervna4ast.page - 1)}"
+							value="&lt;&lt;" />
+							
+						<!-- други страници -->
+						<ui:repeat value="#{aktualiziraneNaRezervna4ast.pagesList}" var="currPage">
+							<h:commandLink
+								rendered="#{aktualiziraneNaRezervna4ast.getPage() ne currPage.intValue() - 1}"
+								action="#{aktualiziraneNaRezervna4ast.setPage(currPage.intValue()-1)}"
+								value="#{currPage}" />
+								
+							<h:outputText
+								rendered="#{aktualiziraneNaRezervna4ast.getPage() eq currPage.intValue() - 1}"
+								value="#{currPage}" />
+								
+							<h:outputText value=" " />
+						</ui:repeat>
+						
+						<!-- следваща страница -->
+						<h:commandLink rendered="#{aktualiziraneNaRezervna4ast.page + 1 lt aktualiziraneNaRezervna4ast.pagesCount}"
+							action="#{aktualiziraneNaRezervna4ast.setPage(aktualiziraneNaRezervna4ast.page + 1)}"
+							value="&gt;&gt;" />
+							
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="#{empty aktualiziraneNaRezervna4ast.pagesList}" style="color: red; font-weight: bold;">
+						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
+						<br />
+						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
+					</h:panelGroup>
+				</f:facet>
+				 
+			</h:dataTable>
+		</h:form>
+		
+		<h:form>
+	    
+			<h:outputLabel value="Група на резервната част">
+				<h:inputText id="sparePartGroup" value="#{aktualiziraneNaRezervna4ast.sparePartGroup.description}"
+					readonly="true" />
+				<h:message for="sparePartGroup" />
+			</h:outputLabel>
+			<br />
+
+			<h:outputLabel value="Доставна цена">
+				<h:inputText id="deliveryPrice"	value="#{aktualiziraneNaRezervna4ast.deliveryPrice}" 
+					readonly="true" />
+				<h:message for="deliveryPrice" />
+			</h:outputLabel>
+			<br />
+			
+			<h:outputLabel value="Продажна цена">
+				<h:inputText id="salePrice"	value="#{aktualiziraneNaRezervna4ast.salePrice}" 
+					required="true" requiredMessage="задължително поле!"
+					readonly="#{!aktualiziraneNaRezervna4ast.rowSelected}">
+					<f:validateDoubleRange minimum="0" maximum="100000" />
+				</h:inputText>
+				<h:message for="salePrice" />
+			</h:outputLabel>
+			<br />
+
+			<h:outputLabel value="Мерна единица">
+				<h:inputText id="measuringUnit"	value="#{aktualiziraneNaRezervna4ast.measuringUnit}"
+					readonly="true" />
+				<h:message for="measuringUnit" />
+			</h:outputLabel>
+			<br />
+
+			<h:outputLabel value="Описание">
+				<h:inputTextarea id="description" value="#{aktualiziraneNaRezervna4ast.description}"
+					readonly="true" />
+				<h:message for="description" />
+			</h:outputLabel>
+			<br />
+			
+			<h:commandButton value="Запази" action="#{aktualiziraneNaRezervna4ast.writeIt()}"
+					disabled="#{!aktualiziraneNaRezervna4ast.rowSelected}"/>
+
+			<h:commandButton action="#{aktualiziraneNaRezervna4ast.deselectRow()}" value="Отмени"
+				disabled="#{!aktualiziraneNaRezervna4ast.rowSelected}" />
+				
+			<br />
+			<h:outputText value="#{aktualiziraneNaRezervna4ast.errorMessage}" />
+
+		</h:form>
+			
+	</ui:define>
+	
+</ui:composition>
+</html>
