@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="pageContent">
+		<br />
+		<h:outputText value="Тази страница е само за тестване. По принцип данните трябва да идват от електронния магазин." 
+			style="color: red; font-weight: bold;"/>
+		<br />
+		<h:outputText value="Напрактика от тук могат и да се актуализират данните, ако се подаде ключ който вече съществува." 
+			style="color: red; font-weight: bold;"/>
+		<br />
+		<br />
+		
+	    <h:form>
+	    
+	    	<h:outputLabel value="Модел на автомобила*">
+				<h:selectOneMenu value="#{dobavqneNaRezervna4astZaModelAvtomobil.vehicleModelID}">
+					<f:selectItems value="#{dobavqneNaRezervna4astZaModelAvtomobil.vehicleModels}" var="currentVehicleModel" 
+	    				itemLabel="#{currentVehicleModel.model}" itemValue="#{currentVehicleModel.ID}" />
+				</h:selectOneMenu>
+			</h:outputLabel>
+			<br />
+	    
+			<h:outputLabel value="Резервна част*">
+				<h:selectOneMenu value="#{dobavqneNaRezervna4astZaModelAvtomobil.sparePartID}">
+					<f:selectItems value="#{dobavqneNaRezervna4astZaModelAvtomobil.spareParts}" var="currentSparePart" 
+	    				itemLabel="#{currentSparePart.description}" itemValue="#{currentSparePart.ID}" />
+				</h:selectOneMenu>
+			</h:outputLabel>
+			<br />
+
+			<h:commandButton value="Добави"
+				action="#{dobavqneNaRezervna4astZaModelAvtomobil.writeIt()}" /> &lt;--- добавя се чрез WSDL и SOAP затова може да се забави
+	    	<br />
+			<h:outputText value="#{dobavqneNaRezervna4astZaModelAvtomobil.errorMessage}" />
+
+		</h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>
