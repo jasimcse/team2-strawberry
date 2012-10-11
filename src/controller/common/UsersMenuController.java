@@ -39,7 +39,8 @@ public class UsersMenuController implements Serializable {
 	private static final MenuEntry DobavqneNaUsluga = new MenuEntry("Добавяне на услуга", "/debug/DobavqneNaUsluga.jsf");
 	private static final MenuEntry DobavqneNaGrupaRezervni4asti = new MenuEntry("Добавяне на група резервни части", "/debug/DobavqneNaGrupaRezervni4asti.jsf");
 	private static final MenuEntry DobavqneNaRezervna4ast = new MenuEntry("Добавяне на резервна част", "/debug/DobavqneNaRezervna4ast.jsf");
-	private static final MenuEntry DobavqneNaUslugaZaModelAvtomobil = new MenuEntry("Добавяне на слуга за модел автомобил", "/debug/DobavqneNaUslugaZaModelAvtomobil.jsf");
+	private static final MenuEntry DobavqneNaUslugaZaModelAvtomobil = new MenuEntry("Добавяне на услуга за модел автомобил", "/debug/DobavqneNaUslugaZaModelAvtomobil.jsf");
+	private static final MenuEntry DobavqneNaRezervna4astZaModelAvtomobil = new MenuEntry("Добавяне на резервна част за модел автомобил", "/debug/DobavqneNaRezervna4astZaModelAvtomobil.jsf");
 	
 	
 	private static final List<MenuEntry> ALL_MENU_ENTRIES =
@@ -70,6 +71,7 @@ public class UsersMenuController implements Serializable {
 			    		DobavqneNaGrupaRezervni4asti,
 			    		DobavqneNaRezervna4ast,
 			    		DobavqneNaUslugaZaModelAvtomobil,
+			    		DobavqneNaRezervna4astZaModelAvtomobil,
 			    		})));
 	/*
 	private static final List<MenuEntry> ADMINISTRATOR_MENU =
