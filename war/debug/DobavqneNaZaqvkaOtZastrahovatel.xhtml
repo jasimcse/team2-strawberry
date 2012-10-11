@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="pageContent">
+		<br />
+		<h:outputText value="Тази страница е само за тестване. По принцип данните трябва да идват от електронния магазин." 
+			style="color: red; font-weight: bold;"/>
+		<br />
+		<h:outputText value="Напрактика от тук могат и да се актуализират данните, ако се подаде ключ който вече съществува." 
+			style="color: red; font-weight: bold;"/>
+		<br />
+		<br />
+		
+	    <h:form>
+	    
+	    	<h:outputLabel value="Наименование на застраховател*">
+				<h:selectOneMenu value="#{dobavqneNaZaqvkaOtZastrahovatel.insurerID}">
+					<f:selectItems value="#{dobavqneNaZaqvkaOtZastrahovatel.insurers}" var="currentInsurer" 
+	    				itemLabel="#{currentInsurer.name}" itemValue="#{currentInsurer.ID}" />
+				</h:selectOneMenu>
+			</h:outputLabel>
+			<br />
+	    
+			<h:outputLabel value="Номер на рамата на автомобила*">
+				<h:selectOneMenu value="#{dobavqneNaZaqvkaOtZastrahovatel.vehicleID}">
+					<f:selectItems value="#{dobavqneNaZaqvkaOtZastrahovatel.vehicles}" var="currentVehicle" 
+	    				itemLabel="#{currentVehicle.VIN}" itemValue="#{currentVehicle.ID}" />
+				</h:selectOneMenu>
+			</h:outputLabel>
+			<br />
+
+			<h:commandButton value="Добави"
+				action="#{dobavqneNaZaqvkaOtZastrahovatel.writeIt()}" /> &lt;--- добавя се чрез WSDL и SOAP затова може да се забави
+	    	<br />
+			<h:outputText value="#{dobavqneNaZaqvkaOtZastrahovatel.errorMessage}" />
+
+		</h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>
