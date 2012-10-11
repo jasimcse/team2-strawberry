@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="pageContent">
+		<br />
+		<h:outputText value="Тази страница е само за тестване. По принцип данните трябва да идват от електронния магазин." 
+			style="color: red; font-weight: bold;"/>
+		<br />
+		<h:outputText value="Напрактика от тук могат и да се актуализират данните, ако се подаде ключ който вече съществува." 
+			style="color: red; font-weight: bold;"/>
+		<br />
+		<br />
+		
+	    <h:form>
+	    	
+			<h:outputLabel value="Модел на автомобила*">
+				<h:selectOneMenu value="#{dobavqneNaUslugaZaModelAvtomobil.vehicleModelID}">
+					<f:selectItems value="#{dobavqneNaUslugaZaModelAvtomobil.vehicleModels}" var="currentVehicleModel" 
+	    				itemLabel="#{currentVehicleModel.model}" itemValue="#{currentVehicleModel.ID}" />
+				</h:selectOneMenu>
+			</h:outputLabel>
+			<br />
+			
+			<h:outputLabel value="Услуга*">
+				<h:selectOneMenu value="#{dobavqneNaUslugaZaModelAvtomobil.serviceID}">
+					<f:selectItems value="#{dobavqneNaUslugaZaModelAvtomobil.services}" var="currentService" 
+	    				itemLabel="#{currentService.description}" itemValue="#{currentService.ID}" />
+				</h:selectOneMenu>
+			</h:outputLabel>
+			<br />
+
+			<h:outputLabel value="Време за изпълнение*">
+				<h:inputText id="durationHour"
+					value="#{dobavqneNaUslugaZaModelAvtomobil.durationHour}"
+					required="true"	requiredMessage="задължително поле!">
+					<f:validateLongRange minimum="0" maximum="200" />
+				</h:inputText>
+				<h:message for="durationHour" />
+			</h:outputLabel>
+			<br />
+			
+			<h:outputLabel value="Месеца до следваща услуга от същия тип*">
+				<h:inputText id="monthsToNext"
+					value="#{dobavqneNaUslugaZaModelAvtomobil.monthsToNext}"
+					required="true"	requiredMessage="задължително поле!">
+					<f:validateLongRange minimum="0" maximum="240" />
+				</h:inputText>
+				<h:message for="monthsToNext" />
+			</h:outputLabel>
+			<br />
+			
+			<h:outputLabel value="Километри до следваща услуга от същия тип*">
+				<h:inputText id="milageToNext"
+					value="#{dobavqneNaUslugaZaModelAvtomobil.milageToNext}"
+					required="true"	requiredMessage="задължително поле!">
+					<f:validateLongRange minimum="0" maximum="1000000" />
+				</h:inputText>
+				<h:message for="milageToNext" />
+			</h:outputLabel>
+			<br />
+
+			<h:commandButton value="Добави"
+				action="#{dobavqneNaUslugaZaModelAvtomobil.writeIt()}" /> &lt;--- добавя се чрез WSDL и SOAP затова може да се забави
+	    	<br />
+			<h:outputText value="#{dobavqneNaUslugaZaModelAvtomobil.errorMessage}" />
+
+		</h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>

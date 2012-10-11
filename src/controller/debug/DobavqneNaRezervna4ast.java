@@ -20,6 +20,8 @@ import com.google.appengine.api.utils.SystemProperty;
 import controller.common.ConfigurationProperties;
 import controller.serverCommunication.SOAPServer.ElectronicShopInterface;
 
+//NOTE: не се добавя продажната цена на резервната част  понеже тя се определя от сервизите, т.е. нашата система
+
 @ManagedBean(name="dobavqneNaRezervna4ast")
 @RequestScoped
 public class DobavqneNaRezervna4ast {
