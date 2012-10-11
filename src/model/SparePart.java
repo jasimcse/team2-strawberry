@@ -131,6 +131,9 @@ public class SparePart implements Serializable {
 	}
 
 	public double getDeliveryPrice() {
+		if (deliveryPrice == null) {
+			return 0;
+		}
 		return deliveryPrice.doubleValue();
 	}
 
@@ -139,6 +142,9 @@ public class SparePart implements Serializable {
 	}
 
 	public double getSalePrice() {
+		if (salePrice == null) {
+			return 0;
+		}
 		return salePrice.doubleValue();
 	}
 
