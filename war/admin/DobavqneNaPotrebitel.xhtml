@@ -29,10 +29,12 @@
 			<h:commandButton action="#{dobavqneNaPotrebitel.chooseEmployee()}" value="Избери служител" />
 			<br />
 			
-			<h:selectOneMenu value="#{dobavqneNaPotrebitel.autoserviceID}">
-				<f:selectItems value="#{dobavqneNaPotrebitel.autoservices}" var="currentAutoservice" 
-    				itemLabel="#{currentAutoservice.name}" itemValue="#{currentAutoservice.ID}" />
-			</h:selectOneMenu>
+			<h:outputLabel value="Автосервиз*">
+				<h:selectOneMenu value="#{dobavqneNaPotrebitel.autoserviceID}">
+					<f:selectItems value="#{dobavqneNaPotrebitel.autoservices}" var="currentAutoservice" 
+	    				itemLabel="#{currentAutoservice.name}" itemValue="#{currentAutoservice.ID}" />
+				</h:selectOneMenu>
+			</h:outputLabel>
 			<br />
 			<h:outputLabel value="Потребителско име*">
 				<h:inputText id="username" value="#{dobavqneNaPotrebitel.username}" maxlength="50"
