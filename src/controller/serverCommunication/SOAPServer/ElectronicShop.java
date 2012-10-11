@@ -373,16 +373,17 @@ public class ElectronicShop implements ElectronicShopInterface {
 		}
 		
 		List<Client> cl = Client.queryGetByForeignID(clientID, 0, 1);
+		List<Person> pl = null;
 		Client c;
 		if (cl.size() == 0) {
 			c = new Client();
 		} else {
 			c = cl.get(0);
+			pl = Person.queryGetAll(0, 1, c.getID());
 		}
 		
-		List<Person> pl = Person.queryGetAll(0, 1, c.getID());
 		Person p;
-		if (pl.size() == 0) {
+		if ((pl == null) || (pl.size() == 0)) {
 			p = new Person();
 		} else {
 			p = pl.get(0);
@@ -431,16 +432,18 @@ public class ElectronicShop implements ElectronicShopInterface {
 		}
 
 		List<Client> cl = Client.queryGetByForeignID(clientID, 0, 1);
+		List<Company> cmpnl = null;
 		Client c;
 		if (cl.size() == 0) {
 			c = new Client();
 		} else {
 			c = cl.get(0);
+			cmpnl = Company.queryGetAll(0, 1, c.getID());
 		}
 		
-		List<Company> cmpnl = Company.queryGetAll(0, 1, c.getID());
+		
 		Company cmpn;
-		if (cmpnl.size() == 0) {
+		if ((cmpnl == null) || (cmpnl.size() == 0)) {
 			cmpn = new Company();
 		} else {
 			cmpn = cmpnl.get(0);
