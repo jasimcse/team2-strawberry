@@ -147,6 +147,9 @@ public class VehicleModelService implements Serializable {
 	}
 
 	public double getDurationHour() {
+		if (durationHour == null) {
+			return 0;
+		}
 		return durationHour.doubleValue();
 	}
 
@@ -155,6 +158,9 @@ public class VehicleModelService implements Serializable {
 	}
 
 	public long getMonthsToNext() {
+		if (monthsToNext == null) {
+			return 0;
+		}
 		return monthsToNext.longValue();
 	}
 
@@ -163,6 +169,9 @@ public class VehicleModelService implements Serializable {
 	}
 
 	public long getMilageToNext() {
+		if (milageToNext == null) {
+			return 0;
+		}
 		return milageToNext.longValue();
 	}
 
