@@ -17,7 +17,7 @@
 	    	<h:message for="vin" />
 	    </h:outputLabel> 
 	    <br />
-	    
+
 		<h:outputLabel value="Номер на двигател*">
 	    	<h:inputText id="enginenum" value="#{dobavqneNaAvtomobil.engineNumber}" maxlength="50" 
 	    		required="true" requiredMessage="задължително поле!" />
@@ -32,17 +32,16 @@
 	    </h:outputLabel> 
 	    <br /> 
 	    
-	    <h:outputLabel value="Марка на автомобила">
+	    <h:outputLabel value="Марка на автомобила*">
 	    	<h:inputText id="brand" value="#{dobavqneNaAvtomobil.vehicleModel.brand}" maxlength="50" 
-	    		required="true}" 
-	    		requiredMessage="задължително поле!" 
+	    		required="false" requiredMessage="задължително поле!" 
 	    		readonly = "true"/>
 	    	<h:message for="brand" />
 	    </h:outputLabel> 
 	    
-	    <h:outputLabel value="Модел на автомобила">
+	    <h:outputLabel value="Модел на автомобила*">
 	    	<h:inputText id="model" value="#{dobavqneNaAvtomobil.vehicleModel.model}" maxlength="50" 
-	    		required="true" requiredMessage="задължително поле!" 
+	    		required="false" requiredMessage="задължително поле!" 
 	    		readonly = "true"/>
 	    	<h:message for="model" />
 	    </h:outputLabel>
@@ -55,23 +54,17 @@
 	    	<h:inputText id="warrentyid" value="#{dobavqneNaAvtomobil.warrantyConditionsID}" maxlength="50" 
 	    		readonly="true" />
 	    </h:outputLabel> 
-	 
-	    <h:commandButton value="Избери" 
-	    	 action="#{dobavqneNaAvtomobil.chooseGarancionniUsloviq()}"/> 
 	    <br />
 	   
-	    
 	    <h:outputLabel value="Дата на закупуване">
 	    	<h:inputText id="purchasedate" value="#{dobavqneNaAvtomobil.purchaseDate}" maxlength="50" 
-				required="false" requiredMessage="задължително поле!" 
-	    		readonly ="true"/>
-	    	<h:message for="purchasedate" />
+	    		readonly ="#{!dobavqneNaAvtomobil.warrantyConditionsID}"/>
 	    </h:outputLabel> 
 	    <br />
 	    
 	    <h:outputLabel value="Все още ли е гаранционен автомобила">
 	    	<h:inputText id="warrantyok" value="#{dobavqneNaAvtomobil.warrantyOK}" maxlength="50"
-	    	readonly = "true" />
+	    		readonly = "true" />
 	    </h:outputLabel> 
 	    <br /> 
 	    
@@ -97,18 +90,15 @@
 	    </h:outputLabel> 
 	   
 	   	<h:commandButton value="Избери Клиент" 
-	   		 action="#{dobavqneNaAvtomobil.chooseKlient}"/> 
-	  
+	   		 action="#{dobavqneNaAvtomobil.chooseKlient()}"/> 
 	    <br />
 	    
 	    
-	    
-	   	<h:commandButton value="Добави" 
+	   	<h:commandButton value="Добави" binding="#{dobavqneNaAvtomobil.addButton}"
 	   		 action="#{dobavqneNaAvtomobil.addAvtomobil()}"/> 
-	  
 	    <br />
 	    
-	    <h:outputText value="#{dobavqneNaKlient.errorMessage}"/>
+	    <h:outputText value="#{dobavqneNaAvtomobil.errorMessage}"/>
 	    
 	    </h:form>
 	</ui:define>
