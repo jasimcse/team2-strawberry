@@ -134,7 +134,7 @@
 
 		    <h:outputLabel value="Име*">
 		    	<h:inputText id="personname" value="#{aktualiziraneNaKlient.namePerson}" maxlength="50" 
-		    		required="false" requiredMessage="задължително поле!" 
+		    		required="#{aktualiziraneNaKlient.person}" requiredMessage="задължително поле!" 
 		    		readonly="#{!aktualiziraneNaKlient.rowSelected || !aktualiziraneNaKlient.person}" />
 		    	<h:message for="personname" />
 		    </h:outputLabel> 
@@ -142,7 +142,7 @@
 		    
 		    <h:outputLabel value="Фамилия*">
 		    	<h:inputText id="family" value="#{aktualiziraneNaKlient.familyPerson}" maxlength="50" 
-		    		required="false" requiredMessage="задължително поле!" 
+		    		required="#{aktualiziraneNaKlient.person}" requiredMessage="задължително поле!" 
 		    		readonly="#{!aktualiziraneNaKlient.rowSelected || !aktualiziraneNaKlient.person}" />
 		    	<h:message for="family" />
 		    </h:outputLabel> 
@@ -150,7 +150,7 @@
 		    
 		    <h:outputLabel value="Наименование на компанията*">
 		    	<h:inputText id="companyname" value="#{aktualiziraneNaKlient.nameCompany}" maxlength="100" 
-		    		required="false" requiredMessage="задължително поле!" 
+		    		required="#{aktualiziraneNaKlient.company}" requiredMessage="задължително поле!" 
 		    		readonly="#{!aktualiziraneNaKlient.rowSelected || !aktualiziraneNaKlient.company}" />
 		    	<h:message for="companyname" />
 		    </h:outputLabel> 
@@ -158,7 +158,7 @@
 		
 		    <h:outputLabel value="Единен идентификационен код (ЕИК)*">
 		    	<h:inputText id="regnumber" value="#{aktualiziraneNaKlient.registrationNumberCompany}" maxlength="9" 
-		    		required="false"  requiredMessage="задължително поле!" 
+		    		required="#{aktualiziraneNaKlient.company}"  requiredMessage="задължително поле!" 
 		    		readonly="#{!aktualiziraneNaKlient.rowSelected || !aktualiziraneNaKlient.company}" />
 		    	<h:message for="regnumber" />
 		    </h:outputLabel> 
