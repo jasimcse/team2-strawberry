@@ -1,18 +1,18 @@
 package controller.users;
 
-
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import com.google.appengine.api.datastore.Key;
 
-import controller.admin.DobavqneNaPotrebitel;
+
 import controller.common.InterPageDataRequest;
 
 import model.Client;
@@ -21,12 +21,11 @@ import model.VehicleModel;
 import model.WarrantyConditions;
 
 
-
 @SuppressWarnings("serial")
 @ManagedBean(name="dobavqneNaAvtomobil")
 @ViewScoped
 
-public class DobavqneNaAvtomobil {
+public class DobavqneNaAvtomobil implements Serializable {
 
 	private Vehicle avtomobil = new Vehicle();
 	
@@ -40,9 +39,19 @@ public class DobavqneNaAvtomobil {
 		
 		if (dataRequestStack != null) {
 			InterPageDataRequest dataRequest = dataRequestStack.peek();
-			if (FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath().equals(dataRequest.returnPage)) {
-				this.avtomobil = ((DobavqneNaAvtomobil)dataRequest.requestObject).avtomobil;
-				this.avtomobil.setClient((Client)dataRequest.requestedObject);
+			if (FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath().equals(dataRequest.returnPage)) 
+			{
+				if(dataRequest.dataPage.equals("/users/PregledNaModelAvtomobil.jsf"))
+				{
+					this.avtomobil = ((DobavqneNaAvtomobil)dataRequest.requestObject).avtomobil;
+					this.avtomobil.setVehicleModel((VehicleModel)dataRequest.requestedObject);
+				}
+				else
+					if(dataRequest.dataPage.equals("/users/AktualiziraneNaKlient.jsf"))
+					{
+							this.avtomobil = ((DobavqneNaAvtomobil)dataRequest.requestObject).avtomobil;
+							this.avtomobil.setClient((Client)dataRequest.requestedObject);
+					}
 			}
 		}
 	}
@@ -144,18 +153,38 @@ public class DobavqneNaAvtomobil {
 		return errorMessage;
 	}
 
-	public void addAvtomobil()
-	{
+	public String addAvtomobil()
+	{	
+		if (avtomobil.getVehicleModel() == null) {
+			// set the message
+			errorMessage = "Не е избран модел автомобил!";
+			return null;
+		}
+		
+		if (avtomobil.getClient() == null) {
+			// set the message
+			errorMessage = "Не е избран клиент!";
+			return null;
+		}
+	
 		avtomobil.writeToDB();
 	
+		// clean the data
 		avtomobil = new Vehicle();
-
-
+		
+		// set the message
 		errorMessage = "Автомобилът беше добавен успешно!";
+		
+		return null;
 	}
 	
 	public String chooseModelAvtomobil()
 	{
+		if (avtomobil.getVIN() == null) {
+			// set the message
+			errorMessage = "Не е попълнен номер на рама!";
+			return null;
+		}
 		
 		Stack<InterPageDataRequest> dataRequestStack = new Stack<InterPageDataRequest>();
 		InterPageDataRequest dataRequest = new InterPageDataRequest();
@@ -170,25 +199,16 @@ public class DobavqneNaAvtomobil {
 			
 		return dataRequest.dataPage + "?faces-redirect=true";
 	}
-	
-	public String chooseGarancionniUsloviq()
-	{
-		Stack<InterPageDataRequest> dataRequestStack = new Stack<InterPageDataRequest>();
-		InterPageDataRequest dataRequest = new InterPageDataRequest();
-			
-		dataRequest.requestObject = this;
-		dataRequest.returnPage = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
-		dataRequest.dataPage = "/users/PregledNaGarancionniUsloviq.jsf";
-		dataRequest.requestedObject = null;
-			
-		dataRequestStack.push(dataRequest);
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
-			
-		return dataRequest.dataPage + "?faces-redirect=true";
-	}
+
 	
 	public String chooseKlient()
 	{
+		if (avtomobil.getVIN() == null) {
+			// set the message
+			errorMessage = "Не е попълнен номер на рама!";
+			return null;
+		}
+		
 		Stack<InterPageDataRequest> dataRequestStack = new Stack<InterPageDataRequest>();
 		InterPageDataRequest dataRequest = new InterPageDataRequest();
 			
