@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="headSection">
+		
+	</ui:define>
+
+	<ui:define name="pageContent">
+	
+		<h:form>
+			<h:panelGroup>
+				<h:outputLabel value="Регистрационен номер">
+					<h:inputText value="" maxlength="50" />
+				</h:outputLabel>
+				<br />
+				<h:outputLabel value="Име на собственика">
+					<h:inputText value="" maxlength="50" />
+				</h:outputLabel>
+				<h:outputLabel value="Фамилия на собственика">
+					<h:inputText value="" maxlength="50" />
+				</h:outputLabel>
+				<br />
+				<h:outputLabel value="Наименование на юридическо лице">
+					<h:inputText value="" maxlength="100" />
+				</h:outputLabel>
+				
+				<br />
+				<h:commandButton value="Търси" disabled="true" />
+				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
+			</h:panelGroup>
+		</h:form>
+		
+		<h:form>
+			
+			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+			<h:dataTable
+				rows="#{configurationProperties.getPageSize()}"
+				value="#{aktualiziraneNaAvtomobil.spisukAvtomobili}"
+			    first="0"
+			    var="curr"
+			    rowClasses="#{aktualiziraneNaAvtomobil.rowStyleClasses}">
+
+				<h:column>
+					<f:facet name="header">Номер на рама</f:facet>
+					<h:outputText value="#{cur.VIN}"  />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Номер на двигател</f:facet>
+					<h:outputText value="#{curr.engineNumber}"  />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Регистрационен номер</f:facet>
+					<h:outputText value="#{curr.plateNumber}" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Марка на автомобила</f:facet>
+					<h:outputText value="#{curr.vehicleModel.brand}" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Модел</f:facet>
+					<h:outputText value="#{curr.vehicleModel.model}" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Код на типа гаранция</f:facet>
+					<h:outputText value="#{curr.warrantyConditionsID}" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Дата на закупуване</f:facet>
+					<h:outputText value="#{curr.purchaseDate}" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">В гаранция</f:facet>
+					<h:outputText value="#{curr.warrantyOK}" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Име</f:facet>
+					<h:outputText value="#{curr.client.person.name}" rendered="#{not empty curr.client.person.name}" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Фамилия</f:facet>
+					<h:outputText value="#{curr.client.person.family}" rendered="#{not empty curr.client.person.family}" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Наименование на юридическо лице</f:facet>
+					<h:outputText value="#{curr.client.company.name}" rendered="#{not empty curr.company.name}" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Промени</f:facet>
+					<h:commandLink action="#{aktualiziraneNaAvtomobil.selectRow(curr)}" value="Промени" />
+				</h:column>
+				
+				<h:column rendered="#{aktualiziraneNaAvtomobilchoosingAlowed}">
+					<f:facet name="header">Избери</f:facet>
+					<h:commandLink action="#{aktualiziraneNaAvtomobil.chooseClient(curr)}" value="Избери" />
+				</h:column>
+				
+				<f:facet name="footer">
+					<h:panelGroup rendered="#{!empty aktualiziraneNaAvtomobil.pagesList}">
+						<!-- предишна страница -->
+						<h:commandLink rendered="#{aktualiziraneNaAvtomobil.page - 1 ge 0}"
+							action="#{aktualiziraneNaAvtomobil.setPage(aktualiziraneNaAvtomobil.page - 1)}"
+							value="&lt;&lt;" />
+							
+						<!-- други страници -->
+						<ui:repeat value="#{aktualiziraneNaAvtomobil.pagesList}" var="currPage">
+							<h:commandLink
+								rendered="#{aktualiziraneNaAvtomobil.page ne currPage.intValue() - 1}"
+								action="#{aktualiziraneNaAvtomobil.setPage(currPage.intValue()-1)}"
+								value="#{currPage}" />
+								
+							<h:outputText
+								rendered="#{aktualiziraneNaAvtomobil.page eq currPage.intValue() - 1}"
+								value="#{currPage}" />
+								
+							<h:outputText value=" " />
+						</ui:repeat>
+						
+						<!-- следваща страница -->
+						<h:commandLink rendered="#{aktualiziraneNaAvtomobil.page + 1 lt aktualiziraneNaAvtomobil.pagesCount}"
+							action="#{aktualiziraneNaAvtomobil.setPage(aktualiziraneNaAvtomobil.page + 1)}"
+							value="&gt;&gt;" />
+							
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="#{empty aktualiziraneNaAvtomobil.pagesList}" style="color: red; font-weight: bold;">
+						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
+						<br />
+						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
+					</h:panelGroup>
+				</f:facet>
+				 
+			</h:dataTable>
+			
+		</h:form>
+
+	   <h:form>
+
+	    <h:outputLabel value="Номер на рама*">
+	    	<h:inputText id="vin" value="#{aktualiziraneNaAvtomobil.VIN}" maxlength="17" 
+	    		required="true" requiredMessage="задължително поле!" 
+	    		readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" />
+	    	<h:message for="vin" />
+	    </h:outputLabel> 
+	    <br />
+
+		<h:outputLabel value="Номер на двигател*">
+	    	<h:inputText id="enginenum" value="#{dobavqneNaAvtomobil.engineNumber}" maxlength="50" 
+	    		required="true" requiredMessage="задължително поле!" 
+	    		readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" />
+	    	<h:message for="enginenum" />
+	    </h:outputLabel>
+	    <br />
+	    
+	    <h:outputLabel value="Регистрационен номер*">
+	    	<h:inputText id="platenum" value="#{dobavqneNaAvtomobil.plateNumber}" maxlength="8" 
+	    		required="true" requiredMessage="задължително поле!" 
+				readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" />
+	    	<h:message for="platenum" />
+	    </h:outputLabel> 
+	    <br /> 
+	    
+	    <h:outputLabel value="Марка на автомобила*">
+	    	<h:inputText id="brand" value="#{dobavqneNaAvtomobil.vehicleModel.brand}" maxlength="50" 
+	    		required="false" requiredMessage="задължително поле!" 
+	    		readonly = "true"/>
+	    	<h:message for="brand" />
+	    </h:outputLabel> 
+	    
+	    <h:outputLabel value="Модел на автомобила*">
+	    	<h:inputText id="model" value="#{dobavqneNaAvtomobil.vehicleModel.model}" maxlength="50" 
+	    		required="false" requiredMessage="задължително поле!" 
+	    		readonly = "true"/>
+	    	<h:message for="model" />
+	    </h:outputLabel>
+	    
+	    <h:commandButton value="Избери" 
+	    	 action="#{dobavqneNaAvtomobil.chooseModelAvtomobil()}"
+	    	 readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" /> 
+	   	<br />
+	    
+	    <h:outputLabel value="Код на типа гаранция">
+	    	<h:inputText id="warrentyid" value="#{dobavqneNaAvtomobil.warrantyConditionsID}" maxlength="50" 
+	    		readonly="true" />
+	    </h:outputLabel> 
+	    <br />
+	   
+	    <h:outputLabel value="Дата на закупуване">
+	    	<h:inputText id="purchasedate" value="#{dobavqneNaAvtomobil.purchaseDate}" maxlength="50" 
+	    		readonly ="true"/>
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Все още ли е гаранционен автомобила">
+	    	<h:inputText id="warrantyok" value="#{dobavqneNaAvtomobil.warrantyOK}" maxlength="50"
+	    		readonly = "true" />
+	    </h:outputLabel> 
+	    <br /> 
+	    
+	    <h:outputLabel value="Име на клиент (физ. лице)">
+	    	<h:inputText id="personname" value="#{dobavqneNaAvtomobil.client.person.name}" maxlength="50" 
+	    		required="false" requiredMessage="задължително поле!" 
+				readonly = "true" />
+	    	<h:message for="personname" />
+	    </h:outputLabel>
+	    <h:outputLabel value="Фамилия на клиент (физ. лице)">
+	    	<h:inputText id="personfamily" value="#{dobavqneNaAvtomobil.client.person.family}" maxlength="50" 
+	    		required="false" requiredMessage="задължително поле!"
+				readonly = "true" />
+	    	<h:message for="personfamily" />
+	    </h:outputLabel>
+	    <br />
+	     
+	    <h:outputLabel value="Наименование на фирма (юрид. лице)">
+	    	<h:inputText id="companyname" value="#{dobavqneNaAvtomobil.client.company.name}" maxlength="50" 
+	    		required="false" requiredMessage="задължително поле!"
+				readonly = "true" />
+	    	<h:message for="companyname" />
+	    </h:outputLabel> 
+	   
+	   	<h:commandButton value="Избери Клиент" 
+	   		 action="#{dobavqneNaAvtomobil.chooseKlient()}"
+			readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" /> 
+	    <br />
+	    
+	    
+
+
+				 <h:commandButton value="Запази" action="#{aktualiziraneNaAvtomobil.saveAvtomobil()}"
+					disabled="#{!aktualiziraneNaAvtomobil.rowSelected}"/>
+				
+				<h:commandButton action="#{aktualiziraneNaAvtomobil.deselectRow()}" value="Отмени"
+					disabled="#{!aktualiziraneNaAvtomobil.rowSelected}"/>
+					
+				<h:commandButton action="#{aktualiziraneNaAvtomobil.goToAdd()}" value="Добави" />
+				
+		    <br />
+		    <h:outputText value="#{aktualiziraneNaKlient.errorMessage}"/>
+	    
+	    </h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>
