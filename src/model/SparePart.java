@@ -28,6 +28,7 @@ public class SparePart implements Serializable {
 	@SuppressWarnings("unused")
 	private Key sparePartParentID;
 	private Key sparePartGroupID;
+	private LimitedString name = new LimitedString(50);
 	private LimitedString description = new LimitedString(500);
 	private Double deliveryPrice;
 	private Double salePrice;
@@ -40,7 +41,7 @@ public class SparePart implements Serializable {
 			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "sparePartGroup"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {}));
+			new String[] {"description"}));
 	
 	public void writeToDB() {
 		if (thisEntity == null) {
@@ -120,6 +121,14 @@ public class SparePart implements Serializable {
 		} else {
 			sparePartGroupID = sparePartGroup.getID();
 		}
+	}
+	
+	public String getName() {
+		return name.getString();
+	}
+
+	public void setName(String name) {
+		this.name.setString(name);
 	}
 
 	public String getDescription() {
@@ -211,7 +220,8 @@ public class SparePart implements Serializable {
 CREATE TABLE Spare_Part ( 
 	Spare_Part_ID BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 0, INCREMENT BY 1),
 	Spare_Part_Group_ID BIGINT NOT NULL,
-	Description VARCHAR(500) NOT NULL,
+	Name VARCHAR(50) NOT NULL,
+	Description VARCHAR(500),
 	Delivery_Price FLOAT NOT NULL,
 	Sale_Price FLOAT NOT NULL,
 	Measuring_Unit VARCHAR(100) NOT NULL,

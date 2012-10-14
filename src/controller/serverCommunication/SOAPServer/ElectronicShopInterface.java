@@ -66,6 +66,8 @@ public interface ElectronicShopInterface {
 			String electronicShopID,
 			@WebParam(name="sparePartID")
 			String sparePartID,
+			@WebParam(name="name")
+			String name,
 			@WebParam(name="sparePartGroupID")
 			String sparePartGroupID,
 			@WebParam(name="description")

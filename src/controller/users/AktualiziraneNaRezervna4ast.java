@@ -54,6 +54,14 @@ public class AktualiziraneNaRezervna4ast implements Serializable {
 		return rezervna4ast.getSparePartGroup();
 	}
 
+	public String getName() {
+		return rezervna4ast.getName();
+	}
+
+	public void setName(String name) {
+		rezervna4ast.setName(name);
+	}
+
 	public String getDescription() {
 		return rezervna4ast.getDescription();
 	}

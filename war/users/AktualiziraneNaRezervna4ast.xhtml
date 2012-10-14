@@ -54,6 +54,11 @@
 				</h:column>
 				
 				<h:column>
+					<f:facet name="header">Наименование</f:facet>
+					#{curr.name}
+				</h:column>
+				
+				<h:column>
 					<f:facet name="header">Доставна цена</f:facet>
 					#{curr.deliveryPrice}
 				</h:column>
@@ -118,6 +123,14 @@
 				<h:inputText id="sparePartGroup" value="#{aktualiziraneNaRezervna4ast.sparePartGroup.description}"
 					readonly="true" />
 				<h:message for="sparePartGroup" />
+			</h:outputLabel>
+			<br />
+			
+			<h:outputLabel value="Наименование">
+				<h:inputText id="name"
+					value="#{aktualiziraneNaRezervna4ast.name}"
+					readonly="true" />
+				<h:message for="name" />
 			</h:outputLabel>
 			<br />
 

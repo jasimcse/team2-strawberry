@@ -191,6 +191,7 @@ public class ElectronicShop implements ElectronicShopInterface {
 	public boolean createOrUpdateSparePart(
 			String electronicShopID,
 			String sparePartID,
+			String name,
 			String sparePartGroupID,
 			String description,
 			double deliveryPrice,
@@ -218,6 +219,7 @@ public class ElectronicShop implements ElectronicShopInterface {
 			
 			sp.setForeignID(sparePartID);
 			sp.setSparePartGroupID(sparePartGroup.get(0).getID());
+			sp.setName(name);
 			sp.setDescription(description);
 			sp.setDeliveryPrice(deliveryPrice);
 			sp.setSalePrice(deliveryPrice);    // <--- отначало продажната цена е същата като доставната !!!

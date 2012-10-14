@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "createOrUpdateSparePart", namespace = "http://SOAPServer.serverCommunication.controller/", propOrder = {
     "electronicShopID",
     "sparePartID",
+    "name",
     "sparePartGroupID",
     "description",
     "deliveryPrice",
@@ -23,6 +24,8 @@ public class CreateOrUpdateSparePart {
     private String electronicShopID;
     @XmlElement(name = "sparePartID", namespace = "")
     private String sparePartID;
+    @XmlElement(name = "name", namespace = "")
+    private String name;
     @XmlElement(name = "sparePartGroupID", namespace = "")
     private String sparePartGroupID;
     @XmlElement(name = "description", namespace = "")
@@ -66,6 +69,24 @@ public class CreateOrUpdateSparePart {
      */
     public void setSparePartID(String sparePartID) {
         this.sparePartID = sparePartID;
+    }
+
+    /**
+     * 
+     * @return
+     *     returns String
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * 
+     * @param name
+     *     the value for the name property
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
