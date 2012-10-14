@@ -54,6 +54,7 @@ public class DobavqneNaRezervna4ast {
 					ConfigurationProperties.getElectronicShopID(),
 					rezervna4ast.getForeignID(),
 					rezervna4ast.getSparePartGroup().getForeignID(),
+					rezervna4ast.getName(),
 					rezervna4ast.getDescription(),
 					rezervna4ast.getDeliveryPrice(),
 					rezervna4ast.getMeasuringUnit());
@@ -74,6 +75,14 @@ public class DobavqneNaRezervna4ast {
 		rezervna4ast = new SparePart();
 		
 		return null;
+	}
+	
+	public String getName() {
+		return rezervna4ast.getName();
+	}
+
+	public void setName(String name) {
+		rezervna4ast.setName(name);
 	}
 
 	public String getDescription() {

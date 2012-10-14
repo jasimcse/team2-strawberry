@@ -37,6 +37,14 @@
 				</h:selectOneMenu>
 			</h:outputLabel>
 			<br />
+			
+			<h:outputLabel value="Наименование*">
+				<h:inputText id="name"
+					value="#{dobavqneNaRezervna4ast.name}" maxlength="50"
+					required="true" requiredMessage="задължително поле!" />
+				<h:message for="name" />
+			</h:outputLabel>
+			<br />
 
 			<h:outputLabel value="Доставна цена*">
 				<h:inputText id="deliveryPrice"
@@ -56,10 +64,9 @@
 			</h:outputLabel>
 			<br />
 
-			<h:outputLabel value="Описание*">
+			<h:outputLabel value="Описание">
 				<h:inputTextarea id="description"
-					value="#{dobavqneNaRezervna4ast.description}" maxlength="500"
-					required="true" requiredMessage="задължително поле!" />
+					value="#{dobavqneNaRezervna4ast.description}" maxlength="500" />
 				<h:message for="description" />
 			</h:outputLabel>
 			<br />

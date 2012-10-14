@@ -253,6 +253,7 @@ public class ElectronicShopSOAP extends HttpServlet {
 				request.getElectronicShopID(),
 				request.getSparePartID(),
 				request.getSparePartGroupID(),
+				request.getName(),
 				request.getDescription(),
 				request.getDeliveryPrice(),
 				request.getMeasuringUnit());
