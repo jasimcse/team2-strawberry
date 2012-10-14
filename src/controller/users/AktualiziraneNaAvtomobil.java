@@ -231,6 +231,8 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 	
 	public void deselectRow() {
 		avtomobil = new Vehicle();
+		readList();
+		
 	}
 
 	public boolean isRowSelected() {

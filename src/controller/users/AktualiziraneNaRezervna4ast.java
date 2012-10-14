@@ -142,6 +142,7 @@ public class AktualiziraneNaRezervna4ast implements Serializable {
 	
 	public void deselectRow() {
 		rezervna4ast = new SparePart();
+		readList();
 	}
 	
 	public boolean isRowSelected() {

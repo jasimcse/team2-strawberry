@@ -118,6 +118,7 @@ public class PregledNaModelAvtomobil implements Serializable {
 	
 	public void deselectRow() {
 		modelAvtomobil = new VehicleModel();
+		readList();
 	}
 	
 	public boolean isRowSelected() {

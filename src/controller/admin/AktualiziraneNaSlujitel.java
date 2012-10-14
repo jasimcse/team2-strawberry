@@ -166,6 +166,7 @@ public class AktualiziraneNaSlujitel implements Serializable {
 	
 	public void deselectRow() {
 		slujitel = new Employee();
+		readList();
 	}
 	
 	public boolean isRowSelected() {

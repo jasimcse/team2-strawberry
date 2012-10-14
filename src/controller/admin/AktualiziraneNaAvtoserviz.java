@@ -193,6 +193,7 @@ public class AktualiziraneNaAvtoserviz implements Serializable {
 	
 	public void deselectRow() {
 		serviz = new Autoservice();
+		readList();
 	}
 	
 	public boolean isRowSelected() {

@@ -132,6 +132,7 @@ public class AktualiziraneNaUsluga implements Serializable {
 	
 	public void deselectRow() {
 		usluga = new Service();
+		readList();
 	}
 	
 	public boolean isRowSelected() {

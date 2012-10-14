@@ -244,6 +244,7 @@ public class AktualiziraneNaKlient implements Serializable {
 	
 	public void deselectRow() {
 		klient = new Client();
+		readList();
 	}
 
 	public boolean isRowSelected() {

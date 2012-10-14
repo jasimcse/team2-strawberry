@@ -205,6 +205,7 @@ public class AktualiziraneNaDostav4ik implements Serializable {
 	
 	public void deselectRow() {
 		dostav4ik = new Supplier();
+		readList();
 	}
 	
 	public boolean isRowSelected() {
