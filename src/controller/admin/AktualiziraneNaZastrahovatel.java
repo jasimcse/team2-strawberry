@@ -205,6 +205,7 @@ public class AktualiziraneNaZastrahovatel implements Serializable {
 	
 	public void deselectRow() {
 		zastrahovatel = new Insurer();
+		readList();
 	}
 	
 	public boolean isRowSelected() {

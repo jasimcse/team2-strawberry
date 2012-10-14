@@ -113,6 +113,7 @@ public class PregledNaGarancionniUsloviq implements Serializable {
 	
 	public void deselectRow() {
 		garancionniUsloviq= new WarrantyConditions();
+		readList();
 	}
 	
 	public boolean isRowSelected() {
