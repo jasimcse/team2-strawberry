@@ -192,6 +192,9 @@ public class Diagnosis implements Serializable {
 	}
 
 	public double getPrice() {
+		if (price == null) {
+			return 0;
+		}
 		return price.doubleValue();
 	}
 
