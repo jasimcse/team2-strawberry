@@ -195,7 +195,7 @@
 	    
 	    <h:commandButton value="Избери" 
 	    	 action="#{aktualiziraneNaAvtomobil.chooseModelAvtomobil()}"
-	    	 readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" /> 
+	    	 disabled="#{!aktualiziraneNaAvtomobil.rowSelected}" /> 
 	   	<br />
 	    
 	    <h:outputLabel value="Код на типа гаранция">
@@ -239,7 +239,7 @@
 	   
 	   		<h:commandButton value="Избери Клиент" 
 	   			action="#{aktualiziraneNaAvtomobil.chooseKlient()}"
-				readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" /> 
+				disabled="#{!aktualiziraneNaAvtomobil.rowSelected}" /> 
 	   		<br />
 	    
 	
