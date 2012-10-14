@@ -17,7 +17,7 @@
 		<h:form>
 			<h:panelGroup>
 				<h:outputLabel value="Регистрационен номер">
-					<h:inputText value="" maxlength="50" />
+					<h:inputText value="" maxlength="8" />
 				</h:outputLabel>
 				<br />
 				<h:outputLabel value="Име на собственика">
@@ -162,7 +162,7 @@
 	    <br />
 
 		<h:outputLabel value="Номер на двигател*">
-	    	<h:inputText id="enginenum" value="#{dobavqneNaAvtomobil.engineNumber}" maxlength="50" 
+	    	<h:inputText id="enginenum" value="#{aktualiziraneNaAvtomobil.engineNumber}" maxlength="50" 
 	    		required="true" requiredMessage="задължително поле!" 
 	    		readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" />
 	    	<h:message for="enginenum" />
@@ -170,7 +170,7 @@
 	    <br />
 	    
 	    <h:outputLabel value="Регистрационен номер*">
-	    	<h:inputText id="platenum" value="#{dobavqneNaAvtomobil.plateNumber}" maxlength="8" 
+	    	<h:inputText id="platenum" value="#{aktualiziraneNaAvtomobil.plateNumber}" maxlength="8" 
 	    		required="true" requiredMessage="задължително поле!" 
 				readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" />
 	    	<h:message for="platenum" />
@@ -178,50 +178,50 @@
 	    <br /> 
 	    
 	    <h:outputLabel value="Марка на автомобила*">
-	    	<h:inputText id="brand" value="#{dobavqneNaAvtomobil.vehicleModel.brand}" maxlength="50" 
+	    	<h:inputText id="brand" value="#{aktualiziraneNaAvtomobil.vehicleModel.brand}" maxlength="50" 
 	    		required="false" requiredMessage="задължително поле!" 
 	    		readonly = "true"/>
 	    	<h:message for="brand" />
 	    </h:outputLabel> 
 	    
 	    <h:outputLabel value="Модел на автомобила*">
-	    	<h:inputText id="model" value="#{dobavqneNaAvtomobil.vehicleModel.model}" maxlength="50" 
+	    	<h:inputText id="model" value="#{aktualiziraneNaAvtomobil.vehicleModel.model}" maxlength="50" 
 	    		required="false" requiredMessage="задължително поле!" 
 	    		readonly = "true"/>
 	    	<h:message for="model" />
 	    </h:outputLabel>
 	    
 	    <h:commandButton value="Избери" 
-	    	 action="#{dobavqneNaAvtomobil.chooseModelAvtomobil()}"
+	    	 action="#{aktualiziraneNaAvtomobil.chooseModelAvtomobil()}"
 	    	 readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" /> 
 	   	<br />
 	    
 	    <h:outputLabel value="Код на типа гаранция">
-	    	<h:inputText id="warrentyid" value="#{dobavqneNaAvtomobil.warrantyConditionsID}" maxlength="50" 
+	    	<h:inputText id="warrentyid" value="#{aktualiziraneNaAvtomobil.warrantyConditionsID}" maxlength="50" 
 	    		readonly="true" />
 	    </h:outputLabel> 
 	    <br />
 	   
 	    <h:outputLabel value="Дата на закупуване">
-	    	<h:inputText id="purchasedate" value="#{dobavqneNaAvtomobil.purchaseDate}" maxlength="50" 
+	    	<h:inputText id="purchasedate" value="#{aktualiziraneNaAvtomobil.purchaseDate}" maxlength="50" 
 	    		readonly ="true"/>
 	    </h:outputLabel> 
 	    <br />
 	    
 	    <h:outputLabel value="Все още ли е гаранционен автомобила">
-	    	<h:inputText id="warrantyok" value="#{dobavqneNaAvtomobil.warrantyOK}" maxlength="50"
+	    	<h:inputText id="warrantyok" value="#{aktualiziraneNaAvtomobil.warrantyOK}" maxlength="50"
 	    		readonly = "true" />
 	    </h:outputLabel> 
 	    <br /> 
 	    
 	    <h:outputLabel value="Име на клиент (физ. лице)">
-	    	<h:inputText id="personname" value="#{dobavqneNaAvtomobil.client.person.name}" maxlength="50" 
+	    	<h:inputText id="personname" value="#{aktualiziraneNaAvtomobil.client.person.name}" maxlength="50" 
 	    		required="false" requiredMessage="задължително поле!" 
 				readonly = "true" />
 	    	<h:message for="personname" />
 	    </h:outputLabel>
 	    <h:outputLabel value="Фамилия на клиент (физ. лице)">
-	    	<h:inputText id="personfamily" value="#{dobavqneNaAvtomobil.client.person.family}" maxlength="50" 
+	    	<h:inputText id="personfamily" value="#{aktualiziraneNaAvtomobil.client.person.family}" maxlength="50" 
 	    		required="false" requiredMessage="задължително поле!"
 				readonly = "true" />
 	    	<h:message for="personfamily" />
@@ -229,27 +229,25 @@
 	    <br />
 	     
 	    <h:outputLabel value="Наименование на фирма (юрид. лице)">
-	    	<h:inputText id="companyname" value="#{dobavqneNaAvtomobil.client.company.name}" maxlength="50" 
+	    	<h:inputText id="companyname" value="#{aktualiziraneNaAvtomobil.client.company.name}" maxlength="100" 
 	    		required="false" requiredMessage="задължително поле!"
 				readonly = "true" />
 	    	<h:message for="companyname" />
-	    </h:outputLabel> 
+	    	</h:outputLabel> 
 	   
-	   	<h:commandButton value="Избери Клиент" 
-	   		 action="#{dobavqneNaAvtomobil.chooseKlient()}"
-			readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" /> 
-	    <br />
+	   		<h:commandButton value="Избери Клиент" 
+	   			action="#{aktualiziraneNaAvtomobil.chooseKlient()}"
+				readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" /> 
+	   		<br />
 	    
-	    
-
-
-				 <h:commandButton value="Запази" action="#{aktualiziraneNaAvtomobil.saveAvtomobil()}"
-					disabled="#{!aktualiziraneNaAvtomobil.rowSelected}"/>
+	
+			<h:commandButton value="Запази" action="#{aktualiziraneNaAvtomobil.saveAvtomobil()}"
+				disabled="#{!aktualiziraneNaAvtomobil.rowSelected}"/>
 				
-				<h:commandButton action="#{aktualiziraneNaAvtomobil.deselectRow()}" value="Отмени"
-					disabled="#{!aktualiziraneNaAvtomobil.rowSelected}"/>
+			<h:commandButton action="#{aktualiziraneNaAvtomobil.deselectRow()}" value="Отмени"
+				disabled="#{!aktualiziraneNaAvtomobil.rowSelected}"/>
 					
-				<h:commandButton action="#{aktualiziraneNaAvtomobil.goToAdd()}" value="Добави" />
+			<h:commandButton action="#{aktualiziraneNaAvtomobil.goToAdd()}" value="Добави" />
 				
 		    <br />
 		    <h:outputText value="#{aktualiziraneNaKlient.errorMessage}"/>
