@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="pageContent">
+	    <h:form>
+
+	    <h:outputLabel value="Номер на рама*">
+	    	<h:inputText id="vin" value="#{dobavqneNaDiagnostika.vehicleID}" maxlength="17" 
+	    		required="true" requiredMessage="задължително поле!" 
+	    		readonly="true"/>
+	    	<h:message for="vin" />
+	    </h:outputLabel> 
+	    <h:commandButton value="Избери" 
+	    	 action="#{dobavqneNaDiagnostika.chooseAvtomobil()}" /> 
+	    <br />
+	    
+	    <h:outputLabel value="Цена на диагностиката*">
+	    	<h:inputText id="price" value="#{dobavqneNaDiagnostika.price}" maxlength="50" 
+	    		required="true" requiredMessage="задължително поле!" />
+	    	<h:message for="price" />
+	    </h:outputLabel>
+	    
+	    <!-- TODO: combo -->
+	    <h:outputLabel value="Статус на диагностиката*">
+	    	<h:inputText id="status" value="#{dobavqneNaDiagnostika.status}" maxlength="50" 
+	    		required="true" requiredMessage="задължително поле!" />
+	    		<h:message for="status" />
+	    </h:outputLabel> 
+	    <br />
+	   
+	    <h:outputLabel value="Номер на платежно нареждане">
+	    	<h:inputText id="paynumber" value="#{dobavqneNaDiagnostika.paymentNumber}" maxlength="50" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    
+
+	    <h:commandButton label="Услуги, които трябва да бъдат извършени според диагностиката:" value="Избери" 
+	    	 action="#{dobavqneNaDiagnostika.chooseUsluga()}" /> 
+	    <br />
+	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове --> 
+		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<h:form>
+			<h:dataTable
+				value="#{dobavqneNaDiagnostika.spisukUslugi}"
+			    var="curr"
+			    rowClasses="notSelectedRow">
+				
+				<h:column>
+					<f:facet name="header">Наименование на услугата</f:facet>
+					#{curr.description}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Премахни</f:facet>
+					<h:commandLink action="#{dobavqneNaDiagnostika.deleteUsluga(curr)}" value="Промени" />
+				</h:column> 
+			</h:dataTable>
+		</h:form>
+		</div>
+		
+		
+		 <h:outputLabel value="Резервни части, които трябва да бъдат сменени според извършената диагностика:">
+	    </h:outputLabel>
+	    <h:commandButton  value="Избери" 
+	    	 action="#{dobavqneNaDiagnostika.chooseSparePart()}" /> 
+	    <br /> 
+	    <br />
+	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове -->
+		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<h:form>
+			
+			<h:dataTable
+				value="#{dobavqneNaDiagnostika.spisukRezervni4asti}"
+			    var="curr"
+			    rowClasses="notSelectedRow">
+				
+				<h:column>
+					<f:facet name="header">Група на резервната част</f:facet>
+					#{curr.sparePartGroup.description}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Име на резервната част</f:facet>
+					#{curr.deliveryPrice}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Нужно количество</f:facet>
+					<h:inputText id="quantity" value="#{curr.salePrice}" />
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Премахни</f:facet>
+					<h:commandLink action="#{dobavqneNaDiagnostika.deleteSparePart(curr)}" value="Промени" />
+				</h:column>
+		
+			</h:dataTable>
+		</h:form>
+		</div>
+	    
+	    
+	   	<h:commandButton value="Добави" 
+	   		 action="#{dobavqneNaDiagnostika.addDiagnostika()}"/> 
+	    <br />
+	    
+	    <h:outputText value="#{dobavqneNaDiagnostika.errorMessage}"/>
+	    
+	    </h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>
