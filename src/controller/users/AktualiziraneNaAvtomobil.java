@@ -294,18 +294,18 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 			return null;
 		}
 		
-		Stack<InterPageDataRequest> dataRequestStack = new Stack<InterPageDataRequest>();
-		InterPageDataRequest dataRequest = new InterPageDataRequest();
+		Stack<InterPageDataRequest> dataRequestStackN = new Stack<InterPageDataRequest>();
+		InterPageDataRequest dataRequestN = new InterPageDataRequest();
 			
-		dataRequest.requestObject = this;
-		dataRequest.returnPage = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
-		dataRequest.dataPage = "/users/PregledNaModelAvtomobil.jsf";
-		dataRequest.requestedObject = null;
+		dataRequestN.requestObject = this;
+		dataRequestN.returnPage = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
+		dataRequestN.dataPage = "/users/PregledNaModelAvtomobil.jsf";
+		dataRequestN.requestedObject = null;
 			
-		dataRequestStack.push(dataRequest);
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
+		dataRequestStackN.push(dataRequestN);
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStackN);
 			
-		return dataRequest.dataPage + "?faces-redirect=true";
+		return dataRequestN.dataPage + "?faces-redirect=true";
 	}
 
 	
@@ -317,18 +317,18 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 			return null;
 		}
 		
-		Stack<InterPageDataRequest> dataRequestStack = new Stack<InterPageDataRequest>();
-		InterPageDataRequest dataRequest = new InterPageDataRequest();
+		Stack<InterPageDataRequest> dataRequestStackN = new Stack<InterPageDataRequest>();
+		InterPageDataRequest dataRequestN = new InterPageDataRequest();
 			
-		dataRequest.requestObject = this;
-		dataRequest.returnPage = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
-		dataRequest.dataPage = "/users/AktualiziraneNaKlient.jsf";
-		dataRequest.requestedObject = null;
+		dataRequestN.requestObject = this;
+		dataRequestN.returnPage = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
+		dataRequestN.dataPage = "/users/AktualiziraneNaKlient.jsf";
+		dataRequestN.requestedObject = null;
 			
-		dataRequestStack.push(dataRequest);
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
+		dataRequestStackN.push(dataRequestN);
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStackN);
 			
-		return dataRequest.dataPage + "?faces-redirect=true";
+		return dataRequestN.dataPage + "?faces-redirect=true";
 		
 	}
 
