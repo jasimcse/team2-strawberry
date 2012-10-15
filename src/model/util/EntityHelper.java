@@ -283,13 +283,14 @@ public class EntityHelper {
 				} catch (IllegalAccessException e) {
 					throw new RuntimeException("Can't populate the field " + name + "!", e);
 				}
-				if ((valueObject == null) && (!nullables.contains(name))) {
-					throw new RuntimeException("The field " + name + " is declared to be not null!");
-				}
 				
 				if (valueObject instanceof LimitedString) {
 					valueObject = ((LimitedString) valueObject).getString();
 				}
+				if ((valueObject == null) && (!nullables.contains(name))) {
+					throw new RuntimeException("The field " + name + " is declared to be not null!");
+				}
+				
 				entity.setProperty(name, valueObject);
 			}
 		}
