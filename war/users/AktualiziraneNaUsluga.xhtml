@@ -47,9 +47,14 @@
 					#{curr.priceHour}
 				</h:column>
 				
-				<h:column>
+				<h:column rendered="#{aktualiziraneNaUsluga.changingAllowed}">
 					<f:facet name="header">Промени</f:facet>
 					<h:commandLink action="#{aktualiziraneNaUsluga.selectRow(curr)}" value="Промени" />
+				</h:column>
+				
+				<h:column rendered="#{aktualiziraneNaUsluga.choosingAllowed}">
+					<f:facet name="header">Избери</f:facet>
+					<h:commandLink action="#{aktualiziraneNaUsluga.chooseService(curr)}" value="Избери" />
 				</h:column>
 				
 				<f:facet name="footer">
@@ -91,7 +96,7 @@
 		</h:form>
 		</div>
 		
-		<h:form>
+		<h:form rendered="#{aktualiziraneNaUsluga.changingAllowed}">
 	    
 			<h:outputLabel value="Наименование на услугата">
 				<h:inputText id="description"
