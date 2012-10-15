@@ -139,7 +139,12 @@ public class AktualiziraneNaUsluga implements Serializable {
 		return spisukUslugi.contains(usluga);
 	}
 	
-	public boolean isChoosingAlowed() {
+	public boolean isChangingAllowed() {
+		// TODO - като се сложи security да се оправят правата на потребителите, за сега всеки може да променя
+		return true;
+	}
+	
+	public boolean isChoosingAllowed() {
 		return (dataRequest != null);
 	}
 	
