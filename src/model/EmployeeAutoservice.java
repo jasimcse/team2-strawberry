@@ -1,6 +1,10 @@
 package model;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -31,7 +35,7 @@ public class EmployeeAutoservice implements Serializable {
 	private Key autoserviceID;
 	private Key employeeID;
 	private LimitedString username = new LimitedString(50);
-	private LimitedString password = new LimitedString(50); // TODO - така ли да остава ?
+	private LimitedString password = new LimitedString(32, true); // MD5 => 32 символа
 	private LimitedString position = new LimitedString(30);
 	
 	private static final String PARENT_FIELD = "autoserviceID";
@@ -169,8 +173,23 @@ public class EmployeeAutoservice implements Serializable {
 	}
 	
 	private static String scramblePassword(String password) {
-		//TODO - scramble it or hash it, maybe with salt and pepper :)
-		return new String(password);
+		//TODO - maybe add salt and pepper :)
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			md.update(password.getBytes("UTF-8"));
+			byte []bytes = md.digest();
+			BigInteger big = new BigInteger(1, bytes);
+			String hash = big.toString(16);
+			while (hash.length() < 32) {
+				hash = '0' + hash;
+			}
+			return hash;
+			
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException("Can't find MD5 hash provider", e);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException("OOopppsssiieee", e);
+		}
 	}
 	
 	private static PreparedQuery getPreparedQueryAll() { 
