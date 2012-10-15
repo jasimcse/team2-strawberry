@@ -10,6 +10,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.utils.SystemProperty;
 
 import controller.common.ConfigurationProperties;
 import controller.common.InterPageDataRequest;
@@ -126,6 +127,11 @@ public class DobavqneNaPotrebitel implements Serializable {
 		
 		// set the message
 		errorMessage = "Потребителят беше добавен успешно!";
+		
+		// show the generated password if we are executing in the development server
+		if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Development) {
+			errorMessage += " Генериранета парола е \"" + generatedPassword + "\"";
+		}
 		
 		return null;
 	}

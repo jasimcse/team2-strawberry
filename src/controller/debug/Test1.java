@@ -2,7 +2,10 @@ package controller.debug;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.Provider;
+import java.security.Security;
 import java.util.Date;
+import java.util.Set;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -136,6 +139,32 @@ public class Test1 {
 		//return "../index.jsf?faces-redirect=true";
 	}
 	
-	
+	public String getSecurityProviders() {
+		StringBuilder sb = new StringBuilder();
+		Provider []p = Security.getProviders();
+
+		for (Provider provider : p) {
+			sb.append(provider.getName()).
+			append("   ").
+			append(provider.getVersion()).
+			append("   ").
+			append(provider.getInfo()).
+			append("<br>");
+		}
+		
+		Set<String> s = Security.getAlgorithms("MessageDigest");
+		for (String string : s) {
+			sb.append(string).
+			append("   ");
+		}
+		
+		sb.append(Integer.toBinaryString(7)).
+		append("   ").
+		append(Integer.toOctalString(15)).
+		append("   ").
+		append(Integer.toHexString(17));
+		
+		return sb.toString();
+	}
 
 }
