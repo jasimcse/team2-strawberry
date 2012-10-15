@@ -9,9 +9,8 @@ import java.util.Stack;
 import javax.faces.bean.ManagedBean;
 
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
-import com.google.appengine.api.datastore.Key;
 
 
 import controller.common.ConfigurationProperties;
@@ -31,7 +30,7 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 
 	private Vehicle avtomobil = new Vehicle();
 	
-	//private transient UIComponent addButton;
+	private transient UIComponent changeButton;
 	
 	private String errorMessage;
 	
@@ -47,27 +46,24 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 
 	@SuppressWarnings("unchecked")
 	public AktualiziraneNaAvtomobil() {
-		Stack<InterPageDataRequest> dataRequestStackNew = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
-		
-		if (dataRequestStackNew != null) {
-			InterPageDataRequest dataRequestNew = dataRequestStackNew.peek();
-			if (FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath().equals(dataRequestNew.returnPage)) 
-			{
-				if(dataRequestNew.dataPage.equals("/users/PregledNaModelAvtomobil.jsf"))
-				{
-					this.avtomobil = ((AktualiziraneNaAvtomobil)dataRequestNew.requestObject).avtomobil;
-					this.avtomobil.setVehicleModel((VehicleModel)dataRequestNew.requestedObject);
-				}
-				else
-					if(dataRequestNew.dataPage.equals("/users/AktualiziraneNaKlient.jsf"))
-					{
-							this.avtomobil = ((AktualiziraneNaAvtomobil)dataRequestNew.requestObject).avtomobil;
-							this.avtomobil.setClient((Client)dataRequestNew.requestedObject);
-					}
-			}
-		}
+		readList();
 		
 		dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
+		
+		if (dataRequestStack != null) {
+			InterPageDataRequest dataRequestNew = dataRequestStack.peek();
+			if (FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath().equals(dataRequestNew.returnPage)) { 
+				avtomobil = ((AktualiziraneNaAvtomobil)dataRequestNew.requestObject).avtomobil;
+				spisukAvtomobili = ((AktualiziraneNaAvtomobil)dataRequestNew.requestObject).spisukAvtomobili;
+				page = ((AktualiziraneNaAvtomobil)dataRequestNew.requestObject).page;
+				pagesCount = ((AktualiziraneNaAvtomobil)dataRequestNew.requestObject).pagesCount;
+				rowsCount = ((AktualiziraneNaAvtomobil)dataRequestNew.requestObject).rowsCount;
+						
+				if (dataRequestNew.dataPage.equals("/users/AktualiziraneNaKlient.jsf")) {
+					this.avtomobil.setClient((Client)dataRequestNew.requestedObject);
+				}
+			}
+		}
 		
 		if (dataRequestStack != null) {
 			dataRequest = dataRequestStack.peek();
@@ -76,59 +72,23 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 			}
 		}
 		
-		readList();
 	}
 	
-	public Key getID() {
-		return avtomobil.getID();
-	}
-
 	public Client getClient() {
 		return avtomobil.getClient();
-	}
-
-	public void setClient(Client client) {
-		avtomobil.setClient(client);
-	}
-
-	public Key getVehicleModelID() {
-		return avtomobil.getVehicleModelID();
-	}
-
-	public void setVehicleModelID(Key vehicleModelID) {
-		avtomobil.setVehicleModelID(vehicleModelID);
 	}
 
 	public VehicleModel getVehicleModel() {
 		return avtomobil.getVehicleModel();
 	}
 
-	public void setVehicleModel(VehicleModel vehicleModel) {
-		avtomobil.setVehicleModel(vehicleModel);
-	}
-
-	public Key getWarrantyConditionsID() {
-		return avtomobil.getWarrantyConditionsID();
-	}
-
-	public void setWarrantyConditionsID(Key warrantyConditionsID) {
-		avtomobil.setWarrantyConditionsID(warrantyConditionsID);
-	}
 
 	public WarrantyConditions getWarrantyConditions() {
 		return avtomobil.getWarrantyConditions();
 	}
 
-	public void setWarrantyConditions(WarrantyConditions warrantyConditions) {
-		avtomobil.setWarrantyConditions(warrantyConditions);
-	}
-
 	public String getVIN() {
 		return avtomobil.getVIN();
-	}
-
-	public void setVIN(String VIN) {
-		avtomobil.setVIN(VIN);
 	}
 
 	public String getEngineNumber() {
@@ -148,29 +108,26 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 	}
 
 	public String getWarrantyOK() {
-		return avtomobil.getWarrantyOK();
-	}
-
-	public void setWarrantyOK(String warrantyOK) {
-		avtomobil.setWarrantyOK(warrantyOK);
+		if (avtomobil.getWarrantyOK() == Vehicle.WARRANTY_YES) {
+			return "ДА";
+		} else if (avtomobil.getWarrantyOK() == Vehicle.WARRANTY_NO) {
+			return "НЕ";
+		}
+		return "НЕ";
 	}
 
 	public Date getPurchaseDate() {
 		return avtomobil.getPurchaseDate();
 	}
 
-	public void setPurchaseDate(Date purchaseDate) {
-		avtomobil.setPurchaseDate(purchaseDate);
+	
+	public UIComponent getChangeButton() {
+		return changeButton;
 	}
 
-	
-	//public UIComponent getAddButton() {
-	//	return addButton;
-	//}
-
-	//public void setAddButton(UIComponent addButton) {
-	//	this.addButton = addButton;
-	//}
+	public void setChangeButton(UIComponent changeButton) {
+		this.changeButton = changeButton;
+	}
 
 	public String getErrorMessage() {
 		return errorMessage;
@@ -226,6 +183,9 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 	}
 	
 	public void selectRow(Vehicle avto) {
+		if (!isChangingAllowed()) {
+			throw new RuntimeException("Don't do that bastard!");
+		}
 		avtomobil = avto;
 	}
 	
@@ -242,8 +202,12 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 	public String goToAdd() {
 		return "DobavqneNaAvtomobil.jsf?faces-redirect=true";
 	}
+	
+	public boolean isChangingAllowed() {
+		return true;
+	}
 
-	public boolean isChoosingAlowed() {
+	public boolean isChoosingAllowed() {
 		return (dataRequest != null);
 	}
 	
@@ -260,24 +224,9 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 	
 	public String saveAvtomobil()
 	{	
-		if (avtomobil.getVehicleModel() == null) {
-			// set the message
-			errorMessage = "Не е избран модел автомобил!";
-			return null;
-		}
-		
-		if (avtomobil.getClient() == null) {
-			// set the message
-			errorMessage = "Не е избран клиент!";
-			return null;
-		}
-	
+
 		avtomobil.writeToDB();
 	
-		// clean the data
-		avtomobil = new Vehicle();
-		
-		
 		readList();
 
 		// set the message
@@ -286,49 +235,21 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 		return null;
 	}
 	
-	public String chooseModelAvtomobil()
-	{
-		if (avtomobil.getVIN() == null) {
-			// set the message
-			errorMessage = "Не е попълнен номер на рама!";
-			return null;
-		}
-		
-		Stack<InterPageDataRequest> dataRequestStackN = new Stack<InterPageDataRequest>();
-		InterPageDataRequest dataRequestN = new InterPageDataRequest();
-			
-		dataRequestN.requestObject = this;
-		dataRequestN.returnPage = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
-		dataRequestN.dataPage = "/users/PregledNaModelAvtomobil.jsf";
-		dataRequestN.requestedObject = null;
-			
-		dataRequestStackN.push(dataRequestN);
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStackN);
-			
-		return dataRequestN.dataPage + "?faces-redirect=true";
-	}
-
-	
 	public String chooseKlient()
 	{
-		if (avtomobil.getVIN() == null) {
-			// set the message
-			errorMessage = "Не е попълнен номер на рама!";
-			return null;
-		}
-		
-		Stack<InterPageDataRequest> dataRequestStackN = new Stack<InterPageDataRequest>();
-		InterPageDataRequest dataRequestN = new InterPageDataRequest();
+
+		Stack<InterPageDataRequest> dataRequestStack = new Stack<InterPageDataRequest>();
+		InterPageDataRequest dataRequest = new InterPageDataRequest();
 			
-		dataRequestN.requestObject = this;
-		dataRequestN.returnPage = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
-		dataRequestN.dataPage = "/users/AktualiziraneNaKlient.jsf";
-		dataRequestN.requestedObject = null;
+		dataRequest.requestObject = this;
+		dataRequest.returnPage = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
+		dataRequest.dataPage = "/users/AktualiziraneNaKlient.jsf";
+		dataRequest.requestedObject = null;
 			
-		dataRequestStackN.push(dataRequestN);
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStackN);
+		dataRequestStack.push(dataRequest);
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
 			
-		return dataRequestN.dataPage + "?faces-redirect=true";
+		return dataRequest.dataPage + "?faces-redirect=true";
 		
 	}
 

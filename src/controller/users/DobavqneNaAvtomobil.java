@@ -1,7 +1,6 @@
 package controller.users;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
@@ -18,7 +17,6 @@ import controller.common.InterPageDataRequest;
 import model.Client;
 import model.Vehicle;
 import model.VehicleModel;
-import model.WarrantyConditions;
 
 
 @SuppressWarnings("serial")
@@ -56,20 +54,8 @@ public class DobavqneNaAvtomobil implements Serializable {
 		}
 	}
 	
-	public Key getID() {
-		return avtomobil.getID();
-	}
-
 	public Client getClient() {
 		return avtomobil.getClient();
-	}
-
-	public void setClient(Client client) {
-		avtomobil.setClient(client);
-	}
-
-	public Key getVehicleModelID() {
-		return avtomobil.getVehicleModelID();
 	}
 
 	public void setVehicleModelID(Key vehicleModelID) {
@@ -80,32 +66,16 @@ public class DobavqneNaAvtomobil implements Serializable {
 		return avtomobil.getVehicleModel();
 	}
 
-	public void setVehicleModel(VehicleModel vehicleModel) {
-		avtomobil.setVehicleModel(vehicleModel);
-	}
-
-	public Key getWarrantyConditionsID() {
-		return avtomobil.getWarrantyConditionsID();
-	}
-
-	public void setWarrantyConditionsID(Key warrantyConditionsID) {
-		avtomobil.setWarrantyConditionsID(warrantyConditionsID);
-	}
-
-	public WarrantyConditions getWarrantyConditions() {
-		return avtomobil.getWarrantyConditions();
-	}
-
-	public void setWarrantyConditions(WarrantyConditions warrantyConditions) {
-		avtomobil.setWarrantyConditions(warrantyConditions);
-	}
-
 	public String getVIN() {
 		return avtomobil.getVIN();
 	}
 
 	public void setVIN(String VIN) {
-		avtomobil.setVIN(VIN);
+		try {
+			avtomobil.setVIN(VIN);
+		} catch (RuntimeException e) {
+			// do nothing
+		}
 	}
 
 	public String getEngineNumber() {
@@ -124,23 +94,6 @@ public class DobavqneNaAvtomobil implements Serializable {
 		avtomobil.setPlateNumber(plateNumber);
 	}
 
-	public String getWarrantyOK() {
-		return avtomobil.getWarrantyOK();
-	}
-
-	public void setWarrantyOK(String warrantyOK) {
-		avtomobil.setWarrantyOK(warrantyOK);
-	}
-
-	public Date getPurchaseDate() {
-		return avtomobil.getPurchaseDate();
-	}
-
-	public void setPurchaseDate(Date purchaseDate) {
-		avtomobil.setPurchaseDate(purchaseDate);
-	}
-
-	
 	public UIComponent getAddButton() {
 		return addButton;
 	}
@@ -166,7 +119,7 @@ public class DobavqneNaAvtomobil implements Serializable {
 			errorMessage = "Не е избран клиент!";
 			return null;
 		}
-	
+		
 		avtomobil.writeToDB();
 	
 		// clean the data
@@ -180,12 +133,6 @@ public class DobavqneNaAvtomobil implements Serializable {
 	
 	public String chooseModelAvtomobil()
 	{
-		if (avtomobil.getVIN() == null) {
-			// set the message
-			errorMessage = "Не е попълнен номер на рама!";
-			return null;
-		}
-		
 		Stack<InterPageDataRequest> dataRequestStack = new Stack<InterPageDataRequest>();
 		InterPageDataRequest dataRequest = new InterPageDataRequest();
 			
@@ -203,12 +150,6 @@ public class DobavqneNaAvtomobil implements Serializable {
 	
 	public String chooseKlient()
 	{
-		if (avtomobil.getVIN() == null) {
-			// set the message
-			errorMessage = "Не е попълнен номер на рама!";
-			return null;
-		}
-		
 		Stack<InterPageDataRequest> dataRequestStack = new Stack<InterPageDataRequest>();
 		InterPageDataRequest dataRequest = new InterPageDataRequest();
 			
