@@ -134,51 +134,51 @@
 
 	    <h:form>
 
-		    <h:outputLabel value="Име*">
-		    	<h:inputText id="personname" value="#{aktualiziraneNaKlient.namePerson}" maxlength="50" 
-		    		required="#{aktualiziraneNaKlient.person}" requiredMessage="задължително поле!" 
-		    		readonly="#{!aktualiziraneNaKlient.rowSelected || !aktualiziraneNaKlient.person}" />
-		    	<h:message for="personname" />
-		    </h:outputLabel> 
-		    <br />
+			<h:panelGroup rendered="#{aktualiziraneNaKlient.person}">
+		    	<!-- ако клиентът е физическо лице се изчертава това -->
+			    <h:outputLabel value="Име*">
+			    	<h:inputText id="personname" value="#{aktualiziraneNaKlient.namePerson}" maxlength="50" 
+			    		required="true" requiredMessage="задължително поле!" />
+			    	<h:message for="personname" />
+			    </h:outputLabel> 
+			    <br />
+			    
+			    <h:outputLabel value="Фамилия*">
+			    	<h:inputText id="family" value="#{aktualiziraneNaKlient.familyPerson}" maxlength="50" 
+			    		required="true" requiredMessage="задължително поле!" />
+			    	<h:message for="family" />
+			    </h:outputLabel> 
+			    <br />
+			</h:panelGroup>
 		    
-		    <h:outputLabel value="Фамилия*">
-		    	<h:inputText id="family" value="#{aktualiziraneNaKlient.familyPerson}" maxlength="50" 
-		    		required="#{aktualiziraneNaKlient.person}" requiredMessage="задължително поле!" 
-		    		readonly="#{!aktualiziraneNaKlient.rowSelected || !aktualiziraneNaKlient.person}" />
-		    	<h:message for="family" />
-		    </h:outputLabel> 
-		    <br />
-		    
-		    <h:outputLabel value="Наименование на компанията*">
-		    	<h:inputText id="companyname" value="#{aktualiziraneNaKlient.nameCompany}" maxlength="100" 
-		    		required="#{aktualiziraneNaKlient.company}" requiredMessage="задължително поле!" 
-		    		readonly="#{!aktualiziraneNaKlient.rowSelected || !aktualiziraneNaKlient.company}" />
-		    	<h:message for="companyname" />
-		    </h:outputLabel> 
-		    <br />
+		    <h:panelGroup rendered="#{aktualiziraneNaKlient.company}">
+		    	<!-- ако клиентът е физическо лице се изчертава това -->
+			    <h:outputLabel value="Наименование на компанията*">
+			    	<h:inputText id="companyname" value="#{aktualiziraneNaKlient.nameCompany}" maxlength="100" 
+			    		required="true" requiredMessage="задължително поле!" />
+			    	<h:message for="companyname" />
+			    </h:outputLabel> 
+			    <br />
 		
-		    <h:outputLabel value="Единен идентификационен код (ЕИК)*">
-		    	<h:inputText id="regnumber" value="#{aktualiziraneNaKlient.registrationNumberCompany}" maxlength="9" 
-		    		required="#{aktualiziraneNaKlient.company}"  requiredMessage="задължително поле!" 
-		    		readonly="#{!aktualiziraneNaKlient.rowSelected || !aktualiziraneNaKlient.company}" />
-		    	<h:message for="regnumber" />
-		    </h:outputLabel> 
-		    <br />
-		   
-		    <h:outputLabel value="ДДС номер">
-		    	<h:inputText id="vat" value="#{aktualiziraneNaKlient.VATNumberCompany}" maxlength="11" 
-		    		readonly="#{!aktualiziraneNaKlient.rowSelected || !aktualiziraneNaKlient.company}" />
-		    	<h:message for="vat" />
-		    </h:outputLabel> 
-		    <br />
-		    
-		    <h:outputLabel value="Лице за контакт">
-		    	<h:inputText id="contactperson" value="#{aktualiziraneNaKlient.contactPersonCompany}" maxlength="100" 
-		    		readonly="#{!aktualiziraneNaKlient.rowSelected || !aktualiziraneNaKlient.company}" />
-		    	<h:message for="contactperson" />
-		    </h:outputLabel> 
-		    <br />
+			    <h:outputLabel value="Единен идентификационен код (ЕИК)*">
+			    	<h:inputText id="regnumber" value="#{aktualiziraneNaKlient.registrationNumberCompany}" maxlength="9" 
+			    		required="#{aktualiziraneNaKlient.company}"  requiredMessage="задължително поле!" />
+			    	<h:message for="regnumber" />
+			    </h:outputLabel> 
+			    <br />
+			   
+			    <h:outputLabel value="ДДС номер">
+			    	<h:inputText id="vat" value="#{aktualiziraneNaKlient.VATNumberCompany}" maxlength="11" />
+			    	<h:message for="vat" />
+			    </h:outputLabel> 
+			    <br />
+			    
+			    <h:outputLabel value="Лице за контакт">
+			    	<h:inputText id="contactperson" value="#{aktualiziraneNaKlient.contactPersonCompany}" maxlength="100" />
+			    	<h:message for="contactperson" />
+			    </h:outputLabel> 
+			    <br />
+		    </h:panelGroup>
 		     
 		    <h:outputLabel value="Населено място*">
 		    	<h:inputText id="city" value="#{aktualiziraneNaKlient.addressCity}" maxlength="30" 
@@ -224,14 +224,13 @@
 		    </h:outputLabel> 
 		    <br />
 		    
-		    <br />
-				 <h:commandButton value="Запази" action="#{aktualiziraneNaKlient.saveClient()}"
-					disabled="#{!aktualiziraneNaKlient.rowSelected}"/>
+			 <h:commandButton value="Запази" action="#{aktualiziraneNaKlient.saveClient()}"
+				disabled="#{!aktualiziraneNaKlient.rowSelected}"/>
+			
+			<h:commandButton action="#{aktualiziraneNaKlient.deselectRow()}" value="Отмени"
+				disabled="#{!aktualiziraneNaKlient.rowSelected}"/>
 				
-				<h:commandButton action="#{aktualiziraneNaKlient.deselectRow()}" value="Отмени"
-					disabled="#{!aktualiziraneNaKlient.rowSelected}"/>
-					
-				<h:commandButton action="#{aktualiziraneNaKlient.goToAdd()}" value="Добави" />
+			<h:commandButton action="#{aktualiziraneNaKlient.goToAdd()}" value="Добави" />
 				
 		    <br />
 		    <h:outputText value="#{aktualiziraneNaKlient.errorMessage}"/>

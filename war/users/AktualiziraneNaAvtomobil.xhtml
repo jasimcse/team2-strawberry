@@ -75,12 +75,14 @@
 				
 				<h:column>
 					<f:facet name="header">Дата на закупуване</f:facet>
-					<h:outputText value="#{curr.purchaseDate}" />
+					<h:outputText value="#{curr.purchaseDate}">
+						<f:convertDateTime pattern="dd.MM.yyyy" />
+					</h:outputText>
 				</h:column>
 				
 				<h:column>
 					<f:facet name="header">В гаранция</f:facet>
-					<h:outputText value="#{curr.warrantyOK}" />
+					<h:outputText value="#{curr.warrantyOK == '1' ? 'ДА' : 'НЕ'}" />
 				</h:column>
 				
 				<h:column>
@@ -206,7 +208,9 @@
 	   
 	    <h:outputLabel value="Дата на закупуване">
 	    	<h:inputText id="purchasedate" value="#{aktualiziraneNaAvtomobil.purchaseDate}" 
-	    		readonly ="true"/>
+	    		readonly ="true">
+	    		<f:convertDateTime pattern="dd.MM.yyyy" />
+	    	</h:inputText>
 	    </h:outputLabel> 
 	    <br />
 	    
