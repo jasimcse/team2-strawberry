@@ -93,7 +93,9 @@
 				
 				<h:column>
 					<f:facet name="header">Нужно количество</f:facet>
-					<h:inputText id="quantity" value="#{curr.quantity}" />
+					<h:inputText id="quantity" value="#{curr.quantity}">
+						<f:validateDoubleRange minimum="0.001" />
+					</h:inputText>
 				</h:column>
 				
 				<h:column>

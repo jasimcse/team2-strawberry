@@ -20,18 +20,14 @@
 					<h:inputText value="" maxlength="8" />
 				</h:outputLabel>
 				<br />
-				<h:outputLabel value="Име на собственика">
+				<h:outputLabel value="Начална дата">
 					<h:inputText value="" maxlength="50" />
 				</h:outputLabel>
-				<h:outputLabel value="Фамилия на собственика">
+				<h:outputLabel value="Крайна дата">
 					<h:inputText value="" maxlength="50" />
 				</h:outputLabel>
 				<br />
-				<h:outputLabel value="Наименование на юридическо лице">
-					<h:inputText value="" maxlength="100" />
-				</h:outputLabel>
-				
-				<br />
+		
 				<h:commandButton value="Търси" disabled="true" />
 				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
 			</h:panelGroup>
@@ -43,10 +39,10 @@
 			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
 			<h:dataTable
 				rows="#{configurationProperties.getPageSize()}"
-				value="#{aktualiziraneNaaktualizirane.spisukDiagnostiki}"
+				value="#{aktualiziraneNaDiagnostika.spisukDiagnostiki}"
 			    first="0"
 			    var="curr"
-			    rowClasses="#{aktualiziraneNaAvtomobil.rowStyleClasses}">
+			    rowClasses="#{aktualiziraneNaDiagnostika.rowStyleClasses}">
 
 				<h:column>
 					<f:facet name="header">Номер на рама</f:facet>
@@ -54,94 +50,54 @@
 				</h:column>
 				
 				<h:column>
-					<f:facet name="header">Номер на двигател</f:facet>
-					<h:outputText value="#{curr.engineNumber}"  />
+					<f:facet name="header">Дата</f:facet>
+					<h:outputText value="#{curr.date}"  />
 				</h:column>
 				
 				<h:column>
-					<f:facet name="header">Регистрационен номер</f:facet>
-					<h:outputText value="#{curr.plateNumber}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Марка на автомобила</f:facet>
-					<h:outputText value="#{curr.vehicleModel.brand}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Модел</f:facet>
-					<h:outputText value="#{curr.vehicleModel.model}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Код на типа гаранция</f:facet>
-					<h:outputText value="#{curr.warrantyConditionsID}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Дата на закупуване</f:facet>
-					<h:outputText value="#{curr.purchaseDate}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">В гаранция</f:facet>
-					<h:outputText value="#{curr.warrantyOK}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Име</f:facet>
-					<h:outputText value="#{curr.client.person.name}" rendered="#{not empty curr.client.person.name}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Фамилия</f:facet>
-					<h:outputText value="#{curr.client.person.family}" rendered="#{not empty curr.client.person.family}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Наименование на юридическо лице</f:facet>
-					<h:outputText value="#{curr.client.company.name}" rendered="#{not empty curr.client.company.name}" />
+					<f:facet name="header">Цена</f:facet>
+					<h:outputText value="#{curr.price}" />
 				</h:column>
 				
 				<h:column>
 					<f:facet name="header">Промени</f:facet>
-					<h:commandLink action="#{aktualiziraneNaAvtomobil.selectRow(curr)}" value="Промени" />
+					<h:commandLink action="#{aktualiziraneNaDiagnostika.selectRow(curr)}" value="Промени" />
 				</h:column>
 				
-				<h:column rendered="#{aktualiziraneNaAvtomobilchoosingAlowed}">
+				<h:column rendered="#{aktualiziraneNaDiagnostika.choosingAlowed}">
 					<f:facet name="header">Избери</f:facet>
-					<h:commandLink action="#{aktualiziraneNaAvtomobil.chooseClient(curr)}" value="Избери" />
+					<h:commandLink action="#{aktualiziraneNaDiagnostika.chooseDiagnostika(curr)}" value="Избери" />
 				</h:column>
 				
 				<f:facet name="footer">
-					<h:panelGroup rendered="#{!empty aktualiziraneNaAvtomobil.pagesList}">
+					<h:panelGroup rendered="#{!empty aktualiziraneNaDiagnostika.pagesList}">
 						<!-- предишна страница -->
-						<h:commandLink rendered="#{aktualiziraneNaAvtomobil.page - 1 ge 0}"
-							action="#{aktualiziraneNaAvtomobil.setPage(aktualiziraneNaAvtomobil.page - 1)}"
+						<h:commandLink rendered="#{aktualiziraneNaDiagnostika.page - 1 ge 0}"
+							action="#{aktualiziraneNaDiagnostika.setPage(aktualiziraneNaDiagnnostika.page - 1)}"
 							value="&lt;&lt;" />
 							
 						<!-- други страници -->
-						<ui:repeat value="#{aktualiziraneNaAvtomobil.pagesList}" var="currPage">
+						<ui:repeat value="#{aktualiziraneNaDiagnostika.pagesList}" var="currPage">
 							<h:commandLink
-								rendered="#{aktualiziraneNaAvtomobil.page ne currPage.intValue() - 1}"
-								action="#{aktualiziraneNaAvtomobil.setPage(currPage.intValue()-1)}"
+								rendered="#{aktualiziraneNaDiagnostika.page ne currPage.intValue() - 1}"
+								action="#{aktualiziraneNaDiagnostika.setPage(currPage.intValue()-1)}"
 								value="#{currPage}" />
 								
 							<h:outputText
-								rendered="#{aktualiziraneNaAvtomobil.page eq currPage.intValue() - 1}"
+								rendered="#{aktualiziraneNaDiagnostika.page eq currPage.intValue() - 1}"
 								value="#{currPage}" />
 								
 							<h:outputText value=" " />
 						</ui:repeat>
 						
 						<!-- следваща страница -->
-						<h:commandLink rendered="#{aktualiziraneNaAvtomobil.page + 1 lt aktualiziraneNaAvtomobil.pagesCount}"
-							action="#{aktualiziraneNaAvtomobil.setPage(aktualiziraneNaAvtomobil.page + 1)}"
+						<h:commandLink rendered="#{aktualiziraneNaDiagnostika.page + 1 lt aktualiziraneNaDiagnostika.pagesCount}"
+							action="#{aktualiziraneNaDiagnostika.setPage(aktualiziraneNaDiagnostika.page + 1)}"
 							value="&gt;&gt;" />
 							
 					</h:panelGroup>
 					
-					<h:panelGroup rendered="#{empty aktualiziraneNaAvtomobil.pagesList}" style="color: red; font-weight: bold;">
+					<h:panelGroup rendered="#{empty aktualiziraneNaDiagnostika.pagesList}" style="color: red; font-weight: bold;">
 						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
 						<br />
 						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
@@ -155,19 +111,36 @@
 
 	  <h:form>
 
+
 	    <h:outputLabel value="Номер на рама*">
 	    	<h:inputText id="vin" value="#{aktualiziraneNaDiagnostika.vehicle.VIN}" maxlength="17" 
-	    		
 	    		readonly="true"/>
-	    	<h:message for="vin" />
 	    </h:outputLabel> 
-	    <h:commandButton value="Избери" action="#{aktualiziraneNaDiagnostika.chooseAvtomobil()}" /> 
 	    <br />
 	    
+	    <h:outputLabel value="Автосервиз*">
+	    	<h:inputText id="avtoserviz" value="#{aktualiziraneNaDiagnostika.autoservice.name}" maxlength="100" 
+	    		readonly="true"/>
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Служител направил диагностиката*">
+	    	<h:inputText id="empname" value="#{aktualiziraneNaDiagnostika.employee.name}" maxlength="50" 
+	    		readonly="true"/>
+	    	<h:inputText id="empfamily" value="#{aktualiziraneNaDiagnostika.employee.family}" maxlength="50" 
+	    		readonly="true"/>
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Дата на извършената диагностиката*">
+	    	<h:inputText id="date" value="#{aktualiziraneNaDiagnostika.date}" maxlength="50" 
+	    		 readonly="true"/>
+	    </h:outputLabel>
+	     <br />
+	     
 	    <h:outputLabel value="Цена на диагностиката*">
 	    	<h:inputText id="price" value="#{aktualiziraneNaDiagnostika.price}" maxlength="10" 
-	    		 />
-	    	<h:message for="price" />
+	    		 readonly="true"/>
 	    </h:outputLabel>
 	     <br />
 	    
@@ -185,7 +158,6 @@
 	    
 	    
 		<h:outputLabel value="Услуги, които трябва да бъдат извършени според извършената диагностика:">
-	    	<h:commandButton value="Избери" action="#{aktualiziraneNaDiagnostika.chooseUsluga()}" /> 
 	    </h:outputLabel>
 	    <br />
 	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове --> 
@@ -201,10 +173,6 @@
 					#{curr.service.description}
 				</h:column>
 				
-				<h:column>
-					<f:facet name="header">Премахни</f:facet>
-					<h:commandLink action="#{aktualiziraneNaDiagnostika.deleteUsluga(curr)}" value="Премахни" />
-				</h:column> 
 			</h:dataTable>
 		</h:form>
 		</div>
@@ -212,8 +180,7 @@
 		<br />
 		
 		
-		<h:outputLabel value="Резервни части, които трябва да бъдат сменени според извършената диагностика:">
-	    	<h:commandButton  value="Избери" action="#{aktualiziraneNaDiagnostika.chooseSparePart()}" /> 
+		<h:outputLabel value="Резервни части, които трябва да бъдат сменени според извършената диагностика:"> 
 	    </h:outputLabel>
 	    <br /> 
 	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове -->
@@ -237,13 +204,9 @@
 				
 				<h:column>
 					<f:facet name="header">Нужно количество</f:facet>
-					<h:inputText id="quantity" value="#{curr.quantity}" />
+					#{curr.quantity}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Премахни</f:facet>
-					<h:commandLink action="#{aktualiziraneNaDiagnostika.deleteSparePart(curr)}" value="Премахни" />
-				</h:column>
+
 		
 			</h:dataTable>
 		</h:form>

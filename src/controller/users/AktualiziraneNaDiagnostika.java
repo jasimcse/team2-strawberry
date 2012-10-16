@@ -7,73 +7,71 @@ import java.util.List;
 import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import com.google.appengine.api.datastore.Key;
 
+import controller.common.ConfigurationProperties;
+import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
+import model.Autoservice;
+import model.Client;
 import model.Diagnosis;
 import model.DiagnosisPart;
 import model.DiagnosisService;
+import model.Employee;
 import model.SparePart;
 import model.Service;
 import model.Vehicle;
 
 
 @SuppressWarnings("serial")
-@ManagedBean(name="dobavqneNaDiagnostika")
+@ManagedBean(name="aktualiziraneNaDiagnostika")
 @ViewScoped
 
 public class AktualiziraneNaDiagnostika  implements Serializable {
 
+	@ManagedProperty(value="#{currentEmployee}")
+	private CurrentEmployee currEmployee;
+	
 	private Diagnosis diagnostika = new Diagnosis();
 	private String errorMessage;
 
-	private List<Diagnosis> spisukDiagnostiki;
+	private List <Diagnosis> spisukDiagnostiki;
 	private List <DiagnosisService> spisukUslugi;
 	private List <DiagnosisPart> spisukRezervni4asti;
 	
+	private Stack<InterPageDataRequest> dataRequestStack;
+	
+	private int page = 0;
+	private int pagesCount;
+	private int rowsCount;
+	
+	private InterPageDataRequest dataRequest;
+	
 	@SuppressWarnings("unchecked")
 	public AktualiziraneNaDiagnostika() {
-		Stack<InterPageDataRequest> dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
+		
+		dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
 		
 		if (dataRequestStack != null) {
-			InterPageDataRequest dataRequest = dataRequestStack.peek();
-			if (FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath().equals(dataRequest.returnPage)) 
-			{
-				if(dataRequest.dataPage.equals("/users/AktualiziraneNaAvtomobil.jsf"))
-				{
-					this.diagnostika = ((AktualiziraneNaDiagnostika)dataRequest.requestObject).diagnostika;
-					this.diagnostika.setVehicle((Vehicle)dataRequest.requestedObject);
-				}
-				else
-					if(dataRequest.dataPage.equals("/users/AktualiziraneNaUsluga.jsf"))
-					{
-						this.diagnostika = ((AktualiziraneNaDiagnostika)dataRequest.requestObject).diagnostika;
-						DiagnosisService diagService = new DiagnosisService();
-						diagService.setDiagnosis(this.diagnostika);
-						diagService.setService((Service)dataRequest.requestedObject);
-						this.spisukUslugi.add(diagService);
-						
-					}
-					else
-						// TODO: 4akame Venci!
-						if(dataRequest.dataPage.equals("/users/AktualiziraneNa.jsf"))
-						{
-								this.diagnostika = ((AktualiziraneNaDiagnostika)dataRequest.requestObject).diagnostika;
-								DiagnosisPart diagPart = new DiagnosisPart();
-								diagPart.setDiagnosis(diagnostika);
-								diagPart.setSparePart((SparePart)dataRequest.requestedObject);
-								diagPart.setQuantity(1);
-								this.spisukRezervni4asti.add(diagPart);
-						}
+			dataRequest = dataRequestStack.peek();
+			if (!FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath().equals(dataRequest.dataPage)) {
+				dataRequest = null;
 			}
 		}
+		readList();
 	}
 	
 	
+	public void setCurrEmployee(CurrentEmployee currEmployee) {
+		this.currEmployee = currEmployee;
+	}
+
+
 	public void setVehicle(Vehicle vehicle) {
 		diagnostika.setVehicle(vehicle);
 	}
@@ -131,6 +129,38 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 	public void setEmployeeID(Key employeeID) {
 		diagnostika.setEmployeeID(employeeID);
 	}
+	
+	
+
+	public Autoservice getAutoservice() {
+		return diagnostika.getAutoservice();
+	}
+
+
+	public void setAutoservice(Autoservice autoservice) {
+		diagnostika.setAutoservice(autoservice);
+	}
+
+
+	public Employee getEmployee() {
+		return diagnostika.getEmployee();
+	}
+
+
+	public void setEmployee(Employee employee) {
+		diagnostika.setEmployee(employee);
+	}
+
+
+	public Date getDate() {
+		return diagnostika.getDate();
+	}
+
+
+	public void setDate(Date date) {
+		diagnostika.setDate(date);
+	}
+
 
 	public String getErrorMessage() {
 		return errorMessage;
@@ -152,85 +182,102 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 		return spisukRezervni4asti;
 	}
 
-	public String addDiagnostika()
-	{	
-		if (diagnostika.getVehicleID() == null) {
-			// set the message
-			errorMessage = "Не е избран автомобил!";
-			return null;
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+		readList();
+	}
+
+
+	public List<Diagnosis> getSpisukDiagnostiki() {
+		return spisukDiagnostiki;
+	}
+
+	public int getPagesCount() {
+		return pagesCount;
+	}
+
+	private void readList() {
+		spisukDiagnostiki = Diagnosis.queryGetAll(page * ConfigurationProperties.getPageSize(), 
+				ConfigurationProperties.getPageSize(), currEmployee.getAutoserviceID());
+		diagnostika = new Diagnosis();
+		rowsCount = Vehicle.countGetAll();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
+	}
+
+	
+	public String getRowStyleClasses() {
+		StringBuilder strbuff = new StringBuilder();
+		
+		for (Diagnosis diag : spisukDiagnostiki) {
+			if (diagnostika == diag) {
+				strbuff.append("selectedRow,");
+			} else {
+				strbuff.append("notSelectedRow,");
+			}
 		}
+		
+		return strbuff.toString();
+	}
+	
+	public List<Integer> getPagesList() {
+		List<Integer> list = new ArrayList<Integer>();
+		
+		for (int i=0; i < pagesCount; i++)
+			list.add(Integer.valueOf(i+1));
+		
+		return list;
+	}
+	
+	public void selectRow(Diagnosis diag) {
+		diagnostika = diag;
+	}
+	
+	public void deselectRow() {
+		diagnostika = new Diagnosis();
+		readList();
+		
+	}
+
+	public boolean isRowSelected() {
+		return spisukDiagnostiki.contains(diagnostika);
+	}
+	
+	public String goToAdd() {
+		return "DobavqneNaDiagnostika.jsf?faces-redirect=true";
+	}
+	
+	
+
+	public boolean isChoosingAllowed() {
+		return (dataRequest != null);
+	}
+	
+	public String chooseDiagnostika(Diagnosis diag) {
+		if (dataRequest == null) {
+			throw new RuntimeException("Don't do that bastard!");
+		}
+		
+		dataRequest.requestedObject = diag;
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
+		
+		return dataRequest.returnPage + "?faces-redirect=true";
+	}
+	
+	public String saveDiagnostika()
+	{	
 
 		diagnostika.writeToDB();
 	
-		// clean the data
-		diagnostika = new Diagnosis();
-		
+		readList();
+
 		// set the message
-		errorMessage = "Докладът за диагностика беше добавен успешно!";
+		errorMessage = "Докладът от извършената диагностика беше актуализиран успешно!";
 		
 		return null;
-	}
-	
-	public String chooseAvtomobil()
-	{
-		Stack<InterPageDataRequest> dataRequestStack = new Stack<InterPageDataRequest>();
-		InterPageDataRequest dataRequest = new InterPageDataRequest();
-			
-		dataRequest.requestObject = this;
-		dataRequest.returnPage = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
-		dataRequest.dataPage = "/users/AktualiziraneNaAvtomobil.jsf";
-		dataRequest.requestedObject = null;
-			
-		dataRequestStack.push(dataRequest);
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
-			
-		return dataRequest.dataPage + "?faces-redirect=true";
-	}
-
-	
-	public String chooseUsluga()
-	{	
-		Stack<InterPageDataRequest> dataRequestStack = new Stack<InterPageDataRequest>();
-		InterPageDataRequest dataRequest = new InterPageDataRequest();
-			
-		dataRequest.requestObject = this;
-		dataRequest.returnPage = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
-		dataRequest.dataPage = "/users/AktualiziraneNaUsluga.jsf";
-		dataRequest.requestedObject = null;
-			
-		dataRequestStack.push(dataRequest);
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
-			
-		return dataRequest.dataPage + "?faces-redirect=true";
-		
-	}
-	
-	public void deleteUsluga(DiagnosisService diagService)
-	{
-		spisukUslugi.remove(diagService);
-	}
-	
-	public String chooseSparePart()
-	{	
-		Stack<InterPageDataRequest> dataRequestStack = new Stack<InterPageDataRequest>();
-		InterPageDataRequest dataRequest = new InterPageDataRequest();
-			
-		dataRequest.requestObject = this;
-		dataRequest.returnPage = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
-		// TODO: Venci 4akame!
-		//dataRequest.dataPage = "/users/AktualiziraneNa.jsf";
-		dataRequest.requestedObject = null;
-			
-		dataRequestStack.push(dataRequest);
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
-			
-		return dataRequest.dataPage + "?faces-redirect=true";
-		
-	}
-	
-	public void deleteSparePart(DiagnosisPart sPart)
-	{
-		spisukRezervni4asti.remove(sPart); 
 	}
 	
 }

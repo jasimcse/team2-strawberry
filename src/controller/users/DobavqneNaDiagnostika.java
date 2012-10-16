@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import com.google.appengine.api.datastore.Key;
 
+import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
 import model.Diagnosis;
 import model.DiagnosisPart;
@@ -28,6 +30,9 @@ import model.Vehicle;
 
 public class DobavqneNaDiagnostika  implements Serializable {
 
+	@ManagedProperty(value="#{currentEmployee}")
+	private CurrentEmployee currEmployee;
+	
 	private Diagnosis diagnostika = new Diagnosis();
 	private String errorMessage;
 
@@ -42,28 +47,26 @@ public class DobavqneNaDiagnostika  implements Serializable {
 			InterPageDataRequest dataRequest = dataRequestStack.peek();
 			if (FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath().equals(dataRequest.returnPage)) 
 			{
+				this.diagnostika = ((DobavqneNaDiagnostika)dataRequest.requestObject).diagnostika;
+				this.spisukUslugi = ((DobavqneNaDiagnostika)dataRequest.requestObject).spisukUslugi;
+				this.spisukRezervni4asti = ((DobavqneNaDiagnostika)dataRequest.requestObject).spisukRezervni4asti;
+				
 				if(dataRequest.dataPage.equals("/users/AktualiziraneNaAvtomobil.jsf"))
 				{
-					this.diagnostika = ((DobavqneNaDiagnostika)dataRequest.requestObject).diagnostika;
 					this.diagnostika.setVehicle((Vehicle)dataRequest.requestedObject);
 				}
 				else
 					if(dataRequest.dataPage.equals("/users/AktualiziraneNaUsluga.jsf"))
 					{
-						this.diagnostika = ((DobavqneNaDiagnostika)dataRequest.requestObject).diagnostika;
 						DiagnosisService diagService = new DiagnosisService();
-						diagService.setDiagnosis(this.diagnostika);
 						diagService.setService((Service)dataRequest.requestedObject);
 						this.spisukUslugi.add(diagService);
-						
 					}
 					else
 						// TODO: 4akame Venci!
 						if(dataRequest.dataPage.equals("/users/AktualiziraneNa.jsf"))
 						{
-								this.diagnostika = ((DobavqneNaDiagnostika)dataRequest.requestObject).diagnostika;
 								DiagnosisPart diagPart = new DiagnosisPart();
-								diagPart.setDiagnosis(diagnostika);
 								diagPart.setSparePart((SparePart)dataRequest.requestedObject);
 								diagPart.setQuantity(1);
 								this.spisukRezervni4asti.add(diagPart);
@@ -73,6 +76,11 @@ public class DobavqneNaDiagnostika  implements Serializable {
 	}
 	
 	
+	public void setCurrEmployee(CurrentEmployee currEmployee) {
+		this.currEmployee = currEmployee;
+	}
+
+
 	public void setVehicle(Vehicle vehicle) {
 		diagnostika.setVehicle(vehicle);
 	}
@@ -159,10 +167,29 @@ public class DobavqneNaDiagnostika  implements Serializable {
 			return null;
 		}
 
+		diagnostika.setDate(new Date());
+		diagnostika.setEmployeeID(currEmployee.getEmployeeID());
+		diagnostika.setAutoserviceID(currEmployee.getAutoserviceID());
 		diagnostika.writeToDB();
 	
+		// TODO: транзакция
+		for (DiagnosisService dSer : spisukUslugi) {
+			dSer.setDiagnosisID(diagnostika.getID());
+			dSer.writeToDB();
+		}
+		
+		for (DiagnosisPart dSp : spisukRezervni4asti) {
+			dSp.setDiagnosisID(diagnostika.getID());
+			dSp.writeToDB();
+		}
+			
+		// TODO: проверка дали затрахователя е искал диагностиката 
+		// или автомобила е гаранционен
+		
 		// clean the data
 		diagnostika = new Diagnosis();
+		spisukRezervni4asti.clear();
+		spisukUslugi.clear();
 		
 		// set the message
 		errorMessage = "Докладът за диагностика беше добавен успешно!";
