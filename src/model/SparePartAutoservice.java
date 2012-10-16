@@ -18,7 +18,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 
 @SuppressWarnings("serial")
-public class SparePartBad implements Serializable {
+public class SparePartAutoservice implements Serializable {
 	
 	private Entity thisEntity;
 	private Autoservice autoservice;
@@ -26,7 +26,11 @@ public class SparePartBad implements Serializable {
 	
 	private Key autoserviceID;
 	private Key sparePartID;
-	private Double quantity;
+	private Double quantityAvailable;
+	private Double quantityMinimum;
+	private Double quantityReserved;
+	private Double quantityOrdered;
+	private Double quantityBad;
 	
 	private static final String PARENT_FIELD = "autoserviceID";
 	
@@ -45,17 +49,24 @@ public class SparePartBad implements Serializable {
 		DatastoreServiceFactory.getDatastoreService().put(thisEntity);
 	}
 	
+	public void writeToDB(boolean makeNew) {
+		if (makeNew) {
+			thisEntity = null;
+		}
+		writeToDB();
+	}
+	
 	public Entity makeEntity() {
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 	}
 	
-	public static SparePartBad readEntity(Entity entity) {
-		SparePartBad sparePartBad = new SparePartBad();
-		sparePartBad.thisEntity = entity;
-		return EntityHelper.readIt(entity, sparePartBad, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+	public static SparePartAutoservice readEntity(Entity entity) {
+		SparePartAutoservice sparePartAvailable = new SparePartAutoservice();
+		sparePartAvailable.thisEntity = entity;
+		return EntityHelper.readIt(entity, sparePartAvailable, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 	}
-
-	public static SparePartBad readEntity(Key key) {
+	
+	public static SparePartAutoservice readEntity(Key key) {
 		Entity entity;
 		if (key == null) {
 			throw new NullPointerException("Argument \"key\" is null!");
@@ -70,8 +81,8 @@ public class SparePartBad implements Serializable {
 		return readEntity(entity);
 	}
 	
-	private static List<SparePartBad> readList(List<Entity> listToRead) {
-		List<SparePartBad> newList =  new ArrayList<SparePartBad>();
+	private static List<SparePartAutoservice> readList(List<Entity> listToRead) {
+		List<SparePartAutoservice> newList =  new ArrayList<SparePartAutoservice>();
 		
 		for (Entity entity : listToRead) {
 			newList.add(readEntity(entity));
@@ -86,9 +97,13 @@ public class SparePartBad implements Serializable {
 		}
 		return thisEntity.getKey();
 	}
-	
+
 	public Key getAutoserviceID() {
 		return autoserviceID;
+	}
+
+	public void setAutoserviceID(Key autoserviceID) {
+		this.autoserviceID = autoserviceID;
 	}
 	
 	public Autoservice getAutoservice() {
@@ -109,10 +124,6 @@ public class SparePartBad implements Serializable {
 		} else {
 			autoserviceID = autoservice.getID();
 		}
-	}
-
-	public void setAutoserviceID(Key autoserviceID) {
-		this.autoserviceID = autoserviceID;
 	}
 
 	public Key getSparePartID() {
@@ -143,22 +154,69 @@ public class SparePartBad implements Serializable {
 		}
 	}
 
-	public double getQuantity() {
-		return quantity.doubleValue();
+	public double getQuantityAvailable() {
+		if (quantityAvailable == null) {
+			return 0;
+		}
+		return quantityAvailable.doubleValue();
 	}
 
-	public void setQuantity(double quantity) {
-		this.quantity = Double.valueOf(quantity);
+	public void setQuantityAvailable(double quantityAvailable) {
+		this.quantityAvailable = Double.valueOf(quantityAvailable);
 	}
 	
+	public double getQuantityMinimum() {
+		if (quantityMinimum == null) {
+			return 0;
+		}
+		return quantityMinimum.doubleValue();
+	}
+
+	public void setQuantityMinimum(double quantityMinimum) {
+		this.quantityMinimum = Double.valueOf(quantityMinimum);
+	}
+	
+	public double getQuantityBad() {
+		if (quantityBad == null) {
+			return 0;
+		}
+		return quantityBad.doubleValue();
+	}
+
+	public void setQuantityBad(double quantityBad) {
+		this.quantityBad = Double.valueOf(quantityBad);
+	}
+	
+	public double getQuantityReserved() {
+		if (quantityReserved == null) {
+			return 0;
+		}
+		return quantityReserved.doubleValue();
+	}
+
+	public void setQuantityReserved(double quantityReserved) {
+		this.quantityReserved = Double.valueOf(quantityReserved);
+	}
+	
+	public double getQuantityOrdered() {
+		if (quantityOrdered == null) {
+			return 0;
+		}
+		return quantityOrdered.doubleValue();
+	}
+
+	public void setQuantityOrdered(double quantityOrdered) {
+		this.quantityOrdered = Double.valueOf(quantityOrdered);
+	}
+
 	private static PreparedQuery getPreparedQueryAll(Key autoserviceID) { 
 		return DatastoreServiceFactory.getDatastoreService().
-			   prepare(new Query(SparePartBad.class.getSimpleName()).
+			   prepare(new Query(SparePartAutoservice.class.getSimpleName()).
 					   setAncestor(autoserviceID).
 				       addSort("__key__"));
 	}
 	
-	public static List<SparePartBad> queryGetAll(int offset, int count, Key autoserviceID) {
+	public static List<SparePartAutoservice> queryGetAll(int offset, int count, Key autoserviceID) {
 		List<Entity> oldList = getPreparedQueryAll(autoserviceID).
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
 		
@@ -172,19 +230,23 @@ public class SparePartBad implements Serializable {
 }
 
 /*
-CREATE TABLE Spare_Part_Bad ( 
+CREATE TABLE Spare_Part_Autoservice ( 
 	Spare_Part_ID BIGINT NOT NULL,
 	Autoservice_ID BIGINT NOT NULL,
-	Quantity FLOAT NOT NULL
+	Quantity FLOAT NOT NULL,
+	Minimum FLOAT NOT NULL,
+	QuantityReserved FLOAT NOT NULL,
+	QuantityOrdered FLOAT NOT NULL,
+	QuantityBad FLOAT NOT NULL
 );
 
-ALTER TABLE Spare_Part_Bad ADD CONSTRAINT PK_Spare_Part_Bad 
-	PRIMARY KEY (Autoservice_ID);
+ALTER TABLE Spare_Part_Autoservice ADD CONSTRAINT PK_Spare_Part_Available 
+	PRIMARY KEY (Spare_Part_ID);
 
 
-ALTER TABLE Spare_Part_Bad ADD CONSTRAINT FK_Spare_Part_Bad_Autoservice 
+ALTER TABLE Spare_Part_Autoservice ADD CONSTRAINT FK_Spare_Part_Available_Autoservice 
 	FOREIGN KEY (Autoservice_ID) REFERENCES Autoservice (Autoservice_ID);
 
-ALTER TABLE Spare_Part_Bad ADD CONSTRAINT FK_Spare_Part_Bad_Spare_Part 
+ALTER TABLE Spare_Part_Autoservice ADD CONSTRAINT FK_Spare_Part_Available_Spare_Part 
 	FOREIGN KEY (Spare_Part_ID) REFERENCES Spare_Part (Spare_Part_ID);
 */

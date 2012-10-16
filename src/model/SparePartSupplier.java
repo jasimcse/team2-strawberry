@@ -55,6 +55,13 @@ private static final String PARENT_FIELD = "supplierID";
 		DatastoreServiceFactory.getDatastoreService().put(thisEntity);
 	}
 	
+	public void writeToDB(boolean makeNew) {
+		if (makeNew) {
+			thisEntity = null;
+		}
+		writeToDB();
+	}
+	
 	public static SparePartSupplier readEntity(Entity entity) {
 		SparePartSupplier sparePartSupplier = new SparePartSupplier();
 		sparePartSupplier.thisEntity = entity;

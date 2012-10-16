@@ -59,6 +59,13 @@ public class Vehicle implements Serializable {
 		DatastoreServiceFactory.getDatastoreService().put(thisEntity);
 	}
 	
+	public void writeToDB(boolean makeNew) {
+		if (makeNew) {
+			thisEntity = null;
+		}
+		writeToDB();
+	}
+	
 	public Entity makeEntity() {
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 	}

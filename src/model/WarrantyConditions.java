@@ -48,6 +48,13 @@ public class WarrantyConditions implements Serializable {
 		DatastoreServiceFactory.getDatastoreService().put(thisEntity);
 	}
 	
+	public void writeToDB(boolean makeNew) {
+		if (makeNew) {
+			thisEntity = null;
+		}
+		writeToDB();
+	}
+	
 	public Entity makeEntity() {
 		warrantyConditionsParentID = EntityHelper.getWarrantyConditionsParent();
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
