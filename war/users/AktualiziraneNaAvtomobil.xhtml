@@ -251,6 +251,17 @@
    			action="#{aktualiziraneNaAvtomobil.chooseKlient()}"
 			disabled="#{!aktualiziraneNaAvtomobil.rowSelected}" /> 
    		<br />
+   		
+   		<h:outputLabel value="Пробег (километра)*">
+	    	<h:inputText id="mileage" value="#{aktualiziraneNaAvtomobil.mileage}" 
+	    		required="#{not empty param[aktualiziraneNaAvtomobil.changeButton.clientId]}"
+	    		requiredMessage="задължително поле!" 
+				readonly="#{!aktualiziraneNaAvtomobil.rowSelected}">
+	    		<f:validateLongRange minimum="0" />
+	    	</h:inputText>
+	    	<h:message for="mileage" />
+	    </h:outputLabel>
+	    <br />
 	    
 	
 		<h:commandButton value="Запази" binding="#{aktualiziraneNaAvtomobil.changeButton}"
@@ -263,7 +274,7 @@
 		<h:commandButton action="#{aktualiziraneNaAvtomobil.goToAdd()}" value="Добави" />
 			
 	    <br />
-	    <h:outputText value="#{aktualiziraneNaKlient.errorMessage}"/>
+	    <h:outputText value="#{aktualiziraneNaAvtomobil.errorMessage}"/>
 	    
 	    </h:form>
 	</ui:define>

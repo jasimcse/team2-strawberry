@@ -81,6 +81,15 @@
 	   		 action="#{dobavqneNaAvtomobil.chooseKlient()}"/> 
 	    <br />
 	    
+	    <h:outputLabel value="Пробег (километра)*">
+	    	<h:inputText id="mileage" value="#{dobavqneNaAvtomobil.mileage}" 
+	    		required="#{not empty param[dobavqneNaAvtomobil.addButton.clientId]}" requiredMessage="задължително поле!">
+	    		<f:validateLongRange minimum="0" />
+	    	</h:inputText>
+	    	<h:message for="mileage" />
+	    </h:outputLabel>
+	    <br />
+	    
 	    
 	   	<h:commandButton value="Добави" binding="#{dobavqneNaAvtomobil.addButton}"
 	   		 action="#{dobavqneNaAvtomobil.addAvtomobil()}"/> 

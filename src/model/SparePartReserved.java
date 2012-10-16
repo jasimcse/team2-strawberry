@@ -29,6 +29,7 @@ public class SparePartReserved implements Serializable {
 	private Key clientOrderID;
 	private Key sparePartID;
 	private Double quantity;
+	private Double used;
 	
 	private static final String PARENT_FIELD = "autoserviceID";
 	
@@ -188,6 +189,14 @@ public class SparePartReserved implements Serializable {
 		this.quantity = Double.valueOf(quantity);
 	}
 	
+	public double getUsed() {
+		return used.doubleValue();
+	}
+
+	public void setUsed(double used) {
+		this.used = Double.valueOf(used);
+	}
+
 	private static PreparedQuery getPreparedQueryAll(Key autoserviceID) { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(SparePartReserved.class.getSimpleName()).
@@ -212,7 +221,8 @@ public class SparePartReserved implements Serializable {
 CREATE TABLE Spare_Part_Reserved ( 
 	Client_Order_ID BIGINT NOT NULL,
 	Spare_Part_ID BIGINT NOT NULL,
-	Quantity FLOAT NOT NULL
+	Quantity FLOAT NOT NULL,
+	Used FLOAT NOT NULL
 );
 
 ALTER TABLE Spare_Part_Reserved ADD CONSTRAINT PK_Spare_Part_Reserved 
