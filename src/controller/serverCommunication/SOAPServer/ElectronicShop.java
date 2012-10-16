@@ -376,6 +376,7 @@ public class ElectronicShop implements ElectronicShopInterface {
 			v.setEngineNumber(engineNumber);
 			v.setPlateNumber(plateNumber);
 			v.setPurchaseDate(purchaseDate);
+			v.setMileage(0); // приемаме, че магазина продава само нови автомобили
 			v.setWarrantyOK(Vehicle.WARRANTY_YES);
 			v.writeToDB();
 		} catch (RuntimeException e) {

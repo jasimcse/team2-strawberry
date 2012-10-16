@@ -39,6 +39,7 @@ public class Vehicle implements Serializable {
 	private LimitedString plateNumber = new LimitedString(8);
 	private LimitedString warrantyOK = new LimitedString(1, true);
 	private Date purchaseDate;
+	private Long mileage;
 	
 	private static final String PARENT_FIELD = "clientID";
 	
@@ -236,6 +237,17 @@ public class Vehicle implements Serializable {
 		this.purchaseDate = purchaseDate;
 	}
 	
+	public long getMileage() {
+		if (mileage == null) {
+			return 0;
+		}
+		return mileage.longValue();
+	}
+
+	public void setMileage(long mileage) {
+		this.mileage = Long.valueOf(mileage);
+	}
+
 	private static PreparedQuery getPreparedQueryAll() { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(Vehicle.class.getSimpleName()).
@@ -312,7 +324,7 @@ public class Vehicle implements Serializable {
 	
 }
 
-/*
+/*	
 CREATE TABLE Vehicle ( 
 	VIN CHAR(17) NOT NULL,
 	Engine_Number VARCHAR(50) NOT NULL,
@@ -321,12 +333,12 @@ CREATE TABLE Vehicle (
 	Warranty_ID BIGINT,
 	Warranty_OK SMALLINT,
 	Client_ID BIGINT NOT NULL,
-	Purchase_Date DATE
+	Purchase_Date DATE,
+	Milåage INTEGER NOT NULL
 );
 
 ALTER TABLE Vehicle ADD CONSTRAINT PK_Vehicle 
 	PRIMARY KEY (VIN);
-
 
 ALTER TABLE Vehicle ADD CONSTRAINT FK_Vehicle_Client 
 	FOREIGN KEY (Client_ID) REFERENCES Client (Client_ID);

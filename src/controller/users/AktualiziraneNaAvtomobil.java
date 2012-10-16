@@ -29,6 +29,7 @@ import model.WarrantyConditions;
 public class AktualiziraneNaAvtomobil implements Serializable {
 
 	private Vehicle avtomobil = new Vehicle();
+	private long mileage;
 	
 	private transient UIComponent changeButton;
 	
@@ -121,6 +122,14 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 	}
 
 	
+	public long getMileage() {
+		return mileage;
+	}
+
+	public void setMileage(long mileage) {
+		this.mileage = mileage;
+	}
+
 	public UIComponent getChangeButton() {
 		return changeButton;
 	}
@@ -224,7 +233,13 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 	
 	public String saveAvtomobil()
 	{	
-
+		if (mileage < avtomobil.getMileage()) {
+			// set the message
+			errorMessage = "Пробегът на автомобила е по-малък от предния записан!";
+			return null;
+		}
+		
+		avtomobil.setMileage(mileage);
 		avtomobil.writeToDB();
 	
 		readList();

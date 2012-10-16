@@ -94,6 +94,14 @@ public class DobavqneNaAvtomobil implements Serializable {
 		avtomobil.setPlateNumber(plateNumber);
 	}
 
+	public long getMileage() {
+		return avtomobil.getMileage();
+	}
+
+	public void setMileage(long mileage) {
+		avtomobil.setMileage(mileage);
+	}
+
 	public UIComponent getAddButton() {
 		return addButton;
 	}
