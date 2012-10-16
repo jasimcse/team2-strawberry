@@ -26,16 +26,17 @@ import model.Vehicle;
 @ManagedBean(name="dobavqneNaDiagnostika")
 @ViewScoped
 
-public class DobavqneNaDiagnostika  implements Serializable {
+public class AktualiziraneNaDiagnostika  implements Serializable {
 
 	private Diagnosis diagnostika = new Diagnosis();
 	private String errorMessage;
 
+	private List<Diagnosis> spisukDiagnostiki;
 	private List <DiagnosisService> spisukUslugi;
 	private List <DiagnosisPart> spisukRezervni4asti;
 	
 	@SuppressWarnings("unchecked")
-	public DobavqneNaDiagnostika() {
+	public AktualiziraneNaDiagnostika() {
 		Stack<InterPageDataRequest> dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
 		
 		if (dataRequestStack != null) {
@@ -44,13 +45,13 @@ public class DobavqneNaDiagnostika  implements Serializable {
 			{
 				if(dataRequest.dataPage.equals("/users/AktualiziraneNaAvtomobil.jsf"))
 				{
-					this.diagnostika = ((DobavqneNaDiagnostika)dataRequest.requestObject).diagnostika;
+					this.diagnostika = ((AktualiziraneNaDiagnostika)dataRequest.requestObject).diagnostika;
 					this.diagnostika.setVehicle((Vehicle)dataRequest.requestedObject);
 				}
 				else
 					if(dataRequest.dataPage.equals("/users/AktualiziraneNaUsluga.jsf"))
 					{
-						this.diagnostika = ((DobavqneNaDiagnostika)dataRequest.requestObject).diagnostika;
+						this.diagnostika = ((AktualiziraneNaDiagnostika)dataRequest.requestObject).diagnostika;
 						DiagnosisService diagService = new DiagnosisService();
 						diagService.setDiagnosis(this.diagnostika);
 						diagService.setService((Service)dataRequest.requestedObject);
@@ -61,7 +62,7 @@ public class DobavqneNaDiagnostika  implements Serializable {
 						// TODO: 4akame Venci!
 						if(dataRequest.dataPage.equals("/users/AktualiziraneNa.jsf"))
 						{
-								this.diagnostika = ((DobavqneNaDiagnostika)dataRequest.requestObject).diagnostika;
+								this.diagnostika = ((AktualiziraneNaDiagnostika)dataRequest.requestObject).diagnostika;
 								DiagnosisPart diagPart = new DiagnosisPart();
 								diagPart.setDiagnosis(diagnostika);
 								diagPart.setSparePart((SparePart)dataRequest.requestedObject);
@@ -233,3 +234,4 @@ public class DobavqneNaDiagnostika  implements Serializable {
 	}
 	
 }
+
