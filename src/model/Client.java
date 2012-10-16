@@ -92,6 +92,13 @@ public class Client implements Serializable {
 		}
 	}
 	
+	public void writeToDB(boolean makeNew) {
+		if (makeNew) {
+			thisEntity = null;
+		}
+		writeToDB();
+	}
+	
 	public static Client readEntity(Entity entity) {
 		Client client = new Client();
 		client.thisEntity = entity;

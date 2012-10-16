@@ -1,9 +1,17 @@
 package controller.admin;
 
+import java.util.List;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Transaction;
+import com.google.appengine.api.datastore.TransactionOptions;
+
 import model.Autoservice;
+import model.SparePart;
+import model.SparePartAutoservice;
 
 
 @ManagedBean(name="dobavqneNaAvtoserviz")
@@ -94,7 +102,27 @@ public class DobavqneNaAvtoserviz {
 	
 	public void addAutoservice()
 	{
+		// добавяме нов сервиз -> инициализираме наличните резервни части в новия сервиз
+		Transaction tr = DatastoreServiceFactory.getDatastoreService().beginTransaction(TransactionOptions.Builder.withXG(true));
 		serviz.writeToDB();
+		
+		SparePartAutoservice spa = new SparePartAutoservice();
+		spa.setQuantityAvailable(0);
+		spa.setQuantityBad(0);
+		spa.setQuantityMinimum(0);
+		spa.setQuantityOrdered(0);
+		spa.setQuantityReserved(0);
+		spa.setAutoserviceID(serviz.getID());
+		
+		List<SparePart> spl = SparePart.queryGetAll(0, 1000);
+		for (SparePart sparePart : spl) {
+			spa.setSparePartID(sparePart.getID());
+			spa.writeToDB(true);
+		}
+		
+		tr.commit();
+		
+		
 		serviz = new Autoservice();
 		errorMessage = "Автосервизът беше добавен успешно!";
 	}

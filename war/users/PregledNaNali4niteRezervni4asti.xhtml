@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="headSection">
+	
+	</ui:define>
+
+	<ui:define name="pageContent">
+	
+		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<h:form>
+			
+			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+			<h:dataTable
+				rows="#{configurationProperties.getPageSize()}"
+				value="#{pregledNaNali4niteRezervni4asti.spisukNali4nosti}"
+			    first="0"
+			    var="curr"
+			    rowClasses="#{pregledNaNali4niteRezervni4asti.rowStyleClasses}">
+				
+				<h:column>
+					<f:facet name="header">Група на резервната част</f:facet>
+					#{curr.sparePart.sparePartGroup.description}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Наименование</f:facet>
+					#{curr.sparePart.name}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Налично</f:facet>
+					#{curr.quantityAvailable}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Резервирано</f:facet>
+					#{curr.quantityReserved}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Поръчано</f:facet>
+					#{curr.quantityOrdered}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Бракувано</f:facet>
+					#{curr.quantityBad}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Минимално</f:facet>
+					#{curr.quantityMinimum}
+				</h:column>
+				
+				
+				<h:column rendered="#{pregledNaNali4niteRezervni4asti.changingAllowed}">
+					<f:facet name="header">Промени</f:facet>
+					<h:commandLink action="#{pregledNaNali4niteRezervni4asti.selectRow(curr)}" value="Промени" />
+				</h:column>
+				
+				<h:column rendered="#{pregledNaNali4niteRezervni4asti.choosingAllowed}">
+					<f:facet name="header">Избери</f:facet>
+					<h:commandLink action="#{pregledNaNali4niteRezervni4asti.chooseSparePart(curr)}" value="Избери" />
+				</h:column>
+				
+				<f:facet name="footer">
+					<h:panelGroup rendered="#{!empty pregledNaNali4niteRezervni4asti.pagesList}">
+						<!-- предишна страница -->
+						<h:commandLink rendered="#{pregledNaNali4niteRezervni4asti.page - 1 ge 0}"
+							action="#{pregledNaNali4niteRezervni4asti.setPage(pregledNaNali4niteRezervni4asti.page - 1)}"
+							value="&lt;&lt;" />
+							
+						<!-- други страници -->
+						<ui:repeat value="#{pregledNaNali4niteRezervni4asti.pagesList}" var="currPage">
+							<h:commandLink
+								rendered="#{pregledNaNali4niteRezervni4asti.getPage() ne currPage.intValue() - 1}"
+								action="#{pregledNaNali4niteRezervni4asti.setPage(currPage.intValue()-1)}"
+								value="#{currPage}" />
+								
+							<h:outputText
+								rendered="#{pregledNaNali4niteRezervni4asti.getPage() eq currPage.intValue() - 1}"
+								value="#{currPage}" />
+								
+							<h:outputText value=" " />
+						</ui:repeat>
+						
+						<!-- следваща страница -->
+						<h:commandLink rendered="#{pregledNaNali4niteRezervni4asti.page + 1 lt pregledNaNali4niteRezervni4asti.pagesCount}"
+							action="#{pregledNaNali4niteRezervni4asti.setPage(pregledNaNali4niteRezervni4asti.page + 1)}"
+							value="&gt;&gt;" />
+							
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="#{empty pregledNaNali4niteRezervni4asti.pagesList}" style="color: red; font-weight: bold;">
+						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
+						<br />
+						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
+					</h:panelGroup>
+				</f:facet>
+				 
+			</h:dataTable>
+		</h:form>
+		</div>
+		
+		<h:form>
+	    
+			<h:outputLabel value="Група на резервната част">
+				<h:inputText id="sparePartGroup"
+					value="#{pregledNaNali4niteRezervni4asti.sparePart.sparePartGroup.description}" readonly="true" />
+				<h:message for="sparePartGroup" />
+			</h:outputLabel>
+			<br />
+
+			<h:outputLabel value="Наименование">
+				<h:inputText id="name" 
+					value="#{pregledNaNali4niteRezervni4asti.sparePart.name}" readonly="true" />
+				<h:message for="name" />
+			</h:outputLabel>
+			<br />
+			
+			<h:outputLabel value="Описание">
+				<h:inputTextarea id="description" rows="1"
+					value="#{pregledNaNali4niteRezervni4asti.sparePart.description}" readonly="true" />
+				<h:message for="description" />
+			</h:outputLabel>
+			<br />
+			
+			<h:outputLabel value="Мерна единица">
+				<h:inputText id="measuringUnit"
+					value="#{pregledNaNali4niteRezervni4asti.sparePart.measuringUnit}" readonly="true" />
+				<h:message for="measuringUnit" />
+			</h:outputLabel>
+			<br />
+			
+			<h:outputLabel value="Налично количество">
+				<h:inputText id="available" 
+					value="#{pregledNaNali4niteRezervni4asti.quantityAvailable}" readonly="true" />
+				<h:message for="available" />
+			</h:outputLabel>
+			<br />
+
+			<h:outputLabel value="Резервирано количество">
+				<h:inputText id="reserved" 
+					value="#{pregledNaNali4niteRezervni4asti.quantityReserved}" readonly="true" />
+				<h:message for="reserved" />
+			</h:outputLabel>
+			<br />
+			
+			<h:outputLabel value="Поръчано количество">
+				<h:inputText id="ordered" 
+					value="#{pregledNaNali4niteRezervni4asti.quantityOrdered}" readonly="true" />
+				<h:message for="ordered" />
+			</h:outputLabel>
+			<br />
+			
+			<h:outputLabel value="Бракувано количество">
+				<h:inputText id="bad" 
+					value="#{pregledNaNali4niteRezervni4asti.quantityBad}" readonly="true" />
+				<h:message for="bad" />
+			</h:outputLabel>
+			<br />
+			
+			<h:outputLabel value="Минимално количество">
+				<h:inputText id="minimum" 
+					value="#{pregledNaNali4niteRezervni4asti.quantityMinimum}"
+					readonly="#{!pregledNaNali4niteRezervni4asti.rowSelected}"
+					required="true"	requiredMessage="задължително поле!">
+					<f:validateDoubleRange minimum="0" />
+				</h:inputText>
+				<h:message for="minimum" />
+			</h:outputLabel>
+			<br />
+			
+			
+			<h:commandButton action="#{pregledNaNali4niteRezervni4asti.writeIt()}" value="Запази"
+				disabled="#{!pregledNaNali4niteRezervni4asti.rowSelected}" />
+			
+			<h:commandButton action="#{pregledNaNali4niteRezervni4asti.deselectRow()}" value="Отмени"
+				disabled="#{!pregledNaNali4niteRezervni4asti.rowSelected}" />
+				
+			<br />
+			<h:outputText value="#{pregledNaNali4niteRezervni4asti.errorMessage}" />
+
+		</h:form>
+			
+	</ui:define>
+	
+</ui:composition>
+</html>

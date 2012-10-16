@@ -7,13 +7,19 @@ import java.util.logging.Logger;
 
 import javax.jws.WebService;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Transaction;
+import com.google.appengine.api.datastore.TransactionOptions;
+
 import controller.common.ConfigurationProperties;
 
+import model.Autoservice;
 import model.Client;
 import model.Company;
 import model.Person;
 import model.Service;
 import model.SparePart;
+import model.SparePartAutoservice;
 import model.SparePartGroup;
 import model.Vehicle;
 import model.VehicleModel;
@@ -197,6 +203,8 @@ public class ElectronicShop implements ElectronicShopInterface {
 			double deliveryPrice,
 			String measuringUnit) {
 
+		boolean flagNew = false;
+		
 		// check if we know that shop
 		if (!ConfigurationProperties.getElectronicShopID().equals(electronicShopID)) {
 			logger.warning("electronicShopID \"" + electronicShopID + "\" not known!");
@@ -207,6 +215,7 @@ public class ElectronicShop implements ElectronicShopInterface {
 		SparePart sp;
 		if (spl.size() == 0) {
 			sp = new SparePart();
+			flagNew = true;
 		} else {
 			sp = spl.get(0);
 		}
@@ -224,7 +233,29 @@ public class ElectronicShop implements ElectronicShopInterface {
 			sp.setDeliveryPrice(deliveryPrice);
 			sp.setSalePrice(deliveryPrice);    // <--- отначало продажната цена е същата като доставната !!!
 			sp.setMeasuringUnit(measuringUnit);
+			
+			Transaction tr = DatastoreServiceFactory.getDatastoreService().beginTransaction(TransactionOptions.Builder.withXG(true));
 			sp.writeToDB();
+			
+			if (flagNew) {
+				// добавяме нова част -> инициализираме записите за тази част във всички автосервизи
+				SparePartAutoservice spa = new SparePartAutoservice();
+				spa.setQuantityAvailable(0);
+				spa.setQuantityBad(0);
+				spa.setQuantityMinimum(0);
+				spa.setQuantityOrdered(0);
+				spa.setQuantityReserved(0);
+				spa.setSparePartID(sp.getID());
+				
+				List<Autoservice> al = Autoservice.queryGetAll(0, 1000);
+				for (Autoservice autoservice : al) {
+					spa.setAutoserviceID(autoservice.getID());
+					spa.writeToDB(true);
+				}
+			}
+			
+			tr.commit();
+			
 		} catch (RuntimeException e) {
 			logger.log(Level.WARNING, "Can't write to DB!", e);
 			return false;
