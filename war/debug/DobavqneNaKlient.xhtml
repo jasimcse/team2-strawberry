@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="pageContent">
+		<br />
+		<h:outputText value="Тази страница е само за тестване." 
+			style="color: red; font-weight: bold;"/>
+		<br />
+		<h:outputText value="Напрактика от тук могат и да се актуализират данните, ако се подаде ключ който вече съществува." 
+			style="color: red; font-weight: bold;"/>
+		<br />
+		<br />
+	    <h:form>
+		
+			<table>
+				<tr>
+					<td>
+						<h:outputLabel value="Ключ*">
+					    	<h:inputText id="personID" value="#{dobavqneNaKlientDebug.foreignIDPerson}" maxlength="50" 
+					    		required="#{not empty param[dobavqneNaKlientDebug.addPerson.clientId]}" requiredMessage="задължително поле!" />
+					    	<h:message for="personID" />
+					    </h:outputLabel>
+					    <br />
+						<h:outputLabel value="Име*">
+					    	<h:inputText id="personname" value="#{dobavqneNaKlientDebug.namePerson}" maxlength="50" 
+					    		required="#{not empty param[dobavqneNaKlientDebug.addPerson.clientId]}" requiredMessage="задължително поле!" />
+					    	<h:message for="personname" />
+					    </h:outputLabel>
+					    <br />
+					    <h:outputLabel value="Фамилия*">
+					    	<h:inputText id="family" value="#{dobavqneNaKlientDebug.familyPerson}" maxlength="50" 
+					    		required="#{not empty param[dobavqneNaKlientDebug.addPerson.clientId]}"  requiredMessage="задължително поле!" />
+					    	<h:message for="family" />
+					    </h:outputLabel>
+					    <br />
+					    <h:outputLabel value="Населено място*">
+					    	<h:inputText id="cityPerson" value="#{dobavqneNaKlientDebug.addressCityPerson}" maxlength="30" 
+					    		required="#{not empty param[dobavqneNaKlientDebug.addPerson.clientId]}" requiredMessage="задължително поле!" />
+					    	<h:message for="cityPerson" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Адрес*">
+					    	<h:inputText id="addressPerson" value="#{dobavqneNaKlientDebug.addressLinePerson}" maxlength="100" 
+					    		required="#{not empty param[dobavqneNaKlientDebug.addPerson.clientId]}" requiredMessage="задължително поле!" />
+					    	<h:message for="addressPerson" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Телефонен номер">
+					    	<h:inputText id="phonePerson" value="#{dobavqneNaKlientDebug.phoneNumberPerson}" maxlength="15" />
+					    	<h:message for="phonePerson" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Електронна поща">
+					    	<h:inputText id="mailPerson" value="#{dobavqneNaKlientDebug.mailPerson}" maxlength="50"/>
+					    	<h:message for="mailPerson" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Номер на банковата сметка">
+					    	<h:inputText id="ibanPerson" value="#{dobavqneNaKlientDebug.IBANNumberPerson}" maxlength="30"/>
+					    	<h:message for="ibanPerson" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Банков код">
+					    	<h:inputText id="swiftCodePerson" value="#{dobavqneNaKlientDebug.SWIFTCodePerson}" maxlength="20"/>
+					    	<h:message for="swiftCodePerson" />
+					    </h:outputLabel> 
+					    <br />
+					    
+					    
+				    	<h:commandButton value="Добави физическо лице" 
+				    	binding="#{dobavqneNaKlientDebug.addPerson}" action="#{dobavqneNaKlientDebug.addPerson()}"/> 
+				    	
+					</td>
+					
+					<td>
+					
+						<h:outputLabel value="Ключ*">
+					    	<h:inputText id="companyID" value="#{dobavqneNaKlientDebug.foreignIDCompany}" maxlength="50" 
+					    		required="#{not empty param[dobavqneNaKlientDebug.addCompany.clientId]}" requiredMessage="задължително поле!" />
+					    	<h:message for="companyID" />
+					    </h:outputLabel>
+					    <br />
+						<h:outputLabel value="Наименование на компанията*">
+					    	<h:inputText id="companyname" value="#{dobavqneNaKlientDebug.nameCompany}" maxlength="100" 
+					    		required="#{not empty param[dobavqneNaKlientDebug.addCompany.clientId]}"  requiredMessage="задължително поле!" />
+					    	<h:message for="companyname" />
+					    </h:outputLabel>
+					    <br />
+					     <h:outputLabel value="Единен идентификационен код (ЕИК)*">
+					    	<h:inputText id="regnumber" value="#{dobavqneNaKlientDebug.registrationNumberCompany}" maxlength="9" 
+					    		required="#{not empty param[dobavqneNaKlientDebug.addCompany.clientId]}"  requiredMessage="задължително поле!" />
+					    	<h:message for="regnumber" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="ДДС номер">
+					    	<h:inputText id="vat" value="#{dobavqneNaKlientDebug.VATNumberCompany}" maxlength="11" />
+					    	<h:message for="vat" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Лице за контакт">
+					    	<h:inputText id="contactperson" value="#{dobavqneNaKlientDebug.contactPersonCompany}" maxlength="100" />
+					    	<h:message for="contactperson" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Населено място*">
+					    	<h:inputText id="cityCompany" value="#{dobavqneNaKlientDebug.addressCityCompany}" maxlength="30" 
+					    		required="#{not empty param[dobavqneNaKlientDebug.addCompany.clientId]}" requiredMessage="задължително поле!" />
+					    	<h:message for="cityCompany" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Адрес*">
+					    	<h:inputText id="addressCompany" value="#{dobavqneNaKlientDebug.addressLineCompany}" maxlength="100" 
+					    		required="#{not empty param[dobavqneNaKlientDebug.addCompany.clientId]}" requiredMessage="задължително поле!" />
+					    	<h:message for="addressCompany" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Телефонен номер">
+					    	<h:inputText id="phoneCompany" value="#{dobavqneNaKlientDebug.phoneNumberCompany}" maxlength="15" />
+					    	<h:message for="phoneCompany" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Електронна поща">
+					    	<h:inputText id="mailCompany" value="#{dobavqneNaKlientDebug.mailCompany}" maxlength="50"/>
+					    	<h:message for="mailCompany" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Номер на банковата сметка">
+					    	<h:inputText id="ibanCompany" value="#{dobavqneNaKlientDebug.IBANNumberCompany}" maxlength="30"/>
+					    	<h:message for="ibanCompany" />
+					    </h:outputLabel> 
+					    <br />
+					    <h:outputLabel value="Банков код">
+					    	<h:inputText id="swiftCodeCompany" value="#{dobavqneNaKlientDebug.SWIFTCodeCompany}" maxlength="20"/>
+					    	<h:message for="swiftCodeCompany" />
+					    </h:outputLabel> 
+					    <br />
+					    
+					    
+				   		<h:commandButton value="Добави юридическо лице" 
+				   		binding="#{dobavqneNaKlientDebug.addCompany}" action="#{dobavqneNaKlientDebug.addCompany()}"/> 
+					    <br />
+					    
+					</td>
+				</tr>
+			</table>
+	    
+	    
+	    
+	    <h:outputText value="#{dobavqneNaKlientDebug.errorMessage}"/>
+	    
+	    <br />
+	    <h:outputText value="добавя се чрез WSDL и SOAP затова може да се забави" style="color: yellow; background-color: black; font-weight: bold" />
+	    
+	    </h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>

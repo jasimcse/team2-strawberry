@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="pageContent">
+		<br />
+		<h:outputText value="Тази страница е само за тестване." 
+			style="color: red; font-weight: bold;"/>
+		<br />
+		<h:outputText value="Напрактика от тук могат и да се актуализират данните, ако се подаде ключ който вече съществува." 
+			style="color: red; font-weight: bold;"/>
+		<br />
+		<br />
+	    <h:form>
+	    
+	    <h:outputLabel value="Номер на рама*">
+	    	<h:inputText id="vin" value="#{dobavqneNaAvtomobilDebug.VIN}" maxlength="17" 
+	    		required="true" requiredMessage="задължително поле!" />
+	    	<h:message for="vin" />
+	    </h:outputLabel> 
+	    <br />
+
+		<h:outputLabel value="Номер на двигател*">
+	    	<h:inputText id="enginenum" value="#{dobavqneNaAvtomobilDebug.engineNumber}" maxlength="50" 
+	    		required="true" requiredMessage="задължително поле!" />
+	    	<h:message for="enginenum" />
+	    </h:outputLabel>
+	    <br />
+	    
+	    <h:outputLabel value="Регистрационен номер*">
+	    	<h:inputText id="platenum" value="#{dobavqneNaAvtomobilDebug.plateNumber}" maxlength="8" 
+	    		required="true" requiredMessage="задължително поле!" />
+	    	<h:message for="platenum" />
+	    </h:outputLabel> 
+	    <br /> 
+	    
+	    <h:outputLabel value="Модел на автомобила*">
+		    <h:selectOneMenu value="#{dobavqneNaAvtomobilDebug.vehicleModelID}">
+				<f:selectItems value="#{dobavqneNaAvtomobilDebug.vehicleModels}" var="currentVehicleModel" 
+	   				itemLabel="#{currentVehicleModel.model}" itemValue="#{currentVehicleModel.ID}" />
+			</h:selectOneMenu>
+		</h:outputLabel>
+		<br />
+	    
+	    <h:outputLabel value="Ключ на клиента*">
+		    <h:selectOneMenu value="#{dobavqneNaAvtomobilDebug.clientID}">
+				<f:selectItems value="#{dobavqneNaAvtomobilDebug.clients}" var="currentClient" 
+	   				itemLabel="#{currentClient.foreignID}" itemValue="#{currentClient.ID}" />
+			</h:selectOneMenu>
+		</h:outputLabel>
+		<br />
+		
+		<h:outputLabel value="Ключ гаранционните условия*">
+		    <h:selectOneMenu value="#{dobavqneNaAvtomobilDebug.warrantyConditionsID}">
+				<f:selectItems value="#{dobavqneNaAvtomobilDebug.warrantyConditions}" var="currentWarrantyConditions" 
+	   				itemLabel="#{currentWarrantyConditions.foreignID}"
+	   				itemValue="#{currentWarrantyConditions.ID}" />
+			</h:selectOneMenu>
+		</h:outputLabel>
+		<br />
+		
+		<h:outputLabel value="Дата на закупуване*">
+			<h:inputText id="purchaseDate" value="#{dobavqneNaAvtomobilDebug.purchaseDate}" title="формат: ДД.ММ.ГГГГ">
+				<f:convertDateTime pattern="dd.MM.yyyy" />
+			</h:inputText>
+			<h:message for="purchaseDate" />
+		</h:outputLabel>
+		<br />
+	    
+	    
+	   	<h:commandButton value="Добави"
+	   		 action="#{dobavqneNaAvtomobilDebug.writeIt()}"/> &lt;--- добавя се чрез WSDL и SOAP затова може да се забави
+	    <br />
+	    
+	    <h:outputText value="#{dobavqneNaAvtomobilDebug.errorMessage}"/>
+	    
+	    </h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>

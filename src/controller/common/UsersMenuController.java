@@ -32,6 +32,7 @@ public class UsersMenuController implements Serializable {
 	private static final MenuEntry AktualiziraneNaRezervna4ast = new MenuEntry("Актуализиране на резервна част", "/users/AktualiziraneNaRezervna4ast.jsf");
 	private static final MenuEntry DobavqneNaAvtomobil = new MenuEntry("Добавяне на автомобил", "/users/DobavqneNaAvtomobil.jsf");
 	private static final MenuEntry AktualiziraneNaAvtomobil = new MenuEntry("Актуализиране на автомобил", "/users/AktualiziraneNaAvtomobil.jsf");
+	private static final MenuEntry DobavqneNaDiagnostika = new MenuEntry("Добавяне на диагностика", "/users/DobavqneNaDiagnostika.jsf");
 	private static final MenuEntry WebServicesSeparator = new MenuEntry("------- Уеб услуги -------", "");
 	private static final MenuEntry ElectronicShopService = new MenuEntry("Уеб услуга \"Електронен магазин\"", "/wsdl/ElectronicShopService.wsdl");
 	private static final MenuEntry InsurerService = new MenuEntry("Уеб услуга \"Застрахователи\"", "/wsdl/InsurerService.wsdl");
@@ -44,6 +45,8 @@ public class UsersMenuController implements Serializable {
 	private static final MenuEntry DobavqneNaRezervna4ast = new MenuEntry("Добавяне на резервна част", "/debug/DobavqneNaRezervna4ast.jsf");
 	private static final MenuEntry DobavqneNaUslugaZaModelAvtomobil = new MenuEntry("Добавяне на услуга за модел автомобил", "/debug/DobavqneNaUslugaZaModelAvtomobil.jsf");
 	private static final MenuEntry DobavqneNaRezervna4astZaModelAvtomobil = new MenuEntry("Добавяне на резервна част за модел автомобил", "/debug/DobavqneNaRezervna4astZaModelAvtomobil.jsf");
+	private static final MenuEntry DobavqneNaKlientDebug = new MenuEntry("Добавяне на клиент", "/debug/DobavqneNaKlient.jsf");
+	private static final MenuEntry DobavqneNaAvtomobilDebug = new MenuEntry("Добавяне на автомобил", "/debug/DobavqneNaAvtomobil.jsf");
 	private static final MenuEntry DobavqneNaZaqvkaOtZastrahovatel = new MenuEntry("Добавяне на заявка от застраховател", "/debug/DobavqneNaZaqvkaOtZastrahovatel.jsf");
 	
 	
@@ -67,6 +70,7 @@ public class UsersMenuController implements Serializable {
 			    		AktualiziraneNaRezervna4ast,
 			    		DobavqneNaAvtomobil,
 			    		AktualiziraneNaAvtomobil,
+			    		DobavqneNaDiagnostika,
 			    		WebServicesSeparator,
 			    		ElectronicShopService,
 			    		InsurerService,
@@ -79,6 +83,8 @@ public class UsersMenuController implements Serializable {
 			    		DobavqneNaRezervna4ast,
 			    		DobavqneNaUslugaZaModelAvtomobil,
 			    		DobavqneNaRezervna4astZaModelAvtomobil,
+			    		DobavqneNaKlientDebug,
+			    		DobavqneNaAvtomobilDebug,
 			    		DobavqneNaZaqvkaOtZastrahovatel,
 			    		})));
 	/*
