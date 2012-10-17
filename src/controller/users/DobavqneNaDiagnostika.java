@@ -167,6 +167,13 @@ public class DobavqneNaDiagnostika  implements Serializable {
 			errorMessage = "Не е избран автомобил!";
 			return null;
 		}
+		
+		if( spisukUslugi.isEmpty() && spisukRezervni4asti.isEmpty() )
+		{
+			// set the message
+			errorMessage = "Изберете услуги и/или резервни части нужни за извършване по автомобила!";
+			return null;
+		}
 
 		diagnostika.setDate(new Date());
 		diagnostika.setEmployeeID(currEmployee.getEmployeeID());
