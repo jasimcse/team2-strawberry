@@ -18,13 +18,11 @@ import controller.common.ConfigurationProperties;
 import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
 import model.Autoservice;
-import model.Client;
+
 import model.Diagnosis;
 import model.DiagnosisPart;
 import model.DiagnosisService;
 import model.Employee;
-import model.SparePart;
-import model.Service;
 import model.Vehicle;
 
 
@@ -40,7 +38,7 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 	private Diagnosis diagnostika = new Diagnosis();
 	private String errorMessage;
 
-	private List <Diagnosis> spisukDiagnostiki;
+	private List <Diagnosis> spisukDiagnostiki = new ArrayList<Diagnosis>();
 	private List <DiagnosisService> spisukUslugi = new ArrayList<DiagnosisService>();
 	private List <DiagnosisPart> spisukRezervni4asti = new ArrayList<DiagnosisPart>();
 	
@@ -130,32 +128,25 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 		diagnostika.setEmployeeID(employeeID);
 	}
 	
-	
-
 	public Autoservice getAutoservice() {
 		return diagnostika.getAutoservice();
 	}
-
 
 	public void setAutoservice(Autoservice autoservice) {
 		diagnostika.setAutoservice(autoservice);
 	}
 
-
 	public Employee getEmployee() {
 		return diagnostika.getEmployee();
 	}
-
 
 	public void setEmployee(Employee employee) {
 		diagnostika.setEmployee(employee);
 	}
 
-
 	public Date getDate() {
 		return diagnostika.getDate();
 	}
-
 
 	public void setDate(Date date) {
 		diagnostika.setDate(date);
