@@ -61,6 +61,7 @@ public class ZapazvaneNa4as implements Serializable {
 		if (now.get(Calendar.HOUR_OF_DAY) >= ConfigurationProperties.getWorkingTimeEndHour()) {
 			
 			now.set(Calendar.HOUR_OF_DAY, ConfigurationProperties.getWorkingTimeStartHour());
+			now.set(Calendar.MINUTE, 0);
 			now.add(Calendar.DAY_OF_MONTH, 1);
 		}
 		

@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="headSection">
+		
+	</ui:define>
+
+	<ui:define name="pageContent">
+	
+		<h:form>
+		
+		<h:commandButton action="#{pregledNaZapazeni4asove.changeDay(-1)}" value="Преден ден"
+			disabled="#{!pregledNaZapazeni4asove.prevDayAllowed}" />
+		
+		<h:outputText value="#{pregledNaZapazeni4asove.date}">
+			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Sofia" />
+		</h:outputText>
+		
+		<h:commandButton action="#{pregledNaZapazeni4asove.changeDay(1)}" value="Следващ ден" />
+		<br />
+		
+		<div style="overflow-x: auto;"> <!-- scroll bar -->
+			
+			<!-- TODO - да се реши дали да се имплементира разлика в оцветяванията на редовете които са вече невалидни (т.е. изтекли) -->
+			<h:dataTable
+				value="#{pregledNaZapazeni4asove.spisukZapazeni4asove}"
+			    first="0"
+			    var="curr">
+				
+				<h:column>
+					<f:facet name="header">Запазен час</f:facet>
+					<h:outputText value="#{curr.timestamp}">
+						<f:convertDateTime pattern="HH:mm" timeZone="Europe/Sofia" />
+					</h:outputText>
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Име на клиента</f:facet>
+					#{curr.clientName}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Телефонен номер на клиента</f:facet>
+					#{curr.phoneNumber}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Контролен код</f:facet>
+					#{curr.issuedCode}
+				</h:column>
+				 
+			</h:dataTable>
+		</div>
+		</h:form>
+		
+	</ui:define>
+	
+</ui:composition>
+</html>

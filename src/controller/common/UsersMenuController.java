@@ -38,6 +38,7 @@ public class UsersMenuController implements Serializable {
 	private static final MenuEntry AktualiziraneNaAvtomobil = new MenuEntry("Актуализиране на автомобил", "/users/AktualiziraneNaAvtomobil.jsf");
 	private static final MenuEntry DobavqneNaDiagnostika = new MenuEntry("Добавяне на диагностика", "/users/DobavqneNaDiagnostika.jsf");
 	private static final MenuEntry AktualiziraneNaDiagnostika = new MenuEntry("Актуализиране на диагностика", "/users/AktualiziraneNaDiagnostika.jsf");
+	private static final MenuEntry pregledNaZapazeni4asove = new MenuEntry("Преглед на запазени часове", "/users/pregledNaZapazeni4asove.jsf");
 	private static final MenuEntry WebServicesSeparator = new MenuEntry("------- Уеб услуги -------", "");
 	private static final MenuEntry ElectronicShopService = new MenuEntry("Уеб услуга \"Електронен магазин\"", "/wsdl/ElectronicShopService.wsdl");
 	private static final MenuEntry InsurerService = new MenuEntry("Уеб услуга \"Застрахователи\"", "/wsdl/InsurerService.wsdl");
@@ -81,6 +82,7 @@ public class UsersMenuController implements Serializable {
 			    		AktualiziraneNaAvtomobil,
 			    		DobavqneNaDiagnostika,
 			    		AktualiziraneNaDiagnostika,
+			    		pregledNaZapazeni4asove,
 			    		WebServicesSeparator,
 			    		ElectronicShopService,
 			    		InsurerService,
