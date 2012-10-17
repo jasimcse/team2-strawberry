@@ -41,8 +41,8 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 	private String errorMessage;
 
 	private List <Diagnosis> spisukDiagnostiki;
-	private List <DiagnosisService> spisukUslugi;
-	private List <DiagnosisPart> spisukRezervni4asti;
+	private List <DiagnosisService> spisukUslugi = new ArrayList<DiagnosisService>();
+	private List <DiagnosisPart> spisukRezervni4asti = new ArrayList<DiagnosisPart>();
 	
 	private Stack<InterPageDataRequest> dataRequestStack;
 	
