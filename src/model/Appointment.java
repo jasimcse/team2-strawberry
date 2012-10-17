@@ -15,6 +15,8 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 import model.util.EntityHelper;
 import model.util.LimitedString;
@@ -32,7 +34,7 @@ public class Appointment implements Serializable {
 	private Autoservice autoservice;
 	
 	private Key autoserviceID;
-	private Long issuedCode; 
+	private LimitedString issuedCode = new LimitedString(30); 
 	private LimitedString clientName = new LimitedString(100); 
 	private Date timestamp;
 	private LimitedString phoneNumber = new LimitedString(15);
@@ -131,12 +133,12 @@ public class Appointment implements Serializable {
 		}
 	}
 
-	public long getIssuedCode() {
-		return issuedCode.longValue();
+	public String getIssuedCode() {
+		return issuedCode.getString();
 	}
 
-	public void setIssuedCode(long issuedCode) {
-		this.issuedCode = new Long(issuedCode);
+	public void setIssuedCode(String issuedCode) {
+		this.issuedCode.setString(issuedCode);
 	}
 
 	public String getClientName() {
@@ -170,6 +172,18 @@ public class Appointment implements Serializable {
 				       addSort("__key__"));
 	}
 	
+	private static PreparedQuery getPreparedQueryForDay(Key autoserviceID, Date day) {
+		Date dayStart = new Date(day.getTime());
+		Date dayEnd = new Date(day.getTime() + 24*60*60*1000); // + 1 day
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Appointment.class.getSimpleName()).
+					   setAncestor(autoserviceID).
+				       addSort("timestamp").
+				       setFilter(CompositeFilterOperator.and(
+				    		   new Query.FilterPredicate("timestamp", FilterOperator.GREATER_THAN_OR_EQUAL, dayStart),
+				    		   new Query.FilterPredicate("timestamp", FilterOperator.LESS_THAN_OR_EQUAL, dayEnd))));
+	}
+	
 	public static List<Appointment> queryGetAll(int offset, int count, Key autoserviceID) {
 		List<Entity> oldList = getPreparedQueryAll(autoserviceID).
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
@@ -181,16 +195,27 @@ public class Appointment implements Serializable {
 		return getPreparedQueryAll(autoserviceID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
+	public static List<Appointment> queryGetForDay(int offset, int count, Key autoserviceID, Date day) {
+		List<Entity> oldList = getPreparedQueryForDay(autoserviceID, day).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetForDay(Key autoserviceID, Date day) {
+		return getPreparedQueryForDay(autoserviceID, day).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
 }
 
 /*
 CREATE TABLE Appointment ( 
 	Appointment_ID BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 0, INCREMENT BY 1),
 	Autoservice_ID BIGINT NOT NULL,
-	Issued_Code INTEGER NOT NULL,
+	Issued_Code VARCHAR(30) NOT NULL,
 	Client_Name VARCHAR(100) NOT NULL,
 	Appointment_Timestamp TIMESTAMP NOT NULL,
-	Phone_Number VARCHAR(15)
+	Phone_Number VARCHAR(15) NOT NULL
 );
 
 ALTER TABLE Appointment ADD CONSTRAINT PK_Appointment 

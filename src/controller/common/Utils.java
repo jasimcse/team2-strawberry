@@ -23,13 +23,14 @@ import com.google.appengine.api.utils.SystemProperty;
  */
 public class Utils {
 	
-	// for generating random passwords ------------------------------------------------------------------------
+	// for generating random strings --------------------------------------------------------------------------
 	static final String smallCaseToPickFrom = "abcdefghjkmnpqrstuvwxyz";           // without 'i', 'l' and 'o'
-	static final String upperCaseToPickFrom = "ABCDEFGHIJKLMNPQRSTUVWXYZ";         // without 'O'
+	static final String upperCaseToPickFrom = "ABCDEFGHJKLMNPQRSTUVWXYZ";          // without 'I' and 'O'
 	static final String numbersToPickFrom   = "123456789";                         // without '0' and '1'
 	static final String symbolsToPickFrom   = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{}~"; // without '|'
 	
-	static final String charsToPickFrom = smallCaseToPickFrom + upperCaseToPickFrom + numbersToPickFrom + symbolsToPickFrom;
+	static final String charsToPickFromPassword = smallCaseToPickFrom + upperCaseToPickFrom + numbersToPickFrom + symbolsToPickFrom;
+	static final String charsToPickFromCode = upperCaseToPickFrom + numbersToPickFrom;
 	// --------------------------------------------------------------------------------------------------------
 	
 	//NOTE: ако не се синхронизира ще има проблеми, но за сега става
@@ -44,16 +45,18 @@ public class Utils {
 	 * @return
 	 */
 	public static String generateRandomPassword(int length) {
-		StringBuilder sb = new StringBuilder(length);
-		int i;
-
-		
-		for (i=0; i<length; i++) {
-			int curr = rand.nextInt(charsToPickFrom.length());
-			sb.append(charsToPickFrom.charAt(curr));
-		}
-		
-		return sb.toString();
+		return generateRandomString(length, charsToPickFromPassword);
+	}
+	
+	
+	/**
+	 * генерира произволен код с определена дължина 
+	 * 
+	 * @param length - дължина на генерирания код
+	 * @return
+	 */
+	public static String generateRandomCode(int length) {
+		return generateRandomString(length, charsToPickFromCode);
 	}
 	
 	
@@ -80,5 +83,26 @@ public class Utils {
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Sending e-mail with password to " + mail + " failed!", e);
 		}
+	}
+	
+	
+	/**
+	 * генерира произволен низ от символи с определена дължина 
+	 * 
+	 * @param length - дължина на генерирания низ от символи
+	 * @param charsToPiskFrom - низ от символи от които може да се избира
+	 * @return
+	 */
+	private static String generateRandomString(int length, String charsToPickFrom) {
+		StringBuilder sb = new StringBuilder(length);
+		int i;
+
+		
+		for (i=0; i<length; i++) {
+			int curr = rand.nextInt(charsToPickFrom.length());
+			sb.append(charsToPickFrom.charAt(curr));
+		}
+		
+		return sb.toString();
 	}
 }
