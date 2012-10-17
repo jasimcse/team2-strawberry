@@ -30,7 +30,7 @@ public class DiagnosisService implements Serializable {
 	private static final String PARENT_FIELD = "diagnosisID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "diagnosis", "service"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));

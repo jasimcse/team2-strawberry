@@ -15,6 +15,9 @@ import javax.faces.bean.ManagedBean;
 @ApplicationScoped
 public class UsersMenuController implements Serializable {
 	
+	private static final MenuEntry ClientsSeparator = new MenuEntry("----- Клиенти -----", "");
+	private static final MenuEntry ZapazvaneNa4as = new MenuEntry("Запазване на час", "/clients/ZapazvaneNa4as.jsf");
+	private static final MenuEntry UsersSeparator = new MenuEntry("----- Служители -----", "");
 	private static final MenuEntry DobavqneNaSlujitel = new MenuEntry("Добавяне на служител", "/admin/DobavqneNaSlujitel.jsf");
 	private static final MenuEntry AktualiziraneNaSlujitel = new MenuEntry("Актуализиране на служител", "/admin/AktualiziraneNaSlujitel.jsf");
 	private static final MenuEntry DobavqneNaAvtoserviz = new MenuEntry("Добавяне на автосервиз", "/admin/DobavqneNaAvtoserviz.jsf");
@@ -34,6 +37,7 @@ public class UsersMenuController implements Serializable {
 	private static final MenuEntry DobavqneNaAvtomobil = new MenuEntry("Добавяне на автомобил", "/users/DobavqneNaAvtomobil.jsf");
 	private static final MenuEntry AktualiziraneNaAvtomobil = new MenuEntry("Актуализиране на автомобил", "/users/AktualiziraneNaAvtomobil.jsf");
 	private static final MenuEntry DobavqneNaDiagnostika = new MenuEntry("Добавяне на диагностика", "/users/DobavqneNaDiagnostika.jsf");
+	private static final MenuEntry AktualiziraneNaDiagnostika = new MenuEntry("Актуализиране на диагностика", "/users/AktualiziraneNaDiagnostika.jsf");
 	private static final MenuEntry WebServicesSeparator = new MenuEntry("------- Уеб услуги -------", "");
 	private static final MenuEntry ElectronicShopService = new MenuEntry("Уеб услуга \"Електронен магазин\"", "/wsdl/ElectronicShopService.wsdl");
 	private static final MenuEntry InsurerService = new MenuEntry("Уеб услуга \"Застрахователи\"", "/wsdl/InsurerService.wsdl");
@@ -54,6 +58,9 @@ public class UsersMenuController implements Serializable {
 	private static final List<MenuEntry> ALL_MENU_ENTRIES =
 			Collections.unmodifiableList(new ArrayList<MenuEntry>(Arrays.asList(
 			    new MenuEntry[] {
+			    		ClientsSeparator,
+			    		ZapazvaneNa4as,
+			    		UsersSeparator,
 			    		DobavqneNaSlujitel,
 			    		AktualiziraneNaSlujitel,
 			    		DobavqneNaAvtoserviz,
@@ -73,6 +80,7 @@ public class UsersMenuController implements Serializable {
 			    		DobavqneNaAvtomobil,
 			    		AktualiziraneNaAvtomobil,
 			    		DobavqneNaDiagnostika,
+			    		AktualiziraneNaDiagnostika,
 			    		WebServicesSeparator,
 			    		ElectronicShopService,
 			    		InsurerService,
