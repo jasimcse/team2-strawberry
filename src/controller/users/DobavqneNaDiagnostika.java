@@ -3,9 +3,7 @@ package controller.users;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
@@ -174,7 +172,7 @@ public class DobavqneNaDiagnostika  implements Serializable {
 		diagnostika.setEmployeeID(currEmployee.getEmployeeID());
 		diagnostika.setAutoserviceID(currEmployee.getAutoserviceID());
 		diagnostika.writeToDB();
-	
+	 
 		// TODO: транзакция
 		for (DiagnosisService dSer : spisukUslugi) {
 			dSer.setDiagnosisID(diagnostika.getID());
