@@ -25,7 +25,6 @@ import model.WarrantyConditions;
 @SuppressWarnings("serial")
 @ManagedBean(name="aktualiziraneNaAvtomobil")
 @ViewScoped
-
 public class AktualiziraneNaAvtomobil implements Serializable {
 
 	private Vehicle avtomobil = new Vehicle();

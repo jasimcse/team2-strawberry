@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="pageContent">
+	    <h:form>
+		
+		<h:outputLabel value="Име на клиента">
+	    	<h:inputText id="name" value="#{zapazvaneNa4as.clientName}" maxlength="100" />
+	    	<h:message for="name" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Телефонен номер за обратна връзка">
+	    	<h:inputText id="phone" value="#{zapazvaneNa4as.phoneNumber}" maxlength="15" />
+	    	<h:message for="phone" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Автосервиз*">
+			<h:selectOneMenu value="#{zapazvaneNa4as.autoserviceID}">
+				<f:selectItems value="#{zapazvaneNa4as.autoservices}" var="currentAutoservice" 
+    				itemLabel="#{currentAutoservice.name}" itemValue="#{currentAutoservice.ID}" />
+			</h:selectOneMenu>
+		</h:outputLabel>
+		<br />
+		
+		<h:commandButton action="#{zapazvaneNa4as.chooseAutoservice()}" value="Провери за свободни часове" />
+		<br />
+		
+		<h:panelGroup>
+			<h:commandLink action="#{zapazvaneNa4as.changeMonth(-1)}"
+				disabled="#{!zapazvaneNa4as.prevMonthAllowed}"
+				value="Предишен месец" />
+			<h:outputText value=" " />
+			
+			<ui:repeat value="#{zapazvaneNa4as.linkListPrev}" var="currLink">
+				<h:commandLink action="#{zapazvaneNa4as.changeDay(currLink.param)}"
+					disabled="#{currLink.disabled}"
+					value="#{currLink.text}" />
+				<h:outputText value=" " />
+			</ui:repeat>
+			
+			<ui:repeat value="#{zapazvaneNa4as.linkListNext}" var="currLink">
+				<h:commandLink action="#{zapazvaneNa4as.changeDay(currLink.param)}"
+					disabled="#{currLink.disabled}"
+					value="#{currLink.text}" />
+				<h:outputText value=" " />
+			</ui:repeat>
+			
+			<h:commandLink action="#{zapazvaneNa4as.changeMonth(1)}"
+				value="Следващ месец" />
+			<h:outputText value=" " />
+			
+			<br />
+			
+			<h:outputText value="#{zapazvaneNa4as.date}">
+				<f:convertDateTime pattern="dd.MM.yyyy" />
+			</h:outputText>
+			
+			<br />
+			
+			<h:outputLabel value="Свободни часове*">
+				<h:selectOneRadio value="#{zapazvaneNa4as.date}" layout="pageDirection"
+					border="1" id="hours" converter="javax.faces.DateTime"
+					required="#{not empty param[zapazvaneNa4as.reserveButton.clientId]}" requiredMessage="задължително поле!">
+					<f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
+					
+					<f:selectItems value="#{zapazvaneNa4as.spisukZapazeni4asove}" var="currZapazen4as"
+						itemLabel="#{currZapazen4as.text}"
+						itemValue="#{currZapazen4as.time}" 
+						itemDisabled="#{currZapazen4as.disabled}" />
+					<br />
+				</h:selectOneRadio>
+				<h:message for="hours" />
+			</h:outputLabel>
+		</h:panelGroup>
+		<br />
+		
+		<h:commandButton action="#{zapazvaneNa4as.writeIt()}" value="Резервирай"
+			binding="#{zapazvaneNa4as.reserveButton}" />
+	    
+	    <h:outputText value="#{zapazvaneNa4as.errorMessage}"/>
+	    
+	    </h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>
