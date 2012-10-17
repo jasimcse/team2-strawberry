@@ -3,7 +3,9 @@ package controller.users;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
@@ -36,13 +38,14 @@ public class DobavqneNaDiagnostika  implements Serializable {
 	private Diagnosis diagnostika = new Diagnosis();
 	private String errorMessage;
 
-	private List <DiagnosisService> spisukUslugi;
-	private List <DiagnosisPart> spisukRezervni4asti;
+	private List <DiagnosisService> spisukUslugi = new ArrayList<DiagnosisService>();
+	//private Map <Integer, DiagnosisService> spisukUslugi2 = new HashMap<Integer, DiagnosisService>();
+	private List <DiagnosisPart> spisukRezervni4asti = new ArrayList<DiagnosisPart>();
 	
 	@SuppressWarnings("unchecked")
 	public DobavqneNaDiagnostika() {
 		Stack<InterPageDataRequest> dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
-		
+	
 		if (dataRequestStack != null) {
 			InterPageDataRequest dataRequest = dataRequestStack.peek();
 			if (FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath().equals(dataRequest.returnPage)) 
@@ -60,11 +63,11 @@ public class DobavqneNaDiagnostika  implements Serializable {
 					{
 						DiagnosisService diagService = new DiagnosisService();
 						diagService.setService((Service)dataRequest.requestedObject);
-						this.spisukUslugi.add(diagService);
+
+						this.spisukUslugi.add( diagService);
 					}
 					else
-						// TODO: 4akame Venci!
-						if(dataRequest.dataPage.equals("/users/AktualiziraneNa.jsf"))
+						if(dataRequest.dataPage.equals("/users/PregledNaNali4niteRezervni4asti.jsf"))
 						{
 								DiagnosisPart diagPart = new DiagnosisPart();
 								diagPart.setSparePart((SparePart)dataRequest.requestedObject);
@@ -233,7 +236,11 @@ public class DobavqneNaDiagnostika  implements Serializable {
 	
 	public void deleteUsluga(DiagnosisService diagService)
 	{
-		spisukUslugi.remove(diagService);
+		errorMessage = "Trala - la";
+
+		if(spisukUslugi.remove(diagService))
+			errorMessage = "Изтрито е!";			
+
 	}
 	
 	public String chooseSparePart()
@@ -243,8 +250,7 @@ public class DobavqneNaDiagnostika  implements Serializable {
 			
 		dataRequest.requestObject = this;
 		dataRequest.returnPage = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
-		// TODO: Venci 4akame!
-		//dataRequest.dataPage = "/users/AktualiziraneNa.jsf";
+		dataRequest.dataPage = "/users/PregledNaNali4niteRezervni4asti.jsf";
 		dataRequest.requestedObject = null;
 			
 		dataRequestStack.push(dataRequest);
