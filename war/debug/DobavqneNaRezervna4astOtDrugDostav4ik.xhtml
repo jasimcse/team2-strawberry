@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="pageContent">
+		<br />
+		<h:outputText value="Тази страница е само за тестване. По принцип данните трябва да идват от доставчиците." 
+			style="color: red; font-weight: bold;"/>
+		<br />
+		<h:outputText value="Напрактика от тук могат и да се актуализират данните, ако се подаде ключ който вече съществува." 
+			style="color: red; font-weight: bold;"/>
+		<br />
+		<br />
+	    <h:form>
+	    
+	    	<h:outputLabel value="Наименование на доставчик*">
+				<h:selectOneMenu value="#{dobavqneNaRezervna4astOtDrugDostav4ik.supplierID}">
+					<f:selectItems value="#{dobavqneNaRezervna4astOtDrugDostav4ik.suppliers}" var="currentSupplier" 
+	    				itemLabel="#{currentSupplier.name}" itemValue="#{currentSupplier.ID}" />
+				</h:selectOneMenu>
+			</h:outputLabel>
+			<br />
+			
+			<h:outputLabel value="Ключ*">
+				<h:inputText id="ID"
+					value="#{dobavqneNaRezervna4astOtDrugDostav4ik.foreignID}" maxlength="50"
+					required="true" requiredMessage="задължително поле!" />
+				<h:message for="ID" />
+			</h:outputLabel>
+			<br />
+			
+			<h:outputLabel value="Наименование на частта*">
+				<h:selectOneMenu value="#{dobavqneNaRezervna4astOtDrugDostav4ik.sparePartID}">
+					<f:selectItems value="#{dobavqneNaRezervna4astOtDrugDostav4ik.spareParts}" var="currentSparePart" 
+	    				itemLabel="#{currentSparePart.name}" itemValue="#{currentSparePart.ID}" />
+				</h:selectOneMenu>
+			</h:outputLabel>
+			<br />
+			
+			<h:outputLabel value="Доставна цена*">
+				<h:inputText id="deliveryPrice"
+					value="#{dobavqneNaRezervna4astOtDrugDostav4ik.deliveryPrice}" 
+					required="true" requiredMessage="задължително поле!">
+					<f:validateDoubleRange minimum="0" maximum="100000" />
+				</h:inputText>
+				<h:message for="deliveryPrice" />
+			</h:outputLabel>
+			<br />
+
+			<h:commandButton value="Добави"
+				action="#{dobavqneNaRezervna4astOtDrugDostav4ik.writeIt()}" /> &lt;--- добавя се чрез WSDL и SOAP затова може да се забави
+	    	<br />
+			<h:outputText value="#{dobavqneNaRezervna4astOtDrugDostav4ik.errorMessage}" />
+
+		</h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>

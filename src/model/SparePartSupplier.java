@@ -159,6 +159,9 @@ private static final String PARENT_FIELD = "supplierID";
 	}
 	
 	public double getDeliveryPrice() {
+		if (deliveryPrice == null) {
+			return 0;
+		}
 		return deliveryPrice.doubleValue();
 	}
 
@@ -218,7 +221,7 @@ CREATE TABLE Spare_Part_Supplier (
 	Supplier_ID BIGINT NOT NULL,
 	Spare_Part_ID BIGINT NOT NULL,
 	Delivery_Price FLOAT NOT NULL,
-	Foreign_ID VARCHAR(10) NOT NULL
+	Foreign_ID VARCHAR(50) NOT NULL
 );
 
 ALTER TABLE Spare_Part_Supplier ADD CONSTRAINT PK_Spare_Part_Supplier 
@@ -226,8 +229,7 @@ ALTER TABLE Spare_Part_Supplier ADD CONSTRAINT PK_Spare_Part_Supplier
 
 
 ALTER TABLE Spare_Part_Supplier ADD CONSTRAINT FK_Spare_Part_Supplier_Spare_Part 
-	FOREIGN KEY (Spare_Part_ID) REFERENCES Spare_Part (Spare_Part_ID)
+	FOREIGN KEY (Spare_Part_ID) REFERENCES Spare_Part (Spare_Part_ID);
 
 ALTER TABLE Spare_Part_Supplier ADD CONSTRAINT FK_Spare_Part_Supplier_Supplier 
-	FOREIGN KEY (Supplier_ID) REFERENCES Supplier (Supplier_ID);
-*/
+	FOREIGN KEY (Supplier_ID) REFERENCES Supplier (Supplier_ID)*/
