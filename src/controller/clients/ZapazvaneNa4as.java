@@ -155,7 +155,7 @@ public class ZapazvaneNa4as implements Serializable {
 			
 			tempCal = (Calendar)cal.clone();
 			tempCal.add(Calendar.DAY_OF_MONTH, -i-1);
-			if (now.before(tempCal)) {
+			if (!now.after(tempCal)) {
 				link.setDisabled(false);
 			} else {
 				link.setDisabled(true);
