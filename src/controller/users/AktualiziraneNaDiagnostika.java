@@ -6,23 +6,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 
+
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import com.google.appengine.api.datastore.Key;
 
 import controller.common.ConfigurationProperties;
 import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
-import model.Autoservice;
 
+
+import model.Autoservice;
 import model.Diagnosis;
 import model.DiagnosisPart;
 import model.DiagnosisService;
 import model.Employee;
+import model.SparePartAutoservice;
 import model.Vehicle;
 
 
@@ -31,6 +33,7 @@ import model.Vehicle;
 @ViewScoped
 
 public class AktualiziraneNaDiagnostika  implements Serializable {
+
 
 	@ManagedProperty(value="#{currentEmployee}")
 	private CurrentEmployee currEmployee;
@@ -61,9 +64,12 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 				dataRequest = null;
 			}
 		}
-		readList();
 	}
 	
+	@PostConstruct
+	public void init() {
+		readList();
+	}
 	
 	public void setCurrEmployee(CurrentEmployee currEmployee) {
 		this.currEmployee = currEmployee;
@@ -79,19 +85,23 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 		return diagnostika.getVehicle();
 	}
 
-
-	public Key getVehicleID() {
-		if (diagnostika.getVehicleID() == null) {
-			return null;
-		}
-		return diagnostika.getVehicleID();
-	}
-
-
-	public void setVehicleID(Key vehicleID) {
-		diagnostika.setVehicleID(vehicleID);
-	}
 	
+	public Employee getEmployee() {
+		return diagnostika.getEmployee();
+	}
+
+	public void setEmployee(Employee employee) {
+		diagnostika.setEmployee(employee);
+	}
+
+	public Autoservice getAutoservice() {
+		return diagnostika.getAutoservice();
+	}
+
+	public void setAutoservice(Autoservice autoservice) {
+		diagnostika.setAutoservice(autoservice);
+	}
+
 	public double getPrice() {
 		return diagnostika.getPrice();
 	}
@@ -101,7 +111,16 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 	}
 
 	public String getStatus() {
-		return diagnostika.getStatus();
+		if(diagnostika.getStatus() == null)
+			return null;
+		
+		if(diagnostika.getStatus().equals("1")  )
+			return "неплатена";
+		else
+			if(diagnostika.getStatus().equals("2") )
+				return "платена";
+		
+		return null;
 	}
 
 	public void setStatus(String status) {
@@ -120,30 +139,6 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 		diagnostika.setPaymentNumber(paymentNumber);
 	}
 
-	public void setAutoserviceID(Key autoserviceID) {
-		diagnostika.setAutoserviceID(autoserviceID);
-	}
-
-	public void setEmployeeID(Key employeeID) {
-		diagnostika.setEmployeeID(employeeID);
-	}
-	
-	public Autoservice getAutoservice() {
-		return diagnostika.getAutoservice();
-	}
-
-	public void setAutoservice(Autoservice autoservice) {
-		diagnostika.setAutoservice(autoservice);
-	}
-
-	public Employee getEmployee() {
-		return diagnostika.getEmployee();
-	}
-
-	public void setEmployee(Employee employee) {
-		diagnostika.setEmployee(employee);
-	}
-
 	public Date getDate() {
 		return diagnostika.getDate();
 	}
@@ -155,6 +150,17 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 
 	public String getErrorMessage() {
 		return errorMessage;
+	}
+	
+	public boolean isPaied()
+	{
+		if(diagnostika == null)
+			return true;
+		
+		if( diagnostika.getStatus().equals("2") )
+			return true;
+		
+		return false;
 	}
 	
 	public List< String > getDiagStatus() 
@@ -195,7 +201,7 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 		spisukDiagnostiki = Diagnosis.queryGetAll(page * ConfigurationProperties.getPageSize(), 
 				ConfigurationProperties.getPageSize(), currEmployee.getAutoserviceID());
 		diagnostika = new Diagnosis();
-		rowsCount = Vehicle.countGetAll();
+		rowsCount = SparePartAutoservice.countGetAll(currEmployee.getAutoserviceID());
 		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
 	}
 
@@ -225,6 +231,11 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 	
 	public void selectRow(Diagnosis diag) {
 		diagnostika = diag;
+		
+		spisukUslugi = DiagnosisService.queryGetAll(0, 
+				DiagnosisService.countGetAll(diagnostika.getID()), diagnostika.getID());
+		spisukRezervni4asti = DiagnosisPart.queryGetAll(0, 
+				DiagnosisPart.countGetAll(diagnostika.getID()), diagnostika.getID());;
 	}
 	
 	public void deselectRow() {
@@ -241,8 +252,6 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 		return "DobavqneNaDiagnostika.jsf?faces-redirect=true";
 	}
 	
-	
-
 	public boolean isChoosingAllowed() {
 		return (dataRequest != null);
 	}

@@ -46,7 +46,7 @@
 
 				<h:column>
 					<f:facet name="header">Номер на рама</f:facet>
-					<h:outputText value="#{curr.VIN}"  />
+					<h:outputText value="#{curr.vehicle.VIN}"  />
 				</h:column>
 				
 				<h:column>
@@ -64,7 +64,7 @@
 					<h:commandLink action="#{aktualiziraneNaDiagnostika.selectRow(curr)}" value="Промени" />
 				</h:column>
 				
-				<h:column rendered="#{aktualiziraneNaDiagnostika.choosingAlowed}">
+				<h:column rendered="#{aktualiziraneNaDiagnostika.choosingAllowed}">
 					<f:facet name="header">Избери</f:facet>
 					<h:commandLink action="#{aktualiziraneNaDiagnostika.chooseDiagnostika(curr)}" value="Избери" />
 				</h:column>
@@ -111,7 +111,6 @@
 
 	  <h:form>
 
-
 	    <h:outputLabel value="Номер на рама*">
 	    	<h:inputText id="vin" value="#{aktualiziraneNaDiagnostika.vehicle.VIN}" maxlength="17" 
 	    		readonly="true"/>
@@ -145,14 +144,16 @@
 	     <br />
 	    
 	    <h:outputLabel value="Статус на диагностиката*">
-	    	<h:selectOneMenu value="#{aktualiziraneNaDiagnostika.status}">
-				<f:selectItems value="#{aktualiziraneNaDiagnostika.diagStatus}"  />
+	    	<h:selectOneMenu value="#{aktualiziraneNaDiagnostika.status}" 
+	    	disabled="#{!aktualiziraneNaDiagnostika.rowSelected || aktualiziraneNaDiagnostika.isPaied()}">
+				<f:selectItems value="#{aktualiziraneNaDiagnostika.diagStatus}" />
 			</h:selectOneMenu>
 	    </h:outputLabel>
 	    <br />
 	   
 	    <h:outputLabel value="Номер на платежно нареждане">
-	    	<h:inputText id="paynumber" value="#{aktualiziraneNaDiagnostika.paymentNumber}" maxlength="50" />
+	    	<h:inputText id="paynumber" value="#{aktualiziraneNaDiagnostika.paymentNumber}" maxlength="50" 
+	    	readonly="#{!aktualiziraneNaDiagnostika.rowSelected || aktualiziraneNaDiagnostika.isPaied()}"/>
 	    </h:outputLabel> 
 	    <br />
 	    
@@ -162,7 +163,6 @@
 	    <br />
 	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове --> 
 		<div style="overflow-x: auto;"> <!-- scroll bar -->
-		<h:form>
 			<h:dataTable
 				value="#{aktualiziraneNaDiagnostika.spisukUslugi}"
 			    var="curr"
@@ -174,19 +174,14 @@
 				</h:column>
 				
 			</h:dataTable>
-		</h:form>
 		</div>
-		<br />
-		<br />
-		
+		<br />		
 		
 		<h:outputLabel value="Резервни части, които трябва да бъдат сменени според извършената диагностика:"> 
 	    </h:outputLabel>
 	    <br /> 
 	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове -->
 		<div style="overflow-x: auto;"> <!-- scroll bar -->
-		<h:form>
-			
 			<h:dataTable
 				value="#{aktualiziraneNaDiagnostika.spisukRezervni4asti}"
 			    var="curr"
@@ -207,14 +202,11 @@
 					#{curr.quantity}
 				</h:column>
 
-		
 			</h:dataTable>
-		</h:form>
 		</div>
 		<br />
-		<br />
 	
-			<h:commandButton value="Запази" action="#{aktualiziraneNaDiagnostika.saveDiagnostika()}"
+		<h:commandButton value="Запази" action="#{aktualiziraneNaDiagnostika.saveDiagnostika()}"
 				disabled="#{!aktualiziraneNaDiagnostika.rowSelected}"/>
 				
 			<h:commandButton action="#{aktualiziraneNaDiagnostika.deselectRow()}" value="Отмени"
