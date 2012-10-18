@@ -1,10 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <!-- Indices written at Thu, 18 Oct 2012 14:14:26 UTC -->
 
-<datastore-indexes>
+<datastore-indexes autoGenerate="false">
 
     <!-- Used 45 times in query history -->
     <datastore-index kind="Appointment" ancestor="true" source="auto">
         <property name="timestamp" direction="asc"/>
     </datastore-index>
+    
 
 </datastore-indexes>
