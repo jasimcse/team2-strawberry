@@ -20,11 +20,11 @@
   </static-files>
   
   <resource-files>
-        <include path="/**" />
-        <exclude path="/resources/**" />
-        <exclude path="/META-INF/**" />
-        <exclude path="/WEB-INF/appengine-generated/**" />
-    </resource-files>
+      <include path="/**" />
+      <exclude path="/resources/**" />
+      <exclude path="/META-INF/**" />
+      <exclude path="/WEB-INF/appengine-generated/**" />
+  </resource-files>
   
   <!--
     HTTP Sessions are disabled by default. To enable HTTP sessions specify:
