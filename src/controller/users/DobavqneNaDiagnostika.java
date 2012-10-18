@@ -27,7 +27,6 @@ import model.Vehicle;
 @SuppressWarnings("serial")
 @ManagedBean(name="dobavqneNaDiagnostika")
 @ViewScoped
-
 public class DobavqneNaDiagnostika  implements Serializable {
 
 	@ManagedProperty(value="#{currentEmployee}")

@@ -17,6 +17,7 @@ public class UsersMenuController implements Serializable {
 	
 	private static final MenuEntry ClientsSeparator = new MenuEntry("----- Клиенти -----", "");
 	private static final MenuEntry ZapazvaneNa4as = new MenuEntry("Запазване на час", "/clients/ZapazvaneNa4as.jsf");
+	
 	private static final MenuEntry UsersSeparator = new MenuEntry("----- Служители -----", "");
 	private static final MenuEntry DobavqneNaSlujitel = new MenuEntry("Добавяне на служител", "/admin/DobavqneNaSlujitel.jsf");
 	private static final MenuEntry AktualiziraneNaSlujitel = new MenuEntry("Актуализиране на служител", "/admin/AktualiziraneNaSlujitel.jsf");
@@ -38,11 +39,14 @@ public class UsersMenuController implements Serializable {
 	private static final MenuEntry AktualiziraneNaAvtomobil = new MenuEntry("Актуализиране на автомобил", "/users/AktualiziraneNaAvtomobil.jsf");
 	private static final MenuEntry DobavqneNaDiagnostika = new MenuEntry("Добавяне на диагностика", "/users/DobavqneNaDiagnostika.jsf");
 	private static final MenuEntry AktualiziraneNaDiagnostika = new MenuEntry("Актуализиране на диагностика", "/users/AktualiziraneNaDiagnostika.jsf");
-	private static final MenuEntry pregledNaZapazeni4asove = new MenuEntry("Преглед на запазени часове", "/users/pregledNaZapazeni4asove.jsf");
+	private static final MenuEntry PregledNaZapazeni4asove = new MenuEntry("Преглед на запазени часове", "/users/pregledNaZapazeni4asove.jsf");
+	private static final MenuEntry DobavqneNaKlientskaPoru4ka = new MenuEntry("Добавяне на клиентска поръчка", "/users/DobavqneNaKlientskaPoru4ka.jsf");
+	
 	private static final MenuEntry WebServicesSeparator = new MenuEntry("------- Уеб услуги -------", "");
 	private static final MenuEntry ElectronicShopService = new MenuEntry("Уеб услуга \"Електронен магазин\"", "/wsdl/ElectronicShopService.wsdl");
 	private static final MenuEntry InsurerService = new MenuEntry("Уеб услуга \"Застрахователи\"", "/wsdl/InsurerService.wsdl");
 	private static final MenuEntry SupplierService = new MenuEntry("Уеб услуга \"Доставчици на резервни части и консумативи\"", "/wsdl/SupplierService.wsdl");
+	
 	private static final MenuEntry ForTestingSeparator = new MenuEntry("--- За тестване на WSDL ---", "");
 	private static final MenuEntry DobavqneNaGarancionniUsloviq = new MenuEntry("Добавяне на гаранционни условия", "/debug/DobavqneNaGarancionniUsloviq.jsf");
 	private static final MenuEntry DobavqneNaModelAvtomobil = new MenuEntry("Добавяне на модел автомобил", "/debug/DobavqneNaModelAvtomobil.jsf");
@@ -61,6 +65,7 @@ public class UsersMenuController implements Serializable {
 			    new MenuEntry[] {
 			    		ClientsSeparator,
 			    		ZapazvaneNa4as,
+			    		
 			    		UsersSeparator,
 			    		DobavqneNaSlujitel,
 			    		AktualiziraneNaSlujitel,
@@ -82,11 +87,14 @@ public class UsersMenuController implements Serializable {
 			    		AktualiziraneNaAvtomobil,
 			    		DobavqneNaDiagnostika,
 			    		AktualiziraneNaDiagnostika,
-			    		pregledNaZapazeni4asove,
+			    		PregledNaZapazeni4asove,
+			    		DobavqneNaKlientskaPoru4ka,
+			    		
 			    		WebServicesSeparator,
 			    		ElectronicShopService,
 			    		InsurerService,
 			    		SupplierService,
+			    		
 			    		ForTestingSeparator,
 			    		DobavqneNaGarancionniUsloviq,
 			    		DobavqneNaModelAvtomobil,
