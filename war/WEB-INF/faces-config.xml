@@ -13,5 +13,8 @@
 		<converter-for-class>com.google.appengine.api.datastore.Key</converter-for-class>
 		<converter-class>controller.common.ConvertorKeyString</converter-class>
 	</converter>
+	<lifecycle>
+		<phase-listener>controller.common.ForceSessionSerializationPhaseListener</phase-listener>
+	</lifecycle>
       
 </faces-config>

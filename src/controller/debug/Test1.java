@@ -4,11 +4,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.Provider;
 import java.security.Security;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
@@ -165,6 +171,20 @@ public class Test1 {
 		append(Integer.toHexString(17));
 		
 		return sb.toString();
+	}
+	
+	public List<String> getAllSessionData() {
+		List<String> list = new ArrayList<String>();
+		
+		Map<String, Object> map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+		
+		Iterator<Entry<String, Object>> it = map.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Entry<String, Object> pairs = it.next();
+	        list.add(pairs.getKey() + " = " + pairs.getValue());
+	    }
+		
+		return list;
 	}
 
 }
