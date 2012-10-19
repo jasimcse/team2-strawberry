@@ -36,7 +36,6 @@ public class DobavqneNaDiagnostika  implements Serializable {
 	private String errorMessage;
 
 	private List <DiagnosisService> spisukUslugi = new ArrayList<DiagnosisService>();
-	//private Map <Integer, DiagnosisService> spisukUslugi2 = new HashMap<Integer, DiagnosisService>();
 	private List <DiagnosisPart> spisukRezervni4asti = new ArrayList<DiagnosisPart>();
 	
 	@SuppressWarnings("unchecked")
@@ -240,11 +239,7 @@ public class DobavqneNaDiagnostika  implements Serializable {
 	
 	public void deleteUsluga(DiagnosisService diagService)
 	{
-		errorMessage = "Trala - la";
-
-		if(spisukUslugi.remove(diagService))
-			errorMessage = "Изтрито е!";			
-
+		spisukUslugi.remove(diagService);
 	}
 	
 	public String chooseSparePart()
