@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
+import java.util.TreeMap;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -12,7 +14,9 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Transaction;
 
 import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
@@ -79,12 +83,6 @@ public class DobavqneNaDiagnostika  implements Serializable {
 		this.currEmployee = currEmployee;
 	}
 
-
-	public void setVehicle(Vehicle vehicle) {
-		diagnostika.setVehicle(vehicle);
-	}
-
-
 	public Vehicle getVehicle() {
 		return diagnostika.getVehicle();
 	}
@@ -115,11 +113,7 @@ public class DobavqneNaDiagnostika  implements Serializable {
 	}
 
 	public void setStatus(String status) {
-		if(status.equals("неплатена") )
-			diagnostika.setStatus("1");
-		else
-			if(status.equals("платена") )
-				diagnostika.setStatus("2");
+		diagnostika.setStatus(status);
 	}
 
 	public String getPaymentNumber() {
@@ -130,23 +124,14 @@ public class DobavqneNaDiagnostika  implements Serializable {
 		diagnostika.setPaymentNumber(paymentNumber);
 	}
 
-	public void setAutoserviceID(Key autoserviceID) {
-		diagnostika.setAutoserviceID(autoserviceID);
-	}
-
-	public void setEmployeeID(Key employeeID) {
-		diagnostika.setEmployeeID(employeeID);
-	}
-
 	public String getErrorMessage() {
 		return errorMessage;
 	}
 	
-	public List< String > getDiagStatus() 
-	{
-		List<String> listStatus =  new ArrayList<String>();
-		listStatus.add("неплатена");
-		listStatus.add("платена");
+	public Map<String, String> getDiagStatus() {
+		Map<String, String> listStatus =  new TreeMap<String, String>();
+		listStatus.put("неплатена", Diagnosis.NOT_PAYED);
+		listStatus.put("платена", Diagnosis.PAYED);
 		return listStatus;
 	}
 
@@ -178,7 +163,8 @@ public class DobavqneNaDiagnostika  implements Serializable {
 		diagnostika.setAutoserviceID(currEmployee.getAutoserviceID());
 		diagnostika.writeToDB();
 	 
-		// TODO: транзакция
+		Transaction tr = DatastoreServiceFactory.getDatastoreService().beginTransaction();
+		
 		for (DiagnosisService dSer : spisukUslugi) {
 			dSer.setDiagnosisID(diagnostika.getID());
 			dSer.writeToDB();
@@ -191,6 +177,8 @@ public class DobavqneNaDiagnostika  implements Serializable {
 			
 		// TODO: проверка дали затрахователя е искал диагностиката 
 		// или автомобила е гаранционен
+		
+		tr.commit();
 		
 		// clean the data
 		diagnostika = new Diagnosis();
