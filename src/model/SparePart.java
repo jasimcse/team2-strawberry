@@ -199,6 +199,14 @@ public class SparePart implements Serializable {
 				       setFilter(new Query.FilterPredicate("foreignID", FilterOperator.EQUAL, foreignID)));
 	}
 	
+	private static PreparedQuery getPreparedQueryBySparePartID(Key sparePartID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(SparePart.class.getSimpleName()).
+					   setAncestor(EntityHelper.getSparePartParent()).
+				       addSort("__key__").
+				       setFilter(new Query.FilterPredicate("sparePartID", FilterOperator.EQUAL, sparePartID)));
+	}
+	
 	public static List<SparePart> queryGetAll(int offset, int count) {
 		List<Entity> oldList = getPreparedQueryAll().
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
@@ -219,6 +227,17 @@ public class SparePart implements Serializable {
 	
 	public static int countGetByForeignID(String foreignID) {
 		return getPreparedQueryByForeignID(foreignID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<SparePart> queryGetBySparePartID(Key sparePartID, int offset, int count) {
+		List<Entity> oldList = getPreparedQueryBySparePartID(sparePartID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetBySparePartID(Key sparePartID) {
+		return getPreparedQueryBySparePartID(sparePartID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

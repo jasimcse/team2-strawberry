@@ -245,6 +245,7 @@ public class ElectronicShop implements ElectronicShopInterface {
 				spa.setQuantityMinimum(0);
 				spa.setQuantityOrdered(0);
 				spa.setQuantityReserved(0);
+				spa.setQuantityRequested(0);
 				spa.setSparePartID(sp.getID());
 				
 				List<Autoservice> al = Autoservice.queryGetAll(0, 1000);

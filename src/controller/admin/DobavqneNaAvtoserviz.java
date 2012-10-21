@@ -112,6 +112,7 @@ public class DobavqneNaAvtoserviz {
 		spa.setQuantityMinimum(0);
 		spa.setQuantityOrdered(0);
 		spa.setQuantityReserved(0);
+		spa.setQuantityRequested(0);
 		spa.setAutoserviceID(serviz.getID());
 		
 		List<SparePart> spl = SparePart.queryGetAll(0, 1000);

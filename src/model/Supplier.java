@@ -17,6 +17,7 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 @SuppressWarnings("serial")
 public class Supplier implements Serializable {
@@ -190,6 +191,14 @@ public class Supplier implements Serializable {
 				       addSort("__key__"));
 	}
 	
+	private static PreparedQuery getPreparedQueryByName(String name) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Supplier.class.getSimpleName()).
+					   setAncestor(EntityHelper.getSupplierParent()).
+				       addSort("__key__").
+				       setFilter(new Query.FilterPredicate("name", FilterOperator.EQUAL, name)));
+	}
+	
 	public static List<Supplier> queryGetAll(int offset, int count) {
 		List<Entity> oldList = getPreparedQueryAll().
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
@@ -199,6 +208,17 @@ public class Supplier implements Serializable {
 	
 	public static int countGetAll() {
 		return getPreparedQueryAll().countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<Supplier> queryGetByName(String name, int offset, int count) {
+		List<Entity> oldList = getPreparedQueryByName(name).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetByName(String name) {
+		return getPreparedQueryByName(name).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

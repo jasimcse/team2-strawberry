@@ -16,6 +16,7 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 @SuppressWarnings("serial")
 public class SparePartAutoservice implements Serializable {
@@ -31,6 +32,8 @@ public class SparePartAutoservice implements Serializable {
 	private Double quantityReserved;
 	private Double quantityOrdered;
 	private Double quantityBad;
+	private Double quantityRequested;
+	private Double belowMinimum; // помощно поле = minimum - availabe + requested - ordered
 	
 	private static final String PARENT_FIELD = "autoserviceID";
 	
@@ -41,6 +44,9 @@ public class SparePartAutoservice implements Serializable {
 			new String[] {}));
 	
 	public void writeToDB() {
+		
+		belowMinimum = quantityMinimum - quantityAvailable + quantityRequested - quantityOrdered;
+		
 		if (thisEntity == null) {
 			thisEntity = makeEntity();
 		} else {
@@ -208,12 +214,46 @@ public class SparePartAutoservice implements Serializable {
 	public void setQuantityOrdered(double quantityOrdered) {
 		this.quantityOrdered = Double.valueOf(quantityOrdered);
 	}
+	
+	public double getQuantityRequested() {
+		if (quantityRequested == null) {
+			return 0;
+		}
+		return quantityRequested.doubleValue();
+	}
+
+	public void setQuantityRequested(double quantityRequested) {
+		this.quantityRequested = Double.valueOf(quantityRequested);
+	}
+	
+	public double getBelowMinimum() {
+		if (belowMinimum == null) {
+			return 0;
+		}
+		return belowMinimum;
+	}
 
 	private static PreparedQuery getPreparedQueryAll(Key autoserviceID) { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(SparePartAutoservice.class.getSimpleName()).
 					   setAncestor(autoserviceID).
 				       addSort("__key__"));
+	}
+	
+	private static PreparedQuery getPreparedQueryBelowMinimum(Key autoserviceID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(SparePartAutoservice.class.getSimpleName()).
+					   setAncestor(autoserviceID).
+				       addSort("belowMinimum").
+				       setFilter(new Query.FilterPredicate("belowMinimum", FilterOperator.GREATER_THAN, Double.valueOf(0))));
+	}
+	
+	private static PreparedQuery getPreparedQueryBySparePartID(Key sparePartID, Key autoserviceID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(SparePartAutoservice.class.getSimpleName()).
+					   setAncestor(autoserviceID).
+				       addSort("__key__").
+				       setFilter(new Query.FilterPredicate("sparePartID", FilterOperator.EQUAL, sparePartID)));
 	}
 	
 	public static List<SparePartAutoservice> queryGetAll(int offset, int count, Key autoserviceID) {
@@ -226,6 +266,28 @@ public class SparePartAutoservice implements Serializable {
 	public static int countGetAll(Key autoserviceID) {
 		return getPreparedQueryAll(autoserviceID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
+
+	public static List<SparePartAutoservice> queryGetBelowMinimum(int offset, int count, Key autoserviceID) {
+		List<Entity> oldList = getPreparedQueryBelowMinimum(autoserviceID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetBelowMinimum(Key autoserviceID) {
+		return getPreparedQueryBelowMinimum(autoserviceID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<SparePartAutoservice> queryGetBySparePartID(Key sparePartID, int offset, int count, Key autoserviceID) {
+		List<Entity> oldList = getPreparedQueryBySparePartID(sparePartID, autoserviceID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetBySparePartID(Key sparePartID, Key autoserviceID) {
+		return getPreparedQueryBySparePartID(sparePartID, autoserviceID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
 	
 }
 
@@ -233,11 +295,12 @@ public class SparePartAutoservice implements Serializable {
 CREATE TABLE Spare_Part_Autoservice ( 
 	Spare_Part_ID BIGINT NOT NULL,
 	Autoservice_ID BIGINT NOT NULL,
-	Quantity FLOAT NOT NULL,
-	Minimum FLOAT NOT NULL,
+	QuantityAvailable FLOAT NOT NULL,
+	QuantityMinimum FLOAT NOT NULL,
 	QuantityReserved FLOAT NOT NULL,
 	QuantityOrdered FLOAT NOT NULL,
-	QuantityBad FLOAT NOT NULL
+	QuantityBad FLOAT NOT NULL,
+	QuantityRequested FLOAT NOT NULL
 );
 
 ALTER TABLE Spare_Part_Autoservice ADD CONSTRAINT PK_Spare_Part_Available 
