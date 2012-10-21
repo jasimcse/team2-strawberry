@@ -22,9 +22,11 @@
 				<br />
 				<h:outputLabel value="Начална дата">
 					<h:inputText value="" maxlength="50" />
+					<!-- TODO - конвертор -->
 				</h:outputLabel>
 				<h:outputLabel value="Крайна дата">
 					<h:inputText value="" maxlength="50" />
+					<!-- TODO - конвертор -->
 				</h:outputLabel>
 				<br />
 		
@@ -51,7 +53,9 @@
 				
 				<h:column>
 					<f:facet name="header">Дата</f:facet>
-					<h:outputText value="#{curr.date}"  />
+					<h:outputText value="#{curr.date}">
+						<f:convertDateTime pattern="dd.MM.yyyy" />
+					</h:outputText>
 				</h:column>
 				
 				<h:column>
@@ -132,8 +136,10 @@
 	    <br />
 	    
 	    <h:outputLabel value="Дата на извършената диагностиката*">
-	    	<h:inputText id="date" value="#{aktualiziraneNaDiagnostika.date}" maxlength="50" 
-	    		 readonly="true"/>
+	    	<h:inputText id="date" value="#{aktualiziraneNaDiagnostika.date}"
+	    		 readonly="true">
+	    		 <f:convertDateTime pattern="dd.MM.yyyy" />
+	    	</h:inputText>
 	    </h:outputLabel>
 	     <br />
 	     

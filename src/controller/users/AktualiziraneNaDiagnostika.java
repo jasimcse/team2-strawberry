@@ -198,6 +198,7 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 	}
 
 	private void readList() {
+		//TODO - всички диагностики ???
 		spisukDiagnostiki = Diagnosis.queryGetAll(page * ConfigurationProperties.getPageSize(), 
 				ConfigurationProperties.getPageSize(), currEmployee.getAutoserviceID());
 		diagnostika = new Diagnosis();

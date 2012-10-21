@@ -12,8 +12,7 @@
 	    <h:form>
 
 	    <h:outputLabel value="Номер на рама*">
-	    	<h:inputText id="vin" value="#{dobavqneNaDiagnostika.vehicle.VIN}" maxlength="17" 
-	    		
+	    	<h:inputText id="vin" value="#{dobavqneNaDiagnostika.vehicle.VIN}"
 	    		readonly="true"/>
 	    	<h:message for="vin" />
 	    </h:outputLabel> 
@@ -22,7 +21,7 @@
 	    
 	    <h:outputLabel value="Цена на диагностиката*">
 	    	<h:inputText id="price" value="#{dobavqneNaDiagnostika.price}" maxlength="10" 
-	    		 />
+	    		required="true" requiredMessage="задължително поле!" />
 	    	<h:message for="price" />
 	    </h:outputLabel>
 	     <br />
