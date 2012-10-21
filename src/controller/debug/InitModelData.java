@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import model.Autoservice;
 import model.Employee;
 import model.EmployeeAutoservice;
+import model.Supplier;
 import model.util.EntityHelper;
 
 
@@ -18,9 +19,6 @@ import model.util.EntityHelper;
 public class InitModelData extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public InitModelData() {
         super();
         
@@ -29,7 +27,9 @@ public class InitModelData extends HttpServlet {
         EntityHelper.initializeDataStore();
         
         addAdministratorAccount();
+        addDefaultSupplier();
     }
+    
     
     private void addAdministratorAccount() {
 
@@ -77,6 +77,24 @@ public class InitModelData extends HttpServlet {
 	    	empa.setPosition("Administrator");
 	    	
 	    	empa.writeToDB();
+    	}
+    }
+    
+    private void addDefaultSupplier() {
+    	
+    	if (Supplier.countGetByName("Официален доставчик") < 1) {
+	    	Supplier sup = new Supplier();
+	    	sup.setName("Официален доставчик");
+	    	sup.setAddressCity("-");
+	    	sup.setAddressLine("-");
+	    	sup.setContactPerson("-");
+	    	sup.setMail("-");
+	    	sup.setPhoneNumber("-");
+	    	sup.setIBANNumber("-");
+	    	sup.setSWIFTCode("-");
+	    	sup.setRegistrationNumber("---------");
+	    	
+	    	sup.writeToDB();
     	}
     }
 

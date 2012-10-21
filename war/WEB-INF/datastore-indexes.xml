@@ -2,7 +2,7 @@
 
 <!-- Indices written at Thu, 18 Oct 2012 14:14:26 UTC -->
 
-<datastore-indexes autoGenerate="false">
+<datastore-indexes autoGenerate="true">
 
     <!-- Used 45 times in query history -->
     <datastore-index kind="Appointment" ancestor="true" source="auto">

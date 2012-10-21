@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="pageContent">
+	    <h:form>
+
+	    <h:outputLabel value="Име доставчик*">
+	    	<h:inputText id="supplierName" value="#{poru4kaNa4asti.supplier.name}"
+	    		readonly="true"/>
+	    	<h:message for="supplierName" />
+	    </h:outputLabel> 
+	    <h:commandButton value="Избери" action="#{poru4kaNa4asti.chooseSupplier()}" /> 
+	    <br />
+	    
+	    
+	    
+	    
+		<h:outputText value="Резервни части които са нужни за клиентски поръчки, или за да се поддържа минималното количество във склада" />
+		<br />
+	    
+	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове --> 
+		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<!-- allowedRow, disallowedRow за резервни части които се поддържат от доставчика и а такива които не се поддържат -->
+		<h:dataTable
+			value="#{poru4kaNa4asti.spisuk4astiNujni}"
+			var="curr"
+			rowClasses="#{poru4kaNa4asti.spisuk4astiNujniRowStyleClasses}">
+			
+			<h:column>
+				<f:facet name="header">Група</f:facet>
+				#{curr.sparePart.sparePartGroup.description}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Наименование</f:facet>
+				#{curr.sparePart.name}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Мерна единица</f:facet>
+				#{curr.sparePart.measuringUnit}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Нужно количество</f:facet>
+				#{curr.quantityNeeded}
+			</h:column>
+				
+			<h:column>
+				<f:facet name="header">Добави</f:facet>
+				<h:commandLink action="#{poru4kaNa4asti.addSparePartForOrder(curr)}" value="Добави" 
+					disabled="#{!curr.availableAtCurrentSupplier}" />
+			</h:column>
+			
+		</h:dataTable>
+		</div>
+		<br />
+
+		
+		<h:outputText value="Резервни части, които ще бъдат поръчани" />
+		<h:commandButton value="Добави" action="#{poru4kaNa4asti.chooseSparePart()}" />
+	    <br /> 
+	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове -->
+		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		
+		<!-- selectedRow, notSelectedRow за избран , неизбран ред -->
+		<h:dataTable
+			value="#{poru4kaNa4asti.spisuk4astiZaPoru4ka}"
+			var="curr"
+			rowClasses="#{poru4kaNa4asti.spisukZaPoru4kaRowStyleClasses}">
+			
+			<h:column>
+				<f:facet name="header">Група</f:facet>
+				#{curr.warehouseOrderPart.sparePart.sparePartGroup.description}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Наименование</f:facet>
+				#{curr.warehouseOrderPart.sparePart.name}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Мерна единица</f:facet>
+				#{curr.warehouseOrderPart.sparePart.measuringUnit}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Налично</f:facet>
+				#{curr.quantityAvailable}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Необходимо</f:facet>
+				#{curr.quantityNeeded}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Поръчка</f:facet>
+				<h:outputText value="#{curr.warehouseOrderPart.orderedQuantity}" rendered="#{!curr.editing}" />
+				<h:inputText value="#{curr.warehouseOrderPart.orderedQuantity}" rendered="#{curr.editing}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Цена</f:facet>
+				#{curr.supplierPrice}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Общо</f:facet>
+				#{curr.fullPrice}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Промени</f:facet>
+				<h:commandLink action="#{poru4kaNa4asti.toggleEditSparePartForOrder(curr)}" value="Промени" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Премахни</f:facet>
+				<h:commandLink action="#{poru4kaNa4asti.removeSparePartForOrder(curr)}" value="Премахни" />
+			</h:column>
+		
+			</h:dataTable>
+		</div>
+		<br />
+
+		<h:outputText value="Обща цена: #{poru4kaNa4asti.fullPrice}" />
+		<br />
+
+	   	<h:commandButton value="Поръчай" 
+	   		 action="#{poru4kaNa4asti.writeIt()}"/> 
+	    <br />
+	    
+	    <h:outputText value="#{poru4kaNa4asti.errorMessage}"/>
+	    
+	    </h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>

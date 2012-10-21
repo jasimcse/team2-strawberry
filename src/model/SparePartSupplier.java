@@ -192,6 +192,14 @@ private static final String PARENT_FIELD = "supplierID";
 				       setFilter(new Query.FilterPredicate("foreignID", FilterOperator.EQUAL, foreignID)));
 	}
 	
+	private static PreparedQuery getPreparedQueryBySparePartID(Key supplierID, Key sparePartID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(SparePartSupplier.class.getSimpleName()).
+					   setAncestor(supplierID).
+				       addSort("__key__").
+				       setFilter(new Query.FilterPredicate("sparePartID", FilterOperator.EQUAL, sparePartID)));
+	}
+	
 	public static List<SparePartSupplier> queryGetAll(int offset, int count, Key supplierID) {
 		List<Entity> oldList = getPreparedQueryAll(supplierID).
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
@@ -212,6 +220,17 @@ private static final String PARENT_FIELD = "supplierID";
 	
 	public static int countGetByForeignID(String foreignID, Key supplierID) {
 		return getPreparedQueryByForeignID(supplierID, foreignID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<SparePartSupplier> queryGetBySparePartID(Key sparePartID, int offset, int count, Key supplierID) {
+		List<Entity> oldList = getPreparedQueryBySparePartID(supplierID, sparePartID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetBySparePartID(Key sparePartID, Key supplierID) {
+		return getPreparedQueryBySparePartID(supplierID, sparePartID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

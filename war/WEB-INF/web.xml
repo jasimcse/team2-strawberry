@@ -87,4 +87,12 @@
     <filter-name>UTF8 Filter</filter-name>
     <url-pattern>*</url-pattern>
   </filter-mapping>
+  <filter>
+    <filter-name>JSF Flash Cookie Filter</filter-name>
+    <filter-class>controller.common.JSFFlashCookieFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>JSF Flash Cookie Filter</filter-name>
+    <url-pattern>*</url-pattern>
+  </filter-mapping>
 </web-app>
