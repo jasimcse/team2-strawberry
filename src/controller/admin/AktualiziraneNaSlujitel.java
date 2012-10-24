@@ -31,6 +31,9 @@ public class AktualiziraneNaSlujitel implements Serializable {
 	
 	private String errorMessage;
 	
+	private String searchName;
+	private String searchFamily;
+	
 	@SuppressWarnings("unchecked")
 	public AktualiziraneNaSlujitel() {
 		
@@ -134,7 +137,8 @@ public class AktualiziraneNaSlujitel implements Serializable {
 		spisukSlujiteli = Employee.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
 		slujitel = new Employee();
 		rowsCount = Employee.countGetAll();
-		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
 	}
 	
 	public String getRowStyleClasses() {
@@ -196,5 +200,48 @@ public class AktualiziraneNaSlujitel implements Serializable {
 		// отиваме на страницата която е направила заявката
 		return dataRequest.returnPage + "?faces-redirect=true";
 	}
+
+	public String getSearchName() {
+		return searchName;
+	}
+
+	public void setSearchName(String searchName) {
+		if ("".equals(searchName)) {
+			this.searchName = null;
+			return;
+		}
+		this.searchName = searchName;
+	}
+
+	public String getSearchFamily() {
+		return searchFamily;
+	}
+
+	public void setSearchFamily(String searchFamily) {
+		if ("".equals(searchFamily)) {
+			this.searchFamily = null;
+			return;
+		}
+		this.searchFamily = searchFamily;
+	}
 	
+	public void searchIt() {
+		if ((searchName == null) && (searchFamily == null)) {
+			readList();
+			return;
+		}
+		
+		spisukSlujiteli = Employee.querySearchByNameFamily(searchName, searchFamily, page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
+		page = 0;
+		rowsCount = Employee.countSearchByNameFamily(searchName, searchFamily);
+		slujitel = new Employee();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
+	}
+	
+	public void resetSearch() {
+		searchName = null;
+		searchFamily = null;
+		searchIt();
+	}
 }

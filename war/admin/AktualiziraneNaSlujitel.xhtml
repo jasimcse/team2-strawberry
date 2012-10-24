@@ -17,20 +17,16 @@
 		<h:form>
 			<h:panelGroup>
 				<h:outputLabel value="Име">
-					<h:inputText value="" maxlength="50" />
+					<h:inputText value="#{aktualiziraneNaSlujitel.searchName}" maxlength="50" />
 				</h:outputLabel>
 				<br />
 				<h:outputLabel value="Фамилия">
-					<h:inputText value="" maxlength="50" />
-				</h:outputLabel>
-				<br />
-				<h:outputLabel value="Автосервиз">
-					<h:inputText value="" maxlength="50" />
+					<h:inputText value="#{aktualiziraneNaSlujitel.searchFamily}" maxlength="50" />
 				</h:outputLabel>
 				
 				<br />
-				<h:commandButton value="Търси" disabled="true" />
-				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
+				<h:commandButton value="Търси" action="#{aktualiziraneNaSlujitel.searchIt()}" />
+				<h:commandButton value="Изчисти" action="#{aktualiziraneNaSlujitel.resetSearch()}" />
 			</h:panelGroup>
 		</h:form>
 	
@@ -86,38 +82,29 @@
 				</h:column>
 				
 				<f:facet name="footer">
-					<h:panelGroup rendered="#{!empty aktualiziraneNaSlujitel.pagesList}">
-						<!-- предишна страница -->
-						<h:commandLink rendered="#{aktualiziraneNaSlujitel.page - 1 ge 0}"
-							action="#{aktualiziraneNaSlujitel.setPage(aktualiziraneNaSlujitel.page - 1)}"
-							value="&lt;&lt;" />
-							
-						<!-- други страници -->
-						<ui:repeat value="#{aktualiziraneNaSlujitel.pagesList}" var="currPage">
-							<h:commandLink
-								rendered="#{aktualiziraneNaSlujitel.getPage() ne currPage.intValue() - 1}"
-								action="#{aktualiziraneNaSlujitel.setPage(currPage.intValue() - 1)}"
-								value="#{currPage}" />
-								
-							<h:outputText
-								rendered="#{aktualiziraneNaSlujitel.getPage() eq currPage.intValue() - 1}"
-								value="#{currPage}" />
-								
-							<h:outputText value=" " />
-						</ui:repeat>
+				
+					<!-- предишна страница -->
+					<h:commandLink disabled="#{aktualiziraneNaSlujitel.page - 1 lt 0}"
+						action="#{aktualiziraneNaSlujitel.setPage(aktualiziraneNaSlujitel.page - 1)}"
+						value="&lt;&lt;" />
 						
-						<!-- следваща страница -->
-						<h:commandLink rendered="#{aktualiziraneNaSlujitel.page + 1 lt aktualiziraneNaSlujitel.pagesCount}"
-							action="#{aktualiziraneNaSlujitel.setPage(aktualiziraneNaSlujitel.page + 1)}"
-							value="&gt;&gt;" />
+					<h:outputText value=" " />
+						
+					<!-- други страници -->
+					<ui:repeat value="#{aktualiziraneNaSlujitel.pagesList}" var="currPage">
+						<h:commandLink
+							disabled="#{aktualiziraneNaSlujitel.getPage() eq currPage.intValue() - 1}"
+							action="#{aktualiziraneNaSlujitel.setPage(currPage.intValue() - 1)}"
+							value="#{currPage}" />
 							
-					</h:panelGroup>
+						<h:outputText value=" " />
+					</ui:repeat>
 					
-					<h:panelGroup rendered="#{empty aktualiziraneNaSlujitel.pagesList}" style="color: red; font-weight: bold;">
-						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
-						<br />
-						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
-					</h:panelGroup>
+					<!-- следваща страница -->
+					<h:commandLink disabled="#{aktualiziraneNaSlujitel.page + 1 ge aktualiziraneNaSlujitel.pagesCount}"
+						action="#{aktualiziraneNaSlujitel.setPage(aktualiziraneNaSlujitel.page + 1)}"
+						value="&gt;&gt;" />
+							
 				</f:facet>
 				 
 			</h:dataTable>
