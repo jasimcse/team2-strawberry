@@ -17,22 +17,26 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 
+
 @SuppressWarnings("serial")
 public class WarehouseOrderPartDelivery implements Serializable {
 	
 	private Entity thisEntity;
+	private SparePartsDelivery sparePartsDelivery;
 	private WarehouseOrder warehouseOrder;
 	private SparePart sparePart;
 	
+	private Key sparePartsDeliveryID;
 	private Key warehouseOrderID;
 	private Key sparePartID;
 	private Double quantity;
 	private Double price;
 	
-	private static final String PARENT_FIELD = "warehouseOrderID";
+	private static final String PARENT_FIELD = "sparePartsDeliveryID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "warehouseOrder", "sparePart"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS",
+					      "thisEntity", "sparePartsDelivery", "warehouseOrder", "sparePart"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
@@ -94,6 +98,35 @@ public class WarehouseOrderPartDelivery implements Serializable {
 		}
 		return thisEntity.getKey();
 	}
+	
+	public Key getSparePartsDeliveryID() {
+		return sparePartsDeliveryID;
+	}
+
+	public void setSparePartsDeliveryID(Key sparePartsDeliveryID) {
+		this.sparePartsDeliveryID = sparePartsDeliveryID;
+		sparePartsDelivery = null;
+	}
+	
+	public SparePartsDelivery getSparePartsDelivery() {
+		if (sparePartsDelivery == null) {
+			if (this.sparePartsDeliveryID != null) {
+				sparePartsDelivery = SparePartsDelivery.readEntity(this.sparePartsDeliveryID);
+			}
+		}
+		
+		return sparePartsDelivery;
+	}
+	
+	public void setSparePartsDelivery(SparePartsDelivery sparePartsDelivery) {
+		this.sparePartsDelivery = sparePartsDelivery;
+		
+		if (sparePartsDelivery == null) {
+			sparePartsDeliveryID = null;
+		} else {
+			sparePartsDeliveryID = sparePartsDelivery.getID();
+		}
+	}
 
 	public Key getWarehouseOrderID() {
 		return warehouseOrderID;
@@ -101,6 +134,7 @@ public class WarehouseOrderPartDelivery implements Serializable {
 
 	public void setWarehouseOrderID(Key warehouseOrderID) {
 		this.warehouseOrderID = warehouseOrderID;
+		warehouseOrder = null;
 	}
 	
 	public WarehouseOrder getWarehouseOrder() {
@@ -129,6 +163,7 @@ public class WarehouseOrderPartDelivery implements Serializable {
 
 	public void setSparePartID(Key sparePartID) {
 		this.sparePartID = sparePartID;
+		sparePart = null;
 	}
 	
 	public SparePart getSparePart() {
@@ -167,22 +202,22 @@ public class WarehouseOrderPartDelivery implements Serializable {
 		this.price = Double.valueOf(price);
 	}
 
-	private static PreparedQuery getPreparedQueryAll(Key warehouseOrderID) { 
+	private static PreparedQuery getPreparedQueryAll(Key sparePartDeliveryID) { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(WarehouseOrderPartDelivery.class.getSimpleName()).
-					   setAncestor(warehouseOrderID).
+					   setAncestor(sparePartDeliveryID).
 				       addSort("__key__"));
 	}
 	
-	public static List<WarehouseOrderPartDelivery> queryGetAll(int offset, int count, Key warehouseOrderID) {
-		List<Entity> oldList = getPreparedQueryAll(warehouseOrderID).
+	public static List<WarehouseOrderPartDelivery> queryGetAll(int offset, int count, Key sparePartDeliveryID) {
+		List<Entity> oldList = getPreparedQueryAll(sparePartDeliveryID).
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
 		
 		return readList(oldList);
 	}
 	
-	public static int countGetAll(Key warehouseOrderID) {
-		return getPreparedQueryAll(warehouseOrderID).countEntities(FetchOptions.Builder.withLimit(10000));
+	public static int countGetAll(Key sparePartDeliveryID) {
+		return getPreparedQueryAll(sparePartDeliveryID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

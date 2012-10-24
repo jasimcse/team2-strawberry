@@ -100,6 +100,7 @@ public class DiagnosisPart implements Serializable {
 
 	public void setDiagnosisID(Key diagnosisID) {
 		this.diagnosisID = diagnosisID;
+		diagnosis = null;
 	}
 	
 	public Diagnosis getDiagnosis() {
@@ -128,6 +129,7 @@ public class DiagnosisPart implements Serializable {
 
 	public void setSparePartID(Key sparePartID) {
 		this.sparePartID = sparePartID;
+		sparePart = null;
 	}
 	
 	public SparePart getSparePart() {

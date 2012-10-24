@@ -116,6 +116,7 @@ public class ClientNotification implements Serializable {
 
 	public void setClientID(Key clientID) {
 		this.clientID = clientID;
+		client = null;
 	}
 	
 	public Client getClient() {
@@ -152,6 +153,7 @@ public class ClientNotification implements Serializable {
 
 	public void setEmployeeID(Key employeeID) {
 		this.employeeID = employeeID;
+		employee = null;
 	}
 	
 	public Employee getEmployee() {
@@ -180,6 +182,7 @@ public class ClientNotification implements Serializable {
 
 	public void setVehicleID(Key vehicleID) {
 		this.vehicleID = vehicleID;
+		vehicle = null;
 	}
 	
 	public Vehicle getVehicle() {
@@ -208,6 +211,7 @@ public class ClientNotification implements Serializable {
 
 	public void setClientOrderID(Key clientOrderID) {
 		this.clientOrderID = clientOrderID;
+		clientOrder = null;
 	}
 	
 	public ClientOrder getClientOrder() {
@@ -220,7 +224,7 @@ public class ClientNotification implements Serializable {
 		return clientOrder;
 	}
 	
-	public void setVehicle(ClientOrder clientOrder) {
+	public void setClientOrder(ClientOrder clientOrder) {
 		this.clientOrder = clientOrder;
 		
 		if (clientOrder == null) {

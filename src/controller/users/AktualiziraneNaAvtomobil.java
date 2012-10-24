@@ -235,6 +235,7 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 		if (mileage < avtomobil.getMileage()) {
 			// set the message
 			errorMessage = "Пробегът на автомобила е по-малък от предния записан!";
+			readList();
 			return null;
 		}
 		

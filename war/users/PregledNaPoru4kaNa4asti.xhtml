@@ -88,34 +88,34 @@
 				
 				
 				<f:facet name="footer">
-					<h:panelGroup rendered="#{!empty pregledNaporu4kaNa4asti.pagesList}">
+					<h:panelGroup rendered="#{!empty pregledNaPoru4kaNa4asti.pagesList}">
 						<!-- предишна страница -->
-						<h:commandLink rendered="#{pregledNaporu4kaNa4asti.page - 1 ge 0}"
-							action="#{pregledNaporu4kaNa4asti.setPage(pregledNaporu4kaNa4asti.page - 1)}"
+						<h:commandLink rendered="#{pregledNaPoru4kaNa4asti.page - 1 ge 0}"
+							action="#{pregledNaPoru4kaNa4asti.setPage(pregledNaPoru4kaNa4asti.page - 1)}"
 							value="&lt;&lt;" />
 							
 						<!-- други страници -->
-						<ui:repeat value="#{pregledNaporu4kaNa4asti.pagesList}" var="currPage">
+						<ui:repeat value="#{pregledNaPoru4kaNa4asti.pagesList}" var="currPage">
 							<h:commandLink
-								rendered="#{pregledNaporu4kaNa4asti.getPage() ne currPage.intValue() - 1}"
-								action="#{pregledNaporu4kaNa4asti.setPage(currPage.intValue()-1)}"
+								rendered="#{pregledNaPoru4kaNa4asti.getPage() ne currPage.intValue() - 1}"
+								action="#{pregledNaPoru4kaNa4asti.setPage(currPage.intValue()-1)}"
 								value="#{currPage}" />
 								
 							<h:outputText
-								rendered="#{pregledNaporu4kaNa4asti.getPage() eq currPage.intValue() - 1}"
+								rendered="#{pregledNaPoru4kaNa4asti.getPage() eq currPage.intValue() - 1}"
 								value="#{currPage}" />
 								
 							<h:outputText value=" " />
 						</ui:repeat>
 						
 						<!-- следваща страница -->
-						<h:commandLink rendered="#{pregledNaporu4kaNa4asti.page + 1 lt pregledNaporu4kaNa4asti.pagesCount}"
-							action="#{pregledNaporu4kaNa4asti.setPage(pregledNaporu4kaNa4asti.page + 1)}"
+						<h:commandLink rendered="#{pregledNaPoru4kaNa4asti.page + 1 lt pregledNaPoru4kaNa4asti.pagesCount}"
+							action="#{pregledNaPoru4kaNa4asti.setPage(pregledNaPoru4kaNa4asti.page + 1)}"
 							value="&gt;&gt;" />
 							
 					</h:panelGroup>
 					
-					<h:panelGroup rendered="#{empty pregledNaporu4kaNa4asti.pagesList}" style="color: red; font-weight: bold;">
+					<h:panelGroup rendered="#{empty pregledNaPoru4kaNa4asti.pagesList}" style="color: red; font-weight: bold;">
 						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
 						<br />
 						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение

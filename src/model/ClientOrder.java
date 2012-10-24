@@ -122,6 +122,7 @@ public class ClientOrder implements Serializable {
 
 	public void setAutoserviceID(Key autoserviceID) {
 		this.autoserviceID = autoserviceID;
+		autoservice = null;
 	}
 	
 	public Autoservice getAutoservice() {
@@ -150,6 +151,7 @@ public class ClientOrder implements Serializable {
 
 	public void setClientID(Key clientID) {
 		this.clientID = clientID;
+		client = null;
 	}
 	
 	public Client getClient() {
@@ -178,6 +180,7 @@ public class ClientOrder implements Serializable {
 
 	public void setVehicleID(Key vehicleID) {
 		this.vehicleID = vehicleID;
+		vehicle = null;
 	}
 	
 	public Vehicle getVehicle() {
@@ -226,6 +229,7 @@ public class ClientOrder implements Serializable {
 
 	public void setEmployeeID(Key employeeID) {
 		this.employeeID = employeeID;
+		employee = null;
 	}
 
 	public Date getDate() {

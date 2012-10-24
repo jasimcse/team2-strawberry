@@ -103,6 +103,7 @@ public class VehicleModelService implements Serializable {
 
 	public void setVehicleModelID(Key vehicleModelID) {
 		this.vehicleModelID = vehicleModelID;
+		vehicleModel = null;
 	}
 	
 	public VehicleModel getVehicleModel() {
@@ -131,6 +132,7 @@ public class VehicleModelService implements Serializable {
 
 	public void setServiceID(Key serviceID) {
 		this.serviceID = serviceID;
+		service = null;
 	}
 	
 	public Service getService() {

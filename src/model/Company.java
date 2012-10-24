@@ -102,6 +102,7 @@ public class Company implements Serializable {
 
 	public void setClientID(Key clientID) {
 		this.clientID = clientID;
+		client = null;
 	}
 	
 	public Client getClient() {

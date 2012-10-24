@@ -108,6 +108,7 @@ public class SparePart implements Serializable {
 
 	public void setSparePartGroupID(Key sparePartGroupID) {
 		this.sparePartGroupID = sparePartGroupID;
+		sparePartGroup = null;
 	}
 	
 	public SparePartGroup getSparePartGroup() {

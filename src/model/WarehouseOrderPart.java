@@ -107,6 +107,7 @@ public class WarehouseOrderPart implements Serializable {
 
 	public void setWarehouseOrderID(Key warehouseOrderID) {
 		this.warehouseOrderID = warehouseOrderID;
+		warehouseOrder = null;
 	}
 	
 	public WarehouseOrder getWarehouseOrder() {
@@ -135,6 +136,7 @@ public class WarehouseOrderPart implements Serializable {
 
 	public void setSparePartID(Key sparePartID) {
 		this.sparePartID = sparePartID;
+		sparePart = null;
 	}
 	
 	public SparePart getSparePart() {

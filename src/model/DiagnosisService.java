@@ -99,6 +99,7 @@ public class DiagnosisService implements Serializable {
 
 	public void setDiagnosisID(Key diagnosisID) {
 		this.diagnosisID = diagnosisID;
+		diagnosis = null;
 	}
 	
 	public Diagnosis getDiagnosis() {
@@ -127,6 +128,7 @@ public class DiagnosisService implements Serializable {
 
 	public void setServiceID(Key serviceID) {
 		this.serviceID = serviceID;
+		service = null;
 	}
 	
 	public Service getService() {

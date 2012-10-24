@@ -33,7 +33,7 @@ public class SparePartSupplier implements Serializable {
 	private Double deliveryPrice;
 	private LimitedString foreignID = new LimitedString(50);
 	
-private static final String PARENT_FIELD = "supplierID";
+	private static final String PARENT_FIELD = "supplierID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS",
@@ -107,6 +107,7 @@ private static final String PARENT_FIELD = "supplierID";
 
 	public void setSupplierID(Key supplierID) {
 		this.supplierID = supplierID;
+		supplier = null;
 	}
 	
 	public Supplier getSupplier() {
@@ -135,6 +136,7 @@ private static final String PARENT_FIELD = "supplierID";
 
 	public void setSparePartID(Key sparePartID) {
 		this.sparePartID = sparePartID;
+		sparePart = null;
 	}
 	
 	public SparePart getSparePart() {

@@ -100,6 +100,7 @@ public class VehicleModelSparePart implements Serializable {
 
 	public void setVehicleModelID(Key vehicleModelID) {
 		this.vehicleModelID = vehicleModelID;
+		vehicleModel = null;
 	}
 	
 	public VehicleModel getVehicleModel() {
@@ -128,6 +129,7 @@ public class VehicleModelSparePart implements Serializable {
 
 	public void setSparePartID(Key sparePartID) {
 		this.sparePartID = sparePartID;
+		sparePart = null;
 	}
 	
 	public SparePart getSparePart() {
