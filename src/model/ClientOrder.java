@@ -22,11 +22,12 @@ import com.google.appengine.api.datastore.Query;
 @SuppressWarnings("serial")
 public class ClientOrder implements Serializable {
 	
-	public static final String HALTED = "1";
-	public static final String PROCESSING = "2";
-	public static final String FINISHED = "3";
-	public static final String PAYED = "4";
-	public static final String BLOCKED = "5";
+	public static final String NEW = "1";
+	public static final String HALTED = "2";
+	public static final String PROCESSING = "3";
+	public static final String FINISHED = "4";
+	public static final String PAYED = "5";
+	public static final String BLOCKED = "6";
 	
 	public static final String VEHICLE_PRESENTS = "1";
 	public static final String VEHICLE_NOT_PRESENTS = "2";
@@ -50,7 +51,7 @@ public class ClientOrder implements Serializable {
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS",
-					      "HALTED", "PROCESSING", "FINISHED", "PAYED", "BLOCKED",
+					      "NEW", "HALTED", "PROCESSING", "FINISHED", "PAYED", "BLOCKED",
 					      "VEHICLE_PRESENTS", "VEHICLE_NOT_PRESENTS",
 					      "thisEntity", "autoservice", "client", "vehicle", "employee"}));
 	
@@ -240,8 +241,8 @@ public class ClientOrder implements Serializable {
 	}
 
 	public void setStatus(String status) {
-		if (HALTED.equals(status) || PROCESSING.equals(status) || FINISHED.equals(status) ||
-		    PAYED.equals(status) || BLOCKED.equals(status)) {
+		if (NEW.equals(status) || HALTED.equals(status) || PROCESSING.equals(status) || 
+				FINISHED.equals(status) || PAYED.equals(status) || BLOCKED.equals(status)) {
 			
 			this.status.setString(status);
 		} else {
