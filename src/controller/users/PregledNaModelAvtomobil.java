@@ -86,7 +86,8 @@ public class PregledNaModelAvtomobil implements Serializable {
 		spisukModeliAvtomobili = VehicleModel.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
 		modelAvtomobil = new VehicleModel();
 		rowsCount = VehicleModel.countGetAll();
-		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
 	}
 	
 	public String getRowStyleClasses() {

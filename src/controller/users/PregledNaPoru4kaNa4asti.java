@@ -85,7 +85,8 @@ public class PregledNaPoru4kaNa4asti implements Serializable {
 		spisukPoru4ki = WarehouseOrder.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize(), autoserviceID);
 		poru4ka = new WarehouseOrder();
 		rowsCount = WarehouseOrder.countGetAll(autoserviceID);
-		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
 	}
 	
 	public String getRowStyleClasses() {

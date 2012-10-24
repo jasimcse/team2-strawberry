@@ -79,38 +79,29 @@
 				</h:column>
 				
 				<f:facet name="footer">
-					<h:panelGroup rendered="#{!empty aktualiziraneNaRezervna4ast.pagesList}">
-						<!-- предишна страница -->
-						<h:commandLink rendered="#{aktualiziraneNaRezervna4ast.page - 1 ge 0}"
-							action="#{aktualiziraneNaRezervna4ast.setPage(aktualiziraneNaRezervna4ast.page - 1)}"
-							value="&lt;&lt;" />
-							
-						<!-- други страници -->
-						<ui:repeat value="#{aktualiziraneNaRezervna4ast.pagesList}" var="currPage">
-							<h:commandLink
-								rendered="#{aktualiziraneNaRezervna4ast.getPage() ne currPage.intValue() - 1}"
-								action="#{aktualiziraneNaRezervna4ast.setPage(currPage.intValue()-1)}"
-								value="#{currPage}" />
-								
-							<h:outputText
-								rendered="#{aktualiziraneNaRezervna4ast.getPage() eq currPage.intValue() - 1}"
-								value="#{currPage}" />
-								
-							<h:outputText value=" " />
-						</ui:repeat>
+				
+					<!-- предишна страница -->
+					<h:commandLink disabled="#{aktualiziraneNaRezervna4ast.page - 1 lt 0}"
+						action="#{aktualiziraneNaRezervna4ast.setPage(aktualiziraneNaRezervna4ast.page - 1)}"
+						value="&lt;&lt;" />
 						
-						<!-- следваща страница -->
-						<h:commandLink rendered="#{aktualiziraneNaRezervna4ast.page + 1 lt aktualiziraneNaRezervna4ast.pagesCount}"
-							action="#{aktualiziraneNaRezervna4ast.setPage(aktualiziraneNaRezervna4ast.page + 1)}"
-							value="&gt;&gt;" />
+					<h:outputText value=" " />
+						
+					<!-- други страници -->
+					<ui:repeat value="#{aktualiziraneNaRezervna4ast.pagesList}" var="currPage">
+						<h:commandLink
+							disabled="#{aktualiziraneNaRezervna4ast.getPage() eq currPage.intValue() - 1}"
+							action="#{aktualiziraneNaRezervna4ast.setPage(currPage.intValue() - 1)}"
+							value="#{currPage}" />
 							
-					</h:panelGroup>
+						<h:outputText value=" " />
+					</ui:repeat>
 					
-					<h:panelGroup rendered="#{empty aktualiziraneNaRezervna4ast.pagesList}" style="color: red; font-weight: bold;">
-						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
-						<br />
-						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
-					</h:panelGroup>
+					<!-- следваща страница -->
+					<h:commandLink disabled="#{aktualiziraneNaRezervna4ast.page + 1 ge aktualiziraneNaRezervna4ast.pagesCount}"
+						action="#{aktualiziraneNaRezervna4ast.setPage(aktualiziraneNaRezervna4ast.page + 1)}"
+						value="&gt;&gt;" />
+							
 				</f:facet>
 				 
 			</h:dataTable>

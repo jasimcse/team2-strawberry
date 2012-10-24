@@ -63,38 +63,29 @@
 				</h:column>
 				
 				<f:facet name="footer">
-					<h:panelGroup rendered="#{!empty pregledNaModelAvtomobil.pagesList}">
-						<!-- предишна страница -->
-						<h:commandLink rendered="#{pregledNaModelAvtomobil.page - 1 ge 0}"
-							action="#{pregledNaModelAvtomobil.setPage(pregledNaModelAvtomobil.page - 1)}"
-							value="&lt;&lt;" />
-							
-						<!-- други страници -->
-						<ui:repeat value="#{pregledNaModelAvtomobil.pagesList}" var="currPage">
-							<h:commandLink
-								rendered="#{pregledNaModelAvtomobil.getPage() ne currPage.intValue() - 1}"
-								action="#{pregledNaModelAvtomobil.setPage(currPage.intValue()-1)}"
-								value="#{currPage}" />
-								
-							<h:outputText
-								rendered="#{pregledNaModelAvtomobil.getPage() eq currPage.intValue() - 1}"
-								value="#{currPage}" />
-								
-							<h:outputText value=" " />
-						</ui:repeat>
+				
+					<!-- предишна страница -->
+					<h:commandLink disabled="#{pregledNaModelAvtomobil.page - 1 lt 0}"
+						action="#{pregledNaModelAvtomobil.setPage(pregledNaModelAvtomobil.page - 1)}"
+						value="&lt;&lt;" />
 						
-						<!-- следваща страница -->
-						<h:commandLink rendered="#{pregledNaModelAvtomobil.page + 1 lt pregledNaModelAvtomobil.pagesCount}"
-							action="#{pregledNaModelAvtomobil.setPage(pregledNaModelAvtomobil.page + 1)}"
-							value="&gt;&gt;" />
+					<h:outputText value=" " />
+						
+					<!-- други страници -->
+					<ui:repeat value="#{pregledNaModelAvtomobil.pagesList}" var="currPage">
+						<h:commandLink
+							disabled="#{pregledNaModelAvtomobil.getPage() eq currPage.intValue() - 1}"
+							action="#{pregledNaModelAvtomobil.setPage(currPage.intValue() - 1)}"
+							value="#{currPage}" />
 							
-					</h:panelGroup>
+						<h:outputText value=" " />
+					</ui:repeat>
 					
-					<h:panelGroup rendered="#{empty pregledNaModelAvtomobil.pagesList}" style="color: red; font-weight: bold;">
-						Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
-						<br />
-						приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
-					</h:panelGroup>
+					<!-- следваща страница -->
+					<h:commandLink disabled="#{pregledNaModelAvtomobil.page + 1 ge pregledNaModelAvtomobil.pagesCount}"
+						action="#{pregledNaModelAvtomobil.setPage(pregledNaModelAvtomobil.page + 1)}"
+						value="&gt;&gt;" />
+							
 				</f:facet>
 				 
 			</h:dataTable>

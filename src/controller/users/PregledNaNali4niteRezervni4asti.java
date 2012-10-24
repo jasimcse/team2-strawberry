@@ -125,7 +125,8 @@ public class PregledNaNali4niteRezervni4asti implements Serializable {
 		spisukNali4nosti = SparePartAutoservice.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize(), currEmployee.getAutoserviceID());
 		nali4nost = new SparePartAutoservice();
 		rowsCount = SparePartAutoservice.countGetAll(currEmployee.getAutoserviceID());
-		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
 	}
 	
 	public String getRowStyleClasses() {

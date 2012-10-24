@@ -81,7 +81,8 @@ public class PregledNaGarancionniUsloviq implements Serializable {
 		spisukGarancionniUsloviq = WarrantyConditions.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
 		garancionniUsloviq = new WarrantyConditions();
 		rowsCount = WarrantyConditions.countGetAll();
-		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
 	}
 	
 	public String getRowStyleClasses() {
