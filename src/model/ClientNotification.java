@@ -270,6 +270,12 @@ public class ClientNotification implements Serializable {
 		this.phoneNumber.setString(phoneNumber);
 	}
 	
+	private static PreparedQuery getPreparedQueryAll() { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(ClientNotification.class.getSimpleName()).
+				       addSort("__key__"));
+	}
+	
 	private static PreparedQuery getPreparedQueryAll(Key clientID) { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(ClientNotification.class.getSimpleName()).
@@ -277,7 +283,16 @@ public class ClientNotification implements Serializable {
 				       addSort("__key__"));
 	}
 	
-	// TODO - да се дава възможност да се разглеждата всички ?
+	public static List<ClientNotification> queryGetAll(int offset, int count) {
+		List<Entity> oldList = getPreparedQueryAll().
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll() {
+		return getPreparedQueryAll().countEntities(FetchOptions.Builder.withLimit(10000));
+	}
 	
 	public static List<ClientNotification> queryGetAll(int offset, int count, Key clientID) {
 		List<Entity> oldList = getPreparedQueryAll(clientID).

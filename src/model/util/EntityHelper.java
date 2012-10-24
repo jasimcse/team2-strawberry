@@ -1,8 +1,12 @@
 package model.util;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -364,6 +368,105 @@ public class EntityHelper {
 		}
 		
 		return to;
+	}
+	
+	public static List<Entity> stringSearchFilter(
+			Iterator<Entity> iterator,
+			List<StringSearchAttribute> stringSearchAttributes,
+			int offset,
+			int count) {
+		
+		for (StringSearchAttribute ssa : stringSearchAttributes) {
+			if (ssa.getAttributeName() == null) {
+				throw new RuntimeException("A searching field attribute name is null!");
+			}
+			if ("".equals(ssa.getAttributeName())) {
+				throw new RuntimeException("The searching field attribute name is empty!");
+			}
+			if (ssa.getSearchString() == null) {
+				throw new RuntimeException("A searching field search string is null!");
+			}
+			if ("".equals(ssa.getSearchString())) {
+				throw new RuntimeException("The searching field search string is empty!");
+			}
+		}
+		
+		int passed = 0;
+		List<Entity> list = new ArrayList<Entity>();
+		
+		filter:
+		while (iterator.hasNext()) {
+			Entity curr = iterator.next();
+			
+			for (StringSearchAttribute ssa : stringSearchAttributes) {
+				Object temp = curr.getProperty(ssa.getAttributeName());
+				if (temp instanceof String) {
+					if (((String)temp).toLowerCase().indexOf(ssa.getSearchString().toLowerCase()) == -1) {
+						// не съвпада
+						continue filter; 
+					}
+				}
+			}
+			
+			passed++;
+			if (passed < offset) {
+				continue;
+			}
+			
+			list.add(curr);
+			
+			if (passed - offset >= count) {
+				break;
+			}
+		}
+		
+		return list;
+	}
+	
+	public static int stringSearchCount(
+			Iterator<Entity> iterator,
+			List<StringSearchAttribute> stringSearchAttributes) {
+		
+		for (StringSearchAttribute ssa : stringSearchAttributes) {
+			if (ssa.getAttributeName() == null) {
+				throw new RuntimeException("A searching field attribute name is null!");
+			}
+			if ("".equals(ssa.getAttributeName())) {
+				throw new RuntimeException("The searching field attribute name is empty!");
+			}
+			if (ssa.getSearchString() == null) {
+				throw new RuntimeException("A searching field search string is null!");
+			}
+			if ("".equals(ssa.getSearchString())) {
+				throw new RuntimeException("The searching field search string is empty!");
+			}
+		}
+		
+		int passed = 0;
+		int count = 10000;
+		
+		filter:
+		while (iterator.hasNext()) {
+			Entity curr = iterator.next();
+			
+			for (StringSearchAttribute ssa : stringSearchAttributes) {
+				Object temp = curr.getProperty(ssa.getAttributeName());
+				if (temp instanceof LimitedString) {
+					if (((String)temp).toLowerCase().indexOf(ssa.getSearchString().toLowerCase()) == -1) {
+						// не съвпада
+						continue filter; 
+					}
+				}
+			}
+			
+			passed++;
+			
+			if (passed >= count) {
+				break;
+			}
+		}
+		
+		return passed;
 	}
 	
 }

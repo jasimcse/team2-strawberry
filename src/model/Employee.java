@@ -9,6 +9,7 @@ import java.util.Set;
 
 import model.util.EntityHelper;
 import model.util.LimitedString;
+import model.util.StringSearchAttribute;
 
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -185,6 +186,43 @@ public class Employee implements Serializable {
 	public static int countGetByName(String name) {
 		return getPreparedQueryByName(name).
 				countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<Employee> querySearchByNameFamily(String name, String family, int offset, int count) {
+		List<StringSearchAttribute> searchStrings = new ArrayList<StringSearchAttribute>();
+		List<Entity> oldList;
+		if (name != null) {
+			searchStrings.add(new StringSearchAttribute("name", name));
+		}
+		if (family != null) {
+			searchStrings.add(new StringSearchAttribute("family", family));
+		}
+		
+		if (searchStrings.size() > 0) {
+			oldList = EntityHelper.stringSearchFilter(
+					getPreparedQueryAll().asIterator(), searchStrings, offset, count);
+		} else {
+			oldList = new ArrayList<Entity>();
+		}
+			
+		return readList(oldList);
+	}
+	
+	public static int countSearchByNameFamily(String name, String family) {
+		List<StringSearchAttribute> searchStrings = new ArrayList<StringSearchAttribute>();
+		if (name != null) {
+			searchStrings.add(new StringSearchAttribute("name", name));
+		}
+		if (family != null) {
+			searchStrings.add(new StringSearchAttribute("family", family));
+		}
+		
+		if (searchStrings.size() > 0) {
+			return EntityHelper.stringSearchCount(
+					getPreparedQueryAll().asIterator(), searchStrings);
+		} else {
+			return 0;
+		}
 	}
 	
 }
