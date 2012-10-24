@@ -115,6 +115,7 @@ public class Vehicle implements Serializable {
 
 	public void setClientID(Key clientID) {
 		this.clientID = clientID;
+		client = null;
 	}
 	
 	public Client getClient() {
@@ -143,6 +144,7 @@ public class Vehicle implements Serializable {
 
 	public void setVehicleModelID(Key vehicleModelID) {
 		this.vehicleModelID = vehicleModelID;
+		vehicleModel = null;
 	}
 	
 	public VehicleModel getVehicleModel() {
@@ -171,6 +173,7 @@ public class Vehicle implements Serializable {
 
 	public void setWarrantyConditionsID(Key warrantyConditionsID) {
 		this.warrantyConditionsID = warrantyConditionsID;
+		warrantyConditions = null;
 	}
 	
 	public WarrantyConditions getWarrantyConditions() {

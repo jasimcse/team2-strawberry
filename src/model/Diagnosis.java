@@ -112,6 +112,7 @@ public class Diagnosis implements Serializable {
 
 	public void setAutoserviceID(Key autoserviceID) {
 		this.autoserviceID = autoserviceID;
+		autoservice = null;
 	}
 	
 	public Autoservice getAutoservice() {
@@ -140,6 +141,7 @@ public class Diagnosis implements Serializable {
 
 	public void setVehicleID(Key vehicleID) {
 		this.vehicleID = vehicleID;
+		vehicle = null;
 	}
 	
 	public Vehicle getVehicle() {
@@ -168,6 +170,7 @@ public class Diagnosis implements Serializable {
 
 	public void setEmployeeID(Key employeeID) {
 		this.employeeID = employeeID;
+		employee = null;
 	}
 	
 	public Employee getEmployee() {

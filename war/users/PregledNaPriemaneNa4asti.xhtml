@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+	
+	<ui:define name="pageContent">
+	
+		<h:form>
+			<h:panelGroup>
+				<h:outputLabel value="Име на доставчик">
+					<h:selectOneMenu>
+						<f:selectItems value="#{pregledNaPriemaneNa4asti.suppliers}" var="currSupplier"
+							itemLabel="#{currSupplier.name}" itemValue="#(currSupplier.ID)" />					
+					</h:selectOneMenu>
+				</h:outputLabel>
+				<br />
+				<h:outputLabel value="Статус">
+					<h:selectOneMenu>
+						<f:selectItems value="#{pregledNaPriemaneNa4asti.statuses}" var="currSstatus"/>					
+					</h:selectOneMenu>
+				</h:outputLabel>
+				<br />
+				<h:outputLabel value="Дата на доставката(от)">
+					<h:inputText id="dateFrom"/>
+				</h:outputLabel>
+				<h:outputLabel value="Дата на доставката(до)">
+					<h:inputText id="dateTo"/>
+				</h:outputLabel>
+				<br />
+				
+				<h:commandButton value="Търси" disabled="true" />
+				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
+			</h:panelGroup>
+		</h:form>
+		
+	    <h:form>
+
+		<h:outputText value="Доставки" />
+		<br />
+	    
+	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове --> 
+		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+		<h:dataTable
+			rows="#{configurationProperties.getPageSize()}"
+			value="#{pregledNaPriemaneNa4asti.spisukDostavki}"
+			var="curr"
+			first="0"
+			rowClasses="#{pregledNaPriemaneNa4asti.rowStyleClasses}">
+			
+			<h:column>
+				<f:facet name="header">Номер на придружаващ документ</f:facet>
+				<h:outputText value="#{curr.documentNumber}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Дата на придружаващ документ</f:facet>
+				<h:outputText value="#{curr.documentDate}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Дата на придружаващ документ</f:facet>
+				<h:outputText value="#{curr.documentDate}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Дата на доставката</f:facet>
+				<h:outputText value="#{curr.documentDate}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Статус на доставката</f:facet>
+				<h:outputText value="#{curr.status == '1' ? 'Неплатена' : 'Платена'}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Номер на платежно нареждане</f:facet>
+				<h:outputText value="#{curr.paymentNumber}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Обща сума</f:facet>
+				<h:outputText value="#{curr.fullPrice}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Промени</f:facet>
+				<h:commandLink action="#{pregledNaPriemaneNa4asti.chooseDelivery(curr)}" value="Промени" />
+			</h:column>
+			
+			<f:facet name="footer">
+				<h:panelGroup rendered="#{!empty pregledNaPriemaneNa4asti.pagesList}">
+					<!-- предишна страница -->
+					<h:commandLink rendered="#{pregledNaPriemaneNa4asti.page - 1 ge 0}"
+						action="#{pregledNaPriemaneNa4asti.setPage(pregledNaPriemaneNa4asti.page - 1)}"
+						value="&lt;&lt;" />
+						
+					<!-- други страници -->
+					<ui:repeat value="#{pregledNaPriemaneNa4asti.pagesList}" var="currPage">
+						<h:commandLink
+							rendered="#{pregledNaPriemaneNa4asti.getPage() ne currPage.intValue() - 1}"
+							action="#{pregledNaPriemaneNa4asti.setPage(currPage.intValue()-1)}"
+							value="#{currPage}" />
+							
+						<h:outputText
+							rendered="#{pregledNaPriemaneNa4asti.getPage() eq currPage.intValue() - 1}"
+							value="#{currPage}" />
+							
+						<h:outputText value=" " />
+					</ui:repeat>
+					
+					<!-- следваща страница -->
+					<h:commandLink rendered="#{pregledNaPriemaneNa4asti.page + 1 lt pregledNaPriemaneNa4asti.pagesCount}"
+						action="#{pregledNaPriemaneNa4asti.setPage(pregledNaPriemaneNa4asti.page + 1)}"
+						value="&gt;&gt;" />
+						
+				</h:panelGroup>
+				
+				<h:panelGroup rendered="#{empty pregledNaPriemaneNa4asti.pagesList}" style="color: red; font-weight: bold;">
+					Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
+					<br />
+					приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
+				</h:panelGroup>
+			</f:facet>
+			
+		</h:dataTable>
+		</div>
+		<br />
+		
+		<h:outputLabel value="Номер на придружаващ документ">
+	    	<h:inputText id="documentNumber" value="#{pregledNaPriemaneNa4asti.documentNumber}" 
+	    		readonly="true" />
+	    	<h:message for="documentNumber" />
+	    </h:outputLabel>
+	    <br />
+	    
+	    <h:outputLabel value="Дата на придружаващ документ">
+	    	<h:inputText id="documentDate" value="#{pregledNaPriemaneNa4asti.documentDate}" 
+	    		readonly="true">
+	    		<f:convertDateTime pattern="dd.MM.yyyy" />
+	    	</h:inputText>
+	    	<h:message for="documentDate" />
+	    </h:outputLabel>
+	    <br />
+	    
+	    <h:outputLabel value="Дата на доставката">
+	    	<h:inputText id="deliveryDate" value="#{pregledNaPriemaneNa4asti.deliveryDate}" 
+	    		readonly="true">
+	    		<f:convertDateTime pattern="dd.MM.yyyy" />
+	    	</h:inputText>
+	    	<h:message for="deliveryDate" />
+	    </h:outputLabel>
+	    <br />
+	    
+	    <h:outputLabel value="Статус*">
+			<h:selectOneMenu value="#{pregledNaPriemaneNa4asti.status}"
+				readonly="#{(pregledNaPriemaneNa4asti.status eq 'Платена') or (!pregledNaPriemaneNa4asti.rowSelected)}">
+				<f:selectItems value="#{pregledNaPriemaneNa4asti.statuses}" />
+			</h:selectOneMenu>
+		</h:outputLabel>
+		<br />
+		
+		<h:outputLabel value="Номер на платежно нареждане">
+	    	<h:inputText id="paymentNumber" value="#{pregledNaPriemaneNa4asti.paymentNumber}"
+	    		readonly="#{(pregledNaPriemaneNa4asti.status eq 'Платена') or (!pregledNaPriemaneNa4asti.rowSelected)}" />
+	    	<h:message for="paymentNumber" />
+	    </h:outputLabel>
+	    <br />
+		
+		<h:outputLabel value="Обща цена">
+	    	<h:inputText id="fullPrice" value="#{pregledNaPriemaneNa4asti.fullPrice}" 
+	    		readonly="true" />
+	    	<h:message for="fullPrice" />
+	    </h:outputLabel>
+	    <br />
+
+		<h:commandButton value="Запиши" action="#{pregledNaPriemaneNa4asti.writeIt()}"
+	   		disabled="#{(pregledNaPriemaneNa4asti.status eq 'Платена') or (!pregledNaPriemaneNa4asti.rowSelected)}" /> 
+	    <br />
+	    
+	    <h:outputText value="#{pregledNaPriemaneNa4asti.errorMessage}"/>
+	    <br />
+		
+		
+		<h:outputText value="Доставени резервни части" />
+	    <br /> 
+	    
+	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове -->
+		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		
+		<h:dataTable
+			value="#{pregledNaPriemaneNa4asti.spisuk4asti}"
+			var="curr"
+			rowClasses="notSelectedRow">
+			
+			<h:column>
+				<f:facet name="header">Група</f:facet>
+				#{curr.sparePart.sparePartGroup.description}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Наименование</f:facet>
+				#{curr.sparePart.name}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Мерна единица</f:facet>
+				#{curr.sparePart.measuringUnit}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Доставено</f:facet>
+				#{curr.quantity}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Цена</f:facet>
+				#{curr.price}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Общо</f:facet>
+				#{curr.quantity * curr.price}
+			</h:column>
+			
+			</h:dataTable>
+		</div>
+		<br />
+		
+	    </h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>

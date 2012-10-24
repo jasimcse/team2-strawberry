@@ -190,6 +190,7 @@ public class PriemaneNa4asti implements Serializable {
 		
 		for (SparePartDelivered spd : spisuk4astiDostaveni) {
 
+			spd.getWarehouseOrderPartDelivery().setSparePartsDeliveryID(priemaneNa4asti.getID());
 			spd.getWarehouseOrderPartDelivery().writeToDB();
 			
 			double quantity = spd.getWarehouseOrderPartDelivery().getQuantity();
@@ -265,6 +266,8 @@ public class PriemaneNa4asti implements Serializable {
 				wo.getKey().writeToDB();
 			}
 		}
+		
+		//TODO - изпращане на съобщение до клиента, ако е чакал части
 		
 		tr.commit();
 		

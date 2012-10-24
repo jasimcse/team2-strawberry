@@ -111,6 +111,7 @@ public class Appointment implements Serializable {
 
 	public void setAutoserviceID(Key autoserviceID) {
 		this.autoserviceID = autoserviceID;
+		autoservice = null;
 	}
 	
 	public Autoservice getAutoservice() {

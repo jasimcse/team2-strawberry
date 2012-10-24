@@ -110,6 +110,7 @@ public class ClientOrderService implements Serializable {
 
 	public void setClientOrderID(Key clientOrderID) {
 		this.clientOrderID = clientOrderID;
+		clientOrder = null;
 	}
 	
 	public ClientOrder getClientOrder() {
@@ -138,6 +139,7 @@ public class ClientOrderService implements Serializable {
 
 	public void setServiceID(Key serviceID) {
 		this.serviceID = serviceID;
+		service = null;
 	}
 	
 	public Service getService() {
@@ -166,6 +168,7 @@ public class ClientOrderService implements Serializable {
 
 	public void setEmployeeID(Key employeeID) {
 		this.employeeID = employeeID;
+		employee = null;
 	}
 	
 	public Employee getEmployee() {

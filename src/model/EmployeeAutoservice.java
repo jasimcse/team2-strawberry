@@ -133,6 +133,7 @@ public class EmployeeAutoservice implements Serializable {
 
 	public void setEmployeeID(Key employeeID) {
 		this.employeeID = employeeID;
+		employee = null;
 	}
 	
 	public Employee getEmployee() {

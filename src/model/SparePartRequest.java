@@ -112,6 +112,7 @@ public class SparePartRequest implements Serializable {
 
 	public void setAutoserviceID(Key autoserviceID) {
 		this.autoserviceID = autoserviceID;
+		autoservice = null;
 	}
 	
 	public Autoservice getAutoservice() {
@@ -140,6 +141,7 @@ public class SparePartRequest implements Serializable {
 
 	public void setClientOrderID(Key clientOrderID) {
 		this.clientOrderID = clientOrderID;
+		clientOrder = null;
 	}
 	
 	public ClientOrder getClientOrder() {
@@ -168,6 +170,7 @@ public class SparePartRequest implements Serializable {
 
 	public void setSparePartID(Key sparePartID) {
 		this.sparePartID = sparePartID;
+		sparePart = null;
 	}
 	
 	public SparePart getSparePart() {

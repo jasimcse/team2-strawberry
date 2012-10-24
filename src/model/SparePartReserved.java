@@ -103,6 +103,7 @@ public class SparePartReserved implements Serializable {
 
 	public void setClientOrderID(Key clientOrderID) {
 		this.clientOrderID = clientOrderID;
+		clientOrder = null;
 	}
 	
 	public ClientOrder getClientOrder() {
@@ -131,6 +132,7 @@ public class SparePartReserved implements Serializable {
 
 	public void setSparePartID(Key sparePartID) {
 		this.sparePartID = sparePartID;
+		sparePart = null;
 	}
 	
 	public SparePart getSparePart() {

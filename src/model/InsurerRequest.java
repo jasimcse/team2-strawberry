@@ -103,6 +103,7 @@ public class InsurerRequest implements Serializable {
 
 	public void setInsurerID(Key insurerID) {
 		this.insurerID = insurerID;
+		insurer = null;
 	}
 	
 	public Insurer getInsurer() {
@@ -131,6 +132,7 @@ public class InsurerRequest implements Serializable {
 
 	public void setVehicleID(Key vehicleID) {
 		this.vehicleID = vehicleID;
+		vehicle = null;
 	}
 	
 	public Vehicle getVehicle() {
@@ -167,6 +169,7 @@ public class InsurerRequest implements Serializable {
 
 	public void setDiagnosisID(Key diagnosisID) {
 		this.diagnosisID = diagnosisID;
+		diagnosis = null;
 	}
 	
 	public Diagnosis getDiagnosis() {

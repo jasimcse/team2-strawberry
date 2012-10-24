@@ -14,31 +14,32 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import model.SparePartsDelivery;
+import model.Supplier;
+import model.WarehouseOrderPartDelivery;
+
 import com.google.appengine.api.datastore.Key;
 
-import model.Autoservice;
-import model.Employee;
-import model.Supplier;
-import model.WarehouseOrder;
-import model.WarehouseOrderPart;
 import controller.common.ConfigurationProperties;
 import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
 
 @SuppressWarnings("serial")
-@ManagedBean(name="pregledNaPoru4kaNa4asti")
+@ManagedBean(name="pregledNaPriemaneNa4asti")
 @ViewScoped
-public class PregledNaPoru4kaNa4asti implements Serializable {
+public class PregledNaPriemaneNa4asti implements Serializable {
 	
 	@ManagedProperty(value="#{currentEmployee}")
 	private CurrentEmployee currEmployee;
 	
-	private WarehouseOrder poru4ka = new WarehouseOrder();
-	private List<WarehouseOrder> spisukPoru4ki;
+	private SparePartsDelivery dostavka = new SparePartsDelivery();
+	private List<SparePartsDelivery> spisukDostavki;
 	private Key autoserviceID;
 	private int page = 0;
 	private int pagesCount;
 	private int rowsCount;
+	
+	private String errorMessage;
 	
 	private Stack<InterPageDataRequest> dataRequestStack;
 	private InterPageDataRequest dataRequest;
@@ -73,8 +74,8 @@ public class PregledNaPoru4kaNa4asti implements Serializable {
 		readList();
 	}
 
-	public List<WarehouseOrder> getSpisukPoru4ki() {
-		return spisukPoru4ki;
+	public List<SparePartsDelivery> getSpisukDostavki() {
+		return spisukDostavki;
 	}
 
 	public int getPagesCount() {
@@ -82,17 +83,17 @@ public class PregledNaPoru4kaNa4asti implements Serializable {
 	}
 
 	private void readList() {
-		spisukPoru4ki = WarehouseOrder.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize(), autoserviceID);
-		poru4ka = new WarehouseOrder();
-		rowsCount = WarehouseOrder.countGetAll(autoserviceID);
+		spisukDostavki = SparePartsDelivery.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize(), autoserviceID);
+		dostavka = new SparePartsDelivery();
+		rowsCount = SparePartsDelivery.countGetAll(autoserviceID);
 		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
 	}
 	
 	public String getRowStyleClasses() {
 		StringBuilder strbuff = new StringBuilder();
 		
-		for (WarehouseOrder wo : spisukPoru4ki) {
-			if (poru4ka == wo) {
+		for (SparePartsDelivery spd : spisukDostavki) {
+			if (dostavka == spd) {
 				strbuff.append("selectedRow,");
 			} else {
 				strbuff.append("notSelectedRow,");
@@ -111,14 +112,14 @@ public class PregledNaPoru4kaNa4asti implements Serializable {
 		return list;
 	}
 	
-	public void selectRow(WarehouseOrder wo) {
-		poru4ka = wo;
+	public void selectRow(SparePartsDelivery spd) {
+		dostavka = spd;
 	}
 	
 	public boolean isRowSelected() {
-		return spisukPoru4ki.contains(poru4ka);
+		return spisukDostavki.contains(dostavka);
 	}
-
+	
 	public Key getAutoserviceID() {
 		return autoserviceID;
 	}
@@ -130,28 +131,14 @@ public class PregledNaPoru4kaNa4asti implements Serializable {
 	public void setCurrEmployee(CurrentEmployee currEmployee) {
 		this.currEmployee = currEmployee;
 	}
-
-	public Autoservice getAutoservice() {
-		return poru4ka.getAutoservice();
+	
+	public void chooseDelivery(SparePartsDelivery spd) {
+		dostavka = spd;
 	}
-
-	public Supplier getSupplier() {
-		return poru4ka.getSupplier();
-	}
-
-	public Employee getEmployee() {
-		return poru4ka.getEmployee();
-	}
-
-	public Date getDate() {
-		return poru4ka.getDate();
-	}
-
-	public String getStatus() {
-		if ("1".equals(poru4ka.getStatus())) {
-			return "Нова";
-		} else if ("2".equals(poru4ka.getStatus())) {
-			return "Изпълнена";
+	
+	public List<WarehouseOrderPartDelivery> getSpisuk4asti() {
+		if (isRowSelected()) {
+			return WarehouseOrderPartDelivery.queryGetAll(0, 1000, dostavka.getID());
 		} else {
 			return null;
 		}
@@ -164,32 +151,69 @@ public class PregledNaPoru4kaNa4asti implements Serializable {
 	
 	public Map<String, String> getStatuses() {
 		Map<String, String> sta = new TreeMap<String, String>();
-		sta.put("Нова", WarehouseOrder.NEW);
-		sta.put("Изпълнена", WarehouseOrder.COMPLETED);
+		sta.put("Неплатена", SparePartsDelivery.NOT_PAYED);
+		sta.put("Платена", SparePartsDelivery.PAYED);
 		return sta;
 	}
-	
-	public List<WarehouseOrderPart> getSpisuk4asti() {
-		if (isRowSelected()) {
-			return WarehouseOrderPart.queryGetAll(0, 1000, poru4ka.getID());
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public String getDocumentNumber() {
+		return dostavka.getDocumentNumber();
+	}
+
+	public Date getDocumentDate() {
+		return dostavka.getDocumentDate();
+	}
+
+	public Date getDeliveryDate() {
+		return dostavka.getDeliveryDate();
+	}
+
+	public String getStatus() {
+		if ("1".equals(dostavka.getStatus())) {
+			return "Неплатена";
+		} else if ("2".equals(dostavka.getStatus())) {
+			return "Платена";
 		} else {
 			return null;
 		}
 	}
-	
-	public boolean isChoosingAllowed() {
-		return (dataRequest != null);
-	}
-	
-	public String chooseWarehouseOrder(WarehouseOrder wo) {
-		if (dataRequest == null) {
-			throw new RuntimeException("Don't do that bastard!");
-		}
-		
-		dataRequest.requestedObject = wo;
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
-		
-		return dataRequest.returnPage + "?faces-redirect=true";
+
+	public void setStatus(String status) {
+		dostavka.setStatus(status);
 	}
 
+	public String getPaymentNumber() {
+		return dostavka.getPaymentNumber();
+	}
+
+	public void setPaymentNumber(String paymentNumber) {
+		dostavka.setPaymentNumber(paymentNumber);
+	}
+
+	public double getFullPrice() {
+		return dostavka.getFullPrice();
+	}
+	
+	public String writeIt() {
+		
+		if (dostavka.getStatus().equals("1")) {
+			// set the message
+			errorMessage = "Няма промени по статуса на доставката!";
+			readList();
+			return null;
+		}
+		
+		dostavka.writeToDB();
+	
+		readList();
+
+		// set the message
+		errorMessage = "Доставката беше актуализирана успешно!";
+		
+		return null;
+	}
 }
