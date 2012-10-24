@@ -203,7 +203,8 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 				ConfigurationProperties.getPageSize(), currEmployee.getAutoserviceID());
 		diagnostika = new Diagnosis();
 		rowsCount = SparePartAutoservice.countGetAll(currEmployee.getAutoserviceID());
-		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
 	}
 
 	

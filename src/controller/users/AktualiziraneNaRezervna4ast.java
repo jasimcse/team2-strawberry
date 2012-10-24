@@ -118,7 +118,8 @@ public class AktualiziraneNaRezervna4ast implements Serializable {
 		spisukRezervni4asti = SparePart.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
 		rezervna4ast = new SparePart();
 		rowsCount = SparePart.countGetAll();
-		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
 	}
 	
 	public String getRowStyleClasses() {

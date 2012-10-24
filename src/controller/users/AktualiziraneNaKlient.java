@@ -211,7 +211,8 @@ public class AktualiziraneNaKlient implements Serializable {
 		spisukKlienti = Client.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
 		klient = new Client();
 		rowsCount = Client.countGetAll();
-		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
 	}
 
 	

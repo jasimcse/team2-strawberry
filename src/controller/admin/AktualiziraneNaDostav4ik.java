@@ -173,7 +173,8 @@ public class AktualiziraneNaDostav4ik implements Serializable {
 		spisukDostav4ici = Supplier.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
 		dostav4ik = new Supplier();
 		rowsCount = Supplier.countGetAll();
-		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
 	}
 	
 	public String getRowStyleClasses() {

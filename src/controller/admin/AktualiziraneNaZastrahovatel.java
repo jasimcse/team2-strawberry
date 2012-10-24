@@ -173,7 +173,8 @@ public class AktualiziraneNaZastrahovatel implements Serializable {
 		spisukZastrahovateli = Insurer.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
 		zastrahovatel = new Insurer();
 		rowsCount = Insurer.countGetAll();
-		pagesCount = rowsCount / ConfigurationProperties.getPageSize();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
 	}
 	
 	public String getRowStyleClasses() {

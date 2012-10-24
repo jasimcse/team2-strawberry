@@ -94,38 +94,29 @@
 			</h:column>
 			
 			<f:facet name="footer">
-				<h:panelGroup rendered="#{!empty pregledNaPriemaneNa4asti.pagesList}">
-					<!-- предишна страница -->
-					<h:commandLink rendered="#{pregledNaPriemaneNa4asti.page - 1 ge 0}"
-						action="#{pregledNaPriemaneNa4asti.setPage(pregledNaPriemaneNa4asti.page - 1)}"
-						value="&lt;&lt;" />
-						
-					<!-- други страници -->
-					<ui:repeat value="#{pregledNaPriemaneNa4asti.pagesList}" var="currPage">
-						<h:commandLink
-							rendered="#{pregledNaPriemaneNa4asti.getPage() ne currPage.intValue() - 1}"
-							action="#{pregledNaPriemaneNa4asti.setPage(currPage.intValue()-1)}"
-							value="#{currPage}" />
-							
-						<h:outputText
-							rendered="#{pregledNaPriemaneNa4asti.getPage() eq currPage.intValue() - 1}"
-							value="#{currPage}" />
-							
-						<h:outputText value=" " />
-					</ui:repeat>
-					
-					<!-- следваща страница -->
-					<h:commandLink rendered="#{pregledNaPriemaneNa4asti.page + 1 lt pregledNaPriemaneNa4asti.pagesCount}"
-						action="#{pregledNaPriemaneNa4asti.setPage(pregledNaPriemaneNa4asti.page + 1)}"
-						value="&gt;&gt;" />
-						
-				</h:panelGroup>
 				
-				<h:panelGroup rendered="#{empty pregledNaPriemaneNa4asti.pagesList}" style="color: red; font-weight: bold;">
-					Тук по принцип ще има избор на страница; явно сега няма никакви страници; 
-					<br />
-					приложи на страниците в горния panelGroup CSS, моля, а след това изтрий това съобщение
-				</h:panelGroup>
+				<!-- предишна страница -->
+				<h:commandLink disabled="#{pregledNaPriemaneNa4asti.page - 1 lt 0}"
+					action="#{pregledNaPriemaneNa4asti.setPage(pregledNaPriemaneNa4asti.page - 1)}"
+					value="&lt;&lt;" />
+					
+				<h:outputText value=" " />
+					
+				<!-- други страници -->
+				<ui:repeat value="#{pregledNaPriemaneNa4asti.pagesList}" var="currPage">
+					<h:commandLink
+						disabled="#{pregledNaPriemaneNa4asti.getPage() eq currPage.intValue() - 1}"
+						action="#{pregledNaPriemaneNa4asti.setPage(currPage.intValue() - 1)}"
+						value="#{currPage}" />
+						
+					<h:outputText value=" " />
+				</ui:repeat>
+				
+				<!-- следваща страница -->
+				<h:commandLink disabled="#{pregledNaPriemaneNa4asti.page + 1 ge pregledNaPriemaneNa4asti.pagesCount}"
+					action="#{pregledNaPriemaneNa4asti.setPage(pregledNaPriemaneNa4asti.page + 1)}"
+					value="&gt;&gt;" />
+						
 			</f:facet>
 			
 		</h:dataTable>
