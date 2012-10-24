@@ -23,7 +23,8 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 public class SparePartRequest implements Serializable {
 	
 	public static final String NEW = "1";
-	public static final String COMPLETED = "2";
+	public static final String ORDERED = "2";
+	public static final String COMPLETED = "3";
 	
 	private Entity thisEntity;
 	private Autoservice autoservice;
@@ -34,6 +35,7 @@ public class SparePartRequest implements Serializable {
 	private Key clientOrderID;
 	private Key sparePartID;
 	private Double quantity;
+	private Double quantityDelivered;
 	private LimitedString status = new LimitedString(1, true);
 	
 	private static final String PARENT_FIELD = "autoserviceID";
@@ -189,6 +191,9 @@ public class SparePartRequest implements Serializable {
 	}
 
 	public double getQuantity() {
+		if (quantity == null) {
+			return 0;
+		}
 		return quantity.doubleValue();
 	}
 
@@ -196,12 +201,23 @@ public class SparePartRequest implements Serializable {
 		this.quantity = Double.valueOf(quantity);
 	}
 	
+	public double getQuantityDelivered() {
+		if (quantityDelivered == null) {
+			return 0;
+		}
+		return quantityDelivered.doubleValue();
+	}
+
+	public void setQuantityDelivered(double quantityDelivered) {
+		this.quantityDelivered = Double.valueOf(quantityDelivered);
+	}
+	
 	public String getStatus() {
 		return status.getString();
 	}
 
 	public void setStatus(String status) {
-		if (NEW.equals(status) || COMPLETED.equals(status)) {
+		if (NEW.equals(status) ||ORDERED.equals(status) || COMPLETED.equals(status)) {
 			this.status.setString(status);
 		} else {
 			throw new RuntimeException("The string doesn't match any of possible values");
@@ -215,12 +231,12 @@ public class SparePartRequest implements Serializable {
 				       addSort("__key__"));
 	}
 	
-	private static PreparedQuery getPreparedQueryNew(Key autoserviceID) { 
+	private static PreparedQuery getPreparedQueryByStatus(Key autoserviceID, String status) { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(SparePartRequest.class.getSimpleName()).
 					   setAncestor(autoserviceID).
 				       addSort("__key__").
-				       setFilter(new Query.FilterPredicate("status", FilterOperator.EQUAL, NEW)));
+				       setFilter(new Query.FilterPredicate("status", FilterOperator.EQUAL, status)));
 	}
 	
 	public static List<SparePartRequest> queryGetAll(int offset, int count, Key autoserviceID) {
@@ -234,15 +250,15 @@ public class SparePartRequest implements Serializable {
 		return getPreparedQueryAll(autoserviceID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
-	public static List<SparePartRequest> queryGetNew(int offset, int count, Key autoserviceID) {
-		List<Entity> oldList = getPreparedQueryNew(autoserviceID).
+	public static List<SparePartRequest> queryGetByStatus(String status, int offset, int count, Key autoserviceID) {
+		List<Entity> oldList = getPreparedQueryByStatus(autoserviceID, status).
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
 		
 		return readList(oldList);
 	}
 	
-	public static int countGetNew(Key autoserviceID) {
-		return getPreparedQueryNew(autoserviceID).countEntities(FetchOptions.Builder.withLimit(10000));
+	public static int countGetByStatus(Key autoserviceID, String status) {
+		return getPreparedQueryByStatus(autoserviceID, status).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }
@@ -252,6 +268,7 @@ CREATE TABLE Spare_Part_Request (
 	Client_Order_ID BIGINT NOT NULL,
 	Spare_Part_ID BIGINT NOT NULL,
 	Quantity FLOAT NOT NULL,
+	Quantity_Delivered FLOAT NOT NULL,
 	Status SMALLINT NOT NULL
 );
 
