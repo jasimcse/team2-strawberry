@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -20,6 +21,7 @@ import model.Diagnosis;
 import model.DiagnosisPart;
 import model.DiagnosisService;
 import model.Employee;
+import model.InsurerRequest;
 import model.Service;
 import model.SparePart;
 import model.SparePartAutoservice;
@@ -48,9 +50,10 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 	private List <SparePartForClientOrder> spisukRezervni4asti = new ArrayList<SparePartForClientOrder>();
 	private double clientOrderPrice = 0;
 	
-	
+
 	@SuppressWarnings("unchecked")
-	public DobavqneNaKlientskaPoru4ka() {
+	@PostConstruct
+	public void init() {
 		Stack<InterPageDataRequest> dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
 	
 		if (dataRequestStack != null) 
@@ -82,7 +85,22 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 						
 						// попълване на списъка с услуги от избраната диагностика
 						for (DiagnosisService dSer : spisukDiagService) {
-							addSeviceForClientOrder(dSer.getService());
+							List<InsurerRequest> listInsureReq = InsurerRequest.queryGetAll(0, 
+									InsurerRequest.countGetAll(poru4ka.getVehicleID()), poru4ka.getVehicleID());
+							if(listInsureReq.size() != 0)
+							{
+								for(InsurerRequest inReq: listInsureReq)
+								{
+									if(inReq.getDiagnosisID() == ((Diagnosis)dataRequest.requestedObject).getID())
+									{
+										addSeviceForClientOrder(dSer.getService(), ClientOrderService.INSURER_PAYS );
+										break;
+									}
+								}
+							}
+							else
+								addSeviceForClientOrder(dSer.getService(), ClientOrderService.CLIENT_PAYS );
+							
 						}
 						
 						// попълване на списъка с резервни части от избраната диагностика
@@ -90,20 +108,34 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 						spisukDiagPart = DiagnosisPart.queryGetAll(0, DiagnosisPart.countGetAll(((Diagnosis)dataRequest.requestedObject).getID()), 
 								((Diagnosis)dataRequest.requestedObject).getID());
 						for (DiagnosisPart dSp : spisukDiagPart) {
-							addSparePartForClientOrder(dSp.getSparePart());
+							List<InsurerRequest> listInsureReq = InsurerRequest.queryGetAll(0, 
+									InsurerRequest.countGetAll(poru4ka.getVehicleID()), poru4ka.getVehicleID());
+							if(listInsureReq.size() != 0)
+							{
+								for(InsurerRequest inReq: listInsureReq)
+								{
+									if(inReq.getDiagnosisID() == ((Diagnosis)dataRequest.requestedObject).getID())
+									{
+										addSparePartForClientOrder(dSp.getSparePart(), ClientOrderService.INSURER_PAYS );
+										break;
+									}
+								}
+							}
+							else
+								addSparePartForClientOrder(dSp.getSparePart(), ClientOrderService.CLIENT_PAYS);
 						}
 					}
 					else
 					{
 						if(dataRequest.dataPage.equals("/users/AktualiziraneNaUsluga.jsf"))
 						{
-							addSeviceForClientOrder((Service)dataRequest.requestedObject);
+							addSeviceForClientOrder((Service)dataRequest.requestedObject, ClientOrderService.CLIENT_PAYS);
 						}
 						else
 						{
 							if(dataRequest.dataPage.equals("/users/PregledNaNali4niteRezervni4asti.jsf"))
 							{
-								addSparePartForClientOrder((SparePart)dataRequest.requestedObject);
+								addSparePartForClientOrder((SparePart)dataRequest.requestedObject, ClientOrderService.CLIENT_PAYS);
 							}
 						}
 					}
@@ -112,16 +144,16 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		}
 	}
 
-	public boolean addSeviceForClientOrder(Service service)
+	public boolean addSeviceForClientOrder(Service service, String whoPay)
 	{
 		ClientOrderService clService = new ClientOrderService();
 		clService.setService(service);
 		clService.setPriceHour(service.getPriceHour());
-		//TODO:
-		//clService.setWhoPays(whoPays);
+		clService.setWhoPays(whoPay);
+	
 		ServiceForClientOrder serClientOrder = new ServiceForClientOrder();
 		serClientOrder.setClService(clService);
-		List<VehicleModelService> listModelService =  VehicleModelService.queryGetByService(clService.getID(), 0, 1, poru4ka.getVehicle().getVehicleModelID());
+		List<VehicleModelService> listModelService =  VehicleModelService.queryGetByService(service.getID(), 0, 1, poru4ka.getVehicle().getVehicleModelID());
 		if(listModelService.size() != 1)
 		{
 			errorMessage = "Грешно зададени модел автомобил и услуга!";
@@ -134,17 +166,17 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		
 	}
 	
-	public boolean addSparePartForClientOrder(SparePart spPart)
+	public boolean addSparePartForClientOrder(SparePart spPart, String whoPay)
 	{
 		ClientOrderPart  clPart = new ClientOrderPart();
 		clPart.setSparePart(spPart);								
 		clPart.setQuantity(1);
 		clPart.setPriceUnit(spPart.getSalePrice());
-		//TODO:
-		//clPart.setWhoPays(whoPays);
+		clPart.setWhoPays(whoPay);
+		
 		SparePartForClientOrder partClientOrder = new SparePartForClientOrder();
 		partClientOrder.setClPart(clPart);
-		List <SparePartAutoservice> listAutosevicePart = SparePartAutoservice.queryGetBySparePartID(clPart.getID(), 0, 1, currEmployee.getAutoserviceID());
+		List <SparePartAutoservice> listAutosevicePart = SparePartAutoservice.queryGetBySparePartID(spPart.getID(), 0, 1, currEmployee.getAutoserviceID());
 		if(listAutosevicePart.size() != 1)
 		{
 			errorMessage = "Грешно зададена резервна част!";
@@ -359,14 +391,18 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 	}
 
 	
-	public String whoWillPays(ClientOrderService clService) {
-		if(clService.getWhoPays().equals("застрахователя"))
-			return ClientOrderPart.INSURER_PAYS;
-		else
-			if(clService.getWhoPays().equals("производителя"))
-				return ClientOrderPart.PRODUCER_PAYS;
-			else
-				return ClientOrderPart.CLIENT_PAYS;
+//	public String whoWillPays(ClientOrderService clService) {
+//		if(clService.getWhoPays().equals("застрахователя"))
+//			return ClientOrderPart.INSURER_PAYS;
+//		else
+//			if(clService.getWhoPays().equals("производителя"))
+//				return ClientOrderPart.PRODUCER_PAYS;
+//			else
+//				return ClientOrderPart.CLIENT_PAYS;
+//	}
+	public void toggleEditServiceForClientOrder(ServiceForClientOrder serForClO) {
+		serForClO.toggleEditing();
+		recalculateFullPrice();
 	}
 	
 	public void deleteUsluga(ClientOrderService clService)
@@ -391,18 +427,18 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		
 	}
 	
+//	
+//	public String whoWillPays(ClientOrderPart sPart) {
+//		if(sPart.getWhoPays().equals("застрахователя"))
+//			return ClientOrderPart.INSURER_PAYS;
+//		else
+//			if(sPart.getWhoPays().equals("производителя"))
+//				return ClientOrderPart.PRODUCER_PAYS;
+//			else
+//				return ClientOrderPart.CLIENT_PAYS;
+//	}
 	
-	public String whoWillPays(ClientOrderPart sPart) {
-		if(sPart.getWhoPays().equals("застрахователя"))
-			return ClientOrderPart.INSURER_PAYS;
-		else
-			if(sPart.getWhoPays().equals("производителя"))
-				return ClientOrderPart.PRODUCER_PAYS;
-			else
-				return ClientOrderPart.CLIENT_PAYS;
-	}
-	
-	public void toggleEditSparePartForOrder(SparePartForClientOrder spForClO) {
+	public void toggleEditSparePartForClientOrder(SparePartForClientOrder spForClO) {
 		spForClO.toggleEditing();
 		recalculateFullPrice();
 	}

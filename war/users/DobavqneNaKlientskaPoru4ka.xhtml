@@ -96,9 +96,12 @@
 
 			<h:column>
 				<f:facet name="header">Кой заплаща услугата</f:facet>
-				<h:selectOneMenu value="#{curr.clService.whoPays}">
-					<f:selectItems value="#{dobavqneNaKlientskaPoru4ka.whoWillPay}"  />
-				</h:selectOneMenu>
+				#{curr.clService.whoPays}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Промени</f:facet>
+				<h:commandLink action="#{dobavqneNaKlientskaPoru4ka.toggleEditServiceForClientOrder(curr)}" value="Промени" />
 			</h:column>
 			
 			<h:column>
@@ -161,9 +164,7 @@
 
 			<h:column>
 				<f:facet name="header">Кой заплаща услугата</f:facet>
-				<h:selectOneMenu value="#{curr.clPart.whoPays}">
-					<f:selectItems value="#{dobavqneNaKlientskaPoru4ka.whoWillPay}"  />
-				</h:selectOneMenu>
+				#{curr.clPart.whoPays}
 			</h:column>
 			
 			<h:column>
