@@ -16,25 +16,25 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 @SuppressWarnings("serial")
 public class SparePartReserved implements Serializable {
 	
 	private Entity thisEntity;
-	private Autoservice autoservice;
 	private ClientOrder clientOrder;
 	private SparePart sparePart;
 	
-	private Key autoserviceID;
 	private Key clientOrderID;
 	private Key sparePartID;
 	private Double quantity;
 	private Double used;
 	
-	private static final String PARENT_FIELD = "autoserviceID";
+	private static final String PARENT_FIELD = "clientOrderID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "clientOrder", "sparePart"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS",
+					      "thisEntity", "clientOrder", "sparePart"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
@@ -97,34 +97,6 @@ public class SparePartReserved implements Serializable {
 		return thisEntity.getKey();
 	}
 	
-	public Key getAutoserviceID() {
-		return autoserviceID;
-	}
-
-	public void setAutoserviceID(Key autoserviceID) {
-		this.autoserviceID = autoserviceID;
-	}
-	
-	public Autoservice getAutoservice() {
-		if (autoservice == null) {
-			if (this.autoserviceID != null) {
-				autoservice = Autoservice.readEntity(this.autoserviceID);
-			}
-		}
-		
-		return autoservice;
-	}
-	
-	public void setAutoservice(Autoservice autoservice) {
-		this.autoservice = autoservice;
-		
-		if (autoservice == null) {
-			autoserviceID = null;
-		} else {
-			autoserviceID = autoservice.getID();
-		}
-	}
-
 	public Key getClientOrderID() {
 		return clientOrderID;
 	}
@@ -197,22 +169,41 @@ public class SparePartReserved implements Serializable {
 		this.used = Double.valueOf(used);
 	}
 
-	private static PreparedQuery getPreparedQueryAll(Key autoserviceID) { 
+	private static PreparedQuery getPreparedQueryAll(Key clientOrderID) { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(SparePartReserved.class.getSimpleName()).
-					   setAncestor(autoserviceID).
+					   setAncestor(clientOrderID).
 				       addSort("__key__"));
 	}
 	
-	public static List<SparePartReserved> queryGetAll(int offset, int count, Key autoserviceID) {
-		List<Entity> oldList = getPreparedQueryAll(autoserviceID).
+	private static PreparedQuery getPreparedQueryBySparePart(Key clientOrderID, Key sparePartID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(SparePartReserved.class.getSimpleName()).
+					   setAncestor(clientOrderID).
+				       addSort("__key__").
+				       setFilter(new Query.FilterPredicate("sparePartID", FilterOperator.EQUAL, sparePartID)));
+	}
+	
+	public static List<SparePartReserved> queryGetAll(int offset, int count, Key clientOrderID) {
+		List<Entity> oldList = getPreparedQueryAll(clientOrderID).
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
 		
 		return readList(oldList);
 	}
 	
-	public static int countGetAll(Key autoserviceID) {
-		return getPreparedQueryAll(autoserviceID).countEntities(FetchOptions.Builder.withLimit(10000));
+	public static int countGetAll(Key clientOrderID) {
+		return getPreparedQueryAll(clientOrderID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<SparePartReserved> queryGetBySparePart(Key sparePartID, int offset, int count, Key clientOrderID) {
+		List<Entity> oldList = getPreparedQueryBySparePart(clientOrderID, sparePartID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetBySaprePart(Key clientOrderID, Key sparePartID) {
+		return getPreparedQueryBySparePart(clientOrderID, sparePartID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

@@ -155,7 +155,7 @@ public class Poru4kaNa4asti implements Serializable {
 			
 			// Вземаме списъка със заявените резервни части за клиентски поръчки, които още не са поръчани
 			// запазваме си списъка, за да отразим кои са поръчани
-			spisukZaqveni4asti = SparePartRequest.queryGetNew(0, 1000, currEmployee.getAutoserviceID());
+			spisukZaqveni4asti = SparePartRequest.queryGetByStatus(SparePartRequest.NEW, 0, 1000, currEmployee.getAutoserviceID());
 			
 			recalculateFullPrice();
 			flagReadIt = false;
@@ -213,6 +213,20 @@ public class Poru4kaNa4asti implements Serializable {
 			errorMessage = "Изберете резервни части!";
 			return null;
 		}
+		
+		boolean flagNothingToWrite = true;
+		for (SparePartForOrder spfo : spisuk4astiZaPoru4ka) {
+			if (spfo.getWarehouseOrderPart().getOrderedQuantity() > 0) {
+				flagNothingToWrite = false;
+				break;
+			}
+		}
+		
+		if (flagNothingToWrite) {
+			// set the message
+			errorMessage = "Поръчайте количество различно от 0!";
+			return null;
+		}
 
 		poru4kaNa4asti.setDate(new Date());
 		poru4kaNa4asti.setAutoserviceID(currEmployee.getAutoserviceID());
@@ -224,6 +238,12 @@ public class Poru4kaNa4asti implements Serializable {
 		poru4kaNa4asti.writeToDB();
 		
 		for (SparePartForOrder spfo : spisuk4astiZaPoru4ka) {
+			
+			if (spfo.getWarehouseOrderPart().getOrderedQuantity() <= 0) {
+				// няма количество за поръчване
+				continue;
+			}
+			
 			WarehouseOrderPart wop = spfo.getWarehouseOrderPart();
 			wop.setDeliveredQuantity(0);
 			wop.setWarehouseOrderID(poru4kaNa4asti.getID());
@@ -231,11 +251,13 @@ public class Poru4kaNa4asti implements Serializable {
 			wop.writeToDB();
 			
 			// актуализираме заявките които са изпълнени
-			for (SparePartRequest spr : spisukZaqveni4asti) {
-				if (spr.getSparePartID().equals(wop.getSparePartID())) {
-					spr.setStatus(SparePartRequest.COMPLETED);
+			if (spisukZaqveni4asti != null) {
+				for (SparePartRequest spr : spisukZaqveni4asti) {
+					if (spr.getSparePartID().equals(wop.getSparePartID())) {
+						spr.setStatus(SparePartRequest.ORDERED);
+					}
+					spr.writeToDB();
 				}
-				spr.writeToDB();
 			}
 			
 			// отбелязваме, че сме поръчали частите

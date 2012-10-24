@@ -34,6 +34,7 @@ public class SparePartsDelivery implements Serializable {
 	private Date deliveryDate;
 	private LimitedString status = new LimitedString(1, true);
 	private LimitedString paymentNumber = new LimitedString(30);
+	private Double fullPrice; 
 	
 	private static final String PARENT_FIELD = "autoserviceID";
 	
@@ -175,6 +176,17 @@ public class SparePartsDelivery implements Serializable {
 		this.paymentNumber.setString(paymentNumber);
 	}
 	
+	public double getFullPrice() {
+		if (fullPrice == null) {
+			return 0;
+		}
+		return fullPrice.doubleValue();
+	}
+
+	public void setFullPrice(double fullPrice) {
+		this.fullPrice = Double.valueOf(fullPrice);
+	}
+
 	private static PreparedQuery getPreparedQueryAll(Key autoserviceID) { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(SparePartsDelivery.class.getSimpleName()).
@@ -203,7 +215,8 @@ CREATE TABLE Spare_Parts_Delivery (
 	Document_Date DATE NOT NULL,
 	Delivery_Date DATE NOT NULL,
 	Status SMALLINT NOT NULL,
-	Payment_Number VARCHAR(30)
+	Payment_Number VARCHAR(30),
+	Full_Price FLOAT NOT NULL
 );
 
 ALTER TABLE Spare_Parts_Delivery ADD CONSTRAINT PK_Spare_Parts_Delivery 

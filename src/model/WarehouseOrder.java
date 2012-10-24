@@ -18,6 +18,8 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 @SuppressWarnings("serial")
 public class WarehouseOrder implements Serializable {
@@ -215,6 +217,24 @@ public class WarehouseOrder implements Serializable {
 				       addSort("__key__"));
 	}
 	
+	private static PreparedQuery getPreparedQueryByStatus(Key autoserviceID, String status) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(WarehouseOrder.class.getSimpleName()).
+					   setAncestor(autoserviceID).
+				       addSort("__key__").
+				       setFilter(new Query.FilterPredicate("status", FilterOperator.EQUAL, status)));
+	}
+	
+	private static PreparedQuery getPreparedQueryBySupplierStatus(Key autoserviceID, Key supplierID, String status) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(WarehouseOrder.class.getSimpleName()).
+					   setAncestor(autoserviceID).
+				       addSort("__key__").
+				       setFilter(CompositeFilterOperator.and(
+				    		   new Query.FilterPredicate("supplierID", FilterOperator.EQUAL, supplierID),
+				               new Query.FilterPredicate("status", FilterOperator.EQUAL, status))));
+	}
+	
 	public static List<WarehouseOrder> queryGetAll(int offset, int count, Key autoserviceID) {
 		List<Entity> oldList = getPreparedQueryAll(autoserviceID).
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
@@ -224,6 +244,28 @@ public class WarehouseOrder implements Serializable {
 	
 	public static int countGetAll(Key autoserviceID) {
 		return getPreparedQueryAll(autoserviceID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<WarehouseOrder> queryGetByStatus(String status, int offset, int count, Key autoserviceID) {
+		List<Entity> oldList = getPreparedQueryByStatus(autoserviceID, status).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetByStatus(Key autoserviceID, String status) {
+		return getPreparedQueryByStatus(autoserviceID, status).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<WarehouseOrder> queryGetBySupplierStatus(Key supplierID, String status, int offset, int count, Key autoserviceID) {
+		List<Entity> oldList = getPreparedQueryBySupplierStatus(autoserviceID, supplierID, status).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetBySupplierStatus(Key autoserviceID, Key supplierID, String status) {
+		return getPreparedQueryBySupplierStatus(autoserviceID, supplierID, status).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

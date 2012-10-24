@@ -16,6 +16,7 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 @SuppressWarnings("serial")
 public class WarehouseOrderPart implements Serializable {
@@ -28,6 +29,7 @@ public class WarehouseOrderPart implements Serializable {
 	private Key sparePartID;
 	private Double orderedQuantity;
 	private Double deliveredQuantity;
+	private Double neededQuantity; // помощно поле = ordered - delivered
 	
 	
 	private static final String PARENT_FIELD = "warehouseOrderID";
@@ -39,6 +41,9 @@ public class WarehouseOrderPart implements Serializable {
 			new String[] {}));
 	
 	public void writeToDB() {
+		
+		neededQuantity = orderedQuantity - deliveredQuantity;
+		
 		if (thisEntity == null) {
 			thisEntity = makeEntity();
 		} else {
@@ -163,6 +168,13 @@ public class WarehouseOrderPart implements Serializable {
 	public double getDeliveredQuantity() {
 		return deliveredQuantity.doubleValue();
 	}
+	
+	public double getNeededQuantity() {
+		if (neededQuantity == null) {
+			return 0;
+		}
+		return neededQuantity;
+	}
 
 	public void setDeliveredQuantity(double deliveredQuantity) {
 		this.deliveredQuantity = Double.valueOf(deliveredQuantity);
@@ -175,6 +187,22 @@ public class WarehouseOrderPart implements Serializable {
 				       addSort("__key__"));
 	}
 	
+	private static PreparedQuery getPreparedQueryActive(Key warehouseOrderID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(WarehouseOrderPart.class.getSimpleName()).
+					   setAncestor(warehouseOrderID).
+				       addSort("neededQuantity").
+				       setFilter(new Query.FilterPredicate("neededQuantity", FilterOperator.GREATER_THAN, Double.valueOf(0))));
+	}
+	
+	private static PreparedQuery getPreparedQueryBySparePartID(Key warehouseOrderID, Key sparePartID) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(WarehouseOrderPart.class.getSimpleName()).
+					   setAncestor(warehouseOrderID).
+				       addSort("__key__").
+				       setFilter(new Query.FilterPredicate("sparePartID", FilterOperator.EQUAL, sparePartID)));
+	}
+	
 	public static List<WarehouseOrderPart> queryGetAll(int offset, int count, Key warehouseOrderID) {
 		List<Entity> oldList = getPreparedQueryAll(warehouseOrderID).
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
@@ -184,6 +212,28 @@ public class WarehouseOrderPart implements Serializable {
 	
 	public static int countGetAll(Key warehouseOrderID) {
 		return getPreparedQueryAll(warehouseOrderID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<WarehouseOrderPart> queryGetActive(int offset, int count, Key warehouseOrderID) {
+		List<Entity> oldList = getPreparedQueryActive(warehouseOrderID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetActive(Key warehouseOrderID) {
+		return getPreparedQueryActive(warehouseOrderID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<WarehouseOrderPart> queryGetBySparePartID(Key sparePartID, int offset, int count, Key warehouseOrderID) {
+		List<Entity> oldList = getPreparedQueryBySparePartID(warehouseOrderID, sparePartID).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetBySparePartID(Key sparePartID, Key warehouseOrderID) {
+		return getPreparedQueryBySparePartID(warehouseOrderID, sparePartID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 }

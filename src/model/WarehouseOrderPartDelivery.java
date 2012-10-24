@@ -26,8 +26,8 @@ public class WarehouseOrderPartDelivery implements Serializable {
 	
 	private Key warehouseOrderID;
 	private Key sparePartID;
-	private Double orderedQuantity;
-	private Double deliveredQuantity;
+	private Double quantity;
+	private Double price;
 	
 	private static final String PARENT_FIELD = "warehouseOrderID";
 	
@@ -151,22 +151,22 @@ public class WarehouseOrderPartDelivery implements Serializable {
 		}
 	}
 
-	public double getOrderedQuantity() {
-		return orderedQuantity.doubleValue();
+	public double getQuantity() {
+		return quantity.doubleValue();
 	}
 
-	public void setOrderedQuantity(double orderedQuantity) {
-		this.orderedQuantity = Double.valueOf(orderedQuantity);
-	}
-
-	public double getDeliveredQuantity() {
-		return deliveredQuantity.doubleValue();
-	}
-
-	public void setDeliveredQuantity(double deliveredQuantity) {
-		this.deliveredQuantity = Double.valueOf(deliveredQuantity);
+	public void setQuantity(double quantity) {
+		this.quantity = Double.valueOf(quantity);
 	}
 	
+	public double getPrice() {
+		return price.doubleValue();
+	}
+
+	public void setPrice(double price) {
+		this.price = Double.valueOf(price);
+	}
+
 	private static PreparedQuery getPreparedQueryAll(Key warehouseOrderID) { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(WarehouseOrderPartDelivery.class.getSimpleName()).
@@ -187,13 +187,13 @@ public class WarehouseOrderPartDelivery implements Serializable {
 	
 }
 
-/*
+/*	
 CREATE TABLE Warehouse_Order_Part_Delivery ( 
 	Spare_Parts_Delivery_ID BIGINT NOT NULL,
 	Spare_Part_ID BIGINT NOT NULL,
 	Warehouse_Order_ID BIGINT NOT NULL,
 	Quantity FLOAT NOT NULL,
-	Price_Unit FLOAT NOT NULL
+	Price FLOAT NOT NULL
 );
 
 ALTER TABLE Warehouse_Order_Part_Delivery ADD CONSTRAINT PK_Warehouse_Order_Part_Delivery 
