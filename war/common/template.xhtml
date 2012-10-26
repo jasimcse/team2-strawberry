@@ -19,6 +19,12 @@
 		
 			<h:form name="loginForm">
 				<h:panelGroup rendered="#{loginController.isLoggedIn()}">
+					<h:outputText value="Сервиз: #{currentEmployee.autoserviceName}" />
+					<br />
+					<h:outputText value="Потребител: #{currentEmployee.username}" />
+					<br />
+					<h:outputText value="Позиция: #{currentEmployee.positionString}" />
+					<br />
 					<h:commandLink action="#{loginController.logout()}"	value="Излез" />
 				</h:panelGroup>
 			

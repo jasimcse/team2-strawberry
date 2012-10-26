@@ -88,6 +88,33 @@ public class CurrentEmployee implements Serializable {
 		}
 	}
 	
+	public String getPositionString() {
+		if (employeeAutoservice == null) {
+			throw new RuntimeException("Current employee is not logged in!");
+		} else {
+			String pos = employeeAutoservice.getPosition();
+			if (EmployeeAutoservice.ADMINISTRATOR.equals(pos)) {
+				return "Администратор";
+			}
+			if (EmployeeAutoservice.MANAGER.equals(pos)) {
+				return "Управител";
+			}
+			if (EmployeeAutoservice.CASHIER.equals(pos)) {
+				return "Приемчик/Касиер";
+			}
+			if (EmployeeAutoservice.DIAGNOSTICIAN.equals(pos)) {
+				return "Диагностик";
+			}
+			if (EmployeeAutoservice.WAREHOUSEMAN.equals(pos)) {
+				return "Началник склад";
+			}
+			if (EmployeeAutoservice.AUTO_MECHANIC.equals(pos)) {
+				return "Автомонтьор";
+			}
+			return null;
+		}
+	}
+	
 	public String getAutoserviceName() {
 		if (employeeAutoservice == null) {
 			throw new RuntimeException("Current employee is not logged in!");
