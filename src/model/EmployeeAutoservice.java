@@ -28,6 +28,13 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 @SuppressWarnings("serial")
 public class EmployeeAutoservice implements Serializable {
 	
+	public static final String ADMINISTRATOR = "1";
+	public static final String MANAGER = "2";
+	public static final String CASHIER = "3";
+	public static final String WAREHOUSEMAN = "4";
+	public static final String DIAGNOSTICIAN = "5";
+	public static final String AUTO_MECHANIC = "6";
+	
 	private Entity thisEntity;
 	private Autoservice autoservice;
 	private Employee employee;
@@ -42,7 +49,8 @@ public class EmployeeAutoservice implements Serializable {
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"PARENT_FIELD", "PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "UNIQUE_FIELDS",
-					      "thisEntity", "autoservice", "employee"}));
+					      "thisEntity", "autoservice", "employee",
+					      "ADMINISTRATOR", "MANAGER", "CASHIER", "WAREHOUSEMAN", "DIAGNOSTICIAN", "AUTO_MECHANIC"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
@@ -184,7 +192,12 @@ public class EmployeeAutoservice implements Serializable {
 	}
 
 	public void setPosition(String position) {
-		this.position.setString(position);
+		if (ADMINISTRATOR.equals(position) || MANAGER.equals(position) || CASHIER.equals(position) ||
+			WAREHOUSEMAN.equals(position) || DIAGNOSTICIAN.equals(position) || AUTO_MECHANIC.equals(position)) {
+			this.position.setString(position);
+		} else {
+			throw new RuntimeException("The string doesn't match any of possible values");
+		}
 	}
 	
 	private static String scramblePassword(String password) {

@@ -74,7 +74,7 @@ public class InitModelData extends HttpServlet {
     		empa.setEmployee(listEmp.get(0));
     		empa.setUsername("admin");
     		empa.setPassword("1234");
-	    	empa.setPosition("Administrator");
+	    	empa.setPosition(EmployeeAutoservice.ADMINISTRATOR);
 	    	
 	    	empa.writeToDB();
     	}

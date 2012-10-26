@@ -2,7 +2,9 @@ package controller.admin;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
+import java.util.TreeMap;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -66,6 +68,17 @@ public class DobavqneNaPotrebitel implements Serializable {
 	
 	public List<Autoservice> getAutoservices() {
 		List<Autoservice> auto = Autoservice.queryGetAll(0, 1000);
+		return auto;
+	}
+	
+	public Map<String, String> getPositions() {
+		Map<String, String> auto = new TreeMap<String, String>();
+		auto.put("Администратор", EmployeeAutoservice.ADMINISTRATOR);
+		auto.put("Управител", EmployeeAutoservice.MANAGER);
+		auto.put("Приемчик/Касиер", EmployeeAutoservice.CASHIER);
+		auto.put("Диагностик", EmployeeAutoservice.DIAGNOSTICIAN);
+		auto.put("Началник склад", EmployeeAutoservice.WAREHOUSEMAN);
+		auto.put("Автомонтьор", EmployeeAutoservice.AUTO_MECHANIC);
 		return auto;
 	}
 	

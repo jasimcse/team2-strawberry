@@ -43,9 +43,9 @@
 			</h:outputLabel>
 			<br />
 			<h:outputLabel value="Позиция*">
-				<h:inputText id="position" value="#{dobavqneNaPotrebitel.position}" maxlength="30"
-					required="#{not empty param[dobavqneNaPotrebitel.addButton.clientId]}" requiredMessage="задължително поле!" />
-				<h:message for="position" />
+				<h:selectOneMenu value="#{dobavqneNaPotrebitel.position}">
+					<f:selectItems value="#{dobavqneNaPotrebitel.positions}" />
+				</h:selectOneMenu>
 			</h:outputLabel>
 			
 			<br />
