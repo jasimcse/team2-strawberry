@@ -54,12 +54,18 @@
 					    </h:outputLabel> 
 					    <br />
 					    <h:outputLabel value="Телефонен номер">
-					    	<h:inputText id="phonePerson" value="#{dobavqneNaKlientDebug.phoneNumberPerson}" maxlength="15" />
+					    	<h:inputText id="phonePerson" value="#{dobavqneNaKlientDebug.phoneNumberPerson}" maxlength="15" 
+					    		validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
+					    		<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)"/>
+					    	</h:inputText>
 					    	<h:message for="phonePerson" />
 					    </h:outputLabel> 
 					    <br />
 					    <h:outputLabel value="Електронна поща">
-					    	<h:inputText id="mailPerson" value="#{dobavqneNaKlientDebug.mailPerson}" maxlength="50"/>
+					    	<h:inputText id="mailPerson" value="#{dobavqneNaKlientDebug.mailPerson}" maxlength="50"
+	    						validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
+	    						<f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$"/>
+	    					</h:inputText>
 					    	<h:message for="mailPerson" />
 					    </h:outputLabel> 
 					    <br />
@@ -123,12 +129,18 @@
 					    </h:outputLabel> 
 					    <br />
 					    <h:outputLabel value="Телефонен номер">
-					    	<h:inputText id="phoneCompany" value="#{dobavqneNaKlientDebug.phoneNumberCompany}" maxlength="15" />
+					    	<h:inputText id="phoneCompany" value="#{dobavqneNaKlientDebug.phoneNumberCompany}" maxlength="15" 
+					    		validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
+					    		<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)"/>
+					    	</h:inputText>
 					    	<h:message for="phoneCompany" />
 					    </h:outputLabel> 
 					    <br />
 					    <h:outputLabel value="Електронна поща">
-					    	<h:inputText id="mailCompany" value="#{dobavqneNaKlientDebug.mailCompany}" maxlength="50"/>
+					    	<h:inputText id="mailCompany" value="#{dobavqneNaKlientDebug.mailCompany}" maxlength="50"
+	    						validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
+	    						<f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$"/>
+	    					</h:inputText>
 					    	<h:message for="mailCompany" />
 					    </h:outputLabel> 
 					    <br />

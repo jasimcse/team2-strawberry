@@ -168,7 +168,10 @@
 			<h:outputLabel value="Електронна поща*">
 				<h:inputText id="mail" value="#{aktualiziraneNaDostav4ik.mail}"
 					maxlength="50" required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" />
+					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" 
+	    			validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
+	    			<f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$"/>
+	    		</h:inputText>
 				<h:message for="mail" />
 			</h:outputLabel>
 			<br />
@@ -176,7 +179,10 @@
 				<h:inputText id="phone"
 					value="#{aktualiziraneNaDostav4ik.phoneNumber}" maxlength="15"
 					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" />
+					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" 
+	    			validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
+	    			<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)"/>
+	    		</h:inputText>
 				<h:message for="phone" />
 			</h:outputLabel>
 			<br />
