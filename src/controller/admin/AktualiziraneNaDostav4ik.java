@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import com.google.appengine.api.datastore.KeyFactory;
 
 import model.Supplier;
+import model.util.UniqueAttributeException;
 import controller.common.ConfigurationProperties;
 import controller.common.InterPageDataRequest;
 
@@ -159,12 +160,16 @@ public class AktualiziraneNaDostav4ik implements Serializable {
 	}
 
 	public String writeIt() {
-		dostav4ik.writeToDB();
+		
+		try {
+			dostav4ik.writeToDB();
+			errorMessage = "Доставчикът беше актуализиран успешно!";
+		} catch (UniqueAttributeException e) {
+			errorMessage = "Неуникални полета!";
+			return null;
+		}
 		
 		readList();
-		
-		// set the message
-		errorMessage = "Доставчикът беше актуализиран успешно!";
 		
 		return null;
 	}

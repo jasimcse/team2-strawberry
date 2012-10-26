@@ -26,6 +26,7 @@ import model.Supplier;
 import model.WarehouseOrder;
 import model.WarehouseOrderPart;
 import model.WarehouseOrderPartDelivery;
+import model.util.UniqueAttributeException;
 
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
@@ -183,102 +184,107 @@ public class PriemaneNa4asti implements Serializable {
 	 
 		Transaction tr = DatastoreServiceFactory.getDatastoreService().beginTransaction();
 		
-		priemaneNa4asti.writeToDB();
+		try {
+			priemaneNa4asti.writeToDB();
+			errorMessage = "Докладът за доставени части беше направен успешно!";
 		
-		// вземаме списък с всички заявки за части, за да можем да ги актуализираме
-		List<SparePartRequest> spisukZaqveni4asti = SparePartRequest.queryGetByStatus(SparePartRequest.ORDERED, 0, 1000, currEmployee.getAutoserviceID());
-		
-		for (SparePartDelivered spd : spisuk4astiDostaveni) {
-
-			spd.getWarehouseOrderPartDelivery().setSparePartsDeliveryID(priemaneNa4asti.getID());
-			spd.getWarehouseOrderPartDelivery().writeToDB();
+			// вземаме списък с всички заявки за части, за да можем да ги актуализираме
+			List<SparePartRequest> spisukZaqveni4asti = SparePartRequest.queryGetByStatus(SparePartRequest.ORDERED, 0, 1000, currEmployee.getAutoserviceID());
 			
-			double quantity = spd.getWarehouseOrderPartDelivery().getQuantity();
-			double quantityToReserveTotal = 0;
-			Key sparePartID = spd.getWarehouseOrderPartDelivery().getSparePartID();
-			
-			// актуализираме данните за поръчаните части
-			WarehouseOrderPart wop = WarehouseOrderPart.queryGetBySparePartID(sparePartID, 0, 1, spd.getWarehouseOrderPartDelivery().getWarehouseOrderID()).get(0);
-			wop.setDeliveredQuantity(wop.getDeliveredQuantity() + quantity);
-			wop.writeToDB();
-			if (wop.getNeededQuantity() == 0) {
-				// тези части са доставени изцяло
-				Integer count = spisukPoru4kiZaProverka.get(wop);
-				if (count == null) {
-					// няма още такава поръчка в списъка
-					count = 0;
-				}
-				count++;
-				spisukPoru4kiZaProverka.put(spd.getWarehouseOrderPartDelivery().getWarehouseOrder(), count);
-			}
-			
-			for (SparePartRequest spr : spisukZaqveni4asti) {
-				if (spr.getSparePartID().equals(sparePartID)) {
-					double quantityToReserve;
-					
-					// актуализираме заявките за части от клиентски поръчки
-					if (spr.getQuantity() - spr.getQuantityDelivered() > quantity) {
-						// количеството което е доставено сега не е цялото заявено количество
-						spr.setQuantityDelivered(spr.getQuantityDelivered() + quantity);
-						quantityToReserve = quantity;
-						quantity = 0;
-					} else {
-						// количеството което е заявено е доставено
-						quantity -= spr.getQuantity() - spr.getQuantityDelivered();
-						quantityToReserve = spr.getQuantity() - spr.getQuantityDelivered();
-						spr.setQuantityDelivered(spr.getQuantity());
-						spr.setStatus(SparePartRequest.COMPLETED);
+			for (SparePartDelivered spd : spisuk4astiDostaveni) {
+	
+				spd.getWarehouseOrderPartDelivery().setSparePartsDeliveryID(priemaneNa4asti.getID());
+				spd.getWarehouseOrderPartDelivery().writeToDB();
+				
+				double quantity = spd.getWarehouseOrderPartDelivery().getQuantity();
+				double quantityToReserveTotal = 0;
+				Key sparePartID = spd.getWarehouseOrderPartDelivery().getSparePartID();
+				
+				// актуализираме данните за поръчаните части
+				WarehouseOrderPart wop = WarehouseOrderPart.queryGetBySparePartID(sparePartID, 0, 1, spd.getWarehouseOrderPartDelivery().getWarehouseOrderID()).get(0);
+				wop.setDeliveredQuantity(wop.getDeliveredQuantity() + quantity);
+				wop.writeToDB();
+				if (wop.getNeededQuantity() == 0) {
+					// тези части са доставени изцяло
+					Integer count = spisukPoru4kiZaProverka.get(wop);
+					if (count == null) {
+						// няма още такава поръчка в списъка
+						count = 0;
 					}
-					spr.writeToDB();
-					quantityToReserveTotal += quantityToReserve;
-					
-					// резервиране на части за клиентски поръчки
-					List<SparePartReserved> spReservedList = SparePartReserved.queryGetBySparePart(sparePartID, 0, 1, spr.getClientOrderID());
-					if (spReservedList.size() > 0) {
-						// има вече резервирани от тези части за тази клиентска поръчка
-						SparePartReserved spReserved = spReservedList.get(0);
-						spReserved.setQuantity(spReserved.getQuantity() + quantityToReserve);
-						spReserved.writeToDB();
-					} else {
-						// все още няма резервирани части от този тип за тази клиентска поръчка
-						SparePartReserved spReserved = new SparePartReserved();
-						spReserved.setClientOrderID(spr.getClientOrderID());
-						spReserved.setSparePartID(spr.getSparePartID());
-						spReserved.setUsed(0);
-						spReserved.setQuantity(quantityToReserve);
-						spReserved.writeToDB();
+					count++;
+					spisukPoru4kiZaProverka.put(spd.getWarehouseOrderPartDelivery().getWarehouseOrder(), count);
+				}
+				
+				for (SparePartRequest spr : spisukZaqveni4asti) {
+					if (spr.getSparePartID().equals(sparePartID)) {
+						double quantityToReserve;
+						
+						// актуализираме заявките за части от клиентски поръчки
+						if (spr.getQuantity() - spr.getQuantityDelivered() > quantity) {
+							// количеството което е доставено сега не е цялото заявено количество
+							spr.setQuantityDelivered(spr.getQuantityDelivered() + quantity);
+							quantityToReserve = quantity;
+							quantity = 0;
+						} else {
+							// количеството което е заявено е доставено
+							quantity -= spr.getQuantity() - spr.getQuantityDelivered();
+							quantityToReserve = spr.getQuantity() - spr.getQuantityDelivered();
+							spr.setQuantityDelivered(spr.getQuantity());
+							spr.setStatus(SparePartRequest.COMPLETED);
+						}
+						spr.writeToDB();
+						quantityToReserveTotal += quantityToReserve;
+						
+						// резервиране на части за клиентски поръчки
+						List<SparePartReserved> spReservedList = SparePartReserved.queryGetBySparePart(sparePartID, 0, 1, spr.getClientOrderID());
+						if (spReservedList.size() > 0) {
+							// има вече резервирани от тези части за тази клиентска поръчка
+							SparePartReserved spReserved = spReservedList.get(0);
+							spReserved.setQuantity(spReserved.getQuantity() + quantityToReserve);
+							spReserved.writeToDB();
+						} else {
+							// все още няма резервирани части от този тип за тази клиентска поръчка
+							SparePartReserved spReserved = new SparePartReserved();
+							spReserved.setClientOrderID(spr.getClientOrderID());
+							spReserved.setSparePartID(spr.getSparePartID());
+							spReserved.setUsed(0);
+							spReserved.setQuantity(quantityToReserve);
+							spReserved.writeToDB();
+						}
 					}
+				}
+				
+				// отбелязваме, че частите са доставени и част от тях са резервирани (евентуално)
+				SparePartAutoservice spa = SparePartAutoservice.queryGetBySparePartID(sparePartID, 0, 1, currEmployee.getAutoserviceID()).get(0);
+				spa.setQuantityAvailable(spa.getQuantityAvailable() + quantity);
+				spa.setQuantityReserved(spa.getQuantityReserved() + quantityToReserveTotal);
+				spa.setQuantityRequested(spa.getQuantityRequested() - quantityToReserveTotal);
+				spa.setQuantityOrdered(spa.getQuantityOrdered() - spd.getWarehouseOrderPartDelivery().getQuantity());
+				spa.writeToDB();
+			}
+			
+			for (Entry<WarehouseOrder, Integer> wo : spisukPoru4kiZaProverka.entrySet()) {
+				if (WarehouseOrderPart.countGetActive(wo.getKey().getID()) == wo.getValue()) {
+					wo.getKey().setStatus(WarehouseOrder.COMPLETED);
+					wo.getKey().writeToDB();
 				}
 			}
 			
-			// отбелязваме, че частите са доставени и част от тях са резервирани (евентуално)
-			SparePartAutoservice spa = SparePartAutoservice.queryGetBySparePartID(sparePartID, 0, 1, currEmployee.getAutoserviceID()).get(0);
-			spa.setQuantityAvailable(spa.getQuantityAvailable() + quantity);
-			spa.setQuantityReserved(spa.getQuantityReserved() + quantityToReserveTotal);
-			spa.setQuantityRequested(spa.getQuantityRequested() - quantityToReserveTotal);
-			spa.setQuantityOrdered(spa.getQuantityOrdered() - spd.getWarehouseOrderPartDelivery().getQuantity());
-			spa.writeToDB();
+			//TODO - изпращане на съобщение до клиента, ако е чакал части
+		
+			tr.commit();
+			
+		} catch (UniqueAttributeException e) {
+			tr.rollback();
+			errorMessage = "Неуникални полета!";
+			return null;
 		}
-		
-		for (Entry<WarehouseOrder, Integer> wo : spisukPoru4kiZaProverka.entrySet()) {
-			if (WarehouseOrderPart.countGetActive(wo.getKey().getID()) == wo.getValue()) {
-				wo.getKey().setStatus(WarehouseOrder.COMPLETED);
-				wo.getKey().writeToDB();
-			}
-		}
-		
-		//TODO - изпращане на съобщение до клиента, ако е чакал части
-		
-		tr.commit();
 		
 		// clean the data
 		priemaneNa4asti = new SparePartsDelivery();
 		poru4ka = null;
 		fullPrice = 0;
 		readList();
-		
-		// set the message
-		errorMessage = "Докладът за доставени части беше направен успешно!";
 		
 		return null;
 	}

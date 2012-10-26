@@ -12,7 +12,10 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.PreparedQuery.TooManyResultsException;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 /**
  * 
@@ -370,6 +373,52 @@ public class EntityHelper {
 		return to;
 	}
 	
+	
+	/**
+	 * Проверява дали се спазва уникалността на атрибутите на Entity-то в базата данни 
+	 * 
+	 * @param entity - обектът който ще се проверява
+	 * @param uniques - имената на атрибутите които трябва да са уникални в базата данни
+	 * 
+	 * @throws RuntimeException - когато открие неспазване на уникалността на някой от атрибутите
+	 */
+	public static void checkUniqueFields(Entity entity, Set<String> uniques) {
+		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
+		Query query = new Query(entity.getKind()).
+					  setAncestor(entity.getParent()).
+				      addSort("__key__").
+				      setKeysOnly();
+		
+		for (String string : uniques) {
+			Object valueObj = entity.getProperty(string);
+			
+			if (valueObj == null) { continue; } // допускаме да има безброй много null стойности
+			
+			PreparedQuery pq = dataStore.prepare(query.
+					setFilter(new Query.FilterPredicate(string, FilterOperator.EQUAL, valueObj)));
+			
+			Entity foundEntity;
+			try {
+				foundEntity = pq.asSingleEntity();
+			} catch (TooManyResultsException e) {
+				throw new UniqueAttributeException("The field \"" + string + "\" is declared to be unique!", e);
+			}
+			if ((foundEntity != null) && (!foundEntity.getKey().equals(entity.getKey()))) {
+				throw new UniqueAttributeException("The field \"" + string + "\" is declared to be unique!");
+			}
+		}
+	}
+	
+	
+	/**
+	 * Изпълнява филтриране като SQL оператора LIKE 
+	 * 
+	 * @param iterator - итератор върху заявка от базата данни върху резултатите на която ще се прави филтриране
+	 * @param stringSearchAttributes - двойки стойности (<име на атрибут>; <символен низ за филтриране>) чрез които се осъществява филтрирането
+	 * @param offset - колко резултата да бъдат пропуснати в началото
+	 * @param count - колко резултата максимално да бъдат върнати
+	 * @return списък с резултатите от филтрирането
+	 */
 	public static List<Entity> stringSearchFilter(
 			Iterator<Entity> iterator,
 			List<StringSearchAttribute> stringSearchAttributes,
@@ -423,6 +472,14 @@ public class EntityHelper {
 		return list;
 	}
 	
+	
+	/**
+	 * Изпълнява филтриране като SQL оператора LIKE и връща броя на резултатите
+	 * 
+	 * @param iterator - итератор върху заявка от базата данни върху резултатите на която ще се прави филтриране
+	 * @param stringSearchAttributes - двойки стойности (<име на атрибут>; <символен низ за филтриране>) чрез които се осъществява филтрирането
+	 * @return - брой на резултатите след филтрирането
+	 */
 	public static int stringSearchCount(
 			Iterator<Entity> iterator,
 			List<StringSearchAttribute> stringSearchAttributes) {

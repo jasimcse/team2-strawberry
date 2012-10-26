@@ -33,10 +33,14 @@ public class Service implements Serializable {
 	private static final String PARENT_FIELD = "serviceParentID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "UNIQUE_FIELDS",
+					      "thisEntity"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
+	
+	private static final Set<String> UNIQUE_FIELDS = new HashSet<String>(Arrays.asList(
+			new String[] {"foreignID"}));
 	
 	public void writeToDB() {
 		if (thisEntity == null) {
@@ -44,6 +48,9 @@ public class Service implements Serializable {
 		} else {
 			EntityHelper.populateIt(thisEntity, this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 		}
+		
+		EntityHelper.checkUniqueFields(thisEntity, UNIQUE_FIELDS);
+		
 		DatastoreServiceFactory.getDatastoreService().put(thisEntity);
 	}
 	

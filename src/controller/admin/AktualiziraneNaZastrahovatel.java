@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import com.google.appengine.api.datastore.KeyFactory;
 
 import model.Insurer;
+import model.util.UniqueAttributeException;
 import controller.common.ConfigurationProperties;
 import controller.common.InterPageDataRequest;
 
@@ -159,12 +160,15 @@ public class AktualiziraneNaZastrahovatel implements Serializable {
 	}
 
 	public String writeIt() {
-		zastrahovatel.writeToDB();
+		try {
+			zastrahovatel.writeToDB();
+			errorMessage = "Застрахователят беше актуализиран успешно!";
+		} catch (UniqueAttributeException e) {
+			errorMessage = "Неуникални полета!";
+			return null;
+		}
 		
 		readList();
-		
-		// set the message
-		errorMessage = "Застрахователят беше актуализиран успешно!";
 		
 		return null;
 	}

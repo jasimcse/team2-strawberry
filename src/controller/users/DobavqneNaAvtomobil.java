@@ -17,6 +17,7 @@ import controller.common.InterPageDataRequest;
 import model.Client;
 import model.Vehicle;
 import model.VehicleModel;
+import model.util.UniqueAttributeException;
 
 
 @SuppressWarnings("serial")
@@ -128,13 +129,16 @@ public class DobavqneNaAvtomobil implements Serializable {
 			return null;
 		}
 		
-		avtomobil.writeToDB();
+		try {
+			avtomobil.writeToDB();
+			errorMessage = "Автомобилът беше добавен успешно!";
+		} catch (UniqueAttributeException e) {
+			errorMessage = "Неуникални полета!";
+			return null;
+		}
 	
 		// clean the data
 		avtomobil = new Vehicle();
-		
-		// set the message
-		errorMessage = "Автомобилът беше добавен успешно!";
 		
 		return null;
 	}

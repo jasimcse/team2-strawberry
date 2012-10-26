@@ -44,12 +44,15 @@ public class Vehicle implements Serializable {
 	private static final String PARENT_FIELD = "clientID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS",
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "UNIQUE_FIELDS",
 					      "WARRANTY_YES", "WARRANTY_NO",
 					      "thisEntity", "client", "vehicleModel", "warrantyConditions"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"warrantyConditionsID", "warrantyOK", "purchaseDate"}));
+	
+	private static final Set<String> UNIQUE_FIELDS = new HashSet<String>(Arrays.asList(
+			new String[] {"VIN", "plateNumber"}));
 	
 	public void writeToDB() {
 		if (thisEntity == null) {
@@ -57,6 +60,9 @@ public class Vehicle implements Serializable {
 		} else {
 			EntityHelper.populateIt(thisEntity, this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 		}
+		
+		EntityHelper.checkUniqueFields(thisEntity, UNIQUE_FIELDS);
+		
 		DatastoreServiceFactory.getDatastoreService().put(thisEntity);
 	}
 	
