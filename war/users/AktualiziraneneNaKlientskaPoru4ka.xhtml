@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/common/template.xhtml">
+
+
+iii.	Таблици:
+1.	Намерени поръчки – извеждат се намерените поръчки по зададените условия Read only:
+a.	Код на клиентска поръчка – Client_Order.Client_Order_ID
+b.	Име и фамилия на клиента или наименование на юрид. лице – от таблица Person  или Company при избор на Client_ID
+c.	Регистрационен номер – Vehicle.Plate_Number
+d.	Автосервиз – Autoservice.Name
+e.	Код на служителя създал поръчката Read only – Client_Order.Employee_ID
+f.	Дата на създаване на поръчката – взима се днешна дата Read only – Client_Order.Date
+g.	Статус на поръчката (1 = задържана, 2 = изпълнявана, 3 = завършена, 4 = платена, 5 = блокирана ) – Client_Order.Status
+h.	Номер на платежно нареждане – Client_Order.Payment_Number	
+i.	Записва дали автомобила е приет или не. 1 = не е приет, 2 = приет – Client_Order.Vehicle_Present
+j.	Промени – колона с бутони при натискането им информацията от избрания ред се извежда в полетата под таблицата. И реда в таблицата се оцветява.
+k.	Избери – колона с бутони при натискане на им се избира запис от таблицата и се връща към страницата в която ще се ползва.
+
+
+i.	Полета:
+1.	Име на клиент за търсене
+2.	Регистрационен номер на кола за търсене
+3.	Избор на автосервиз (combo box) за търсене
+4.	Избор на служител създал поръчката
+5.	Дата или дата в интервал от - до за търсене на поръчки
+6.	Статус на поръчка за търсене (combo box)
+
+
+
+11.	Служител създал поръчката Read only – Employee.Name
+12.	Дата на създаване на поръчката – взима се днешна дата Read only – Client_Order.Date
+13.	Статус на поръчката (combo box) (1 = задържана, 2 = изпълнявана, 3 = завършена, 4 = платена, 5 = блокирана TODO: нова) – Client_Order.Status
+
+
+
+	<ui:define name="pageContent">
+	    <h:form>
+
+	    
+	    
+	    <h:panelGroup rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.person}">
+	    	<!-- ако клиентът е физическо лице се изчертава това -->
+		    <h:outputLabel value="Име на клиент">
+		    	<h:inputText id="personname" value="#{aktualiziraneNaKlientskaPoru4ka.client.person.name}" maxlength="50" 
+		    		required="false" requiredMessage="задължително поле!" 
+					readonly = "true" />
+		    	<h:message for="personname" />
+		    </h:outputLabel>
+		    <h:outputLabel value="Фамилия на клиент">
+		    	<h:inputText id="personfamily" value="#{aktualiziraneNaKlientskaPoru4ka.client.person.family}" maxlength="50" 
+		    		required="false" requiredMessage="задължително поле!"
+					readonly = "true" />
+		    	<h:message for="personfamily" />
+		    </h:outputLabel>
+		</h:panelGroup>
+	     
+	     <h:outputLabel value="Регистрационен номер на автомобила*">
+	    	<h:inputText id="platenum" value="#{aktualiziraneNaKlientskaPoru4ka.vehicle.plateNumber}" maxlength="8" 
+	    		readonly="true"/>
+	    	<h:message for="platenum" />
+	    </h:outputLabel> 
+	    <h:commandButton value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseAvtomobil()}" /> 
+	    <br />
+	    
+	    <h:panelGroup rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.company}">
+	    	<!-- ако клиентът е юридическо лице се изчертава това -->
+			<h:outputLabel value="Наименование на фирма">
+				<h:inputText id="companyname" value="#{aktualiziraneNaKlientskaPoru4ka.client.company.name}" maxlength="100" 
+		   			required="false" requiredMessage="задължително поле!"
+					readonly = "true" />
+		   		<h:message for="companyname" />
+			</h:outputLabel>
+		</h:panelGroup>
+		<br />
+
+		<h:outputLabel value="Автосервиз, в който се изпълнява поръчката:">
+	    	<h:inputText id="autoservice" value="#{aktualiziraneNaKlientskaPoru4ka.autoservice.name}" maxlength="100" 
+	    		readonly="true"/>
+	    	<h:message for="autoservice" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	    <h:outputLabel value="Служител създал поръчката:">
+	    	<h:inputText id="empname" value="#{aktualiziraneNaKlientskaPoru4ka.employee.name}" maxlength="50" 
+	    		readonly="true"/>
+	    	<h:message for="empname" />
+	    	<h:inputText id="empfamily" value="#{aktualiziraneNaKlientskaPoru4ka.employee.family}" maxlength="50" 
+	    		readonly="true"/>
+	    	<h:message for="empfamily" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	   	<h:outputLabel value="Автомобилът е приет за ремонт*">
+	   		<h:selectBooleanCheckbox value="#{aktualiziraneNaKlientskaPoru4ka.inAutoservice}"  />
+	    </h:outputLabel>
+	    <br />
+	    
+	    
+	  
+	
+		    
+		    2.	Услуги Read only:
+a.	ID на услугата – Service.Service_ID
+b.	Име на услугата – Service.Description
+c.	Брой часове нужни за извършване на услугата - Vehicle_Model_Service.Duration_Hour
+d.	Цена за час за извършване на услугата. Стойността на полето отразява цената по време на създаване на поръчката, за да няма проблеми при промяна на цените на услугите – Client_Order_Service.Price_Hour
+e.	Цена общо – Vehicle_Model_Service.Duration_Hour * Client_Order_Service.Price_Hour
+f.	Автомонтьор
+g.	Извършена услуга – колона с бутони Извършена услуга. Бутоните са активни само за логнат в системата автомонтьор. При натискане на бутона в колоната с автомонтьор се записва името му. 
+h.	Премахни услуга – колона с бутони премахни. При натискането на бутон съответният ред се премахва. Не може да се премахне услуга която вече е извършена.
+		    
+		<h:outputLabel value="Услуги, които ще бъдат извършени:">
+	    	<h:commandButton value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseUsluga()}" /> 
+	    </h:outputLabel>
+	    <br />
+	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове --> 
+		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<h:dataTable
+			value="#{aktualiziraneNaKlientskaPoru4ka.spisukUslugi}"
+			var="curr"
+			rowClasses="notSelectedRow">
+				
+			<h:column>
+				<f:facet name="header">Наименование на услугата</f:facet>
+				#{curr.clService.service.description}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Време за извършване (часа)</f:facet>
+				#{curr.serviceDuration}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Цена на час</f:facet>
+				#{curr.clService.priceHour}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Общо</f:facet>
+				#{curr.fullPrice}
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">Кой заплаща услугата</f:facet>
+				#{aktualiziraneNaKlientskaPoru4ka.getWhoWillPay(curr.clService.whoPays) }
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Премахни</f:facet>
+				<h:commandLink action="#{aktualiziraneNaKlientskaPoru4ka.deleteUsluga(curr)}" value="Премахни" />
+			</h:column> 
+		</h:dataTable>
+		</div>
+		<br />
+
+3.	Резервни части
+a.	ID на резервната част Read only - Spare_Part.Spare_Part_ID
+b.	Име на резервната част Read only - Spare_Part.Description
+c.	Нужно количество от избраната част – Client_Order_Part.Quantity
+d.	Резервирано количество за поръчката Read only - Spare_Part_Reserved.Quantity
+e.	Вложено количество за поръчката Read only - Spare_Part_Reserved.Used
+f.	Налично количество Read only - Spare_Part_Available.Quantity
+g.	Единична цена.Стойността на полето отразява цената по време на създаване на поръчката, за да няма проблеми при промяна на цените на частите Read only – Client_Order_Part.Price_Unit
+h.	Цена общо Read only – Client_Order_Part.Quantity * Client_Order_Part.Price_Unit
+i.	Редактирай – колона с бутони редактирай която прави полето нужно количество възможно за редакция. Не може нужно количество да стане по малко от вложеното количество до момента.
+j.	Премахни резервна част – колона с бутони премахни. При натискането на бутон съответният ред се премахва. Не може да се премахне резервна част ако от нея е вложено вече количество.
+
+		<h:outputLabel value="Резервни части, които трябва ще бъдат вложени:">
+	    	<h:commandButton  value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseSparePart()}" /> 
+	    </h:outputLabel>
+	    <br /> 
+	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове 
+	    Оцветяване на ред с липсващи резервни части-->
+		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<h:dataTable
+			value="#{aktualiziraneNaKlientskaPoru4ka.spisukRezervni4asti}"
+			var="curr"
+			rowClasses="notSelectedRow">
+				
+			<h:column>
+				<f:facet name="header">Група на резервната част</f:facet>
+				#{curr.clPart.sparePart.sparePartGroup.description}
+			</h:column>
+				
+			<h:column>
+				<f:facet name="header">Име на резервната част</f:facet>
+				#{curr.clPart.sparePart.name}
+			</h:column>
+				
+			<h:column>
+				<f:facet name="header">Нужно количество</f:facet>
+				<h:outputText value="#{curr.clPart.quantity}" rendered="#{!curr.editing}" />
+				<h:inputText value="#{curr.clPart.quantity}" rendered="#{curr.editing}" >
+				<f:validateDoubleRange minimum="0.001" />
+				</h:inputText>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Мерна единица</f:facet>
+				#{curr.clPart.sparePart.measuringUnit}
+			</h:column>
+				
+			<h:column>
+				<f:facet name="header">Налично количество</f:facet>
+				#{curr.quantityAvailable}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Единична цена</f:facet>
+				#{curr.clPart.priceUnit}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Общо</f:facet>
+				#{curr.fullPrice}
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">Кой заплаща услугата</f:facet>
+				#{aktualiziraneNaKlientskaPoru4ka.getWhoWillPay(curr.clPart.whoPays)}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Промени</f:facet>
+				<h:commandLink action="#{aktualiziraneNaKlientskaPoru4ka.toggleEditSparePartForClientOrder(curr)}" value="Промени" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Премахни</f:facet>
+				<h:commandLink action="#{aktualiziraneNaKlientskaPoru4ka.deleteSparePart(curr)}" value="Премахни" />
+			</h:column>
+		
+			</h:dataTable>
+		</div>
+		<br />
+		
+		
+		
+		<h:outputText value="Обща цена на поръчката: #{aktualiziraneNaKlientskaPoru4ka.clientOrderPrice}" />
+		<br />
+
+	    <h:outputLabel value="Номер на платежно нареждане">
+	    	<h:inputText id="paynum" value="#{aktualiziraneNaKlientskaPoru4ka.paymentNumber}" maxlength="30" 
+	    		readonly="true"/>
+	    	<h:message for="paynum" />
+	    </h:outputLabel> 
+	    <br />
+	    
+	     ii.	Бутони:
+1.	Избери клиент за търсене – отваря се Преглед и актуализация на клиенти в режим преглед.
+2.	Избери автомобил за търсене – отваря Преглед и актуализация на данните за автомобили в режим преглед
+3.	Избери служител за търсене – отваря Преглед и актуализация на служител в режим преглед
+4.	Търси – търсене по зададените условия и извеждане на намерената информация в таблица.
+5.	Изчисти – изтрива въведената информация в полетата за търсене.
+6.	Добави – за добавяне на нов поръчка. Отваря се страницата за Нова поръчка.
+7.	Избери Услуга - Преглед и актуализиране на предлаганите услуги в режим само на преглед. Добавя избраната услуга като ред от таблицата услуги.
+8.	Избери Резервна част - Преглед и актуализиране на резервни части в режим само на преглед.
+9.	Отмени – за връщане към предходна страница без промени.
+10.	Запази – актуализиране на запис в таблица Client_Order. Актуализиране на записи в таблиците Client_Order_Part и/или Client_Order_Service. Актуализиране на записите в Spare_Part_Available (намали нужното количество от съответната част с количеството нужно за изпълнение на поръчката. Внимание: Не трябва да остава отрицателно количество от частта!) Spare_Part_Reserved и Spare_Part_Request (ако няма наличното количество).
+	     
+	     
+	   	<h:commandButton value="Добави" 
+	   		 action="#{aktualiziraneNaKlientskaPoru4ka.addClientOrder()}"/> 
+	    <br />
+	    
+	    <h:outputText value="#{aktualiziraneNaKlientskaPoru4ka.errorMessage}"/>
+	    
+	    </h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>
