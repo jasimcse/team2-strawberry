@@ -13,13 +13,19 @@
 	    <h:form>
 		
 		<h:outputLabel value="Име на клиента">
-	    	<h:inputText id="name" value="#{zapazvaneNa4as.clientName}" maxlength="100" />
+	    	<h:inputText id="name" value="#{zapazvaneNa4as.clientName}" maxlength="100"
+	    		validatorMessage="Дължината на името не може да надвишава 100 символа">
+	    		<f:validateLength minimum="0" maximum="100"/>
+	    	</h:inputText>
 	    	<h:message for="name" />
 	    </h:outputLabel> 
 	    <br />
 	    
 	    <h:outputLabel value="Телефонен номер за обратна връзка">
-	    	<h:inputText id="phone" value="#{zapazvaneNa4as.phoneNumber}" maxlength="15" />
+	    	<h:inputText id="phone" value="#{zapazvaneNa4as.phoneNumber}" maxlength="15" 
+	    		validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
+	    		<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)"/>
+	    	</h:inputText>
 	    	<h:message for="phone" />
 	    </h:outputLabel> 
 	    <br />
