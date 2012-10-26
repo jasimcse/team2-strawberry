@@ -38,10 +38,14 @@ public class SparePart implements Serializable {
 	private static final String PARENT_FIELD = "sparePartParentID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "thisEntity", "sparePartGroup"}));
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "UNIQUE_FIELDS",
+					      "thisEntity", "sparePartGroup"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"description"}));
+	
+	private static final Set<String> UNIQUE_FIELDS = new HashSet<String>(Arrays.asList(
+			new String[] {"foreignID"}));
 	
 	public void writeToDB() {
 		if (thisEntity == null) {
@@ -49,6 +53,9 @@ public class SparePart implements Serializable {
 		} else {
 			EntityHelper.populateIt(thisEntity, this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 		}
+		
+		EntityHelper.checkUniqueFields(thisEntity, UNIQUE_FIELDS);
+		
 		DatastoreServiceFactory.getDatastoreService().put(thisEntity);
 	}
 	

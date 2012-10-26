@@ -8,6 +8,7 @@ import javax.faces.component.UIComponent;
 import model.Client;
 import model.Company;
 import model.Person;
+import model.util.UniqueAttributeException;
 
 @ManagedBean(name="dobavqneNaKlient")
 @RequestScoped
@@ -205,19 +206,27 @@ public class DobavqneNaKlient {
 
 	public void addPerson()
 	{
-		klientPerson.writeToDB();
+		try {
+			klientPerson.writeToDB();
+			errorMessage = "Клиентът беше добавен успешно!";
+		} catch (UniqueAttributeException e) {
+			errorMessage = "Неуникални полета!";
+			return;
+		}
 
 		init();
-		
-		errorMessage = "Клиентът беше добавен успешно!";
 	}
 	
 	public void addCompany() {
-		klientCompany.writeToDB();
+		try {
+			klientCompany.writeToDB();
+			errorMessage = "Клиентът беше добавен успешно!";
+		} catch (UniqueAttributeException e) {
+			errorMessage = "Неуникални полета!";
+			return;
+		}
 		
 		init();
-
-		errorMessage = "Клиентът беше добавен успешно!";
 	}
 	
 }

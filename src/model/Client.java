@@ -44,12 +44,15 @@ public class Client implements Serializable {
 	private static final String PARENT_FIELD = "clientParentID";
 	
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS",
+			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "UNIQUE_FIELDS",
 					      "PERSON", "COMPANY",
 					      "thisEntity", "personOrCompany"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"phoneNumber", "mail", "IBANNumber", "SWIFTCode", "foreignID"}));
+	
+	private static final Set<String> UNIQUE_FIELDS = new HashSet<String>(Arrays.asList(
+			new String[] {"IBANNumber", "foreignID"}));
 	
 	public Entity makeEntity() {
 		clientParentID = EntityHelper.getClientParent();
@@ -71,6 +74,8 @@ public class Client implements Serializable {
 		}
 		
 		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
+		
+		EntityHelper.checkUniqueFields(thisEntity, UNIQUE_FIELDS);
 		
 		Transaction transaction = dataStore.beginTransaction();
 		
