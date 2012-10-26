@@ -352,7 +352,7 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 			clSp.getClPart().writeToDB();
 			
 			List<SparePartAutoservice> listSpPartAuto = SparePartAutoservice.queryGetBySparePartID(
-					clSp.getClPart().getID(), 0, 1, currEmployee.getAutoserviceID());
+					clSp.getClPart().getSparePartID(), 0, 1, currEmployee.getAutoserviceID());
 			
 			if(listSpPartAuto.size() != 1)
 			{
@@ -380,7 +380,7 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 				
 			}
 			
-			listSpPartAuto.get(1).writeToDB(false);
+			listSpPartAuto.get(0).writeToDB();
 			
 			SparePartReserved spPartReserved = new SparePartReserved();
 			spPartReserved.setClientOrderID(poru4ka.getID());
@@ -395,6 +395,9 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		poru4ka = new ClientOrder();
 		spisukRezervni4asti.clear();
 		spisukUslugi.clear();
+		missingSpPart = false;
+		clientOrderPrice = 0;
+		setInAutoservice(false);
 		
 		// set the message
 		errorMessage = "Поръчката беше добавен успешно!";
