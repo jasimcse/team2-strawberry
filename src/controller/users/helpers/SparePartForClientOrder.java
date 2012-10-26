@@ -46,7 +46,7 @@ public class SparePartForClientOrder  implements Serializable {
 	}
 	
 	public void recalculateFullPrice() {
-		fullPrice = clPart.getPriceUnit() * clPart.getQuantity();
+		fullPrice = this.clPart.getPriceUnit() * this.clPart.getQuantity();
 	}
 	
 	//TODO:

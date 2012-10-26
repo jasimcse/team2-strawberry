@@ -25,15 +25,13 @@ import model.InsurerRequest;
 import model.Service;
 import model.SparePart;
 import model.SparePartAutoservice;
+import model.SparePartReserved;
 import model.Vehicle;
-import model.VehicleModel;
 import model.VehicleModelService;
-import controller.common.ConfigurationProperties;
 import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
 import controller.users.helpers.ServiceForClientOrder;
 import controller.users.helpers.SparePartForClientOrder;
-import controller.users.helpers.SparePartForOrder;
 
 @SuppressWarnings("serial")
 @ManagedBean(name="dobavqneNaKlientskaPoru4ka")
@@ -49,6 +47,8 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 	private List <ServiceForClientOrder> spisukUslugi = new ArrayList<ServiceForClientOrder>();
 	private List <SparePartForClientOrder> spisukRezervni4asti = new ArrayList<SparePartForClientOrder>();
 	private double clientOrderPrice = 0;
+	private boolean inAutoservice = false;
+	private boolean missingSpPart = false;
 	
 
 	@SuppressWarnings("unchecked")
@@ -124,18 +124,22 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 							else
 								addSparePartForClientOrder(dSp.getSparePart(), ClientOrderService.CLIENT_PAYS);
 						}
+						
+						recalculateFullPrice();
 					}
 					else
 					{
 						if(dataRequest.dataPage.equals("/users/AktualiziraneNaUsluga.jsf"))
 						{
 							addSeviceForClientOrder((Service)dataRequest.requestedObject, ClientOrderService.CLIENT_PAYS);
+							recalculateFullPrice();
 						}
 						else
 						{
 							if(dataRequest.dataPage.equals("/users/PregledNaNali4niteRezervni4asti.jsf"))
 							{
 								addSparePartForClientOrder((SparePart)dataRequest.requestedObject, ClientOrderService.CLIENT_PAYS);
+								recalculateFullPrice();
 							}
 						}
 					}
@@ -161,7 +165,9 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		}
 		
 		serClientOrder.setServiceDuration(listModelService.get(0).getDurationHour());
+		serClientOrder.recalculateFullPrice();
 		this.spisukUslugi.add(serClientOrder);
+		
 		return true;
 		
 	}
@@ -184,7 +190,13 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		}
 		
 		partClientOrder.setQuantityAvailable(listAutosevicePart.get(0).getQuantityAvailable());
+		partClientOrder.recalculateFullPrice();
 		this.spisukRezervni4asti.add(partClientOrder);
+		
+		// проверка дали разполагаме с необходимото количество от резервната част
+		if ( partClientOrder.getQuantityAvailable() < partClientOrder.getClPart().getQuantity() )
+			missingSpPart = true;
+		
 		return true;
 		
 	}
@@ -229,6 +241,15 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		poru4ka.setVehiclePresent(vehiclePresent);
 	}
 
+	
+	public boolean isInAutoservice() {
+		return inAutoservice;
+	}
+
+	public void setInAutoservice(boolean inAutoservice) {
+		this.inAutoservice = inAutoservice;
+	}
+
 	public String getErrorMessage() {
 		return errorMessage;
 	}
@@ -245,34 +266,36 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		this.clientOrderPrice = clientOrderPrice;
 	}
 
-	public List< String > getStatusPoru4ka() 
-	{
-		// 1 = задържана, 2 = изпълнявана, 3 = завършена, 4 = платена, 5 = блокирана.
-		List<String> listStatus =  new ArrayList<String>();
-		// при създаването си поръчката е нова
-		listStatus.add("нова");
-		// в статус задържана е ако се очаква пристигането на части 
-		// за извършване на ремонта или автомобила не е приет
-		listStatus.add("задържана");
-		// в статус изпълнявана е когато е се извършва поне една услуга 
-		// или е изписана поне една нужна за ремонта рез. част
-		//listStatus.add("изпълнявана");
-		// завършена е когато са изпълнени всички услуги и са вложени всички части
-		//listStatus.add("завършена");
-		// когато клиента заплати поръчката
-		//listStatus.add("платена");
-		// когато клиента се откаже от поръчката, но по нея няма извършени услуги и вложени рез.части
-		//listStatus.add("блокирана");
-		return listStatus;
-	}
+//	public List< String > getStatusPoru4ka() 
+//	{
+//		// 1 = задържана, 2 = изпълнявана, 3 = завършена, 4 = платена, 5 = блокирана.
+//		List<String> listStatus =  new ArrayList<String>();
+//		// при създаването си поръчката е нова
+//		listStatus.add("нова");
+//		// в статус задържана е ако се очаква пристигането на части 
+//		// за извършване на ремонта или автомобила не е приет
+//		listStatus.add("задържана");
+//		// в статус изпълнявана е когато е се извършва поне една услуга 
+//		// или е изписана поне една нужна за ремонта рез. част
+//		//listStatus.add("изпълнявана");
+//		// завършена е когато са изпълнени всички услуги и са вложени всички части
+//		//listStatus.add("завършена");
+//		// когато клиента заплати поръчката
+//		//listStatus.add("платена");
+//		// когато клиента се откаже от поръчката, но по нея няма извършени услуги и вложени рез.части
+//		//listStatus.add("блокирана");
+//		return listStatus;
+//	}
 
-	public List< String > getWhoWillPay() 
+	public String getWhoWillPay(String strWhoPay) 
 	{
-		List<String> listStatus =  new ArrayList<String>();
-		listStatus.add("клиента");
-		listStatus.add("застрахователя");
-		listStatus.add("производителя");
-		return listStatus;
+		if(strWhoPay.equals(ClientOrderPart.INSURER_PAYS))
+			return "застрахователя";
+		else
+			if(strWhoPay.equals(ClientOrderPart.PRODUCER_PAYS))
+				return "производителя";
+			else
+				return "клиента";
 	}
 	
 	public List<ServiceForClientOrder> getSpisukUslugi() {
@@ -298,37 +321,75 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 			errorMessage = "Изберете услуги и/или резервни части нужни за извършване по автомобила!";
 			return null;
 		}
-		
-//		5.	Добави - съхраняване на запис в таблица Client_Order. Съхраняват се записи 
-//		в таблиците Client_Order_Part и/или Client_Order_Service. Актуализиране на записите 
-//		в Spare_Part_Available (намали нужното количество от съответната част с количеството 
-//		нужно за изпълнение на поръчката. Внимание: Не трябва да остава отрицателно количество от частта!) 
-//		Spare_Part_Reserved и Spare_Part_Request (ако няма наличното количество).
 
 		poru4ka.setDate(new Date());
 		poru4ka.setEmployeeID(currEmployee.getEmployeeID());
 		poru4ka.setAutoserviceID(currEmployee.getAutoserviceID());
+		if( inAutoservice )
+			poru4ka.setVehiclePresent(ClientOrder.VEHICLE_PRESENTS);
+		else
+			poru4ka.setVehiclePresent(ClientOrder.VEHICLE_NOT_PRESENTS);
+	
+						
 		// TODO: проверка дали всички части са налични
-		if(true)
+		if( !missingSpPart && inAutoservice )
 			poru4ka.setStatus(ClientOrder.NEW);
 		else
 			poru4ka.setStatus(ClientOrder.HALTED);
+		
 		poru4ka.writeToDB();
 	 
 		// TODO: транзакция
 		for (ServiceForClientOrder clSer : spisukUslugi) {
 			clSer.getClService().setClientOrderID(poru4ka.getID());
+			//TODO: това трябва да е ID-то на автомонтжора извършил услугата
+			clSer.getClService().setEmployeeID(currEmployee.getEmployeeID());
 			clSer.getClService().writeToDB();
 		}
 		
 		for (SparePartForClientOrder clSp : spisukRezervni4asti) {
 			clSp.getClPart().setClientOrderID(poru4ka.getID());
 			clSp.getClPart().writeToDB();
-		}
-
+			
+			List<SparePartAutoservice> listSpPartAuto = SparePartAutoservice.queryGetBySparePartID(
+					clSp.getClPart().getID(), 0, 1, currEmployee.getAutoserviceID());
+			
+			if(listSpPartAuto.size() != 1)
+			{
+				errorMessage = "Грешно зададена резервна част!";
+				return null;
+			}
+			
+			if ( clSp.getQuantityAvailable() >= clSp.getClPart().getQuantity() )
+			{
+				listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() + 
+						clSp.getClPart().getQuantity());
+				
+				listSpPartAuto.get(0).setQuantityAvailable(listSpPartAuto.get(0).getQuantityAvailable() - 
+						clSp.getClPart().getQuantity());
+			}
+			else
+			{
+				listSpPartAuto.get(0).setQuantityRequested(listSpPartAuto.get(0).getQuantityRequested() + 
+						clSp.getClPart().getQuantity() - listSpPartAuto.get(0).getQuantityAvailable());
+				
+				listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() + 
+						listSpPartAuto.get(0).getQuantityAvailable());
+				
+				listSpPartAuto.get(0).setQuantityAvailable(0);
+				
+			}
+			
+			listSpPartAuto.get(1).writeToDB(false);
+			
+			SparePartReserved spPartReserved = new SparePartReserved();
+			spPartReserved.setClientOrderID(poru4ka.getID());
+			spPartReserved.setSparePartID(clSp.getClPart().getID());
+			spPartReserved.setQuantity(clSp.getClPart().getQuantity());
+			spPartReserved.setUsed(0);
+			spPartReserved.writeToDB();
 		
-		// TODO: проверка дали затрахователя е искал диагностиката 
-		// или автомобила е гаранционен
+		}
 		
 		// clean the data
 		poru4ka = new ClientOrder();
@@ -391,22 +452,9 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 	}
 
 	
-//	public String whoWillPays(ClientOrderService clService) {
-//		if(clService.getWhoPays().equals("застрахователя"))
-//			return ClientOrderPart.INSURER_PAYS;
-//		else
-//			if(clService.getWhoPays().equals("производителя"))
-//				return ClientOrderPart.PRODUCER_PAYS;
-//			else
-//				return ClientOrderPart.CLIENT_PAYS;
-//	}
-	public void toggleEditServiceForClientOrder(ServiceForClientOrder serForClO) {
-		serForClO.toggleEditing();
-		recalculateFullPrice();
-	}
-	
-	public void deleteUsluga(ClientOrderService clService)
+	public void deleteUsluga(ServiceForClientOrder clService)
 	{
+		clientOrderPrice -= clService.getFullPrice();
 		spisukUslugi.remove(clService);
 	}
 	
@@ -426,17 +474,7 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		return dataRequest.dataPage + "?faces-redirect=true";
 		
 	}
-	
-//	
-//	public String whoWillPays(ClientOrderPart sPart) {
-//		if(sPart.getWhoPays().equals("застрахователя"))
-//			return ClientOrderPart.INSURER_PAYS;
-//		else
-//			if(sPart.getWhoPays().equals("производителя"))
-//				return ClientOrderPart.PRODUCER_PAYS;
-//			else
-//				return ClientOrderPart.CLIENT_PAYS;
-//	}
+
 	
 	public void toggleEditSparePartForClientOrder(SparePartForClientOrder spForClO) {
 		spForClO.toggleEditing();
@@ -445,13 +483,26 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 
 	private void recalculateFullPrice() {
 		clientOrderPrice = 0;
+		for (ServiceForClientOrder serForClO : spisukUslugi) {
+			clientOrderPrice += serForClO.getFullPrice();
+		}
+		
+		missingSpPart = false;
 		for (SparePartForClientOrder spForClO : spisukRezervni4asti) {
 			clientOrderPrice += spForClO.getFullPrice();
+			// проверка дали разполагаме с необходимото количество от резервната част
+			if ( spForClO.getQuantityAvailable() < spForClO.getClPart().getQuantity() )
+					missingSpPart = true;
+			
 		}
 	}
-	public void deleteSparePart(ClientOrderPart sPart)
+	
+	
+	public void deleteSparePart(SparePartForClientOrder sPart)
 	{
+		clientOrderPrice -= sPart.getFullPrice();
 		spisukRezervni4asti.remove(sPart); 
+		
 	}
 	
 	

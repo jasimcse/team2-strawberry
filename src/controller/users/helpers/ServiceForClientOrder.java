@@ -47,15 +47,6 @@ public class ServiceForClientOrder   implements Serializable {
 		fullPrice = this.serviceDuration * clService.getPriceHour();
 	}
 	
-
-	public void toggleEditing() {
-		if (editing) {
-			recalculateFullPrice();
-		}
-		
-		editing = !editing;
-	}
-	
 }
 
 
