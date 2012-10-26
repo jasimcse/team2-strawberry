@@ -44,7 +44,7 @@ public class ClientOrderService implements Serializable {
 					      "thisEntity", "clientOrder", "service", "employee"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
-			new String[] {}));
+			new String[] {"employeeID"}));
 	
 	public void writeToDB() {
 		if (thisEntity == null) {

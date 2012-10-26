@@ -48,22 +48,19 @@
 
 	    
 	   	<h:outputLabel value="Автомобилът е приет за ремонт*">
+	   		<h:selectBooleanCheckbox value="#{dobavqneNaKlientskaPoru4ka.inAutoservice}"  />
 	    </h:outputLabel>
 	    <br />
 	    
 	    
-	    <h:outputLabel value="Цена на поръчката*">
-	    	<h:inputText id="price" value="#{dobavqneNaKlientskaPoru4ka.clientOrderPrice}" maxlength="10" />
-	    	<h:message for="price" />
-	    </h:outputLabel>
-	     <br />
+	  
 		    
 		 <h:outputLabel value="Използвай доклад от диагностика:">
 	    	<h:commandButton value="Избери" action="#{dobavqneNaKlientskaPoru4ka.chooseDiagnostika()}" /> 
 	    </h:outputLabel>
 	    <br />  
 		    
-		<h:outputLabel value="Услуги, които трябва да бъдат извършени според извършената диагностика:">
+		<h:outputLabel value="Услуги, които ще бъдат извършени:">
 	    	<h:commandButton value="Избери" action="#{dobavqneNaKlientskaPoru4ka.chooseUsluga()}" /> 
 	    </h:outputLabel>
 	    <br />
@@ -80,7 +77,7 @@
 			</h:column>
 			
 			<h:column>
-				<f:facet name="header">Време за ивършване (часа)</f:facet>
+				<f:facet name="header">Време за извършване (часа)</f:facet>
 				#{curr.serviceDuration}
 			</h:column>
 			
@@ -96,12 +93,7 @@
 
 			<h:column>
 				<f:facet name="header">Кой заплаща услугата</f:facet>
-				#{curr.clService.whoPays}
-			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Промени</f:facet>
-				<h:commandLink action="#{dobavqneNaKlientskaPoru4ka.toggleEditServiceForClientOrder(curr)}" value="Промени" />
+				#{dobavqneNaKlientskaPoru4ka.getWhoWillPay(curr.clService.whoPays) }
 			</h:column>
 			
 			<h:column>
@@ -112,7 +104,7 @@
 		</div>
 		<br />
 
-		<h:outputLabel value="Резервни части, които трябва да бъдат сменени според извършената диагностика:">
+		<h:outputLabel value="Резервни части, които трябва ще бъдат вложени:">
 	    	<h:commandButton  value="Избери" action="#{dobavqneNaKlientskaPoru4ka.chooseSparePart()}" /> 
 	    </h:outputLabel>
 	    <br /> 
@@ -164,7 +156,7 @@
 
 			<h:column>
 				<f:facet name="header">Кой заплаща услугата</f:facet>
-				#{curr.clPart.whoPays}
+				#{dobavqneNaKlientskaPoru4ka.getWhoWillPay(curr.clPart.whoPays)}
 			</h:column>
 			
 			<h:column>
@@ -180,7 +172,11 @@
 			</h:dataTable>
 		</div>
 		<br />
+		
+		<h:outputText value="Обща цена на поръчката: #{dobavqneNaKlientskaPoru4ka.clientOrderPrice}" />
+		<br />
 
+	     
 	   	<h:commandButton value="Добави" 
 	   		 action="#{dobavqneNaKlientskaPoru4ka.addClientOrder()}"/> 
 	    <br />
