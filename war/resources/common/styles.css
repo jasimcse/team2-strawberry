@@ -1,0 +1,47 @@
+@CHARSET "UTF-8";
+
+input, a {
+	margin: 4px;
+}
+
+table {
+	border: 1px solid black;
+	padding: 0px;
+	margin: 0px;
+	border-collapse: collapse;
+}
+
+tr {
+	padding: 0px;
+	margin: 0px;
+}
+
+th, td {
+	margin: 0;
+	border: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-left: 2px;
+	padding-right: 2px;
+	border-right: 1px solid black;
+	border-left: 0px solid black;
+}
+
+thead>tr {
+	border: 2px solid black;
+}
+
+tfoot>tr {
+	text-align: center;
+	border: 2px solid black;
+}
+
+/* използвани в главното меню */
+.allowedLink {
+	font-style: italic;
+}
+
+/* използвани в главното меню */
+.disabledLink {
+	font-weight: bold;
+}
