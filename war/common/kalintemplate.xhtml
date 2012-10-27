@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title>#{usersMenuController.getPageTitle(facesContext.externalContext.requestServletPath)}</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<ui:insert name="headSection"/>
+</h:head>
+
+<h:body>
+	<div id="topSection">
+		<div class="title" style="float: left;">Заглавие и други неща</div>
+	
+		<div id="login">
+		
+			<h:form name="loginForm">
+				<h:panelGroup rendered="#{loginController.isLoggedIn()}">
+					<h:commandLink action="#{loginController.logout()}"	value="Излез" />
+				</h:panelGroup>
+			
+				<h:panelGroup rendered="#{!loginController.isLoggedIn()}">
+					
+					<h:outputLabel value="Потребителско име">
+						<h:inputText maxlength="50" id="username" required="true" value="#{loginController.username}" />
+					</h:outputLabel>
+					<br />
+					<h:outputLabel value="Парола">
+						<h:inputSecret maxlength="50" id="password" required="true" value="#{loginController.password}" />
+					</h:outputLabel>
+					<br />
+					<h:panelGroup rendered="#{!empty loginController.errorMessage}" >
+						<h:outputText value="#{loginController.errorMessage}" />
+						<br />
+					</h:panelGroup>
+					<h:commandButton id="submit" action="#{loginController.login()}" value="Влез" />
+				
+				</h:panelGroup>
+			</h:form>
+		</div>
+	</div>
+	<div id="bottomSection" style="clear: both;">
+		<div id="leftSection" style="float: left; width: 100px;">
+			menu<br />
+			menu<br />
+			menu<br />
+			menu<br />
+			menu<br />
+			menu<br />
+			menu<br />
+			menu<br />
+			menu<br />
+			menu<br />
+			menu<br />
+			<ui:insert name="menu" />
+		</div>
+		<div id="centralSection" style="overflow: hidden;">
+			<ui:insert name="pageContent" />
+		</div>
+	</div>
+		
+</h:body>
+
+</html>

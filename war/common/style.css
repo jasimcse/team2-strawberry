@@ -1,0 +1,130 @@
+﻿body {
+	margin: 0 auto;
+	padding: 0;
+	/* Може би няма да е този цвета на страницата...
+	background: #BBBBFF;
+	*/
+	background-image: url("img/background.jpg");
+	background-repeat: repeat-x;
+	width: 1200px;
+}
+header {
+	background-image: url("img/eclipseHeader2.jpg");
+	background-repeat: no-repeat;
+	margin-bottom: 15px;
+	width: 1200px;
+	height: 150px;
+	 /* margin-left: 150px; */
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	-webkit-box-shadow: 0px 0px 10px 6px #097ec3;
+	-moz-box-shadow: 0px 0px 10px 6px #097ec3;
+	box-shadow: 0px 0px 10px 6px #097ec3;
+}
+#login {
+	float: right;
+	margin-top: 105px;
+	margin-right: 15px;
+}
+#container {
+	margin-top: 20px;
+}
+#submit {
+	background: url("img/login.png");
+	text-indent: -1000em;
+	width: 80px;
+	height: 31px;
+	border: none;
+	
+	cursor: pointer;
+}
+#submit:active {
+	-webkit-transform: scale(0.8);
+	-moz-transform: scale(0.8);
+	-ms-transform: scale(0.8);
+	-o-transform: scale(0.8);
+	transform: scale(0.8);
+}
+nav {
+	
+	float: left;
+	height: 550px;
+	margin-top: 30px;
+	padding: 10px;
+	padding-top: 22px;
+	padding-right: 3px;
+	border-right: 2px solid black;
+	overflow: auto;
+}
+div span {
+	display: block;
+	width: 180px;
+	margin-top: -10px;
+	margin-right: 28px;
+}
+ul {
+	list-style-type: none;
+}
+ul img{
+	float: left;
+}
+li {
+	width: 150px;
+	text-align: left;
+	padding: 2px;
+	font-style: italic;
+	border-bottom: 1px solid black;
+	-webkit-transition: all 0.4s ease;
+	-moz-transition: all 0.4s ease;
+	-o-transition: all 0.4s ease;
+	transition: all 0.4s ease;
+}
+li:hover {
+	background: rgba(207,207,257, .8);
+	cursor: default;
+	font-style: italic;	
+}
+span {
+	background: #fff;
+	cursor: pointer;
+	border: 1px solid black;
+	padding: 5px;
+	font-weight: bold;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-transition: all 0.4s ease;
+	-moz-transition: all 0.4s ease;
+	-o-transition: all 0.4s ease;
+	transition: all 0.4s ease;
+}
+span:hover {
+	background: #cfcfff;
+	color: #0000ad;
+	-webkit-box-shadow: 0px 0px 3px 2px #0000ad;
+	-moz-box-shadow: 0px 0px 3px 2px #0000ad;
+	box-shadow: 0px 0px 3px 2px #0000ad;
+
+}
+#section{
+	display: none;
+	width: 625px;
+	height: auto;
+	padding: 5px;
+	margin-left: 250px;
+	border: 1px solid black;
+}
+#username, #password {
+	margin-right: 5px;
+	font-style: italic;
+	-webkit-box-shadow: 0px 0px 10px 3px #ffffff;
+	-moz-box-shadow: 0px 0px 10px 3px #ffffff;
+	box-shadow: 0px 0px 10px 3px #ffffff;
+}
+#username:focus, #password:focus {
+	font-style: italic;
+	-webkit-box-shadow: 0px 0px 10px 3px #097ec3;
+	-moz-box-shadow: 0px 0px 10px 3px #097ec3;
+	box-shadow: 0px 0px 10px 3px #097ec3;
+}
