@@ -6,10 +6,11 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core">
 
-<head>
+<h:head>
+	<link rel="stylesheet" type="text/css" href="/resources/common/styles.css" />
 	<title>#{usersMenuController.getPageTitle(facesContext.externalContext.requestServletPath)}</title>
 	<ui:insert name="headSection"/>
-</head>
+</h:head>
 
 <h:body>
 	<div id="topSection">
@@ -52,7 +53,10 @@
 	<div id="bottomSection" style="clear: both;">
 		<div id="leftSection" style="float: left; width: 200px;">
 			<ui:repeat var="currEntry" value="#{usersMenuController.getMenu('UserPosition')}">
-				<h:outputLink value="#{currEntry.path}">#{currEntry.value}</h:outputLink>
+				<h:outputLink value="#{currEntry.path}" disabled="#{empty currEntry.path}"
+					styleClass="#{empty currEntry.path ? 'disabledLink' : 'allowedLink'}" >
+					#{currEntry.value}
+				</h:outputLink>
 				<br />
 			</ui:repeat>
 			
