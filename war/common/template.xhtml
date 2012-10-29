@@ -8,7 +8,7 @@
 
 <h:head>
 	<link rel="stylesheet" type="text/css" href="/resources/common/styles.css" />
-	<title>#{usersMenuController.getPageTitle(facesContext.externalContext.requestServletPath)}</title>
+	<title>#{allPages.title}</title>
 	<ui:insert name="headSection"/>
 </h:head>
 
@@ -52,12 +52,32 @@
 	
 	<div id="bottomSection" style="clear: both;">
 		<div id="leftSection" style="float: left; width: 200px;">
-			<ui:repeat var="currEntry" value="#{usersMenuController.getMenu('UserPosition')}">
-				<h:outputLink value="#{currEntry.path}" disabled="#{empty currEntry.path}"
-					styleClass="#{empty currEntry.path ? 'disabledLink' : 'allowedLink'}" >
-					#{currEntry.value}
-				</h:outputLink>
-				<br />
+			<ui:repeat var="currEntry" value="#{usersMenuController.getMenu(currentEmployee.position)}">
+				<h:panelGroup rendered="#{currEntry.type eq 'simpleGroup'}">
+					<div>
+						<span>
+							<h:outputText value="#{currEntry.value}" />
+						</span>
+						<ul>
+							<ui:repeat var="currEntry1" value="#{currEntry.swallowedEntries}">
+								<li>
+									<h:outputLink value="#{currEntry1.path}">
+										#{currEntry1.value}
+									</h:outputLink>	
+								</li>
+							</ui:repeat>			
+						</ul>
+					</div>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{currEntry.type eq 'simpleEntry'}">
+				<ul>
+					<li>
+						<h:outputLink value="#{currEntry.path}">
+							#{currEntry.value}
+						</h:outputLink>	
+					</li>
+				</ul>
+				</h:panelGroup>
 			</ui:repeat>
 			
 			<ui:insert name="menu" />

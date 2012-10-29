@@ -82,7 +82,7 @@ public class CurrentEmployee implements Serializable {
 
 	public String getPosition() {
 		if (employeeAutoservice == null) {
-			throw new RuntimeException("Current employee is not logged in!");
+			return null;
 		} else {
 			return employeeAutoservice.getPosition();
 		}

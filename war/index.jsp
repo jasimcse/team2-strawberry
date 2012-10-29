@@ -3,6 +3,6 @@
       <title>Initial Redirect Page</title>
    </head>
    <body>
-      <% response.sendRedirect("index.jsf"); %>
+      <% response.sendRedirect("clients/ZapazvaneNa4as.jsf"); %>
    <body>
 </html>
