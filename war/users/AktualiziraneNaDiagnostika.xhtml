@@ -204,15 +204,15 @@
 		<br />
 	
 		<h:commandButton value="Запази" action="#{aktualiziraneNaDiagnostika.saveDiagnostika()}"
-				disabled="#{!aktualiziraneNaDiagnostika.rowSelected}"/>
+			disabled="#{!aktualiziraneNaDiagnostika.rowSelected}"/>
 				
-			<h:commandButton action="#{aktualiziraneNaDiagnostika.deselectRow()}" value="Отмени"
-				disabled="#{!aktualiziraneNaDiagnostika.rowSelected}"/>
+		<h:commandButton action="#{aktualiziraneNaDiagnostika.deselectRow()}" value="Отмени"
+			disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected}"/>
 					
-			<h:commandButton action="#{aktualiziraneNaDiagnostika.goToAdd()}" value="Добави" />
+		<h:commandButton action="#{aktualiziraneNaDiagnostika.goToAdd()}" value="Добави" />
 				
-		    <br />
-		    <h:outputText value="#{aktualiziraneNaDiagnostika.errorMessage}"/>
+		<br />
+		<h:outputText value="#{aktualiziraneNaDiagnostika.errorMessage}"/>
 	    
 	    </h:form>
 	</ui:define>
