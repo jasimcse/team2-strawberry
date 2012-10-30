@@ -17,7 +17,8 @@ public class SparePartForClientOrder  implements Serializable {
 	private ClientOrderPart clPart;
 	private double quantityAvailable;
 	private double fullPrice;
-	
+	private double quantityReserved;
+	private double quantityUsed;
 	private boolean editing;
 	
 	public double getQuantityAvailable() {
@@ -27,7 +28,6 @@ public class SparePartForClientOrder  implements Serializable {
 	public void setQuantityAvailable(double quantityAvailable) {
 		this.quantityAvailable = quantityAvailable;
 	}
-	
 	
 	public ClientOrderPart getClPart() {
 		return clPart;
@@ -39,6 +39,22 @@ public class SparePartForClientOrder  implements Serializable {
 
 	public double getFullPrice() {
 		return fullPrice;
+	}
+
+	public double getQuantityReserved() {
+		return quantityReserved;
+	}
+
+	public void setQuantityReserved(double quantityReserved) {
+		this.quantityReserved = quantityReserved;
+	}
+
+	public double getQuantityUsed() {
+		return quantityUsed;
+	}
+
+	public void setQuantityUsed(double quantityUsed) {
+		this.quantityUsed = quantityUsed;
 	}
 
 	public boolean isEditing() {

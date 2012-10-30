@@ -39,6 +39,11 @@ public class ServiceForClientOrder   implements Serializable {
 		return fullPrice;
 	}
 
+	public String getEmployeeNames()
+	{
+		return clService.getEmployee().getName() + " " + clService.getEmployee().getFamily();
+	}
+	
 	public boolean isEditing() {
 		return editing;
 	}

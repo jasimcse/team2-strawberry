@@ -24,7 +24,6 @@ import model.Diagnosis;
 import model.DiagnosisPart;
 import model.DiagnosisService;
 import model.Employee;
-import model.SparePartAutoservice;
 import model.Vehicle;
 
 
@@ -202,7 +201,7 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 		spisukDiagnostiki = Diagnosis.queryGetAll(page * ConfigurationProperties.getPageSize(), 
 				ConfigurationProperties.getPageSize(), currEmployee.getAutoserviceID());
 		diagnostika = new Diagnosis();
-		rowsCount = SparePartAutoservice.countGetAll(currEmployee.getAutoserviceID());
+		rowsCount = Diagnosis.countGetAll(currEmployee.getAutoserviceID());
 		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
 				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
 	}

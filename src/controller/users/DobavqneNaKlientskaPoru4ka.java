@@ -343,7 +343,7 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		for (ServiceForClientOrder clSer : spisukUslugi) {
 			clSer.getClService().setClientOrderID(poru4ka.getID());
 			//TODO: това трябва да е ID-то на автомонтжора извършил услугата
-			clSer.getClService().setEmployeeID(currEmployee.getEmployeeID());
+			//clSer.getClService().setEmployeeID(currEmployee.getEmployeeID());
 			clSer.getClService().writeToDB();
 		}
 		
