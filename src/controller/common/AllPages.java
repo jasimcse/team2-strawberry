@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 
 import model.EmployeeAutoservice;
 
@@ -74,11 +73,10 @@ public class AllPages {
 		
 	}
 	
-	public String getTitle() {
-		String path = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
+	public String getTitle(String pagePath) {
 		
 		for (PageAttributes pa : allPages) {
-			if (pa.getUrl().equals(path)) {
+			if (pa.getUrl().equals(pagePath)) {
 				return pa.getTitle();
 			}
 		}
@@ -86,11 +84,20 @@ public class AllPages {
 		throw new RuntimeException("Page hasn't been defined!");
 	}
 	
-	public boolean getReadRight(String position) {
-		String path = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
+	public boolean isLoggedUsersOnly(String pagePath) {
+		for (PageAttributes pa : allPages) {
+			if (pa.getUrl().equals(pagePath)) {
+				return pa.isLoggedUsersOnly();
+			}
+		}
+		
+		return true;
+	}
+	
+	public boolean getReadRight(String pagePath, String position) {
 		
 		for (PageAttributes pa : allPages) {
-			if (pa.getUrl().equals(path)) {
+			if (pa.getUrl().equals(pagePath)) {
 				return pa.getReadRight(position);
 			}
 		}
@@ -98,11 +105,10 @@ public class AllPages {
 		return false;
 	}
 	
-	public boolean getWriteRight(String position) {
-		String path = FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath();
+	public boolean getWriteRight(String pagePath, String position) {
 		
 		for (PageAttributes pa : allPages) {
-			if (pa.getUrl().equals(path)) {
+			if (pa.getUrl().equals(pagePath)) {
 				return pa.getWriteRight(position);
 			}
 		}
@@ -132,7 +138,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/admin/DobavqneNaSlujitel.jsf", "Добавяне на служител");
+		return new PageAttributes("/admin/DobavqneNaSlujitel.jsf", "Добавяне на служител", true, readRights, writeRights);
 	}
 	
 	private PageAttributes aktualiziraneNaSlujitel() {
@@ -153,7 +159,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/admin/AktualiziraneNaSlujitel.jsf", "Актуализиране на служител");
+		return new PageAttributes("/admin/AktualiziraneNaSlujitel.jsf", "Актуализиране на служител", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaAvtoserviz() {
@@ -174,7 +180,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/admin/DobavqneNaAvtoserviz.jsf", "Добавяне на автосервиз");
+		return new PageAttributes("/admin/DobavqneNaAvtoserviz.jsf", "Добавяне на автосервиз", true, readRights, writeRights);
 	}
 	
 	private PageAttributes aktualiziraneNaAvtoserviz() {
@@ -195,7 +201,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/admin/AktualiziraneNaAvtoserviz.jsf", "Актуализиране на автосервиз");
+		return new PageAttributes("/admin/AktualiziraneNaAvtoserviz.jsf", "Актуализиране на автосервиз", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaPotrebitel() {
@@ -216,7 +222,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/admin/DobavqneNaPotrebitel.jsf", "Добавяне на потребител");
+		return new PageAttributes("/admin/DobavqneNaPotrebitel.jsf", "Добавяне на потребител", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaZastrahovatel() {
@@ -237,7 +243,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/admin/DobavqneNaZastrahovatel.jsf", "Добавяне на застраховател");
+		return new PageAttributes("/admin/DobavqneNaZastrahovatel.jsf", "Добавяне на застраховател", true, readRights, writeRights);
 	}
 	
 	private PageAttributes aktualiziraneNaZastrahovatel() {
@@ -258,7 +264,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/admin/AktualiziraneNaZastrahovatel.jsf", "Актуализиране на застраховател");
+		return new PageAttributes("/admin/AktualiziraneNaZastrahovatel.jsf", "Актуализиране на застраховател", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaDostav4ik() {
@@ -279,7 +285,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/admin/DobavqneNaDostav4ik.jsf", "Добавяне на доставчик");
+		return new PageAttributes("/admin/DobavqneNaDostav4ik.jsf", "Добавяне на доставчик", true, readRights, writeRights);
 	}
 	
 	private PageAttributes aktualiziraneNaDostav4ik() {
@@ -300,7 +306,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/admin/AktualiziraneNaDostav4ik.jsf", "Актуализиране на доставчик");
+		return new PageAttributes("/admin/AktualiziraneNaDostav4ik.jsf", "Актуализиране на доставчик", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaKlient() {
@@ -321,7 +327,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/DobavqneNaKlient.jsf", "Добавяне на клиент");
+		return new PageAttributes("/users/DobavqneNaKlient.jsf", "Добавяне на клиент", true, readRights, writeRights);
 	}
 	
 	private PageAttributes aktualiziraneNaKlient() {
@@ -332,7 +338,7 @@ public class AllPages {
 		readRights.setRight(EmployeeAutoservice.MANAGER,        true);
 		readRights.setRight(EmployeeAutoservice.CASHIER,        true);
 		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,   false);
-		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  false);
+		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  true);
 		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC,  false);
 		
 		writeRights.setRight(EmployeeAutoservice.ADMINISTRATOR, false);
@@ -342,7 +348,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/AktualiziraneNaKlient.jsf", "Актуализиране на клиент");
+		return new PageAttributes("/users/AktualiziraneNaKlient.jsf", "Актуализиране на клиент", true, readRights, writeRights);
 	}
 
 	private PageAttributes dobavqneNaAvtomobil() {
@@ -363,7 +369,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/DobavqneNaAvtomobil.jsf", "Добавяне на автомобил");
+		return new PageAttributes("/users/DobavqneNaAvtomobil.jsf", "Добавяне на автомобил", true, readRights, writeRights);
 	}
 	
 	private PageAttributes aktualiziraneNaAvtomobil() {
@@ -384,7 +390,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/AktualiziraneNaAvtomobil.jsf", "Актуализиране на автомобил");
+		return new PageAttributes("/users/AktualiziraneNaAvtomobil.jsf", "Актуализиране на автомобил", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaDiagnostika() {
@@ -405,7 +411,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, true);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/DobavqneNaDiagnostika.jsf", "Добавяне на диагностика");
+		return new PageAttributes("/users/DobavqneNaDiagnostika.jsf", "Добавяне на диагностика", true, readRights, writeRights);
 	}
 	
 	private PageAttributes aktualiziraneNaDiagnostika() {
@@ -426,7 +432,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/AktualiziraneNaDiagnostika.jsf", "Актуализиране на диагностика");
+		return new PageAttributes("/users/AktualiziraneNaDiagnostika.jsf", "Актуализиране на диагностика", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaKlientskaPoru4ka() {
@@ -447,7 +453,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/DobavqneNaKlientskaPoru4ka.jsf", "Добавяне на клиентска поръчка");
+		return new PageAttributes("/users/DobavqneNaKlientskaPoru4ka.jsf", "Добавяне на клиентска поръчка", true, readRights, writeRights);
 	}
 	
 	private PageAttributes aktualiziraneNaKlientskaPoru4ka() {
@@ -468,7 +474,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, true);
 		
-		return new PageAttributes("/users/AktualiziraneNaKlientskaPoru4ka.jsf", "Актуализиране на клиентска поръчка");
+		return new PageAttributes("/users/AktualiziraneNaKlientskaPoru4ka.jsf", "Актуализиране на клиентска поръчка", true, readRights, writeRights);
 	}
 	
 	private PageAttributes poru4kaNa4asti() {
@@ -489,7 +495,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/poru4kaNa4asti.jsf", "Поръчка на части и консумативи");
+		return new PageAttributes("/users/Poru4kaNa4asti.jsf", "Поръчка на части и консумативи", true, readRights, writeRights);
 	}
 	
 	private PageAttributes pregledNaPoru4kaNa4asti() {
@@ -510,7 +516,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/PregledNaPoru4kaNa4asti.jsf", "Преглед на поръчките на части и консумативи");
+		return new PageAttributes("/users/PregledNaPoru4kaNa4asti.jsf", "Преглед на поръчките на части и консумативи", true, readRights, writeRights);
 	}
 	
 	private PageAttributes priemaneNa4asti() {
@@ -531,7 +537,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/PriemaneNa4asti.jsf", "Приемане на части и консумативи");
+		return new PageAttributes("/users/PriemaneNa4asti.jsf", "Приемане на части и консумативи", true, readRights, writeRights);
 	}
 	
 	private PageAttributes pregledNaPriemaneNa4asti() {
@@ -552,7 +558,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/PregledNaPriemaneNa4asti.jsf", "Преглед на приемане на части и консумативи");
+		return new PageAttributes("/users/PregledNaPriemaneNa4asti.jsf", "Преглед на приемане на части и консумативи", true, readRights, writeRights);
 	}
 	
 	private PageAttributes pregledNaZapazeni4asove() {
@@ -573,7 +579,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/PregledNaZapazeni4asove.jsf", "Преглед на запазени часове");
+		return new PageAttributes("/users/PregledNaZapazeni4asove.jsf", "Преглед на запазени часове", true, readRights, writeRights);
 	}
 	
 	private PageAttributes pregledNaGarancionniUsloviq() {
@@ -594,7 +600,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/PregledNaGarancionniUsloviq.jsf", "Преглед на гаранционни условия");
+		return new PageAttributes("/users/PregledNaGarancionniUsloviq.jsf", "Преглед на гаранционни условия", true, readRights, writeRights);
 	}
 	
 	private PageAttributes pregledNaModelAvtomobil() {
@@ -615,7 +621,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, true);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, true);
 		
-		return new PageAttributes("/users/PregledNaModelAvtomobil.jsf", "Преглед на модел автомобил");
+		return new PageAttributes("/users/PregledNaModelAvtomobil.jsf", "Преглед на модел автомобил", true, readRights, writeRights);
 	}
 	
 	private PageAttributes aktualiziraneNaUsluga() {
@@ -636,7 +642,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/AktualiziraneNaUsluga.jsf", "Актуализиране на услуга");
+		return new PageAttributes("/users/AktualiziraneNaUsluga.jsf", "Актуализиране на услуга", true, readRights, writeRights);
 	}
 	
 	private PageAttributes aktualiziraneNaRezervna4ast() {
@@ -657,7 +663,7 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/AktualiziraneNaRezervna4ast.jsf", "Актуализиране на резервна част");
+		return new PageAttributes("/users/AktualiziraneNaRezervna4ast.jsf", "Актуализиране на резервна част", true, readRights, writeRights);
 	}
 	
 	private PageAttributes pregledNaNali4niteRezervni4asti() {
@@ -678,51 +684,238 @@ public class AllPages {
 		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
-		return new PageAttributes("/users/PregledNaNali4niteRezervni4asti.jsf", "Преглед на наличните резервни части");
+		return new PageAttributes("/users/PregledNaNali4niteRezervni4asti.jsf", "Преглед на наличните резервни части", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaGarancionniUsloviq() {
-		return new PageAttributes("/debug/DobavqneNaGarancionniUsloviq.jsf", "DEBUG - ElectronicShopService : Добавяне на гаранционни условия");
+		PageAttributes.Rights readRights = new PageAttributes.Rights();
+		PageAttributes.Rights writeRights = new PageAttributes.Rights();
+		
+		readRights.setRight(EmployeeAutoservice.ADMINISTRATOR,  true);
+		readRights.setRight(EmployeeAutoservice.MANAGER,        false);
+		readRights.setRight(EmployeeAutoservice.CASHIER,        false);
+		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,   false);
+		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  false);
+		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC,  false);
+		
+		writeRights.setRight(EmployeeAutoservice.ADMINISTRATOR, true);
+		writeRights.setRight(EmployeeAutoservice.MANAGER,       false);
+		writeRights.setRight(EmployeeAutoservice.CASHIER,       false);
+		writeRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,  false);
+		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
+		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
+		
+		return new PageAttributes("/debug/DobavqneNaGarancionniUsloviq.jsf", "DEBUG - ElectronicShopService : Добавяне на гаранционни условия", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaModelAvtomobil() {
-		return new PageAttributes("/debug/DobavqneNaModelAvtomobil.jsf", "DEBUG - ElectronicShopService : Добавяне на модел автомобил");
+		PageAttributes.Rights readRights = new PageAttributes.Rights();
+		PageAttributes.Rights writeRights = new PageAttributes.Rights();
+		
+		readRights.setRight(EmployeeAutoservice.ADMINISTRATOR,  true);
+		readRights.setRight(EmployeeAutoservice.MANAGER,        false);
+		readRights.setRight(EmployeeAutoservice.CASHIER,        false);
+		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,   false);
+		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  false);
+		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC,  false);
+		
+		writeRights.setRight(EmployeeAutoservice.ADMINISTRATOR, true);
+		writeRights.setRight(EmployeeAutoservice.MANAGER,       false);
+		writeRights.setRight(EmployeeAutoservice.CASHIER,       false);
+		writeRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,  false);
+		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
+		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
+		
+		return new PageAttributes("/debug/DobavqneNaModelAvtomobil.jsf", "DEBUG - ElectronicShopService : Добавяне на модел автомобил", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaUsluga() {
-		return new PageAttributes("/debug/DobavqneNaUsluga.jsf", "DEBUG - ElectronicShopService : Добавяне на услуга");
+		PageAttributes.Rights readRights = new PageAttributes.Rights();
+		PageAttributes.Rights writeRights = new PageAttributes.Rights();
+		
+		readRights.setRight(EmployeeAutoservice.ADMINISTRATOR,  true);
+		readRights.setRight(EmployeeAutoservice.MANAGER,        false);
+		readRights.setRight(EmployeeAutoservice.CASHIER,        false);
+		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,   false);
+		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  false);
+		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC,  false);
+		
+		writeRights.setRight(EmployeeAutoservice.ADMINISTRATOR, true);
+		writeRights.setRight(EmployeeAutoservice.MANAGER,       false);
+		writeRights.setRight(EmployeeAutoservice.CASHIER,       false);
+		writeRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,  false);
+		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
+		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
+		
+		return new PageAttributes("/debug/DobavqneNaUsluga.jsf", "DEBUG - ElectronicShopService : Добавяне на услуга", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaGrupaRezervni4asti() {
-		return new PageAttributes("/debug/DobavqneNaGrupaRezervni4asti.jsf", "DEBUG - ElectronicShopService : Добавяне на група резервни части");
+		PageAttributes.Rights readRights = new PageAttributes.Rights();
+		PageAttributes.Rights writeRights = new PageAttributes.Rights();
+		
+		readRights.setRight(EmployeeAutoservice.ADMINISTRATOR,  true);
+		readRights.setRight(EmployeeAutoservice.MANAGER,        false);
+		readRights.setRight(EmployeeAutoservice.CASHIER,        false);
+		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,   false);
+		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  false);
+		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC,  false);
+		
+		writeRights.setRight(EmployeeAutoservice.ADMINISTRATOR, true);
+		writeRights.setRight(EmployeeAutoservice.MANAGER,       false);
+		writeRights.setRight(EmployeeAutoservice.CASHIER,       false);
+		writeRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,  false);
+		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
+		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
+		
+		return new PageAttributes("/debug/DobavqneNaGrupaRezervni4asti.jsf", "DEBUG - ElectronicShopService : Добавяне на група резервни части", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaRezervna4ast() {
-		return new PageAttributes("/debug/DobavqneNaRezervna4ast.jsf", "DEBUG - ElectronicShopService : Добавяне на резервна част");
+		PageAttributes.Rights readRights = new PageAttributes.Rights();
+		PageAttributes.Rights writeRights = new PageAttributes.Rights();
+		
+		readRights.setRight(EmployeeAutoservice.ADMINISTRATOR,  true);
+		readRights.setRight(EmployeeAutoservice.MANAGER,        false);
+		readRights.setRight(EmployeeAutoservice.CASHIER,        false);
+		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,   false);
+		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  false);
+		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC,  false);
+		
+		writeRights.setRight(EmployeeAutoservice.ADMINISTRATOR, true);
+		writeRights.setRight(EmployeeAutoservice.MANAGER,       false);
+		writeRights.setRight(EmployeeAutoservice.CASHIER,       false);
+		writeRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,  false);
+		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
+		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
+		
+		return new PageAttributes("/debug/DobavqneNaRezervna4ast.jsf", "DEBUG - ElectronicShopService : Добавяне на резервна част", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaUslugaZaModelAvtomobil() {
-		return new PageAttributes("/debug/DobavqneNaUslugaZaModelAvtomobil.jsf", "DEBUG - ElectronicShopService : Добавяне на услуга за модел автомобил");
+		PageAttributes.Rights readRights = new PageAttributes.Rights();
+		PageAttributes.Rights writeRights = new PageAttributes.Rights();
+		
+		readRights.setRight(EmployeeAutoservice.ADMINISTRATOR,  true);
+		readRights.setRight(EmployeeAutoservice.MANAGER,        false);
+		readRights.setRight(EmployeeAutoservice.CASHIER,        false);
+		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,   false);
+		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  false);
+		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC,  false);
+		
+		writeRights.setRight(EmployeeAutoservice.ADMINISTRATOR, true);
+		writeRights.setRight(EmployeeAutoservice.MANAGER,       false);
+		writeRights.setRight(EmployeeAutoservice.CASHIER,       false);
+		writeRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,  false);
+		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
+		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
+		
+		return new PageAttributes("/debug/DobavqneNaUslugaZaModelAvtomobil.jsf", "DEBUG - ElectronicShopService : Добавяне на услуга за модел автомобил", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaRezervna4astZaModelAvtomobil() {
-		return new PageAttributes("/debug/DobavqneNaRezervna4astZaModelAvtomobil.jsf", "DEBUG - ElectronicShopService : Добавяне на резервна част за модел автомобил");
+		PageAttributes.Rights readRights = new PageAttributes.Rights();
+		PageAttributes.Rights writeRights = new PageAttributes.Rights();
+		
+		readRights.setRight(EmployeeAutoservice.ADMINISTRATOR,  true);
+		readRights.setRight(EmployeeAutoservice.MANAGER,        false);
+		readRights.setRight(EmployeeAutoservice.CASHIER,        false);
+		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,   false);
+		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  false);
+		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC,  false);
+		
+		writeRights.setRight(EmployeeAutoservice.ADMINISTRATOR, true);
+		writeRights.setRight(EmployeeAutoservice.MANAGER,       false);
+		writeRights.setRight(EmployeeAutoservice.CASHIER,       false);
+		writeRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,  false);
+		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
+		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
+		
+		return new PageAttributes("/debug/DobavqneNaRezervna4astZaModelAvtomobil.jsf", "DEBUG - ElectronicShopService : Добавяне на резервна част за модел автомобил", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaKlientDebug() {
-		return new PageAttributes("/debug/DobavqneNaKlientDebug.jsf", "DEBUG - ElectronicShopService : Добавяне на клиент");
+		PageAttributes.Rights readRights = new PageAttributes.Rights();
+		PageAttributes.Rights writeRights = new PageAttributes.Rights();
+		
+		readRights.setRight(EmployeeAutoservice.ADMINISTRATOR,  true);
+		readRights.setRight(EmployeeAutoservice.MANAGER,        false);
+		readRights.setRight(EmployeeAutoservice.CASHIER,        false);
+		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,   false);
+		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  false);
+		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC,  false);
+		
+		writeRights.setRight(EmployeeAutoservice.ADMINISTRATOR, true);
+		writeRights.setRight(EmployeeAutoservice.MANAGER,       false);
+		writeRights.setRight(EmployeeAutoservice.CASHIER,       false);
+		writeRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,  false);
+		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
+		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
+		
+		return new PageAttributes("/debug/DobavqneNaKlient.jsf", "DEBUG - ElectronicShopService : Добавяне на клиент", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaAvtomobilDebug() {
-		return new PageAttributes("/debug/DobavqneNaAvtomobilDebug.jsf", "DEBUG - ElectronicShopService : Добавяне на автомобил");
+		PageAttributes.Rights readRights = new PageAttributes.Rights();
+		PageAttributes.Rights writeRights = new PageAttributes.Rights();
+		
+		readRights.setRight(EmployeeAutoservice.ADMINISTRATOR,  true);
+		readRights.setRight(EmployeeAutoservice.MANAGER,        false);
+		readRights.setRight(EmployeeAutoservice.CASHIER,        false);
+		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,   false);
+		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  false);
+		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC,  false);
+		
+		writeRights.setRight(EmployeeAutoservice.ADMINISTRATOR, true);
+		writeRights.setRight(EmployeeAutoservice.MANAGER,       false);
+		writeRights.setRight(EmployeeAutoservice.CASHIER,       false);
+		writeRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,  false);
+		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
+		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
+		
+		return new PageAttributes("/debug/DobavqneNaAvtomobil.jsf", "DEBUG - ElectronicShopService : Добавяне на автомобил", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaZaqvkaOtZastrahovatel() {
-		return new PageAttributes("/debug/DobavqneNaZaqvkaOtZastrahovatel.jsf", "DEBUG - InsurerService : Добавяне на заявка от застраховател");
+		PageAttributes.Rights readRights = new PageAttributes.Rights();
+		PageAttributes.Rights writeRights = new PageAttributes.Rights();
+		
+		readRights.setRight(EmployeeAutoservice.ADMINISTRATOR,  true);
+		readRights.setRight(EmployeeAutoservice.MANAGER,        false);
+		readRights.setRight(EmployeeAutoservice.CASHIER,        false);
+		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,   false);
+		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  false);
+		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC,  false);
+		
+		writeRights.setRight(EmployeeAutoservice.ADMINISTRATOR, true);
+		writeRights.setRight(EmployeeAutoservice.MANAGER,       false);
+		writeRights.setRight(EmployeeAutoservice.CASHIER,       false);
+		writeRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,  false);
+		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
+		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
+		
+		return new PageAttributes("/debug/DobavqneNaZaqvkaOtZastrahovatel.jsf", "DEBUG - InsurerService : Добавяне на заявка от застраховател", true, readRights, writeRights);
 	}
 	
 	private PageAttributes DobavqneNaRezervna4astOtDrugDostav4ik() {
-		return new PageAttributes("/debug/DobavqneNaRezervna4astOtDrugDostav4ik.jsf", "DEBUG - SupplierService : Добавяне на резервна част от друг доставчик");
+		PageAttributes.Rights readRights = new PageAttributes.Rights();
+		PageAttributes.Rights writeRights = new PageAttributes.Rights();
+		
+		readRights.setRight(EmployeeAutoservice.ADMINISTRATOR,  true);
+		readRights.setRight(EmployeeAutoservice.MANAGER,        false);
+		readRights.setRight(EmployeeAutoservice.CASHIER,        false);
+		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,   false);
+		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  false);
+		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC,  false);
+		
+		writeRights.setRight(EmployeeAutoservice.ADMINISTRATOR, true);
+		writeRights.setRight(EmployeeAutoservice.MANAGER,       false);
+		writeRights.setRight(EmployeeAutoservice.CASHIER,       false);
+		writeRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,  false);
+		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
+		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
+		
+		return new PageAttributes("/debug/DobavqneNaRezervna4astOtDrugDostav4ik.jsf", "DEBUG - SupplierService : Добавяне на резервна част от друг доставчик", true, readRights, writeRights);
 	}
 	
 }

@@ -66,7 +66,7 @@ public class UsersMenuController implements Serializable {
 	private static final MenuEntry PregledNaPriemaneNa4asti = new MenuEntry("Преглед", "/users/PregledNaPriemaneNa4asti.jsf");
 	
 	private static final MenuEntry OthersSeparator = new MenuEntry("Други");
-	private static final MenuEntry PregledNaZapazeni4asove = new MenuEntry("Преглед на запазени часове", "/users/pregledNaZapazeni4asove.jsf");
+	private static final MenuEntry PregledNaZapazeni4asove = new MenuEntry("Преглед на запазени часове", "/users/PregledNaZapazeni4asove.jsf");
 	private static final MenuEntry PregledNaGarancionniUsloviq = new MenuEntry("Преглед на гаранционни условия", "/users/PregledNaGarancionniUsloviq.jsf");
 	private static final MenuEntry PregledNaModelAvtomobil = new MenuEntry("Преглед на модел автомобил", "/users/PregledNaModelAvtomobil.jsf");
 	private static final MenuEntry AktualiziraneNaUsluga = new MenuEntry("Актуализиране на услуга", "/users/AktualiziraneNaUsluga.jsf");

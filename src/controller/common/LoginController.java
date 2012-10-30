@@ -3,6 +3,7 @@ package controller.common;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 
 /**
@@ -29,8 +30,9 @@ public class LoginController {
 		}
 	}
 
-	public void logout() {
+	public String logout() {
 		currentEmployee.logout();
+		return FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath() + "?faces-redirect=true";
 	}
 
 	public String getUsername() {

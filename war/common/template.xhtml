@@ -8,7 +8,7 @@
 
 <h:head>
 	<link rel="stylesheet" type="text/css" href="/resources/common/styles.css" />
-	<title>#{allPages.title}</title>
+	<title>#{allPages.getTitle(facesContext.externalContext.requestServletPath)}</title>
 	<ui:insert name="headSection"/>
 </h:head>
 
