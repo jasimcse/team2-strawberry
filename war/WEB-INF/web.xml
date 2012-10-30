@@ -95,4 +95,12 @@
     <filter-name>JSF Flash Cookie Filter</filter-name>
     <url-pattern>*</url-pattern>
   </filter-mapping>
+  <filter>
+    <filter-name>Security Filter</filter-name>
+    <filter-class>controller.common.SecurityController</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>Security Filter</filter-name>
+    <url-pattern>*.jsf</url-pattern>
+  </filter-mapping>
 </web-app>
