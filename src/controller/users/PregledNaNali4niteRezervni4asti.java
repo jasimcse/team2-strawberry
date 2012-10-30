@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 
 import model.SparePart;
 import model.SparePartAutoservice;
+import controller.common.AllPages;
 import controller.common.ConfigurationProperties;
 import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
@@ -21,6 +22,9 @@ import controller.common.InterPageDataRequest;
 @ManagedBean(name="pregledNaNali4niteRezervni4asti")
 @ViewScoped
 public class PregledNaNali4niteRezervni4asti implements Serializable {
+	
+	@ManagedProperty(value="#{allPages}")
+	private AllPages allPages;
 	
 	@ManagedProperty(value="#{currentEmployee}")
 	private CurrentEmployee currEmployee;
@@ -66,6 +70,10 @@ public class PregledNaNali4niteRezervni4asti implements Serializable {
 
 	public void setQuantityBadRequest(float quantityBadRequest) {
 		this.quantityBadRequest = quantityBadRequest;
+	}
+	
+	public void setAllPages(AllPages allPages) {
+		this.allPages = allPages;
 	}
 
 	public void setCurrEmployee(CurrentEmployee currEmployee) {
@@ -166,8 +174,9 @@ public class PregledNaNali4niteRezervni4asti implements Serializable {
 	}
 	
 	public boolean isChangingAllowed() {
-		// TODO - като се сложи security да се оправят правата на потребителите, за сега всеки може да променя
-		return true;
+		return allPages.getWriteRight(
+				FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath(),
+				currEmployee.getPosition());
 	}
 	
 	public boolean isChoosingAllowed() {
@@ -192,6 +201,10 @@ public class PregledNaNali4niteRezervni4asti implements Serializable {
 	
 	public String writeIt()
 	{	
+		if (!isChangingAllowed()) {
+			errorMessage = "Нямате права за актуализирането на данните!";
+			return null;
+		}
 
 		nali4nost.writeToDB();
 	

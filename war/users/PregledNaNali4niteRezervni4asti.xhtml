@@ -61,7 +61,7 @@
 				</h:column>
 				
 				
-				<h:column rendered="#{pregledNaNali4niteRezervni4asti.changingAllowed}">
+				<h:column>
 					<f:facet name="header">Промени</f:facet>
 					<h:commandLink action="#{pregledNaNali4niteRezervni4asti.selectRow(curr)}" value="Промени" />
 				</h:column>
@@ -172,7 +172,7 @@
 			
 			
 			<h:commandButton action="#{pregledNaNali4niteRezervni4asti.writeIt()}" value="Запази"
-				disabled="#{!pregledNaNali4niteRezervni4asti.rowSelected}" />
+				disabled="#{!pregledNaNali4niteRezervni4asti.rowSelected or !pregledNaNali4niteRezervni4asti.changingAllowed}" />
 			
 			<h:commandButton action="#{pregledNaNali4niteRezervni4asti.deselectRow()}" value="Отмени"
 				disabled="#{!pregledNaNali4niteRezervni4asti.rowSelected}" />

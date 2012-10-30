@@ -14,6 +14,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 
+import controller.common.AllPages;
 import controller.common.ConfigurationProperties;
 import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
@@ -34,6 +35,9 @@ import model.Vehicle;
 public class AktualiziraneNaDiagnostika  implements Serializable {
 
 
+	@ManagedProperty(value="#{allPages}")
+	private AllPages allPages;
+	
 	@ManagedProperty(value="#{currentEmployee}")
 	private CurrentEmployee currEmployee;
 	
@@ -74,6 +78,9 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 		this.currEmployee = currEmployee;
 	}
 
+	public void setAllPages(AllPages allPages) {
+		this.allPages = allPages;
+	}
 
 	public void setVehicle(Vehicle vehicle) {
 		diagnostika.setVehicle(vehicle);
@@ -253,6 +260,18 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 		return "DobavqneNaDiagnostika.jsf?faces-redirect=true";
 	}
 	
+	public boolean isGoToAddAllowed() {
+		return allPages.getReadRight(
+					"/users/DobavqneNaDiagnostika.jsf",
+					currEmployee.getPosition());
+	}
+	
+	public boolean isChangingAllowed() {
+		return allPages.getWriteRight(
+				FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath(),
+				currEmployee.getPosition());
+	}
+	
 	public boolean isChoosingAllowed() {
 		return (dataRequest != null);
 	}
@@ -270,6 +289,10 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 	
 	public String saveDiagnostika()
 	{	
+		if (!isChangingAllowed()) {
+			errorMessage = "Нямате права за актуализирането на данните!";
+			return null;
+		}
 
 		diagnostika.writeToDB();
 	

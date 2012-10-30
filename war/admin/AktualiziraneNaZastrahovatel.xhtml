@@ -92,7 +92,7 @@
 					<h:commandLink action="#{aktualiziraneNaZastrahovatel.selectRow(curr)}" value="Промени" />
 				</h:column>
 				
-				<h:column rendered="#{aktualiziraneNaZastrahovatel.choosingAlowed}">
+				<h:column rendered="#{aktualiziraneNaZastrahovatel.choosingAllowed}">
 					<f:facet name="header">Избери</f:facet>
 					<h:commandLink action="#{aktualiziraneNaZastrahovatel.chooseAutoservice(curr)}" value="Избери" />
 				</h:column>
@@ -218,12 +218,13 @@
 			<br />
 
 			<h:commandButton value="Запази" action="#{aktualiziraneNaZastrahovatel.writeIt()}"
-				disabled="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
+				disabled="#{!aktualiziraneNaZastrahovatel.rowSelected or !aktualiziraneNaZastrahovatel.changingAllowed}" />
 			
 			<h:commandButton action="#{aktualiziraneNaZastrahovatel.deselectRow()}" value="Отмени"
 				disabled="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
 				
-			<h:commandButton action="#{aktualiziraneNaZastrahovatel.goToAdd()}" value="Добави" />
+			<h:commandButton action="#{aktualiziraneNaZastrahovatel.goToAdd()}" value="Добави"
+				disabled="#{!aktualiziraneNaZastrahovatel.goToAddAllowed}" />
 			
 			<br />
 			<h:outputText value="#{dobavqneNaZastrahovatel.errorMessage}" />

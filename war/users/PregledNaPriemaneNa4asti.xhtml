@@ -171,7 +171,11 @@
 	    <br />
 
 		<h:commandButton value="Запиши" action="#{pregledNaPriemaneNa4asti.writeIt()}"
-	   		disabled="#{(pregledNaPriemaneNa4asti.status eq 'Платена') or (!pregledNaPriemaneNa4asti.rowSelected)}" /> 
+	   		disabled="#{(pregledNaPriemaneNa4asti.status eq 'Платена') or !pregledNaPriemaneNa4asti.rowSelected or !pregledNaPriemaneNa4asti.changingAllowed}" />
+	   		
+	   	<h:commandButton action="#{pregledNaPriemaneNa4asti.deselectRow()}" value="Отмени"
+			disabled="#{!pregledNaPriemaneNa4asti.rowSelected}" />
+			 
 	    <br />
 	    
 	    <h:outputText value="#{pregledNaPriemaneNa4asti.errorMessage}"/>

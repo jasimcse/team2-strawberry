@@ -157,7 +157,7 @@
 			<br />
 			
 			<h:commandButton value="Запази" action="#{aktualiziraneNaRezervna4ast.writeIt()}"
-					disabled="#{!aktualiziraneNaRezervna4ast.rowSelected}"/>
+					disabled="#{!aktualiziraneNaRezervna4ast.rowSelected or !aktualiziraneNaRezervna4ast.changingAllowed}"/>
 
 			<h:commandButton action="#{aktualiziraneNaRezervna4ast.deselectRow()}" value="Отмени"
 				disabled="#{!aktualiziraneNaRezervna4ast.rowSelected}" />

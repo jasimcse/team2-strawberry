@@ -100,7 +100,7 @@
 					<h:outputText value="#{curr.client.company.name}" rendered="#{not empty curr.client.company.name}" />
 				</h:column>
 				
-				<h:column rendered="#{aktualiziraneNaAvtomobil.changingAllowed}">
+				<h:column>
 					<f:facet name="header">Промени</f:facet>
 					<h:commandLink action="#{aktualiziraneNaAvtomobil.selectRow(curr)}" value="Промени" />
 				</h:column>
@@ -257,12 +257,13 @@
 	
 		<h:commandButton value="Запази" binding="#{aktualiziraneNaAvtomobil.changeButton}"
 		    action="#{aktualiziraneNaAvtomobil.saveAvtomobil()}"
-			disabled="#{!aktualiziraneNaAvtomobil.rowSelected}"/>
+			disabled="#{!aktualiziraneNaAvtomobil.rowSelected or !aktualiziraneNaAvtomobil.changingAllowed}"/>
 			
 		<h:commandButton action="#{aktualiziraneNaAvtomobil.deselectRow()}" value="Отмени"
 			disabled="#{!aktualiziraneNaAvtomobil.rowSelected}"/>
 				
-		<h:commandButton action="#{aktualiziraneNaAvtomobil.goToAdd()}" value="Добави" />
+		<h:commandButton action="#{aktualiziraneNaAvtomobil.goToAdd()}" value="Добави"
+			disabled="#{!aktualiziraneNaAvtomobil.goToAddAllowed}"/>
 			
 	    <br />
 	    <h:outputText value="#{aktualiziraneNaAvtomobil.errorMessage}"/>

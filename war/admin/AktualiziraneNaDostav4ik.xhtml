@@ -92,7 +92,7 @@
 					<h:commandLink action="#{aktualiziraneNaDostav4ik.selectRow(curr)}" value="Промени" />
 				</h:column>
 				
-				<h:column rendered="#{aktualiziraneNaDostav4ik.choosingAlowed}">
+				<h:column rendered="#{aktualiziraneNaDostav4ik.choosingAllowed}">
 					<f:facet name="header">Избери</f:facet>
 					<h:commandLink action="#{aktualiziraneNaDostav4ik.chooseSupplier(curr)}" value="Избери" />
 				</h:column>
@@ -218,12 +218,13 @@
 			<br />
 
 			<h:commandButton value="Запази" action="#{aktualiziraneNaDostav4ik.writeIt()}"
-				disabled="#{!aktualiziraneNaDostav4ik.rowSelected}" />
+				disabled="#{!aktualiziraneNaDostav4ik.rowSelected or !aktualiziraneNaDostav4ik.changingAllowed}" />
 			
 			<h:commandButton action="#{aktualiziraneNaDostav4ik.deselectRow()}" value="Отмени"
 				disabled="#{!aktualiziraneNaDostav4ik.rowSelected}" />
 				
-			<h:commandButton action="#{aktualiziraneNaDostav4ik.goToAdd()}" value="Добави" />
+			<h:commandButton action="#{aktualiziraneNaDostav4ik.goToAdd()}" value="Добави"
+				disabled="#{!aktualiziraneNaDostav4ik.goToAddAllowed}" />
 			
 			<br />
 			<h:outputText value="#{dobavqneNaDostav4ik.errorMessage}" />

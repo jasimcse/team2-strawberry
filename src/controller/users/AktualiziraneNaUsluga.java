@@ -6,17 +6,26 @@ import java.util.List;
 import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import model.Service;
+import controller.common.AllPages;
 import controller.common.ConfigurationProperties;
+import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
 
 @SuppressWarnings("serial")
 @ManagedBean(name="aktualiziraneNaUsluga")
 @ViewScoped
 public class AktualiziraneNaUsluga implements Serializable {
+	
+	@ManagedProperty(value="#{allPages}")
+	private AllPages allPages;
+	
+	@ManagedProperty(value="#{currentEmployee}")
+	private CurrentEmployee currEmployee;
 	
 	private Stack<InterPageDataRequest> dataRequestStack;
 	
@@ -63,6 +72,14 @@ public class AktualiziraneNaUsluga implements Serializable {
 	public void setPriceHour(double priceHour) {
 		usluga.setPriceHour(priceHour);
 	}
+	
+	public void setAllPages(AllPages allPages) {
+		this.allPages = allPages;
+	}
+
+	public void setCurrEmployee(CurrentEmployee currEmployee) {
+		this.currEmployee = currEmployee;
+	}
 
 	public String getErrorMessage() {
 		return errorMessage;
@@ -86,6 +103,12 @@ public class AktualiziraneNaUsluga implements Serializable {
 	}
 	
 	public String writeIt() {
+		
+		if (!isChangingAllowed()) {
+			errorMessage = "Нямате права за актуализирането на данните!";
+			return null;
+		}
+		
 		usluga.writeToDB();
 		
 		readList();
@@ -141,8 +164,9 @@ public class AktualiziraneNaUsluga implements Serializable {
 	}
 	
 	public boolean isChangingAllowed() {
-		// TODO - като се сложи security да се оправят правата на потребителите, за сега всеки може да променя
-		return true;
+		return allPages.getWriteRight(
+				FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath(),
+				currEmployee.getPosition());
 	}
 	
 	public boolean isChoosingAllowed() {
