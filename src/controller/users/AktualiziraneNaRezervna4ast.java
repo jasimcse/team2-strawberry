@@ -6,13 +6,16 @@ import java.util.List;
 import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import model.SparePart;
 import model.SparePartGroup;
 import model.VehicleModel;
+import controller.common.AllPages;
 import controller.common.ConfigurationProperties;
+import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
 
 @SuppressWarnings("serial")
@@ -20,6 +23,12 @@ import controller.common.InterPageDataRequest;
 @ViewScoped
 public class AktualiziraneNaRezervna4ast implements Serializable {
 
+	@ManagedProperty(value="#{allPages}")
+	private AllPages allPages;
+	
+	@ManagedProperty(value="#{currentEmployee}")
+	private CurrentEmployee currEmployee;
+	
 	private Stack<InterPageDataRequest> dataRequestStack;
 	
 	private SparePart rezervna4ast = new SparePart();
@@ -81,6 +90,14 @@ public class AktualiziraneNaRezervna4ast implements Serializable {
 	public String getMeasuringUnit() {
 		return rezervna4ast.getMeasuringUnit();
 	}
+	
+	public void setAllPages(AllPages allPages) {
+		this.allPages = allPages;
+	}
+
+	public void setCurrEmployee(CurrentEmployee currEmployee) {
+		this.currEmployee = currEmployee;
+	}
 
 	public String getErrorMessage() {
 		return errorMessage;
@@ -104,6 +121,12 @@ public class AktualiziraneNaRezervna4ast implements Serializable {
 	}
 	
 	public String writeIt() {
+		
+		if (!isChangingAllowed()) {
+			errorMessage = "Нямате права за актуализирането на данните!";
+			return null;
+		}
+		
 		rezervna4ast.writeToDB();
 		
 		readList();
@@ -156,6 +179,12 @@ public class AktualiziraneNaRezervna4ast implements Serializable {
 	
 	public boolean isRowSelected() {
 		return spisukRezervni4asti.contains(rezervna4ast);
+	}
+	
+	public boolean isChangingAllowed() {
+		return allPages.getWriteRight(
+				FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath(),
+				currEmployee.getPosition());
 	}
 	
 	public boolean isChoosingAlowed() {

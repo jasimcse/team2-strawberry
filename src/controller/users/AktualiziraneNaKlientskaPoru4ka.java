@@ -24,6 +24,7 @@ import model.SparePartAutoservice;
 import model.SparePartReserved;
 import model.Vehicle;
 import model.VehicleModelService;
+import controller.common.AllPages;
 import controller.common.ConfigurationProperties;
 import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
@@ -35,6 +36,9 @@ import controller.users.helpers.SparePartForClientOrder;
 @ManagedBean(name="aktualiziraneNaKlientskaPoru4ka")
 @ViewScoped
 public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
+	
+	@ManagedProperty(value="#{allPages}")
+	private AllPages allPages;
 	
 	@ManagedProperty(value="#{currentEmployee}")
 	private CurrentEmployee currEmployee;
@@ -254,6 +258,10 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 
 	public String getErrorMessage() {
 		return errorMessage;
+	}
+	
+	public void setAllPages(AllPages allPages) {
+		this.allPages = allPages;
 	}
 
 	public void setCurrEmployee(CurrentEmployee currEmployee) {
@@ -478,6 +486,18 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		return "DobavqneNaKlientskaPoru4ka.jsf?faces-redirect=true";
 	}
 	
+	public boolean isGoToAddAllowed() {
+		return allPages.getReadRight(
+					"/users/DobavqneNaKlientskaPoru4ka.jsf",
+					currEmployee.getPosition());
+	}
+	
+	public boolean isChangingAllowed() {
+		return allPages.getWriteRight(
+				FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath(),
+				currEmployee.getPosition());
+	}
+	
 	public boolean isChoosingAllowed() {
 		return (dataRequest != null);
 	}
@@ -501,6 +521,10 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		// количеството нужно за изпълнение на поръчката. Внимание: Не трябва да остава отрицателно количество от частта!) 
 		// Spare_Part_Reserved и Spare_Part_Request (ако няма наличното количество).
 
+		if (!isChangingAllowed()) {
+			errorMessage = "Нямате права за актуализирането на данните!";
+			return null;
+		}
 
 		if( spisukUslugi.isEmpty() && spisukRezervni4asti.isEmpty() )
 		{

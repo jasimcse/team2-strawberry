@@ -6,12 +6,15 @@ import java.util.List;
 import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 
 import model.Client;
+import controller.common.AllPages;
 import controller.common.ConfigurationProperties;
+import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
 
 @SuppressWarnings("serial")
@@ -19,6 +22,12 @@ import controller.common.InterPageDataRequest;
 @ViewScoped
 public class AktualiziraneNaKlient implements Serializable {
 
+	@ManagedProperty(value="#{allPages}")
+	private AllPages allPages;
+	
+	@ManagedProperty(value="#{currentEmployee}")
+	private CurrentEmployee currEmployee;
+	
 	private Client klient = new Client();
 	
 	private String errorMessage;
@@ -173,12 +182,26 @@ public class AktualiziraneNaKlient implements Serializable {
 	public void setContactPersonCompany(String contactPerson) {
 		klient.getCompany().setContactPerson(contactPerson);
 	}
+	
+	public void setAllPages(AllPages allPages) {
+		this.allPages = allPages;
+	}
+
+	public void setCurrEmployee(CurrentEmployee currEmployee) {
+		this.currEmployee = currEmployee;
+	}
 
 	public String getErrorMessage() {
 		return errorMessage;
 	}
 	
 	public String saveClient() {
+		
+		if (!isChangingAllowed()) {
+			errorMessage = "Нямате права за актуализирането на данните!";
+			return null;
+		}
+		
 		klient.writeToDB();
 			
 		readList();
@@ -255,8 +278,20 @@ public class AktualiziraneNaKlient implements Serializable {
 	public String goToAdd() {
 		return "DobavqneNaKlient.jsf?faces-redirect=true";
 	}
+	
+	public boolean isGoToAddAllowed() {
+		return allPages.getReadRight(
+					"/users/DobavqneNaKlient.jsf",
+					currEmployee.getPosition());
+	}
+	
+	public boolean isChangingAllowed() {
+		return allPages.getWriteRight(
+				FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath(),
+				currEmployee.getPosition());
+	}
 
-	public boolean isChoosingAlowed() {
+	public boolean isChoosingAllowed() {
 		return (dataRequest != null);
 	}
 	

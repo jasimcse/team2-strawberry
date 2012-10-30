@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import controller.common.AllPages;
 import controller.common.ConfigurationProperties;
+import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
 
 import model.Autoservice;
@@ -19,6 +22,12 @@ import model.Autoservice;
 @ManagedBean(name="aktualiziraneNaAvtoserviz")
 @ViewScoped
 public class AktualiziraneNaAvtoserviz implements Serializable {
+	
+	@ManagedProperty(value="#{allPages}")
+	private AllPages allPages;
+	
+	@ManagedProperty(value="#{currentEmployee}")
+	private CurrentEmployee currEmployee;
 
 	private Autoservice serviz = new Autoservice();
 	
@@ -122,12 +131,25 @@ public class AktualiziraneNaAvtoserviz implements Serializable {
 		}
 	}
 
+	public void setAllPages(AllPages allPages) {
+		this.allPages = allPages;
+	}
+
+	public void setCurrEmployee(CurrentEmployee currEmployee) {
+		this.currEmployee = currEmployee;
+	}
+
 	public String getErrorMessage() {
 		return errorMessage;
 	}
 	
 	public String saveAutoserviz()
 	{
+		if (!isChangingAllowed()) {
+			errorMessage = "Нямате права за актуализирането на данните!";
+			return null;
+		}
+		
 		serviz.writeToDB();
 		
 		readList();
@@ -204,8 +226,20 @@ public class AktualiziraneNaAvtoserviz implements Serializable {
 	public String goToAdd() {
 		return "DobavqneNaAvtoserviz.jsf?faces-redirect=true";
 	}
+	
+	public boolean isGoToAddAllowed() {
+		return allPages.getReadRight(
+					"/admin/DobavqneNaAvtoserviz.jsf",
+					currEmployee.getPosition());
+	}
+	
+	public boolean isChangingAllowed() {
+		return allPages.getWriteRight(
+				FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath(),
+				currEmployee.getPosition());
+	}
 
-	public boolean isChoosingAlowed() {
+	public boolean isChoosingAllowed() {
 		return (dataRequest != null);
 	}
 	

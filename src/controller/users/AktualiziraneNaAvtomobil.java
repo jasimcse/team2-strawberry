@@ -7,13 +7,16 @@ import java.util.List;
 import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 
+import controller.common.AllPages;
 import controller.common.ConfigurationProperties;
+import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
 
 import model.Client;
@@ -27,6 +30,12 @@ import model.WarrantyConditions;
 @ViewScoped
 public class AktualiziraneNaAvtomobil implements Serializable {
 
+	@ManagedProperty(value="#{allPages}")
+	private AllPages allPages;
+	
+	@ManagedProperty(value="#{currentEmployee}")
+	private CurrentEmployee currEmployee;
+	
 	private Vehicle avtomobil = new Vehicle();
 	private long mileage;
 	
@@ -136,6 +145,14 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 	public void setChangeButton(UIComponent changeButton) {
 		this.changeButton = changeButton;
 	}
+	
+	public void setAllPages(AllPages allPages) {
+		this.allPages = allPages;
+	}
+
+	public void setCurrEmployee(CurrentEmployee currEmployee) {
+		this.currEmployee = currEmployee;
+	}
 
 	public String getErrorMessage() {
 		return errorMessage;
@@ -192,9 +209,6 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 	}
 	
 	public void selectRow(Vehicle avto) {
-		if (!isChangingAllowed()) {
-			throw new RuntimeException("Don't do that bastard!");
-		}
 		avtomobil = avto;
 	}
 	
@@ -212,8 +226,16 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 		return "DobavqneNaAvtomobil.jsf?faces-redirect=true";
 	}
 	
+	public boolean isGoToAddAllowed() {
+		return allPages.getReadRight(
+					"/users/DobavqneNaAvtomobil.jsf",
+					currEmployee.getPosition());
+	}
+	
 	public boolean isChangingAllowed() {
-		return true;
+		return allPages.getWriteRight(
+				FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath(),
+				currEmployee.getPosition());
 	}
 
 	public boolean isChoosingAllowed() {
@@ -233,6 +255,11 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 	
 	public String saveAvtomobil()
 	{	
+		if (!isChangingAllowed()) {
+			errorMessage = "Нямате права за актуализирането на данните!";
+			return null;
+		}
+		
 		if (mileage < avtomobil.getMileage()) {
 			// set the message
 			errorMessage = "Пробегът на автомобила е по-малък от предния записан!";

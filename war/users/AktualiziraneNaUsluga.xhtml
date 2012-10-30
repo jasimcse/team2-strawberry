@@ -26,8 +26,8 @@
 			</h:panelGroup>
 		</h:form>
 	
-		<div style="overflow-x: auto;"> <!-- scroll bar -->
 		<h:form>
+		<div style="overflow-x: auto;"> <!-- scroll bar -->
 			
 			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
 			<h:dataTable
@@ -47,7 +47,7 @@
 					#{curr.priceHour}
 				</h:column>
 				
-				<h:column rendered="#{aktualiziraneNaUsluga.changingAllowed}">
+				<h:column>
 					<f:facet name="header">Промени</f:facet>
 					<h:commandLink action="#{aktualiziraneNaUsluga.selectRow(curr)}" value="Промени" />
 				</h:column>
@@ -84,37 +84,34 @@
 				</f:facet>
 				 
 			</h:dataTable>
-		</h:form>
 		</div>
 		
-		<h:form rendered="#{aktualiziraneNaUsluga.changingAllowed}">
-	    
-			<h:outputLabel value="Наименование на услугата">
-				<h:inputText id="description"
-					value="#{aktualiziraneNaUsluga.description}" readonly="true" />
-				<h:message for="description" />
-			</h:outputLabel>
-			<br />
+		<h:outputLabel value="Наименование на услугата">
+			<h:inputText id="description"
+				value="#{aktualiziraneNaUsluga.description}" readonly="true" />
+			<h:message for="description" />
+		</h:outputLabel>
+		<br />
 
-			<h:outputLabel value="Цена на услугата за час*">
-				<h:inputText id="priceHour" 
-					value="#{aktualiziraneNaUsluga.priceHour}"
-					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaUsluga.rowSelected}">
-						<f:validateDoubleRange minimum="0" maximum="10000" />
-				</h:inputText>
-				<h:message for="priceHour" />
-			</h:outputLabel>
-			<br />
+		<h:outputLabel value="Цена на услугата за час*">
+			<h:inputText id="priceHour" 
+				value="#{aktualiziraneNaUsluga.priceHour}"
+				required="true" requiredMessage="задължително поле!"
+				readonly="#{!aktualiziraneNaUsluga.rowSelected}">
+					<f:validateDoubleRange minimum="0" maximum="10000" />
+			</h:inputText>
+			<h:message for="priceHour" />
+		</h:outputLabel>
+		<br />
+		
+		<h:commandButton value="Запази" action="#{aktualiziraneNaUsluga.writeIt()}"
+				disabled="#{!aktualiziraneNaUsluga.rowSelected or !aktualiziraneNaUsluga.changingAllowed}"/>
+
+		<h:commandButton action="#{aktualiziraneNaUsluga.deselectRow()}" value="Отмени"
+			disabled="#{!aktualiziraneNaUsluga.rowSelected}" />
 			
-			<h:commandButton value="Запази" action="#{aktualiziraneNaUsluga.writeIt()}"
-					disabled="#{!aktualiziraneNaUsluga.rowSelected}"/>
-
-			<h:commandButton action="#{aktualiziraneNaUsluga.deselectRow()}" value="Отмени"
-				disabled="#{!aktualiziraneNaUsluga.rowSelected}" />
-				
-			<br />
-			<h:outputText value="#{aktualiziraneNaUsluga.errorMessage}" />
+		<br />
+		<h:outputText value="#{aktualiziraneNaUsluga.errorMessage}" />
 
 		</h:form>
 			

@@ -415,12 +415,13 @@
 	    <br />	     
 	     
 	     <h:commandButton value="Запази" action="#{aktualiziraneNaKlientskaPoru4ka.saveOrder()}"
-			disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected}"/>
+			disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed}"/>
 				
 		<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.deselectRow()}" value="Отмени"
 			disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected}"/>
 					
-		<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.goToAdd()}" value="Добави" />
+		<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.goToAdd()}" value="Добави"
+			disabled="#{!aktualiziraneNaKlientskaPoru4ka.goToAddAllowed}" />
 	    <br />
 	    
 	    <h:outputText value="#{aktualiziraneNaKlientskaPoru4ka.errorMessage}"/>

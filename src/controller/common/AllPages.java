@@ -1,5 +1,6 @@
 package controller.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +9,10 @@ import javax.faces.bean.ManagedBean;
 
 import model.EmployeeAutoservice;
 
+@SuppressWarnings("serial")
 @ManagedBean(name="allPages")
 @ApplicationScoped
-public class AllPages {
+public class AllPages implements Serializable {
 	
 	private List<PageAttributes> allPages;
 	

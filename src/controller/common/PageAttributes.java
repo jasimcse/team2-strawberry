@@ -1,8 +1,10 @@
 package controller.common;
 
+import java.io.Serializable;
 import java.util.BitSet;
 
-public class PageAttributes {
+@SuppressWarnings("serial")
+public class PageAttributes implements Serializable {
 	
 	private String url;
 	private String title;
@@ -11,7 +13,7 @@ public class PageAttributes {
 	private Rights readRights;
 	private Rights writeRights;
 	
-	public static class Rights {
+	public static class Rights implements Serializable {
 		private static final int POSITIONS_COUNT = 6;
 		
 		private BitSet rights = new BitSet(POSITIONS_COUNT);

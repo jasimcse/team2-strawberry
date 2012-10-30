@@ -20,6 +20,7 @@ import model.WarehouseOrderPartDelivery;
 
 import com.google.appengine.api.datastore.Key;
 
+import controller.common.AllPages;
 import controller.common.ConfigurationProperties;
 import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
@@ -28,6 +29,9 @@ import controller.common.InterPageDataRequest;
 @ManagedBean(name="pregledNaPriemaneNa4asti")
 @ViewScoped
 public class PregledNaPriemaneNa4asti implements Serializable {
+	
+	@ManagedProperty(value="#{allPages}")
+	private AllPages allPages;
 	
 	@ManagedProperty(value="#{currentEmployee}")
 	private CurrentEmployee currEmployee;
@@ -121,6 +125,12 @@ public class PregledNaPriemaneNa4asti implements Serializable {
 		return spisukDostavki.contains(dostavka);
 	}
 	
+	public boolean isChangingAllowed() {
+		return allPages.getWriteRight(
+				FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath(),
+				currEmployee.getPosition());
+	}
+	
 	public Key getAutoserviceID() {
 		return autoserviceID;
 	}
@@ -129,6 +139,10 @@ public class PregledNaPriemaneNa4asti implements Serializable {
 		this.autoserviceID = autoserviceID;
 	}
 
+	public void setAllPages(AllPages allPages) {
+		this.allPages = allPages;
+	}
+	
 	public void setCurrEmployee(CurrentEmployee currEmployee) {
 		this.currEmployee = currEmployee;
 	}
@@ -200,6 +214,11 @@ public class PregledNaPriemaneNa4asti implements Serializable {
 	}
 	
 	public String writeIt() {
+		
+		if (!isChangingAllowed()) {
+			errorMessage = "Нямате права за актуализирането на данните!";
+			return null;
+		}
 		
 		if (dostavka.getStatus().equals("1")) {
 			// set the message
