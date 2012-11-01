@@ -10,8 +10,9 @@
 
 	<ui:define name="pageContent">
 	  
-		<h:form>
+	  <h:form>
 			<h:panelGroup>
+			
 				<h:outputLabel value="Избери клиент" />
 				<h:commandButton value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseClient()}" /> 
 				<h:panelGroup rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.person}">
@@ -39,7 +40,7 @@
 				<br />
 				
 		
-				<h:outputLabel value="Регистрационен номер на автомобила*">
+				<h:outputLabel value="Регистрационен номер на автомобила">
 	    			<h:inputText id="searchplatenum" value="#{dobavqneNaKlientskaPoru4ka.vehicle.plateNumber}" maxlength="8" 
 	    				readonly="true"/>
 	    			<h:message for="searchplatenum" />
@@ -49,18 +50,18 @@
 	    		
 	    		<h:outputLabel value="Автосервиз">
 	    			<h:selectOneMenu value="#{aktualiziraneNaKlientskaPoru4ka.searchAutoservice}">
-						<f:selectItems value="#{aktualiziraneNaKlientskaPoru4ka.autoservice.name}" />
+						<f:selectItems value="#{aktualiziraneNaKlientskaPoru4ka.autoservices}" />
 					</h:selectOneMenu>
 	    		</h:outputLabel>
 	    		<br />
 	    		
 	    		<h:outputLabel value="Име на служител">
-		    		<h:inputText id="searchempname" value="#{aktualiziraneNaKlientskaPoru4ka.client.person.name}" maxlength="50" 
+		    		<h:inputText id="searchempname" value="#{aktualiziraneNaKlientskaPoru4ka.employee.name}" maxlength="50" 
 						readonly = "true" />
 		    		<h:message for="searchempname" />
 		   		</h:outputLabel>
 		    	<h:outputLabel value="Фамилия на служител">
-		   	 		<h:inputText id="searchempfamily" value="#{aktualiziraneNaKlientskaPoru4ka.client.person.family}" maxlength="50" 
+		   	 		<h:inputText id="searchempfamily" value="#{aktualiziraneNaKlientskaPoru4ka.employee.family}" maxlength="50" 
 						readonly = "true" />
 		    		<h:message for="searchempfamily" />
 		    	</h:outputLabel>
@@ -69,11 +70,11 @@
 		    		
 				<h:outputLabel value="Начална дата">
 					<h:inputText value="" maxlength="50" />
-					<!-- TODO - конвертор -->
+					<f:convertDateTime pattern="dd.MM.yyyy" />
 				</h:outputLabel>
 				<h:outputLabel value="Крайна дата">
 					<h:inputText value="" maxlength="50" />
-					<!-- TODO - конвертор -->
+					<f:convertDateTime pattern="dd.MM.yyyy" />
 				</h:outputLabel>
 				<br />
 				
@@ -88,6 +89,7 @@
 				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
 			</h:panelGroup>
 		</h:form>
+		
 		
 		<div style="overflow-x: auto;"> <!-- scroll bar -->
 		<h:form>
@@ -251,11 +253,11 @@
 	    	<h:inputText id="date" value="#{aktualiziraneNaKlientskaPoru4ka.date}" 
 	    		readonly="true">
 	    	<f:convertDateTime pattern="dd.MM.yyyy" />
-	    	</h:inputText>>
+	    	</h:inputText>
 	    </h:outputLabel> 
 	    <br />
 		
-		<h:outputLabel value="Автомобилът е приет за ремонт*">
+		<h:outputLabel value="Автомобилът е приет за ремонт">
 	   		<h:selectBooleanCheckbox value="#{aktualiziraneNaKlientskaPoru4ka.inAutoservice}" 
 	   			disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed}" />
 	    </h:outputLabel>
@@ -319,7 +321,7 @@
 		<br />
 		
 		
-		<h:outputLabel value="Резервни части, които трябва ще бъдат вложени:">
+		<h:outputLabel value="Резервни части, които ще бъдат вложени:">
 	    	<h:commandButton  value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseSparePart()}"
 				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed}"/>
 	    </h:outputLabel>

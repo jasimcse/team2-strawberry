@@ -200,11 +200,27 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	}
 
 	public String getVehiclePresent() {
-		return poru4ka.getVehiclePresent();
+		
+		if(poru4ka.getVehiclePresent() == null)
+			return null;
+		
+		if ( poru4ka.getVehiclePresent().equals(ClientOrder.VEHICLE_PRESENTS))
+			return "да";
+		
+		if ( poru4ka.getVehiclePresent().equals(ClientOrder.VEHICLE_NOT_PRESENTS))
+			return "не";
+		
+		return null;
 	}
 
 	public void setVehiclePresent(String vehiclePresent) {
-		poru4ka.setVehiclePresent(vehiclePresent);
+		
+		if(vehiclePresent.equals("да") )
+			poru4ka.setVehiclePresent(ClientOrder.VEHICLE_PRESENTS);
+		else
+			if(vehiclePresent.equals("не") )
+				poru4ka.setVehiclePresent(ClientOrder.VEHICLE_NOT_PRESENTS);
+	
 	}
 
 	
@@ -217,13 +233,51 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	}
 
 	public String getStatus() {
-		return poru4ka.getStatus();
+		if(poru4ka.getStatus() == null)
+			return null;
+		
+		if(poru4ka.getStatus().equals(ClientOrder.NEW)  )
+			return "нова";
+		
+		if(poru4ka.getStatus().equals(ClientOrder.HALTED) )
+			return "задържана";
+	
+		if(poru4ka.getStatus().equals(ClientOrder.PROCESSING) )
+			return "изпълнявана";
+
+		if(poru4ka.getStatus().equals(ClientOrder.FINISHED) )
+			return "завършена";
+		
+		if(poru4ka.getStatus().equals(ClientOrder.PAYED) )
+			return "платена";
+		
+		if(poru4ka.getStatus().equals(ClientOrder.BLOCKED) )
+			return "блокирана";
+		
+		return null;
 	}
 
 	public void setStatus(String status) {
-		poru4ka.setStatus(status);
+		
+		if(status.equals("нова") )
+			poru4ka.setStatus(ClientOrder.NEW);
+		else
+			if(status.equals("задържана") )
+				poru4ka.setStatus(ClientOrder.HALTED);
+			else
+				if(status.equals("изпълнявана") )
+					poru4ka.setStatus(ClientOrder.PROCESSING);
+				else
+					if(status.equals("платена") )
+						poru4ka.setStatus(ClientOrder.FINISHED);
+					else
+						if(status.equals("платена") )
+							poru4ka.setStatus(ClientOrder.PAYED);
+						else
+							if(status.equals("платена") )
+								poru4ka.setStatus(ClientOrder.BLOCKED);
 	}
-
+	
 	public String getPaymentNumber() {
 		return poru4ka.getPaymentNumber();
 	}
@@ -295,6 +349,15 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 			return " ";
 		
 		return emp.getName() + " " + emp.getFamily();
+	}
+	
+	public List<String> getAutoservices() {
+		List<String> spisukAvtoservizi = new ArrayList<String>();
+		List<Autoservice> spisukAuto = Autoservice.queryGetAll(0, 1000);
+		for (Autoservice auto : spisukAuto) {
+			spisukAvtoservizi.add(auto.getName());
+		}
+		return spisukAvtoservizi;
 	}
 	
 	public List<ServiceForClientOrder> getSpisukUslugi() {
@@ -470,6 +533,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	}
 	
 	public void selectRow(ClientOrder order) {
+		cleanData();
 		poru4ka = order;
 		
 		List <ClientOrderService> spisukClOrderService = ClientOrderService.queryGetAll(0, 
@@ -511,11 +575,12 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 				missingSpPart = true;
 		}
 		
+		recalculateFullPrice();
 		
 	}
 	
 	public void deselectRow() {
-		poru4ka = new ClientOrder();
+		cleanData();
 		readList();
 	}
 
@@ -635,12 +700,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		}
 				
 		// clean the data
-		poru4ka = new ClientOrder();
-		spisukRezervni4asti.clear();
-		spisukUslugi.clear();
-		missingSpPart = false;
-		clientOrderPrice = 0;
-		setInAutoservice(false);
+		cleanData();
 				
 		// set the message
 		errorMessage = "Поръчката беше актуализирана успешно!";
@@ -648,6 +708,15 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		readList();
 
 		return null;
+	}
+	
+	private void cleanData(){
+		poru4ka = new ClientOrder();
+		spisukRezervni4asti.clear();
+		spisukUslugi.clear();
+		missingSpPart = false;
+		clientOrderPrice = 0;
+		setInAutoservice(false);
 	}
 	
 }
