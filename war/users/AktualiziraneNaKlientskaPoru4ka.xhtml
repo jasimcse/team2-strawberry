@@ -133,7 +133,7 @@
 				
 				<h:column>
 					<f:facet name="header">Приет автомобил</f:facet>
-					<h:outputText value="#{curr.vehiclepresent}"  />
+					<h:outputText value="#{curr.vehiclePresent}"  />
 				</h:column>
 				
 				<h:column>
@@ -148,10 +148,7 @@
 					<h:outputText value="#{curr.status}"  />
 				</h:column>
 				
-				<h:column>
-					<f:facet name="header">Цена</f:facet>
-					<h:outputText value="#{curr.price}" />
-				</h:column>
+				
 				
 				<h:column>
 					<f:facet name="header">Промени</f:facet>
@@ -196,7 +193,9 @@
 	   
 	   
 		<h:form>
-	    <h:panelGroup rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.person}">
+	     
+	     
+	     	<h:panelGroup rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.person}">
 	    	<!-- ако клиентът е физическо лице се изчертава това -->
 		    <h:outputLabel value="Име на клиент">
 		    	<h:inputText id="personname" value="#{aktualiziraneNaKlientskaPoru4ka.client.person.name}" maxlength="50" 
@@ -228,9 +227,10 @@
 	    		readonly="true"/>
 	    	<h:message for="platenum" />
 	    </h:outputLabel>
+	     <br />
 	     
-	  
-		<h:outputLabel value="Автосервиз, в който се изпълнява поръчката:">
+	     
+	     <h:outputLabel value="Автосервиз, в който се изпълнява поръчката:">
 	    	<h:inputText id="autoservice" value="#{aktualiziraneNaKlientskaPoru4ka.autoservice.name}" maxlength="100" 
 	    		readonly="true"/>
 	    	<h:message for="autoservice" />
@@ -246,22 +246,24 @@
 	    	<h:message for="empfamily" />
 	    </h:outputLabel> 
 	    <br />
-	    
-	   <h:outputLabel value="Дата:">
+	  
+		 <h:outputLabel value="Дата:">
 	    	<h:inputText id="date" value="#{aktualiziraneNaKlientskaPoru4ka.date}" 
 	    		readonly="true">
 	    	<f:convertDateTime pattern="dd.MM.yyyy" />
 	    	</h:inputText>>
 	    </h:outputLabel> 
 	    <br />
-	    
-	   	<h:outputLabel value="Автомобилът е приет за ремонт*">
-	   		<h:selectBooleanCheckbox value="#{aktualiziraneNaKlientskaPoru4ka.inAutoservice}"  />
+		
+		<h:outputLabel value="Автомобилът е приет за ремонт*">
+	   		<h:selectBooleanCheckbox value="#{aktualiziraneNaKlientskaPoru4ka.inAutoservice}" 
+	   			disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed}" />
 	    </h:outputLabel>
 	    <br />
 	    
-		<h:outputLabel value="Услуги, които ще бъдат извършени:">
-	    	<h:commandButton value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseUsluga()}" /> 
+	    <h:outputLabel value="Услуги, които ще бъдат извършени:">
+	    	<h:commandButton value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseUsluga()}" 
+				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed}"/> 
 	    </h:outputLabel>
 	    <br />
 	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове --> 
@@ -296,14 +298,16 @@
 				#{aktualiziraneNaKlientskaPoru4ka.getWhoWillPay(curr.clService.whoPays) }
 			</h:column>
 			
+			
 			<h:column>
 				<f:facet name="header">Кой е извършил услугата</f:facet>
-				#{curr.employeeNames }
+				#{curr.getEmployeeNames() }
 			</h:column>
+			
 			
 			<h:column>
 				<f:facet name="header">Извършена услуга</f:facet>
-				<h:commandLink action="#{aktualiziraneNaKlientskaPoru4ka.setEmployeeToService(curr)}" value="Премахни" />
+				<h:commandLink action="#{aktualiziraneNaKlientskaPoru4ka.setEmployeeToService(curr)}" value="Извършена" />
 			</h:column> 
 			
 			<h:column>
@@ -313,9 +317,11 @@
 		</h:dataTable>
 		</div>
 		<br />
-
+		
+		
 		<h:outputLabel value="Резервни части, които трябва ще бъдат вложени:">
-	    	<h:commandButton  value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseSparePart()}" /> 
+	    	<h:commandButton  value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseSparePart()}"
+				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed}"/>
 	    </h:outputLabel>
 	    <br /> 
 	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове 
@@ -406,27 +412,27 @@
 	    </h:outputLabel> 
 	    <br />
 	    
-	    <h:outputLabel value="Статус на поръчката">
+	     <h:outputLabel value="Статус на поръчката">
 	    	<h:selectOneMenu value="#{aktualiziraneNaKlientskaPoru4ka.status}" 
-	    	disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected || aktualiziraneNaKlientskaPoru4ka.isChanged()}">
+	    	disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected || aktualiziraneNaKlientskaPoru4ka.isPaied()}">
 				<f:selectItems value="#{aktualiziraneNaKlientskaPoru4ka.orderStatus}" />
 			</h:selectOneMenu>
 	    </h:outputLabel>
-	    <br />	     
-	     
-	     <h:commandButton value="Запази" action="#{aktualiziraneNaKlientskaPoru4ka.saveOrder()}"
-			disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed}"/>
+	    <br />	
+	    
+			<h:commandButton value="Запази" action="#{aktualiziraneNaKlientskaPoru4ka.saveOrder()}"
+				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed}"/>
 				
-		<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.deselectRow()}" value="Отмени"
-			disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected}"/>
+			<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.deselectRow()}" value="Отмени"
+				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected}"/>
 					
-		<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.goToAdd()}" value="Добави"
-			disabled="#{!aktualiziraneNaKlientskaPoru4ka.goToAddAllowed}" />
-	    <br />
+			<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.goToAdd()}" value="Добави"
+				disabled="#{!aktualiziraneNaKlientskaPoru4ka.goToAddAllowed}" />
+	    	<br />
 	    
-	    <h:outputText value="#{aktualiziraneNaKlientskaPoru4ka.errorMessage}"/>
+	    	<h:outputText value="#{aktualiziraneNaKlientskaPoru4ka.errorMessage}"/>
 	    
-	    </h:form>
+		</h:form>
 	</ui:define>
 	
 </ui:composition>
