@@ -41,6 +41,9 @@ public class ServiceForClientOrder   implements Serializable {
 
 	public String getEmployeeNames()
 	{
+		if(clService.getEmployee() == null )
+			return "";
+		
 		return clService.getEmployee().getName() + " " + clService.getEmployee().getFamily();
 	}
 	

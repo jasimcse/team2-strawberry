@@ -65,10 +65,14 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	
 	private InterPageDataRequest dataRequest;
 	
-	
-	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void init() {
+		readList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	//@PostConstruct
+	public AktualiziraneNaKlientskaPoru4ka() {
 		
 		
 		
@@ -80,8 +84,6 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 				dataRequest = null;
 			}
 		}
-		
-		//readList();
 		
 		
 		Stack<InterPageDataRequest> dataRequestStackNew = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
@@ -287,6 +289,14 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 				return "клиента";
 	}
 	
+	public String getWhoDoService( Employee emp )
+	{
+		if(emp == null )
+			return " ";
+		
+		return emp.getName() + " " + emp.getFamily();
+	}
+	
 	public List<ServiceForClientOrder> getSpisukUslugi() {
 		return spisukUslugi;
 	}
@@ -295,7 +305,6 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		return spisukRezervni4asti;
 	}
 
-	
 	public String chooseUsluga()
 	{	
 		Stack<InterPageDataRequest> dataRequestStack = new Stack<InterPageDataRequest>();
@@ -315,7 +324,9 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 
 	public void setEmployeeToService(ServiceForClientOrder clService)
 	{
-		//TODO: добавя автомонтьор извършил услугата
+		// добавя автомонтьор извършил услугата
+		clService.getClService().setEmployeeID(currEmployee.getEmployeeID());
+		readList();
 	}
 	
 	public void deleteUsluga(ServiceForClientOrder clService)
@@ -417,7 +428,6 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		readList();
 	}
 
-
 	public List<ClientOrder> getSpisukPoru4ki() {
 		return spisukPoru4ki;
 	}
@@ -463,14 +473,45 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		poru4ka = order;
 		
 		List <ClientOrderService> spisukClOrderService = ClientOrderService.queryGetAll(0, 
-				ClientOrderService.countGetAll(poru4ka.getID()), poru4ka.getID());
-		 //TODO: spisukUslugi
+			ClientOrderService.countGetAll(poru4ka.getID()), poru4ka.getID());
+
+		for (ClientOrderService clOrSer : spisukClOrderService) 
+		{
+			ServiceForClientOrder serClientOrder = new ServiceForClientOrder();
+			serClientOrder.setClService(clOrSer);
+			List<VehicleModelService> listModelService =  VehicleModelService.queryGetByService(clOrSer.getServiceID(), 
+					0, 1, poru4ka.getVehicle().getVehicleModelID());
 		
-		 List <ClientOrderPart> spisukClOrderPart = ClientOrderPart.queryGetAll(0, 
-				ClientOrderPart.countGetAll(poru4ka.getID()), poru4ka.getID());
-		//TODO: spisukRezervni4asti
-		//Резервирано количество за поръчката Read only - Spare_Part_Reserved.Quantity
-		//Вложено количество за поръчката Read only - Spare_Part_Reserved.Used
+			serClientOrder.setServiceDuration(listModelService.get(0).getDurationHour());
+			serClientOrder.recalculateFullPrice();
+			spisukUslugi.add(serClientOrder);
+		}
+		
+		
+		List <ClientOrderPart> spisukClOrderPart = ClientOrderPart.queryGetAll(0, 
+			ClientOrderPart.countGetAll(poru4ka.getID()), poru4ka.getID());
+
+		for (ClientOrderPart clOrSer : spisukClOrderPart) 
+		{
+			SparePartForClientOrder partClientOrder = new SparePartForClientOrder();
+			partClientOrder.setClPart(clOrSer);
+			List <SparePartAutoservice> listAutosevicePart = SparePartAutoservice.queryGetBySparePartID(clOrSer.getSparePartID(), 0, 1, currEmployee.getAutoserviceID());
+			
+			partClientOrder.setQuantityAvailable(listAutosevicePart.get(0).getQuantityAvailable());
+			partClientOrder.recalculateFullPrice();
+			
+			//TODO:
+			//Резервирано количество за поръчката Read only - Spare_Part_Reserved.Quantity
+			//Вложено количество за поръчката Read only - Spare_Part_Reserved.Used
+			
+			spisukRezervni4asti.add(partClientOrder);
+			
+			// проверка дали разполагаме с необходимото количество от резервната част
+			if ( partClientOrder.getQuantityAvailable() < partClientOrder.getClPart().getQuantity() )
+				missingSpPart = true;
+		}
+		
+		
 	}
 	
 	public void deselectRow() {

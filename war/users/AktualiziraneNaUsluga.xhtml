@@ -97,7 +97,7 @@
 			<h:inputText id="priceHour" 
 				value="#{aktualiziraneNaUsluga.priceHour}"
 				required="true" requiredMessage="задължително поле!"
-				readonly="#{!aktualiziraneNaUsluga.rowSelected}">
+				readonly="#{!aktualiziraneNaUsluga.rowSelected or !aktualiziraneNaUsluga.changingAllowed}">
 					<f:validateDoubleRange minimum="0" maximum="10000" />
 			</h:inputText>
 			<h:message for="priceHour" />
