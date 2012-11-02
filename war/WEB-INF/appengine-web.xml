@@ -16,15 +16,24 @@
   <sessions-enabled>true</sessions-enabled>
   
   <static-files>
+  	  <include path="/favicon.ico" />
 	  <include path="/resources/**" />
+	  <include path="/wsdl/**" />
   </static-files>
   
   <resource-files>
       <include path="/**" />
+      <exclude path="/favicon.ico" />
       <exclude path="/resources/**" />
+      <exclude path="/soap/**" />
+      <exclude path="/wsdl/**" />
       <exclude path="/META-INF/**" />
       <exclude path="/WEB-INF/appengine-generated/**" />
   </resource-files>
+  
+  <static-error-handlers>
+    <handler file="default_error.html"/>
+  </static-error-handlers>
   
   <!--
     HTTP Sessions are disabled by default. To enable HTTP sessions specify:
