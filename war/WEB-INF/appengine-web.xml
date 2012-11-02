@@ -17,6 +17,7 @@
   
   <static-files>
   	  <include path="/favicon.ico" />
+  	  <include path="/default_error.html" />
 	  <include path="/resources/**" />
 	  <include path="/wsdl/**" />
   </static-files>
