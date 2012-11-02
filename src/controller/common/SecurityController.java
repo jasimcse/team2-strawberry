@@ -38,6 +38,7 @@ public class SecurityController implements Filter {
 			(allPages.isLoggedUsersOnly(uri) && !currEmployee.isLoggedIn()) ||
 			(currEmployee.isLoggedIn() && !allPages.getReadRight(uri, currEmployee.getPosition()))) &&
 		   !uri.endsWith("ZapazvaneNa4as.jsf") &&
+		   !uri.endsWith("general-error.jsf") &&
 		   !uri.contains("javax.faces.resource")) {
 			
 			((HttpServletResponse)response).sendRedirect("/clients/ZapazvaneNa4as.jsf");

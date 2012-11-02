@@ -26,6 +26,26 @@
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
+  
+  <security-constraint>
+    <web-resource-collection>
+    <web-resource-name>Protected Resources</web-resource-name>
+      <url-pattern>/admin/*</url-pattern>
+      <url-pattern>/cron/*</url-pattern>
+      <url-pattern>/debug/*</url-pattern>
+      <url-pattern>/soap/*</url-pattern>
+      <url-pattern>/users/*</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  
+  <error-page>
+	<error-code>500</error-code>
+	<location>/general-error.html</location>
+  </error-page>
+    
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
