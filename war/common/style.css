@@ -1,7 +1,7 @@
-п»їbody {
+body {
 	margin: 0 auto;
 	padding: 0;
-	/* РњРѕР¶Рµ Р±Рё РЅСЏРјР° РґР° Рµ С‚РѕР·Рё С†РІРµС‚Р° РЅР° СЃС‚СЂР°РЅРёС†Р°С‚Р°...
+	/* Може би няма да е този цвета на страницата...
 	background: #BBBBFF;
 	*/
 	background-image: url("img/background.jpg");
@@ -46,7 +46,7 @@ header {
 	-o-transform: scale(0.8);
 	transform: scale(0.8);
 }
-nav {
+#leftSection {
 	
 	float: left;
 	height: 550px;

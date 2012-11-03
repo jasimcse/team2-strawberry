@@ -13,24 +13,31 @@
 </h:head>
 
 <h:body>
-	<div id="topSection">
-		<div class="title" style="float: left;">Заглавие и други неща</div>
-	
-		<div id="loginSection" style="float: right;">
-		
-			<h:form name="loginForm">
-				<h:panelGroup rendered="#{loginController.isLoggedIn()}">
-					<h:outputText value="Сервиз: #{currentEmployee.autoserviceName}" />
-					<br />
-					<h:outputText value="Потребител: #{currentEmployee.username}" />
-					<br />
-					<h:outputText value="Позиция: #{currentEmployee.positionString}" />
-					<br />
-					<h:commandLink action="#{loginController.logout()}"	value="Излез" />
-				</h:panelGroup>
-			
-				<h:panelGroup rendered="#{!loginController.isLoggedIn()}">
+	<div id="header">
+		<div id="title">#{allPages.getTitle(facesContext.externalContext.requestServletPath)}</div>
+	</div>
+	<div id="loginSection" style="float: right;">
+		<h:form name="loginForm">
+			<h:panelGroup rendered="#{loginController.isLoggedIn()}">
+				<div id="serviceLogged">
+					<span>
+						<h:outputText value="Сервиз: #{currentEmployee.autoserviceName}" /> <br/>
+					</span>	
 					
+					<span>
+						<h:outputText value="Потребител: #{currentEmployee.username}" /> <br/>
+					</span>
+					
+					<span>
+						<h:outputText value="Позиция: #{currentEmployee.positionString}" /> <br/>
+					</span>
+					<span id="exitButton">
+						<h:commandButton action="#{loginController.logout()}"	value="Излез" />
+					</span>
+				</div>
+			</h:panelGroup>
+			<h:panelGroup rendered="#{!loginController.isLoggedIn()}">
+				<div id="serviceNotLogged">
 					<h:outputLabel value="Потребителско име">
 						<h:inputText maxlength="50" required="true" value="#{loginController.username}" />
 					</h:outputLabel>
@@ -39,19 +46,21 @@
 						<h:inputSecret maxlength="50" required="true" value="#{loginController.password}" />
 					</h:outputLabel>
 					<br />
-					<h:panelGroup rendered="#{!empty loginController.errorMessage}" >
+				<h:panelGroup rendered="#{!empty loginController.errorMessage}" >
+					<span id="errorMessage">
 						<h:outputText value="#{loginController.errorMessage}" />
-						<br />
-					</h:panelGroup>
-					<h:commandButton action="#{loginController.login()}" value="Влез" />
-				
+					<br />
+					</span>
 				</h:panelGroup>
-			</h:form>
-		</div>
+					<span id="LoginButton">
+						<h:commandButton action="#{loginController.login()}" value="Влез" />
+					</span>
+				</div>
+			</h:panelGroup>
+		</h:form>
 	</div>
-	
 	<div id="bottomSection" style="clear: both;">
-		<div id="leftSection" style="float: left; width: 200px;">
+		<div id="leftSection">
 			<ui:repeat var="currEntry" value="#{usersMenuController.getMenu(currentEmployee.position)}">
 				<h:panelGroup rendered="#{currEntry.type eq 'simpleGroup'}">
 					<div>
@@ -79,14 +88,12 @@
 				</ul>
 				</h:panelGroup>
 			</ui:repeat>
-			
 			<ui:insert name="menu" />
 		</div>
-		<div id="centralSection" style="overflow: hidden;">
+		<div id="centralSection">
 			<ui:insert name="pageContent" />
 		</div>
 	</div>
-		
 </h:body>
 
 </html>
