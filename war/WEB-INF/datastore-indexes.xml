@@ -9,5 +9,9 @@
         <property name="timestamp" direction="asc"/>
     </datastore-index>
     
+    <datastore-index kind="Client" ancestor="true" source="manual">
+        <property name="foreignID" direction="asc"/>
+    </datastore-index>
+    
 
 </datastore-indexes>

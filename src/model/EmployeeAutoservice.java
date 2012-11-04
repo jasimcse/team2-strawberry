@@ -34,6 +34,7 @@ public class EmployeeAutoservice implements Serializable {
 	public static final String WAREHOUSEMAN = "4";
 	public static final String DIAGNOSTICIAN = "5";
 	public static final String AUTO_MECHANIC = "6";
+	public static final String DELETED_USER = "7";
 	
 	private Entity thisEntity;
 	private Autoservice autoservice;
@@ -50,7 +51,8 @@ public class EmployeeAutoservice implements Serializable {
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"PARENT_FIELD", "PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS", "UNIQUE_FIELDS",
 					      "thisEntity", "autoservice", "employee",
-					      "ADMINISTRATOR", "MANAGER", "CASHIER", "WAREHOUSEMAN", "DIAGNOSTICIAN", "AUTO_MECHANIC"}));
+					      "ADMINISTRATOR", "MANAGER", "CASHIER", "WAREHOUSEMAN",
+					      "DIAGNOSTICIAN", "AUTO_MECHANIC", "DELETED_USER"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
@@ -193,7 +195,8 @@ public class EmployeeAutoservice implements Serializable {
 
 	public void setPosition(String position) {
 		if (ADMINISTRATOR.equals(position) || MANAGER.equals(position) || CASHIER.equals(position) ||
-			WAREHOUSEMAN.equals(position) || DIAGNOSTICIAN.equals(position) || AUTO_MECHANIC.equals(position)) {
+			WAREHOUSEMAN.equals(position) || DIAGNOSTICIAN.equals(position) || AUTO_MECHANIC.equals(position) ||
+			DELETED_USER.equals(position)) {
 			this.position.setString(position);
 		} else {
 			throw new RuntimeException("The string doesn't match any of possible values");

@@ -31,6 +31,9 @@ public class CurrentEmployee implements Serializable {
 		// query to search the DB
 		if (EmployeeAutoservice.countGetByUsernamePassword(username, password) == 1) {
 			employeeAutoservice = EmployeeAutoservice.queryGetByUsernamePassword(username, password, 0, 1).get(0);
+			if (employeeAutoservice.getPosition().equals(EmployeeAutoservice.DELETED_USER)) {
+				employeeAutoservice = null;
+			}
 		} else {
 			employeeAutoservice = null;
 		}

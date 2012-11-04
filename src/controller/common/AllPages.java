@@ -127,12 +127,12 @@ public class AllPages implements Serializable {
 		PageAttributes.Rights readRights = new PageAttributes.Rights();
 		PageAttributes.Rights writeRights = new PageAttributes.Rights();
 		
-		readRights.setRight(EmployeeAutoservice.ADMINISTRATOR, true);
-		readRights.setRight(EmployeeAutoservice.MANAGER,       false);
-		readRights.setRight(EmployeeAutoservice.CASHIER,       false);
-		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,  false);
-		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, false);
-		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
+		readRights.setRight(EmployeeAutoservice.ADMINISTRATOR,  true);
+		readRights.setRight(EmployeeAutoservice.MANAGER,        false);
+		readRights.setRight(EmployeeAutoservice.CASHIER,        false);
+		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,   false);
+		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  false);
+		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC,  false);
 		
 		writeRights.setRight(EmployeeAutoservice.ADMINISTRATOR, true);
 		writeRights.setRight(EmployeeAutoservice.MANAGER,       false);
