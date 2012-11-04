@@ -179,6 +179,7 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 	private void readList() {
 		spisukAvtomobili = Vehicle.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
 		avtomobil = new Vehicle();
+		mileage = 0;
 		rowsCount = Vehicle.countGetAll();
 		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
 				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);

@@ -19,6 +19,13 @@
 	    <h:commandButton value="Избери" action="#{dobavqneNaDiagnostika.chooseAvtomobil()}" /> 
 	    <br />
 	    
+	    <h:outputLabel value="Пробег (километра)*">
+	    	<h:inputText id="mileage" value="#{dobavqneNaDiagnostika.mileage}"
+	    		required="true"/>
+	    	<h:message for="mileage" requiredMessage="задължително поле!" />
+	    </h:outputLabel> 
+	    <br />
+	    
 	    <h:outputLabel value="Цена на диагностиката*">
 	    	<h:inputText id="price" value="#{dobavqneNaDiagnostika.price}" maxlength="10" 
 	    		required="true" requiredMessage="задължително поле!" />

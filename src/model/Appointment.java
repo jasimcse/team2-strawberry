@@ -30,7 +30,7 @@ public class Appointment implements Serializable {
 	/* TODO - това да се замени само с ключ към Entity-то ???
 	 * понеже и без това ще се прави заявка, за да се провери версията на Entity-то при запис
 	 */
-	private Entity thisEntity; 
+	private Entity thisEntity;
 	private Autoservice autoservice;
 	
 	private Key autoserviceID;

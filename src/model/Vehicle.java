@@ -61,6 +61,10 @@ public class Vehicle implements Serializable {
 			EntityHelper.populateIt(thisEntity, this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 		}
 		
+		if ((warrantyConditions != null) && (mileage >= warrantyConditions.getMileage())) {
+			warrantyOK.setString(WARRANTY_NO);
+		}
+		
 		EntityHelper.checkUniqueFields(thisEntity, UNIQUE_FIELDS);
 		
 		DatastoreServiceFactory.getDatastoreService().put(thisEntity);

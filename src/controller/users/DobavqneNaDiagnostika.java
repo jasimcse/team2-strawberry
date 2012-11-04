@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Transaction;
+import com.google.appengine.api.datastore.TransactionOptions;
 
 import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
@@ -37,6 +38,7 @@ public class DobavqneNaDiagnostika  implements Serializable {
 	private CurrentEmployee currEmployee;
 	
 	private Diagnosis diagnostika = new Diagnosis();
+	private long mileage;
 	private String errorMessage;
 
 	private List <DiagnosisService> spisukUslugi = new ArrayList<DiagnosisService>();
@@ -50,6 +52,7 @@ public class DobavqneNaDiagnostika  implements Serializable {
 			InterPageDataRequest dataRequest = dataRequestStack.peek();
 			if (FacesContext.getCurrentInstance().getExternalContext().getRequestServletPath().equals(dataRequest.returnPage)) 
 			{
+				this.mileage = ((DobavqneNaDiagnostika)dataRequest.requestObject).mileage;
 				this.diagnostika = ((DobavqneNaDiagnostika)dataRequest.requestObject).diagnostika;
 				this.spisukUslugi = ((DobavqneNaDiagnostika)dataRequest.requestObject).spisukUslugi;
 				this.spisukRezervni4asti = ((DobavqneNaDiagnostika)dataRequest.requestObject).spisukRezervni4asti;
@@ -124,6 +127,16 @@ public class DobavqneNaDiagnostika  implements Serializable {
 		diagnostika.setPaymentNumber(paymentNumber);
 	}
 
+	public long getMileage() {
+		return mileage;
+	}
+
+
+	public void setMileage(long mileage) {
+		this.mileage = mileage;
+	}
+
+
 	public String getErrorMessage() {
 		return errorMessage;
 	}
@@ -151,6 +164,12 @@ public class DobavqneNaDiagnostika  implements Serializable {
 			return null;
 		}
 		
+		if (mileage < diagnostika.getVehicle().getMileage()) {
+			// set the message
+			errorMessage = "Пробегът на автомобила е по-малък от предния записан!";
+			return null;
+		}
+		
 		if( spisukUslugi.isEmpty() && spisukRezervni4asti.isEmpty() )
 		{
 			// set the message
@@ -158,12 +177,15 @@ public class DobavqneNaDiagnostika  implements Serializable {
 			return null;
 		}
 
+		diagnostika.getVehicle().setMileage(mileage);
 		diagnostika.setDate(new Date());
 		diagnostika.setEmployeeID(currEmployee.getEmployeeID());
 		diagnostika.setAutoserviceID(currEmployee.getAutoserviceID());
-		diagnostika.writeToDB();
 	 
-		Transaction tr = DatastoreServiceFactory.getDatastoreService().beginTransaction();
+		Transaction tr = DatastoreServiceFactory.getDatastoreService().beginTransaction(TransactionOptions.Builder.withXG(true));
+		
+		diagnostika.getVehicle().writeToDB();
+		diagnostika.writeToDB();
 		
 		for (DiagnosisService dSer : spisukUslugi) {
 			dSer.setDiagnosisID(diagnostika.getID());
@@ -174,14 +196,15 @@ public class DobavqneNaDiagnostika  implements Serializable {
 			dSp.setDiagnosisID(diagnostika.getID());
 			dSp.writeToDB();
 		}
-			
-		// TODO: проверка дали затрахователя е искал диагностиката 
-		// или автомобила е гаранционен
+		
+		// TODO: проверка дали застраховател не е заявил диагностиката и изпращане на доклад до застрахователя
+		// TODO: проверка дали автомобила е гаранционен и изпращане на доклад до електронния магазин
 		
 		tr.commit();
 		
 		// clean the data
 		diagnostika = new Diagnosis();
+		mileage = 0;
 		spisukRezervni4asti.clear();
 		spisukUslugi.clear();
 		
