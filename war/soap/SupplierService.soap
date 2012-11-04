@@ -4,6 +4,6 @@
 
 
 
-<soap:address location="http://uni-ruse-autoservice.appspot.com/soap/SupplierService.soap"/>
+<soap:address location="https://uni-ruse-autoservice.appspot.com/soap/SupplierService.soap"/>
 
 <soap:address location="http://localhost:8888/soap/SupplierService.soap"/>
