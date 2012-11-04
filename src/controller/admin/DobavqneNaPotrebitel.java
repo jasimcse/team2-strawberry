@@ -72,14 +72,14 @@ public class DobavqneNaPotrebitel implements Serializable {
 	}
 	
 	public Map<String, String> getPositions() {
-		Map<String, String> auto = new TreeMap<String, String>();
-		auto.put("Администратор", EmployeeAutoservice.ADMINISTRATOR);
-		auto.put("Управител", EmployeeAutoservice.MANAGER);
-		auto.put("Приемчик/Касиер", EmployeeAutoservice.CASHIER);
-		auto.put("Диагностик", EmployeeAutoservice.DIAGNOSTICIAN);
-		auto.put("Началник склад", EmployeeAutoservice.WAREHOUSEMAN);
-		auto.put("Автомонтьор", EmployeeAutoservice.AUTO_MECHANIC);
-		return auto;
+		Map<String, String> pos = new TreeMap<String, String>();
+		pos.put("Администратор", EmployeeAutoservice.ADMINISTRATOR);
+		pos.put("Управител", EmployeeAutoservice.MANAGER);
+		pos.put("Приемчик/Касиер", EmployeeAutoservice.CASHIER);
+		pos.put("Диагностик", EmployeeAutoservice.DIAGNOSTICIAN);
+		pos.put("Началник склад", EmployeeAutoservice.WAREHOUSEMAN);
+		pos.put("Автомонтьор", EmployeeAutoservice.AUTO_MECHANIC);
+		return pos;
 	}
 	
 	public Key getAutoserviceID() {

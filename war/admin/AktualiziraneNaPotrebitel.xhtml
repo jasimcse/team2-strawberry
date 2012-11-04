@@ -27,12 +27,12 @@
 				
 				<h:column>
 					<f:facet name="header">Име</f:facet>
-					#{curr.name}
+					#{curr.employee.name}
 				</h:column>
 				
 				<h:column>
 					<f:facet name="header">Фамилия</f:facet>
-					#{curr.family}
+					#{curr.employee.family}
 				</h:column>
 				
 				<h:column>
@@ -52,7 +52,7 @@
 				
 				<h:column>
 					<f:facet name="header">Промени</f:facet>
-					<h:commandLink action="#{aktualiziraneNaPotribetel.selectRow(curr)}" value="Промени" />
+					<h:commandLink action="#{aktualiziraneNaPotrebitel.selectRow(curr)}" value="Промени" />
 				</h:column>
 				
 				<f:facet name="footer">
@@ -112,36 +112,44 @@
 			</h:outputLabel>
 			<br />
 			<h:outputLabel value="Позиция">
-				<h:inputText id="position" value="#{aktualiziraneNaPotrebitel.position}"
-					readonly="true" />
-				<h:message for="position" />
+				<h:selectOneMenu value="#{aktualiziraneNaPotrebitel.position}"
+					disabled="#{!aktualiziraneNaPotrebitel.generateNewPasswordAllowed or !aktualiziraneNaPotrebitel.rowSelected}" >
+					<f:selectItems value="#{aktualiziraneNaPotrebitel.positions}" />
+				</h:selectOneMenu>
 			</h:outputLabel>
-			
+			<h:commandButton action="#{aktualiziraneNaPotrebitel.changePosition()}"
+				disabled="#{!aktualiziraneNaPotrebitel.generateNewPasswordAllowed or !aktualiziraneNaPotrebitel.rowSelected}"
+				value="Смени заеманата позиция" />
+
 			<br />
 			<h:commandButton action="#{aktualiziraneNaPotrebitel.generateNewPassword()}"
-				disabled="#{aktualiziraneNaPotrebitel.generateNewPasswordAllowed}"
+				disabled="#{!aktualiziraneNaPotrebitel.generateNewPasswordAllowed or !aktualiziraneNaPotrebitel.rowSelected}"
 				value="Генерирай нова парола" />
+			<br />
 			<br />
 			
 			<h:outputLabel value="Нова парола">
-				<h:inputText id="newPassword1" value="#{aktualiziraneNaPotrebitel.newPassword1}" maxlength="50"
-					required="#{not empty param[aktualiziraneNaPotrebitel.changeButton.getClientID]}"
-					requiredMessage="задължително поле!" />
-				<h:message for="newPassword1" />
+				<h:inputText id="newPassword" value="#{aktualiziraneNaPotrebitel.newPassword}" maxlength="50"
+					required="#{not empty param[aktualiziraneNaPotrebitel.changeButton.clientId]}"
+					requiredMessage="задължително поле!"
+					disabled="#{!aktualiziraneNaPotrebitel.changePasswordAllowed}" />
+				<h:message for="newPassword" />
 			</h:outputLabel>
 			<br />
 			<h:outputLabel value="Повтори новата парола">
-				<h:inputText id="newPassword2" value="#{aktualiziraneNaPotrebitel.newPassword2}"
-					required="#{not empty param[aktualiziraneNaPotrebitel.changeButton.getClientID]}"
-					requiredMessage="задължително поле!" />
-				<h:message for="newPassword2" />
+				<h:inputText id="repeatNewPassword" value="#{aktualiziraneNaPotrebitel.repeatNewPassword}"
+					required="#{not empty param[aktualiziraneNaPotrebitel.changeButton.clientId]}"
+					requiredMessage="задължително поле!"
+					disabled="#{!aktualiziraneNaPotrebitel.changePasswordAllowed}" />
+				<h:message for="repeatNewPassword" />
 			</h:outputLabel>
 			<br />
 			
 			<h:commandButton binding="#{aktualiziraneNaPotrebitel.changeButton}" action="#{aktualiziraneNaPotrebitel.changePassword()}"
-				disabled="#{aktualiziraneNaPotrebitel.changePasswordAllowed}"
+				disabled="#{!aktualiziraneNaPotrebitel.changePasswordAllowed}"
 				value="Смени паролата" />
 			<br />
+			
 			<h:outputText value="#{aktualiziraneNaPotrebitel.errorMessage}"/>
 		</h:form>
 	    

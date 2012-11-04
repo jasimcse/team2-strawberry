@@ -34,7 +34,7 @@ public class SecurityController implements Filter {
 		// if the user is not logged in, redirect to login page, also check if a
 		// static resource is requested (the uri will contain
 		// javax.faces.resource)
-		if ((currEmployee == null ||
+		if ((currEmployee == null || allPages == null ||
 			(allPages.isLoggedUsersOnly(uri) && !currEmployee.isLoggedIn()) ||
 			(currEmployee.isLoggedIn() && !allPages.getReadRight(uri, currEmployee.getPosition()))) &&
 		   !uri.endsWith("ZapazvaneNa4as.jsf") &&
