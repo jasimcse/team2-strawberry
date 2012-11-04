@@ -26,12 +26,10 @@
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
-  
   <security-constraint>
     <web-resource-collection>
-    <web-resource-name>Protected Resources</web-resource-name>
+      <web-resource-name>Protected Resources</web-resource-name>
       <url-pattern>/admin/*</url-pattern>
-      <url-pattern>/cron/*</url-pattern>
       <url-pattern>/debug/*</url-pattern>
       <url-pattern>/soap/*</url-pattern>
       <url-pattern>/users/*</url-pattern>
@@ -40,12 +38,10 @@
       <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
   </security-constraint>
-  
   <error-page>
-	<error-code>500</error-code>
-	<location>/general-error.jsf</location>
+    <error-code>500</error-code>
+    <location>/general-error.jsf</location>
   </error-page>
-  
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
@@ -69,6 +65,14 @@
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.jsf</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Check Vehicles Warranty Servlet</servlet-name>
+    <servlet-class>controller.cron.CheckVehiclesWarranty</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Check Vehicles Warranty Servlet</servlet-name>
+    <url-pattern>/cron/CheckVehiclesWarranty</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>InitModelData Servlet</servlet-name>

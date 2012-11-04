@@ -77,6 +77,24 @@ public class Vehicle implements Serializable {
 		writeToDB();
 	}
 	
+	public static void writeBatch(List<Vehicle> list) {
+		List<Entity> batch = new ArrayList<Entity>(list.size()); 
+		
+		for (Vehicle vehicle : list) {
+			if (vehicle.thisEntity == null) {
+				vehicle.thisEntity = EntityHelper.buildIt(vehicle, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+			} else {
+				EntityHelper.populateIt(vehicle.thisEntity, vehicle, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
+			}
+			
+			EntityHelper.checkUniqueFields(vehicle.thisEntity, UNIQUE_FIELDS);
+			
+			batch.add(vehicle.thisEntity);
+		}
+		
+		DatastoreServiceFactory.getDatastoreService().put(batch);
+	}
+	
 	public Entity makeEntity() {
 		return EntityHelper.buildIt(this, PARENT_FIELD, IGNORED_FIELDS, NULLABLE_FIELDS);
 	}
@@ -289,6 +307,13 @@ public class Vehicle implements Serializable {
 				       setFilter(new Query.FilterPredicate("VIN", FilterOperator.EQUAL, VIN)));
 	}
 	
+	private static PreparedQuery getPreparedQueryWarrantyOK() { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Vehicle.class.getSimpleName()).
+				       addSort("__key__").
+				       setFilter(new Query.FilterPredicate("warrantyOK", FilterOperator.EQUAL, WARRANTY_YES)));
+	}
+	
 	public static List<Vehicle> queryGetAll(int offset, int count) {
 		List<Entity> oldList = getPreparedQueryAll().
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
@@ -332,6 +357,19 @@ public class Vehicle implements Serializable {
 	
 	public static int countGetByVIN(String VIN, Key clientID) {
 		return getPreparedQueryByVIN(clientID, VIN).
+				countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	
+	public static List<Vehicle> queryGetWarrantyOK(int offset, int count) {
+		List<Entity> oldList = getPreparedQueryWarrantyOK().
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetWarrantyOK() {
+		return getPreparedQueryWarrantyOK().
 				countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	

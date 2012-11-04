@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+  <cron>
+    <url>/cron/CheckVehiclesWarranty</url>
+    <description>Check all vehicles whether the warranty needs to be toggled to "no warranty"</description>
+    <schedule>every day 9:00</schedule>
+    <timezone>Europe/Sofia</timezone>
+  </cron>
+  
+</cronentries>
