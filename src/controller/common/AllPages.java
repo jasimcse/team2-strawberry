@@ -29,6 +29,7 @@ public class AllPages implements Serializable {
 		allPages.add(aktualiziraneNaAvtoserviz());
 		
 		allPages.add(dobavqneNaPotrebitel());
+		allPages.add(aktualiziraneNaPotrebitel());
 		
 		allPages.add(dobavqneNaZastrahovatel());
 		allPages.add(aktualiziraneNaZastrahovatel());
@@ -225,6 +226,27 @@ public class AllPages implements Serializable {
 		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, false);
 		
 		return new PageAttributes("/admin/DobavqneNaPotrebitel.jsf", "Добавяне на потребител", true, readRights, writeRights);
+	}
+	
+	private PageAttributes aktualiziraneNaPotrebitel() {
+		PageAttributes.Rights readRights = new PageAttributes.Rights();
+		PageAttributes.Rights writeRights = new PageAttributes.Rights();
+		
+		readRights.setRight(EmployeeAutoservice.ADMINISTRATOR,  true);
+		readRights.setRight(EmployeeAutoservice.MANAGER,        true);
+		readRights.setRight(EmployeeAutoservice.CASHIER,        true);
+		readRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,   true);
+		readRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN,  true);
+		readRights.setRight(EmployeeAutoservice.AUTO_MECHANIC,  true);
+		
+		writeRights.setRight(EmployeeAutoservice.ADMINISTRATOR, true);
+		writeRights.setRight(EmployeeAutoservice.MANAGER,       true);
+		writeRights.setRight(EmployeeAutoservice.CASHIER,       true);
+		writeRights.setRight(EmployeeAutoservice.WAREHOUSEMAN,  true);
+		writeRights.setRight(EmployeeAutoservice.DIAGNOSTICIAN, true);
+		writeRights.setRight(EmployeeAutoservice.AUTO_MECHANIC, true);
+		
+		return new PageAttributes("/admin/AktualiziraneNaPotrebitel.jsf", "Актуализиране на потребител", true, readRights, writeRights);
 	}
 	
 	private PageAttributes dobavqneNaZastrahovatel() {
