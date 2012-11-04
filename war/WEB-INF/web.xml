@@ -41,11 +41,13 @@
     </user-data-constraint>
   </security-constraint>
   
+  <!--
   <error-page>
 	<error-code>500</error-code>
-	<location>/general-error.html</location>
+	<location>/general-error.jsf</location>
   </error-page>
-    
+  -->
+  
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>

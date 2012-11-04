@@ -32,6 +32,7 @@ public class UsersMenuController implements Serializable {
 	
 	private static final MenuEntry PotrebitelSeparator = new MenuEntry("Потребител");
 	private static final MenuEntry DobavqneNaPotrebitel = new MenuEntry("Добавяне", "/admin/DobavqneNaPotrebitel.jsf");
+	private static final MenuEntry AktualiziraneNaPotrebitel = new MenuEntry("Актуализиране", "/admin/AktualiziraneNaPotrebitel.jsf");
 	
 	private static final MenuEntry ZastrahovatelSeparator = new MenuEntry("Застраховател");
 	private static final MenuEntry DobavqneNaZastrahovatel = new MenuEntry("Добавяне", "/admin/DobavqneNaZastrahovatel.jsf");
@@ -113,7 +114,8 @@ public class UsersMenuController implements Serializable {
 				    		DobavqneNaAvtoserviz,
 				    		AktualiziraneNaAvtoserviz),
 			    		PotrebitelSeparator.swallow(
-			    			DobavqneNaPotrebitel),
+			    			DobavqneNaPotrebitel,
+			    			AktualiziraneNaPotrebitel),
 			    		ZastrahovatelSeparator.swallow(
 				    		DobavqneNaZastrahovatel,
 				    		AktualiziraneNaZastrahovatel),
@@ -177,7 +179,8 @@ public class UsersMenuController implements Serializable {
 				    		DobavqneNaAvtoserviz,
 				    		AktualiziraneNaAvtoserviz),
 			    		PotrebitelSeparator.swallow(
-			    			DobavqneNaPotrebitel),
+			    			DobavqneNaPotrebitel,
+			    			AktualiziraneNaPotrebitel),
 			    		ZastrahovatelSeparator.swallow(
 				    		DobavqneNaZastrahovatel,
 				    		AktualiziraneNaZastrahovatel),
@@ -216,6 +219,8 @@ public class UsersMenuController implements Serializable {
 			    			AktualiziraneNaSlujitel),
 			    		AvtoservizSeparator.swallow(
 			    			AktualiziraneNaAvtoserviz),
+			    		PotrebitelSeparator.swallow(
+					    	AktualiziraneNaPotrebitel),
 			    		ZastrahovatelSeparator.swallow(
 			    			AktualiziraneNaZastrahovatel),
 			    		Dostav4ikSeparator.swallow(
@@ -254,6 +259,8 @@ public class UsersMenuController implements Serializable {
 			    			AktualiziraneNaSlujitel),
 			    		AvtoservizSeparator.swallow(
 			    			AktualiziraneNaAvtoserviz),
+		    			PotrebitelSeparator.swallow(
+						    AktualiziraneNaPotrebitel),
 			    		ZastrahovatelSeparator.swallow(
 			    			AktualiziraneNaZastrahovatel),
 			    		Dostav4ikSeparator.swallow(
@@ -285,6 +292,8 @@ public class UsersMenuController implements Serializable {
 			    new MenuEntry[] {
 			    		SlujitelSeparator.swallow(
 			    			AktualiziraneNaSlujitel),
+			    		PotrebitelSeparator.swallow(
+					    	AktualiziraneNaPotrebitel),
 			    		
 			    		Dostav4ikSeparator.swallow(
 			    			AktualiziraneNaDostav4ik),
@@ -306,6 +315,8 @@ public class UsersMenuController implements Serializable {
 			    new MenuEntry[] {
 			    		SlujitelSeparator.swallow(
 			    			AktualiziraneNaSlujitel),
+			    		PotrebitelSeparator.swallow(
+					    	AktualiziraneNaPotrebitel),
 			    		
 			    		KlientSeparator.swallow(
 			    			AktualiziraneNaKlient),
@@ -325,6 +336,8 @@ public class UsersMenuController implements Serializable {
 			    new MenuEntry[] {
 			    		SlujitelSeparator.swallow(
 			    			AktualiziraneNaSlujitel),
+			    		PotrebitelSeparator.swallow(
+						  	AktualiziraneNaPotrebitel),
 			    		AvtomobilSeparator.swallow(
 			    			AktualiziraneNaAvtomobil),
 			    		KlientskaPoru4kaSeparator.swallow(
