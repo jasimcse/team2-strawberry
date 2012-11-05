@@ -78,7 +78,9 @@ public class AktualiziraneNaKlient implements Serializable {
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
-		klient.setPhoneNumber(phoneNumber);
+		if (!"".equals(phoneNumber)) {
+			klient.setPhoneNumber(phoneNumber);
+		}
 	}
 
 	public String getMail() {
@@ -86,7 +88,9 @@ public class AktualiziraneNaKlient implements Serializable {
 	}
 
 	public void setMail(String mail) {
-		klient.setMail(mail);
+		if (!"".equals(mail)) {
+			klient.setMail(mail);
+		}
 	}
 
 	public String getIBANNumber() {
@@ -94,7 +98,9 @@ public class AktualiziraneNaKlient implements Serializable {
 	}
 
 	public void setIBANNumber(String iBANNumber) {
-		klient.setIBANNumber(iBANNumber);
+		if (!"".equals(iBANNumber)) {
+			klient.setIBANNumber(iBANNumber);
+		}
 	}
 
 	public String getSWIFTCode() {
@@ -102,7 +108,9 @@ public class AktualiziraneNaKlient implements Serializable {
 	}
 
 	public void setSWIFTCode(String sWIFTCode) {
-		klient.setSWIFTCode(sWIFTCode);
+		if (!"".equals(sWIFTCode)) {
+			klient.setSWIFTCode(sWIFTCode);
+		}
 	}
 	
 	public boolean isPerson() {
@@ -180,7 +188,9 @@ public class AktualiziraneNaKlient implements Serializable {
 	}
 
 	public void setContactPersonCompany(String contactPerson) {
-		klient.getCompany().setContactPerson(contactPerson);
+		if (!"".equals(contactPerson)) {
+			klient.getCompany().setContactPerson(contactPerson);
+		}
 	}
 	
 	public void setAllPages(AllPages allPages) {
