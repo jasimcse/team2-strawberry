@@ -39,7 +39,7 @@ public class ForceSessionSerializationPhaseListener implements PhaseListener {
      * регистрираме се за фазата на JSF рендване на отговора	 
      */
     public PhaseId getPhaseId() {
-        return PhaseId.RENDER_RESPONSE;
+        return PhaseId.INVOKE_APPLICATION;
     }
     
     /**
