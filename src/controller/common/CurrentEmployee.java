@@ -48,7 +48,6 @@ public class CurrentEmployee implements Serializable {
 	/**
 	 * logout the current user
 	 * 
-	 * @return
 	 */
 	public void logout() {
 		employeeAutoservice = null;
