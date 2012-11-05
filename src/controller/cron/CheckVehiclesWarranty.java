@@ -36,11 +36,11 @@ public class CheckVehiclesWarranty extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (!isRealRequest(request)) {
-			logger.warning("Not Real Request");
+			logger.info("Not Real Request");
 			return;
 		}
 		
-		logger.warning("Real Request");
+		logger.info("Real Request");
 		checkThem();
 		
 	}

@@ -54,7 +54,9 @@ public class DobavqneNaKlient {
 	}
 
 	public void setPhoneNumberPerson(String phoneNumber) {
-		klientPerson.setPhoneNumber(phoneNumber);
+		if (!"".equals(phoneNumber)) {
+			klientPerson.setPhoneNumber(phoneNumber);
+		}
 	}
 
 	public String getMailPerson() {
@@ -62,7 +64,9 @@ public class DobavqneNaKlient {
 	}
 
 	public void setMailPerson(String mail) {
-		klientPerson.setMail(mail);
+		if (!"".equals(mail)) {
+			klientPerson.setMail(mail);
+		}
 	}
 
 	public String getIBANNumberPerson() {
@@ -70,7 +74,9 @@ public class DobavqneNaKlient {
 	}
 
 	public void setIBANNumberPerson(String iBANNumber) {
-		klientPerson.setIBANNumber(iBANNumber);
+		if (!"".equals(iBANNumber)) {
+			klientPerson.setIBANNumber(iBANNumber);
+		}
 	}
 
 	public String getSWIFTCodePerson() {
@@ -78,7 +84,9 @@ public class DobavqneNaKlient {
 	}
 
 	public void setSWIFTCodePerson(String sWIFTCode) {
-		klientPerson.setSWIFTCode(sWIFTCode);
+		if (!"".equals(sWIFTCode)) {
+			klientPerson.setSWIFTCode(sWIFTCode);
+		}
 	}
 	
 	public String getNamePerson() {
@@ -121,7 +129,9 @@ public class DobavqneNaKlient {
 	}
 
 	public void setPhoneNumberCompany(String phoneNumber) {
-		klientCompany.setPhoneNumber(phoneNumber);
+		if (!"".equals(phoneNumber)) {
+			klientCompany.setPhoneNumber(phoneNumber);
+		}
 	}
 
 	public String getMailCompany() {
@@ -129,7 +139,9 @@ public class DobavqneNaKlient {
 	}
 
 	public void setMailCompany(String mail) {
-		klientCompany.setMail(mail);
+		if (!"".equals(mail)) {
+			klientCompany.setMail(mail);
+		}
 	}
 
 	public String getIBANNumberCompany() {
@@ -137,7 +149,9 @@ public class DobavqneNaKlient {
 	}
 
 	public void setIBANNumberCompany(String iBANNumber) {
-		klientCompany.setIBANNumber(iBANNumber);
+		if (!"".equals(iBANNumber)) {
+			klientCompany.setIBANNumber(iBANNumber);
+		}
 	}
 
 	public String getSWIFTCodeCompany() {
@@ -145,7 +159,9 @@ public class DobavqneNaKlient {
 	}
 
 	public void setSWIFTCodeCompany(String sWIFTCode) {
-		klientCompany.setSWIFTCode(sWIFTCode);
+		if (!"".equals(sWIFTCode)) {
+			klientCompany.setSWIFTCode(sWIFTCode);
+		}
 	}
 
 	public String getNameCompany() {
@@ -161,9 +177,9 @@ public class DobavqneNaKlient {
 	}
 
 	public void setRegistrationNumberCompany(String registrationNumber) {
-		
-		if (!"".equals(registrationNumber)) 
+		if (!"".equals(registrationNumber)) {
 			klientCompany.getCompany().setRegistrationNumber(registrationNumber);
+		}
 	}
 
 	public String getVATNumberCompany() {
@@ -171,9 +187,9 @@ public class DobavqneNaKlient {
 	}
 
 	public void setVATNumberCompany(String VATNumber) {
-		
-		if (!"".equals(VATNumber)) 
+		if (!"".equals(VATNumber)) {
 			klientCompany.getCompany().setVATNumber(VATNumber);
+		}
 	}
 
 	public String getContactPersonCompany() {
@@ -181,7 +197,9 @@ public class DobavqneNaKlient {
 	}
 
 	public void setContactPersonCompany(String contactPerson) {
-		klientCompany.getCompany().setContactPerson(contactPerson);
+		if (!"".equals(contactPerson)) {
+			klientCompany.getCompany().setContactPerson(contactPerson);
+		}
 	}
 
 	public UIComponent getAddPerson() {
