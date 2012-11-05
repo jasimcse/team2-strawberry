@@ -165,7 +165,8 @@ ul {
 
 #centralSection{
 	float: left;
-	overflow: hidden;
+	overflow: auto;
+	width: 900px;
 	margin-left: 50px;
 	margin-top: 40px;
 }
