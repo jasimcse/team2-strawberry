@@ -16,17 +16,21 @@
 	
 		<h:form>
 			<h:panelGroup>
+			<div>
 				<h:outputLabel value="Име">
 					<h:inputText value="#{aktualiziraneNaSlujitel.searchName}" maxlength="50" />
 				</h:outputLabel>
-				<br />
+				</div>
+				<div>
 				<h:outputLabel value="Фамилия">
 					<h:inputText value="#{aktualiziraneNaSlujitel.searchFamily}" maxlength="50" />
 				</h:outputLabel>
-				
+				</div>
 				<br />
+				<span id="tyrsiIz4isti">
 				<h:commandButton value="Търси" action="#{aktualiziraneNaSlujitel.searchIt()}" />
 				<h:commandButton value="Изчисти" action="#{aktualiziraneNaSlujitel.resetSearch()}" />
+				</span>
 			</h:panelGroup>
 		</h:form>
 	
@@ -73,7 +77,7 @@
 				
 				<h:column>
 					<f:facet name="header">Промени</f:facet>
-					<h:commandLink action="#{aktualiziraneNaSlujitel.selectRow(curr)}" value="Промени" />
+					<h:commandButton action="#{aktualiziraneNaSlujitel.selectRow(curr)}" value="Промени" />
 				</h:column>
 				
 				<h:column rendered="#{aktualiziraneNaSlujitel.choosingAllowed}">
@@ -112,36 +116,40 @@
 			</div>
 			
 			<h:form>
-		
+		<div id="AktualiziraneNaSlujitel">
+		<div>
 			<h:outputLabel value="Име*">
 				<h:inputText id="name" value="#{aktualiziraneNaSlujitel.name}" maxlength="50"
 					required="true" requiredMessage="задължително поле!" 
 					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
 				<h:message for="name" />
 			</h:outputLabel>
-			<br />
+			</div>
+			<div>
 			<h:outputLabel value="Фамилия*">
 				<h:inputText id="family" value="#{aktualiziraneNaSlujitel.family}" maxlength="50"
 					required="true" requiredMessage="задължително поле!"
 					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
 				<h:message for="family" />
 			</h:outputLabel>
-			
-			<br />
+			</div>
+			<div>
 			<h:outputLabel value="Град*">
 				<h:inputText id="city" value="#{aktualiziraneNaSlujitel.addressCity}" maxlength="30"
 					required="true" requiredMessage="задължително поле!"
 					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
 				<h:message for="city" />
 			</h:outputLabel>
-			<br />
+			</div>
+			<div>
 			<h:outputLabel value="Адрес*">
 				<h:inputText id="address" value="#{aktualiziraneNaSlujitel.addressLine}" maxlength="100"
 					required="true" requiredMessage="задължително поле!"
 					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
 				<h:message for="address" />
 			</h:outputLabel>
-			<br />
+			</div>
+			<div>
 			<h:outputLabel value="Електронна поща*">
 				<h:inputText id="mail" value="#{aktualiziraneNaSlujitel.mail}" maxlength="15"
 					required="true" requiredMessage="задължително поле!"
@@ -151,7 +159,8 @@
 	    		</h:inputText>
 				<h:message for="mail" />
 			</h:outputLabel>
-			<br />
+			</div>
+			<div>
 			<h:outputLabel value="Телефонен номер*">
 				<h:inputText id="phone" value="#{aktualiziraneNaSlujitel.phoneNumber}" maxlength="50"
 					required="true" requiredMessage="задължително поле!"
@@ -161,8 +170,8 @@
 	    		</h:inputText>
 				<h:message for="phone" />
 			</h:outputLabel>
-			
-			<br />
+			</div>
+			<div id="PromeniOtmeniDobavi">
 			<h:commandButton action="#{aktualiziraneNaSlujitel.writeIt()}" value="Промени"
 				disabled="#{!aktualiziraneNaSlujitel.rowSelected or !aktualiziraneNaSlujitel.changingAllowed}" />
 			
@@ -172,8 +181,9 @@
 			<h:commandButton action="#{aktualiziraneNaSlujitel.goToAdd()}" value="Добави"
 				disabled="#{!aktualiziraneNaSlujitel.goToAddAllowed}" />
 				
-			<br />
+			</div>
 			<h:outputText value="#{aktualiziraneNaSlujitel.errorMessage}"/>
+			</div>
 		</h:form>
 	    
 	</ui:define>
