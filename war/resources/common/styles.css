@@ -68,14 +68,14 @@ ul {
 	margin-top: -5px;
 }
 
-#loginSection{
+#loginSection {
 	float: right;
 	margin-right: 25px;
 	margin-top: 20px;
 }
 
 #serviceLogged {
-	width: 200px;
+	width: 210px;
 	height: 110px;
 	-webkit-border-radius: 15px;
 	-moz-border-radius: 15px;
@@ -86,7 +86,7 @@ ul {
 }
 
 #serviceNotLogged{
-	width: 200px;
+	width: 210px;
 	height: 110px;
 	-webkit-border-radius: 15px;
 	-moz-border-radius: 15px;
@@ -177,6 +177,27 @@ ul {
 	margin-left: 25px;
 	margin-top: 35px;
 }
+/* Запазване на час */
+#proveriZaSvobodni4asove{
+	display: block;
+	margin-left: 20px;
+}
+#zapazvane{
+	display: block;
+	margin-top: 10px;
+	margin-left: 15px;
+	padding: 5px;
+	border: 1px solid black;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	
+}
+#rezervirai{
+	display: block;
+	margin-left: 40px;
+}
+
 #centralSection label{
 	width: auto;
 	margin-top: 20px;
