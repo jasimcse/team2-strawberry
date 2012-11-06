@@ -180,6 +180,7 @@ ul {
 /* Запазване на час */
 #proveriZaSvobodni4asove{
 	display: block;
+	margin-top: 10px;
 	margin-left: 20px;
 }
 #zapazvane{
