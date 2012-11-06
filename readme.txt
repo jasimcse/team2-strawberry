@@ -4,7 +4,7 @@
  | +--- META-INF             = настройки на persistance интерфейсите, не мисля да ги използваме, но все пак не ги пипай
  | +--- log4j.properties     = не съм сигурен, но не пипай :)
  | +--- com.sun.faces.config = hack, за да накараме google hosting-а да работи с JSF, не пипай
- | +--- org.jboss.el.util    = hack, за да накараме google да работи с Unified Expression Language 2.0 + parameterized method invocation ~ Unified Wxpression Language 2.2 
+ | +--- org.jboss.el.util    = hack, за да накараме google да работи с Unified Expression Language 2.0 + parameterized method invocation ~ Unified Еxpression Language 2.2 
  | +--- ...                  = същинска структура на класовете на нашия проект
  | 
  +-+- war                    = съхранява всичко което се разполага на сървъра
@@ -13,7 +13,7 @@
  | +--- META-INF             = не знам :)
  | |
  | +-+- WEB-INF              = настройки на сървъра, не пипай
- | | +-+- appengine-generated = май за сега съхраняв само данните на базата данни на локалния сървър
+ | | +-+- appengine-generated = май за сега съхранява само данните на базата данни на локалния сървър
  | | | +--- datastore-indexes-auto.xml = автоматично генерирани дефиниции на индексите, използвани за извършването на заявки
  | | | +--- local_db.bin     = данни на базата данни; изтрий, ако искаш да си зачистиш напълно хранилището
  | | |
