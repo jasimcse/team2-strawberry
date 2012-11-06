@@ -154,7 +154,10 @@
 	    	<h:inputText id="enginenum" value="#{aktualiziraneNaAvtomobil.engineNumber}" maxlength="50" 
 	    		required="#{not empty param[aktualiziraneNaAvtomobil.changeButton.clientId]}"
 	    		requiredMessage="задължително поле!" 
-	    		readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" />
+	    		readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" 
+	    		validatorMessage="Номерът на двигателя се състои от главни латински букви и цифри.">
+	    		<f:validateRegex pattern="^[A-Z0-9]+$"/>
+	    	</h:inputText>
 	    	<h:message for="enginenum" />
 	    </h:outputLabel>
 	    <br />
@@ -163,7 +166,10 @@
 	    	<h:inputText id="platenum" value="#{aktualiziraneNaAvtomobil.plateNumber}" maxlength="8" 
 	    		required="#{not empty param[aktualiziraneNaAvtomobil.changeButton.clientId]}"
 	    		requiredMessage="задължително поле!" 
-				readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" />
+				readonly="#{!aktualiziraneNaAvtomobil.rowSelected}" 
+	    		validatorMessage="Регистрационният номер се състои от главни латински букви и цифри.">
+	    		<f:validateRegex pattern="^[A-Z0-9]+$"/>
+	    	</h:inputText>
 	    	<h:message for="platenum" />
 	    </h:outputLabel> 
 	    <br /> 
