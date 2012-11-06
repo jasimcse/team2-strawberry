@@ -190,14 +190,20 @@
 				<h:inputText id="IBANNumber"
 					value="#{aktualiziraneNaDostav4ik.IBANNumber}" maxlength="30"
 					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" />
+					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" 
+					validatorMessage="Позволени символи за номер на сметка са главни латински букви и цифри.">
+					<f:validateRegex pattern="^[A-Z0-9]+$"/>
+				</h:inputText>
 				<h:message for="IBANNumber" />
 			</h:outputLabel>
 			<br />
 			<h:outputLabel value="Банков код*">
 				<h:inputText id="SWIFT" value="#{aktualiziraneNaDostav4ik.SWIFTCode}"
 					maxlength="20" required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" />
+					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" 
+					validatorMessage="Позволени символи за банков код са главни латински букви и цифри.">
+					<f:validateRegex pattern="^[A-Z0-9]+$"/>
+				</h:inputText>
 				<h:message for="SWIFT" />
 			</h:outputLabel>
 			<br />
@@ -205,14 +211,20 @@
 				<h:inputText id="regnumber"
 					value="#{aktualiziraneNaDostav4ik.registrationNumber}" maxlength="9"
 					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" />
+					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" 
+					validatorMessage="ЕИК трябва да се състои от точно 9 цифри.">
+					<f:validateRegex pattern="^[0-9]{9}$"/>
+				</h:inputText>
 				<h:message for="regnumber" />
 			</h:outputLabel>
 			<br />
 			<h:outputLabel value="ДДС номер">
 				<h:inputText id="vat" value="#{aktualiziraneNaDostav4ik.VATNumber}"
 					maxlength="11" required="false"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" />
+					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" 
+					validatorMessage="ДДС номерът се състои от 11 символа - главни латински букви и цифри.">
+					<f:validateRegex pattern="^[A-Z0-9]{11}$"/>
+				</h:inputText>
 				<h:message for="vat" />
 			</h:outputLabel>
 			<br />

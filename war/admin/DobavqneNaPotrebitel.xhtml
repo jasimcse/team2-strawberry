@@ -38,7 +38,10 @@
 			<br />
 			<h:outputLabel value="Потребителско име*">
 				<h:inputText id="username" value="#{dobavqneNaPotrebitel.username}" maxlength="50"
-					required="#{not empty param[dobavqneNaPotrebitel.addButton.clientId]}" requiredMessage="задължително поле!" />
+					required="#{not empty param[dobavqneNaPotrebitel.addButton.clientId]}" requiredMessage="задължително поле!" 
+					validatorMessage="Потребителското име може да съдържа само латински букви, цифри, тире и подчертаващо тире и да бъде от 3 до 50 символа.">
+					<f:validateRegex pattern="^[a-zA-Z0-9_\-]{3,50}$"/>
+				</h:inputText>
 				<h:message for="username" />
 			</h:outputLabel>
 			<br />

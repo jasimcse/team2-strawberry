@@ -26,10 +26,16 @@
 				</h:outputLabel>
 				<br />
 				<h:outputLabel value="Дата (от)">
-					<h:inputText id="dateFrom"/>
+					<h:inputText id="dateFrom"
+						validatorMessage="Невалидна дата. Пример: 21.12.2012">
+						<f:validateRegex pattern="^[0-3]?[0-9]\.[0-3]?[0-9]\.[0-9]{4}$"/>
+					</h:inputText>
 				</h:outputLabel>
 				<h:outputLabel value="Дата (до)">
-					<h:inputText id="dateTo"/>
+					<h:inputText id="dateTo"
+						validatorMessage="Невалидна дата. Пример: 21.12.2012">
+						<f:validateRegex pattern="^[0-3]?[0-9]\.[0-3]?[0-9]\.[0-9]{4}$"/>
+					</h:inputText>
 				</h:outputLabel>
 				<br />
 				
