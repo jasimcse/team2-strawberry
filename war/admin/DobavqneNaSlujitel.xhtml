@@ -14,32 +14,36 @@
 
 	<ui:define name="pageContent">
 		<h:form>
-			<h:outputLabel value="Име*">
+		<div>
+			<h:outputLabel value="Име*"><br />
 				<h:inputText id="name" value="#{dobavqneNaSlujitel.name}" maxlength="50"
 					required="true" requiredMessage="задължително поле!" />
 				<h:message for="name" />
 			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Фамилия*">
+			</div>
+			<div>
+			<h:outputLabel value="Фамилия*"> <br />
 				<h:inputText id="family" value="#{dobavqneNaSlujitel.family}" maxlength="50"
 					required="true" requiredMessage="задължително поле!" />
 				<h:message for="family" />
 			</h:outputLabel>
-			
-			<br />
-			<h:outputLabel value="Населено място*">
+			</div>
+			<div>
+			<h:outputLabel value="Населено място*"> <br />
 				<h:inputText id="city" value="#{dobavqneNaSlujitel.addressCity}" maxlength="30"
 					required="true" requiredMessage="задължително поле!" />
 				<h:message for="city" />
 			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Адрес*">
+			</div>
+			<div>
+			<h:outputLabel value="Адрес*"> <br />
 				<h:inputText id="address" value="#{dobavqneNaSlujitel.addressLine}" maxlength="100"
 					required="true" requiredMessage="задължително поле!" />
 				<h:message for="address" />
 			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Електронна поща*">
+			</div>
+			<div>
+			<h:outputLabel value="Електронна поща*"> <br />
 				<h:inputText id="mail" value="#{dobavqneNaSlujitel.mail}" maxlength="50"
 					required="true" requiredMessage="задължително поле!"
 	    			validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
@@ -47,8 +51,9 @@
 	    		</h:inputText>
 				<h:message for="mail" />
 			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Телефонен номер*">
+			</div>
+			<div>
+			<h:outputLabel value="Телефонен номер*"> <br />
 				<h:inputText id="phone" value="#{dobavqneNaSlujitel.phoneNumber}" maxlength="15"
 					required="true" requiredMessage="задължително поле!"
 	    			validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
@@ -56,8 +61,10 @@
 	    		</h:inputText>
 				<h:message for="phone" />
 			</h:outputLabel>
-			<br />
+			</div>
+			<div id="buttonAction">
 			<h:commandButton action="#{dobavqneNaSlujitel.writeIt()}" value="Добави" />
+			</div>
 			<br />
 			<h:outputText value="#{dobavqneNaSlujitel.errorMessage}"/>
 		</h:form>
