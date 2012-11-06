@@ -157,6 +157,19 @@
 					value="#{pregledNaNali4niteRezervni4asti.quantityBad}" readonly="true" />
 				<h:message for="bad" />
 			</h:outputLabel>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<h:outputLabel value="Бракувай">
+				<h:inputText id="makeBad" 
+					value="#{pregledNaNali4niteRezervni4asti.quantityBadRequest}"
+					disabled="#{!pregledNaNali4niteRezervni4asti.rowSelected or !pregledNaNali4niteRezervni4asti.changingAllowed}" >
+					<f:validateDoubleRange minimum="0" />
+				</h:inputText>
+				<h:message for="bad" />
+			</h:outputLabel>
+			
+			<h:commandButton action="#{pregledNaNali4niteRezervni4asti.makeItBad()}" value="Бракувай количеството"
+				disabled="#{!pregledNaNali4niteRezervni4asti.rowSelected or !pregledNaNali4niteRezervni4asti.changingAllowed}" />
+			
 			<br />
 			
 			<h:outputLabel value="Минимално количество">

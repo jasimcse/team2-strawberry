@@ -225,7 +225,7 @@
 				disabled="#{!aktualiziraneNaKlient.rowSelected or !aktualiziraneNaKlient.changingAllowed}"/>
 			
 			<h:commandButton action="#{aktualiziraneNaKlient.deselectRow()}" value="Отмени"
-				disabled="#{!aktualiziraneNaKlient.rowSelected}"/>
+				disabled="#{!aktualiziraneNaKlient.rowSelected}" />
 				
 			<h:commandButton action="#{aktualiziraneNaKlient.goToAdd()}" value="Добави"
 				disabled="#{!aktualiziraneNaKlient.goToAddAllowed}" />

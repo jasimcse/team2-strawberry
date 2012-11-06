@@ -132,6 +132,7 @@ public class PregledNaNali4niteRezervni4asti implements Serializable {
 	private void readList() {
 		spisukNali4nosti = SparePartAutoservice.queryGetAll(page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize(), currEmployee.getAutoserviceID());
 		nali4nost = new SparePartAutoservice();
+		quantityBadRequest = 0;
 		rowsCount = SparePartAutoservice.countGetAll(currEmployee.getAutoserviceID());
 		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
 				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
@@ -214,5 +215,29 @@ public class PregledNaNali4niteRezervni4asti implements Serializable {
 		errorMessage = "Минималното количество беше актуализирано успешно!";
 		
 		return null;
+	}
+	
+	public void makeItBad() {
+		
+		if (!isChangingAllowed()) {
+			errorMessage = "Нямате права за актуализирането на данните!";
+			return;
+		}
+		
+		if (quantityBadRequest > nali4nost.getQuantityAvailable()) {
+			errorMessage = "Няма как да се бракува повече количество от наличното в момента!";
+			return;
+		}
+		
+		nali4nost.setQuantityAvailable(nali4nost.getQuantityAvailable() - quantityBadRequest);
+		nali4nost.setQuantityBad(nali4nost.getQuantityBad() + quantityBadRequest);
+		
+		nali4nost.writeToDB();
+		
+		quantityBadRequest = 0;
+		//readList();
+
+		// set the message
+		errorMessage = "Бракуването беше извършено успешно!";
 	}
 }
