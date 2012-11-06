@@ -11,25 +11,27 @@
 	
 	<ui:define name="pageContent">
 	    <h:form>
-		
-		<h:outputLabel value="Име на клиента">
+		<div>
+		<h:outputLabel value="Име на клиента"><br />
 	    	<h:inputText id="name" value="#{zapazvaneNa4as.clientName}" maxlength="100"
 	    		validatorMessage="Дължината на името не може да надвишава 100 символа">
 	    		<f:validateLength minimum="0" maximum="100"/>
 	    	</h:inputText>
-	    	<h:message for="name" />
+	    	<h:message for="name" /> 
 	    </h:outputLabel> 
-	    <br />
+	    </div>
+	    <div>
 	    
-	    <h:outputLabel value="Телефонен номер за обратна връзка">
+	    <h:outputLabel value="Телефонен номер за обратна връзка"><br />
 	    	<h:inputText id="phone" value="#{zapazvaneNa4as.phoneNumber}" maxlength="15" 
 	    		validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
 	    		<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)"/>
 	    	</h:inputText>
 	    	<h:message for="phone" />
-	    </h:outputLabel> 
+	    </h:outputLabel>
+	    </div> 
 	    <br />
-	    
+	    <div id="clear">
 	    <h:outputLabel value="Автосервиз*">
 			<h:selectOneMenu value="#{zapazvaneNa4as.autoserviceID}">
 				<f:selectItems value="#{zapazvaneNa4as.autoservices}" var="currentAutoservice" 
@@ -37,12 +39,14 @@
 			</h:selectOneMenu>
 		</h:outputLabel>
 		<br />
-		
+		<span id="proveriZaSvobodni4asove">
 		<h:commandButton action="#{zapazvaneNa4as.chooseAutoservice()}" value="Провери за свободни часове" />
+		</span>
 		<br />
 		
 		<h:panelGroup>
-			<h:commandLink action="#{zapazvaneNa4as.changeMonth(-1)}"
+		<span id="zapazvane">
+			<h:commandButton action="#{zapazvaneNa4as.changeMonth(-1)}"
 				disabled="#{!zapazvaneNa4as.prevMonthAllowed}"
 				value="Предишен месец" />
 			<h:outputText value=" " />
@@ -61,16 +65,18 @@
 				<h:outputText value=" " />
 			</ui:repeat>
 			
-			<h:commandLink action="#{zapazvaneNa4as.changeMonth(1)}"
+			<h:commandButton action="#{zapazvaneNa4as.changeMonth(1)}"
 				value="Следващ месец" />
 			<h:outputText value=" " />
-			
+			</span>
 			<br />
-			
+			<span id="dataZapazvane">
+			<h:outputLabel value="Дата: ">
 			<h:outputText value="#{zapazvaneNa4as.date}">
 				<f:convertDateTime pattern="dd.MM.yyyy" />
 			</h:outputText>
-			
+			</h:outputLabel>
+			</span>
 			<br />
 			
 			<h:outputLabel value="Свободни часове*">
@@ -89,14 +95,14 @@
 			</h:outputLabel>
 		</h:panelGroup>
 		<br />
-		
+		<span id="rezervirai">
 		<h:commandButton action="#{zapazvaneNa4as.writeIt()}" value="Резервирай"
 			binding="#{zapazvaneNa4as.reserveButton}" />
-			
+		</span>
 		<br />
 	    
 	    <h:outputText value="#{zapazvaneNa4as.errorMessage}"/>
-	    
+	    </div>
 	    </h:form>
 	</ui:define>
 	
