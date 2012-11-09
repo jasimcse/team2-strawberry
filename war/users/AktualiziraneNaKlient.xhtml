@@ -221,8 +221,14 @@
 		    </h:outputLabel> 
 		    <br />
 		    
-			 <h:commandButton value="Запази" action="#{aktualiziraneNaKlient.saveClient()}"
+			<h:commandButton value="Запази" action="#{aktualiziraneNaKlient.saveClient()}"
 				disabled="#{!aktualiziraneNaKlient.rowSelected or !aktualiziraneNaKlient.changingAllowed}"/>
+			
+			</h:form>
+			
+			<h:form>
+			<!-- формата е разделена на две, за да не се проверяват данните
+			при натискането на бутоните "Отмени" и "Добави" -->
 			
 			<h:commandButton action="#{aktualiziraneNaKlient.deselectRow()}" value="Отмени"
 				disabled="#{!aktualiziraneNaKlient.rowSelected}" />

@@ -232,6 +232,12 @@
 			<h:commandButton value="Запази" action="#{aktualiziraneNaZastrahovatel.writeIt()}"
 				disabled="#{!aktualiziraneNaZastrahovatel.rowSelected or !aktualiziraneNaZastrahovatel.changingAllowed}" />
 			
+			</h:form>
+			
+			<h:form>
+			<!-- формата е разделена на две, за да не се проверяват данните
+			при натискането на бутоните "Отмени" и "Добави" -->
+			
 			<h:commandButton action="#{aktualiziraneNaZastrahovatel.deselectRow()}" value="Отмени"
 				disabled="#{!aktualiziraneNaZastrahovatel.rowSelected}" />
 				

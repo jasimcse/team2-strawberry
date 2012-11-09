@@ -187,6 +187,12 @@
 			<h:commandButton action="#{pregledNaNali4niteRezervni4asti.writeIt()}" value="Запази"
 				disabled="#{!pregledNaNali4niteRezervni4asti.rowSelected or !pregledNaNali4niteRezervni4asti.changingAllowed}" />
 			
+			</h:form>
+			
+			<h:form>
+			<!-- формата е разделена на две, за да не се проверяват данните
+			при натискането на бутоните "Отмени" и "Добави" -->
+			
 			<h:commandButton action="#{pregledNaNali4niteRezervni4asti.deselectRow()}" value="Отмени"
 				disabled="#{!pregledNaNali4niteRezervni4asti.rowSelected}" />
 				

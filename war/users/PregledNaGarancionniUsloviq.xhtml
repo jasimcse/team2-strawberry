@@ -98,6 +98,12 @@
 			</h:outputLabel>
 			<br />
 			
+			</h:form>
+			
+			<h:form>
+			<!-- формата е разделена на две, за да не се проверяват данните
+			при натискането на бутоните "Отмени" и "Добави" -->
+			
 			<h:commandButton action="#{pregledNaGarancionniUsloviq.deselectRow()}" value="Отмени"
 				disabled="#{!pregledNaGarancionniUsloviq.rowSelected}" />
 				
