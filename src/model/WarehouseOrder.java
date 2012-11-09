@@ -10,6 +10,7 @@ import java.util.Set;
 
 import model.util.EntityHelper;
 import model.util.LimitedString;
+import model.util.StringSearchAttribute;
 
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -19,6 +20,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 
 @SuppressWarnings("serial")
@@ -238,6 +240,39 @@ public class WarehouseOrder implements Serializable {
 				               new Query.FilterPredicate("status", FilterOperator.EQUAL, status))));
 	}
 	
+	private static PreparedQuery getPreparedQueryByStatusDate(Key autoserviceID, String status, Date startDate, Date endDate) {
+		Filter filter = null;
+	
+		if (status != null) {
+			filter = new Query.FilterPredicate("status", FilterOperator.EQUAL, status);
+		}
+		
+		if (startDate != null) {
+			if (filter == null) {
+				filter = new Query.FilterPredicate("date", FilterOperator.GREATER_THAN_OR_EQUAL, startDate);
+			} else {
+				filter = CompositeFilterOperator.and(
+						filter,
+						new Query.FilterPredicate("date", FilterOperator.GREATER_THAN_OR_EQUAL, startDate));
+			}
+		}
+		
+		if (endDate != null) {
+			if (filter == null) {
+				filter = new Query.FilterPredicate("date", FilterOperator.LESS_THAN_OR_EQUAL, endDate);
+			} else {
+				filter = CompositeFilterOperator.and(
+						filter,
+						new Query.FilterPredicate("date", FilterOperator.LESS_THAN_OR_EQUAL, endDate));
+			}
+		}
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(WarehouseOrder.class.getSimpleName()).
+					   setAncestor(autoserviceID).
+				       addSort("date").
+				       setFilter(filter));
+	}
+	
 	public static List<WarehouseOrder> queryGetAll(int offset, int count, Key autoserviceID) {
 		List<Entity> oldList = getPreparedQueryAll(autoserviceID).
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
@@ -269,6 +304,59 @@ public class WarehouseOrder implements Serializable {
 	
 	public static int countGetBySupplierStatus(Key autoserviceID, Key supplierID, String status) {
 		return getPreparedQueryBySupplierStatus(autoserviceID, supplierID, status).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<WarehouseOrder> querySearch(
+			Key autoserviceID,
+			String supplierName,
+			String status,
+			Date startDate,
+			Date endDate,
+			int offset, int count) {
+		
+		List<StringSearchAttribute> searchStrings = new ArrayList<StringSearchAttribute>();
+		List<Entity> oldList;
+		if (supplierName != null) {
+			List<String> parentList = new ArrayList<String>();
+			parentList.add("supplierID");
+			searchStrings.add(new StringSearchAttribute("name", supplierName, parentList));
+		}
+		
+		if ((searchStrings.size() > 0) || (status != null) ||
+			(startDate != null) || (endDate != null)) {
+			oldList = EntityHelper.stringSearchFilter(
+					getPreparedQueryByStatusDate(autoserviceID, status, startDate, endDate).asIterator(),
+					searchStrings,
+					offset, count);
+		} else {
+			oldList = new ArrayList<Entity>();
+		}
+			
+		return readList(oldList);
+	}
+	
+	public static int countSearch(
+			Key autoserviceID,
+			String supplierName,
+			String status,
+			Date startDate,
+			Date endDate) {
+		
+		List<StringSearchAttribute> searchStrings = new ArrayList<StringSearchAttribute>();
+		if (supplierName != null) {
+			List<String> parentList = new ArrayList<String>();
+			parentList.add("supplierID");
+			searchStrings.add(new StringSearchAttribute("name", supplierName, parentList));
+		}
+		
+		if ((searchStrings.size() > 0) || (status != null) ||
+				(startDate != null) || (endDate != null)) {
+			return EntityHelper.stringSearchCount(
+					getPreparedQueryByStatusDate(autoserviceID, status, startDate, endDate).asIterator(),
+					searchStrings);
+		} else {
+			return 0;
+		}
 	}
 	
 }

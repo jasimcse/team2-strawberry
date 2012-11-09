@@ -40,6 +40,12 @@ public class PregledNaPoru4kaNa4asti implements Serializable {
 	private int pagesCount;
 	private int rowsCount;
 	
+	private String searchName;
+	private String searchStatus;
+	private boolean searchByStatus;
+	private Date searchDateFrom;
+	private Date searchDateTo;
+	
 	private Stack<InterPageDataRequest> dataRequestStack;
 	private InterPageDataRequest dataRequest;
 	
@@ -193,4 +199,90 @@ public class PregledNaPoru4kaNa4asti implements Serializable {
 		return dataRequest.returnPage + "?faces-redirect=true";
 	}
 
+	public String getSearchName() {
+		return searchName;
+	}
+
+	public void setSearchName(String searchName) {
+		if ("".equals(searchName)) {
+			this.searchName = null;
+			return;
+		}
+		this.searchName = searchName;
+	}
+
+	public String getSearchStatus() {
+		return searchStatus;
+	}
+
+	public void setSearchStatus(String searchStatus) {
+		if ("".equals(searchStatus)) {
+			this.searchStatus = null;
+			return;
+		}
+		this.searchStatus = searchStatus;
+	}
+	
+	public boolean isSearchByStatus() {
+		return searchByStatus;
+	}
+
+	public void setSearchByStatus(boolean searchByStatus) {
+		this.searchByStatus = searchByStatus;
+	}
+
+	public Date getSearchDateFrom() {
+		return searchDateFrom;
+	}
+
+	public void setSearchDateFrom(Date searchDateFrom) {
+		this.searchDateFrom = searchDateFrom;
+	}
+
+	public Date getSearchDateTo() {
+		return searchDateTo;
+	}
+
+	public void setSearchDateTo(Date searchDateTo) {
+		this.searchDateTo = searchDateTo;
+	}
+
+	public void searchIt() {
+		String searchStatusLocal = null;
+		if (searchByStatus) {
+			searchStatusLocal = searchStatus;
+		}
+		if ((searchName == null) && (searchStatusLocal == null) &&
+			(searchDateTo == null) && (searchDateFrom == null)) {
+			readList();
+			return;
+		}
+		
+		spisukPoru4ki = WarehouseOrder.querySearch(
+				currEmployee.getAutoserviceID(),
+				searchName,
+				searchStatusLocal,
+				searchDateFrom,
+				searchDateTo,
+				page * ConfigurationProperties.getPageSize(),
+				ConfigurationProperties.getPageSize());
+		page = 0;
+		rowsCount = WarehouseOrder.countSearch(
+				currEmployee.getAutoserviceID(),
+				searchName,
+				searchStatusLocal,
+				searchDateFrom,
+				searchDateTo);
+		poru4ka = new WarehouseOrder();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
+	}
+	
+	public void resetSearch() {
+		searchName = null;
+		searchByStatus = false;
+		searchDateFrom = null;
+		searchDateTo = null;
+		searchIt();
+	}
 }
