@@ -18,6 +18,7 @@ import model.ClientOrder;
 import model.ClientOrderPart;
 import model.ClientOrderService;
 import model.Employee;
+import model.EmployeeAutoservice;
 import model.Service;
 import model.SparePart;
 import model.SparePartAutoservice;
@@ -55,7 +56,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	private boolean missingSpPart = false;
 	private String searchStatus;
 	private String searchAutoservice;
-
+	private boolean flagReadIt = true;
 	
 	private Stack<InterPageDataRequest> dataRequestStack;
 	
@@ -71,10 +72,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	//@PostConstruct
 	public AktualiziraneNaKlientskaPoru4ka() {
-		
-		
 		
 		dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
 		
@@ -96,11 +94,23 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 				this.poru4ka = ((AktualiziraneNaKlientskaPoru4ka)dataRequestNew.requestObject).poru4ka;
 				this.spisukUslugi = ((AktualiziraneNaKlientskaPoru4ka)dataRequestNew.requestObject).spisukUslugi;
 				this.spisukRezervni4asti = ((AktualiziraneNaKlientskaPoru4ka)dataRequestNew.requestObject).spisukRezervni4asti;
+				if(poru4ka.getVehiclePresent().equals(ClientOrder.VEHICLE_PRESENTS))
+				{
+					setInAutoservice(true);
+				}
+				
+				this.spisukPoru4ki = ((AktualiziraneNaKlientskaPoru4ka)dataRequestNew.requestObject).spisukPoru4ki;
+				this.page = ((AktualiziraneNaKlientskaPoru4ka)dataRequestNew.requestObject).page;
+				this.pagesCount = ((AktualiziraneNaKlientskaPoru4ka)dataRequestNew.requestObject).pagesCount;
+				this.rowsCount = ((AktualiziraneNaKlientskaPoru4ka)dataRequestNew.requestObject).rowsCount;
+				this.clientOrderPrice = ((AktualiziraneNaKlientskaPoru4ka)dataRequestNew.requestObject).clientOrderPrice;
+				this.missingSpPart = ((AktualiziraneNaKlientskaPoru4ka)dataRequestNew.requestObject).missingSpPart;
 				
 				if(dataRequestNew.dataPage.equals("/users/AktualiziraneNaUsluga.jsf"))
 				{
 					addSeviceForClientOrder((Service)dataRequestNew.requestedObject, ClientOrderService.CLIENT_PAYS);
 					recalculateFullPrice();
+					flagReadIt = false;
 				}
 				else
 				{
@@ -108,6 +118,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 					{
 						addSparePartForClientOrder((SparePart)dataRequestNew.requestedObject, ClientOrderService.CLIENT_PAYS);
 						recalculateFullPrice();
+						flagReadIt = false;
 					}
 				}
 			}
@@ -159,15 +170,21 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		partClientOrder.recalculateFullPrice();
 		this.spisukRezervni4asti.add(partClientOrder);
 		
-		// проверка дали разполагаме с необходимото количество от резервната част
-		if ( partClientOrder.getQuantityAvailable() < partClientOrder.getClPart().getQuantity() )
-			missingSpPart = true;
+		checkMissingSpPart(partClientOrder);
+
 		
 		return true;
 		
 	}
 	
-	public Autoservice getAutoservice() {
+	private void checkMissingSpPart(SparePartForClientOrder partClOrder)
+	{
+		// проверка дали разполагаме с необходимото количество от резервната част
+		if ( partClOrder.getQuantityAvailable() < partClOrder.getClPart().getQuantity() )
+			missingSpPart = true;
+	}
+	
+ 	public Autoservice getAutoservice() {
 		return poru4ka.getAutoservice();
 	}
 
@@ -199,31 +216,6 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		poru4ka.setEmployee(employee);
 	}
 
-	public String getVehiclePresent() {
-		
-		if(poru4ka.getVehiclePresent() == null)
-			return null;
-		
-		if ( poru4ka.getVehiclePresent().equals(ClientOrder.VEHICLE_PRESENTS))
-			return "да";
-		
-		if ( poru4ka.getVehiclePresent().equals(ClientOrder.VEHICLE_NOT_PRESENTS))
-			return "не";
-		
-		return null;
-	}
-
-	public void setVehiclePresent(String vehiclePresent) {
-		
-		if(vehiclePresent.equals("да") )
-			poru4ka.setVehiclePresent(ClientOrder.VEHICLE_PRESENTS);
-		else
-			if(vehiclePresent.equals("не") )
-				poru4ka.setVehiclePresent(ClientOrder.VEHICLE_NOT_PRESENTS);
-	
-	}
-
-	
 	public Date getDate() {
 		return poru4ka.getDate();
 	}
@@ -274,10 +266,17 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 						if(status.equals("платена") )
 							poru4ka.setStatus(ClientOrder.PAYED);
 						else
-							if(status.equals("платена") )
+							if(status.equals("блокирана") )
 								poru4ka.setStatus(ClientOrder.BLOCKED);
 	}
-	
+	public void finishedOrder( boolean bDone)
+	{
+		if( bDone )
+			poru4ka.setStatus(ClientOrder.PAYED);
+		else
+			poru4ka.setStatus(ClientOrder.BLOCKED);
+	}
+
 	public String getPaymentNumber() {
 		return poru4ka.getPaymentNumber();
 	}
@@ -293,7 +292,6 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	public void setInAutoservice(boolean inAutoservice) {
 		this.inAutoservice = inAutoservice;
 	}
-
 	
 	public String getSearchStatus() {
 		return searchStatus;
@@ -303,7 +301,6 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		this.searchStatus = searchStatus;
 	}
 
-	
 	public String getSearchAutoservice() {
 		return searchAutoservice;
 	}
@@ -387,14 +384,43 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 
 	public void setEmployeeToService(ServiceForClientOrder clService)
 	{
-		// добавя автомонтьор извършил услугата
-		clService.getClService().setEmployeeID(currEmployee.getEmployeeID());
-		readList();
+		if( currEmployee.getPosition().equals(EmployeeAutoservice.AUTO_MECHANIC) )
+		{
+			// добавя автомонтьор извършил услугата
+			clService.getClService().setEmployeeID(currEmployee.getEmployeeID());
+		}
 	}
 	
-	public void deleteUsluga(ServiceForClientOrder clService)
+	public boolean isAvtomontior()
 	{
-		// TODO ако не е извършена!
+		if( currEmployee.getPosition().equals(EmployeeAutoservice.AUTO_MECHANIC) )
+			return true;
+		
+		 return false;
+	}
+	
+	public boolean isSklad()
+	{
+		if( currEmployee.getPosition().equals(EmployeeAutoservice.WAREHOUSEMAN) )
+			return true;
+		
+		 return false;
+	}
+	
+	public boolean isPriemchik()
+	{
+		if( currEmployee.getPosition().equals(EmployeeAutoservice.CASHIER) )
+			return true;
+		
+		 return false;
+	}
+	
+ 	public void deleteUsluga(ServiceForClientOrder clService)
+	{
+		// ако не е извършена!
+		if(clService.getClService().getEmployee() != null)
+			return;
+		
 		clientOrderPrice -= clService.getFullPrice();
 		spisukUslugi.remove(clService);
 	}
@@ -421,7 +447,20 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		// TODO: Редактирай – колона с бутони редактирай която прави полето нужно количество възможно за редакция. 
 		// Не може нужно количество да стане по малко от вложеното количество до момента.
 
+		if(spForClO.getClPart().getQuantity() < spForClO.getQuantityUsed())
+		{
+			errorMessage = "Нужното количество от резервната чaст трябва да е по-голямо или равно на " + spForClO.getQuantityUsed();
+			return;
+		}
+		
+		if(spForClO.getQuantityUsed() > spForClO.getClPart().getQuantity())
+		{
+			errorMessage = "Нужното количество от резервната чст трябва да е по-голямо или равно на " + spForClO.getQuantityUsed();
+			return;
+		}
+		
 		spForClO.toggleEditing();
+		checkMissingSpPart(spForClO);
 		recalculateFullPrice();
 	}
 
@@ -451,10 +490,10 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	
 	public boolean isPaied()
 	{
-		if(poru4ka == null)
+		if(poru4ka.getStatus() == null)
 			return true;
 		
-		if( poru4ka.getStatus().equals(poru4ka.BLOCKED) || poru4ka.getStatus().equals(poru4ka.PAYED))
+		if( poru4ka.getStatus().equals(ClientOrder.BLOCKED) || poru4ka.getStatus().equals(ClientOrder.PAYED))
 			return true;
 		
 		return false;
@@ -463,7 +502,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	public List< String > getOrderStatus() 
 	{
 		
-		// 1 = задържана, 2 = изпълнявана, 3 = завършена, 4 = платена, 5 = блокирана.
+		//1 = нова, 2 = задържана, 3 = изпълнявана, 4 = завършена, 5 = платена, 6 = блокирана.
 		List<String> listStatus =  new ArrayList<String>();
 		// при създаването си поръчката е нова
 		listStatus.add("нова");
@@ -488,6 +527,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 
 	public void setPage(int page) {
 		this.page = page;
+		flagReadIt = true;
 		readList();
 	}
 
@@ -500,6 +540,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	}
 
 	private void readList() {
+		if (flagReadIt) {
 		//TODO: За автосервиза
 		spisukPoru4ki = ClientOrder.queryGetAll(page * ConfigurationProperties.getPageSize(), 
 				ConfigurationProperties.getPageSize(), currEmployee.getAutoserviceID());
@@ -507,6 +548,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		rowsCount = ClientOrder.countGetAll(currEmployee.getAutoserviceID());
 		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
 				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
+		}
 	}
 
 	public String getRowStyleClasses() {
@@ -522,7 +564,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		
 		return strbuff.toString();
 	}
-	
+
 	public List<Integer> getPagesList() {
 		List<Integer> list = new ArrayList<Integer>();
 		
@@ -534,8 +576,8 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	
 	public void selectRow(ClientOrder order) {
 		cleanData();
-		poru4ka = order;
-		
+		poru4ka = order;	
+			
 		List <ClientOrderService> spisukClOrderService = ClientOrderService.queryGetAll(0, 
 			ClientOrderService.countGetAll(poru4ka.getID()), poru4ka.getID());
 
@@ -559,14 +601,17 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		{
 			SparePartForClientOrder partClientOrder = new SparePartForClientOrder();
 			partClientOrder.setClPart(clOrSer);
-			List <SparePartAutoservice> listAutosevicePart = SparePartAutoservice.queryGetBySparePartID(clOrSer.getSparePartID(), 0, 1, currEmployee.getAutoserviceID());
 			
+			List <SparePartAutoservice> listAutosevicePart = SparePartAutoservice.queryGetBySparePartID(clOrSer.getSparePartID(), 0, 1, currEmployee.getAutoserviceID());
 			partClientOrder.setQuantityAvailable(listAutosevicePart.get(0).getQuantityAvailable());
 			partClientOrder.recalculateFullPrice();
 			
-			//TODO:
-			//Резервирано количество за поръчката Read only - Spare_Part_Reserved.Quantity
-			//Вложено количество за поръчката Read only - Spare_Part_Reserved.Used
+	
+			List <SparePartReserved> listSpPartRes = SparePartReserved.queryGetBySparePart(clOrSer.getSparePartID(), 0, 1, poru4ka.getID());
+			//Резервирано количество за поръчката 
+			partClientOrder.setQuantityReserved(listSpPartRes.get(0).getQuantity());
+			//Вложено количество за поръчката
+			partClientOrder.setQuantityUsed(listSpPartRes.get(0).getUsed());
 			
 			spisukRezervni4asti.add(partClientOrder);
 			
@@ -644,12 +689,29 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		else
 			poru4ka.setVehiclePresent(ClientOrder.VEHICLE_NOT_PRESENTS);
 			
-		// TODO статуса?					
-//		if( !missingSpPart && inAutoservice )
-//					poru4ka.setStatus(ClientOrder.NEW);
-//				else
-//					poru4ka.setStatus(ClientOrder.HALTED);
+		int doneService = isServiceDone();
+		int usedPart = isUsedSparePart();
+		
+		if(poru4ka.getStatus() != ClientOrder.BLOCKED && poru4ka.getStatus() != ClientOrder.PAYED)
+		{
+
+			if( doneService == spisukUslugi.size() && usedPart == spisukRezervni4asti.size() )
+				poru4ka.setStatus(ClientOrder.FINISHED);
+			else
+			{
+				if( !missingSpPart && inAutoservice &&  doneService == 0 && usedPart == 0)
+					poru4ka.setStatus(ClientOrder.NEW);
+				else
+				{
+					if(!missingSpPart && inAutoservice &&  doneService > 0 || usedPart > 0)
+						poru4ka.setStatus(ClientOrder.PROCESSING);
+					else
+						poru4ka.setStatus(ClientOrder.HALTED);
 				
+				}
+			}
+		}
+			
 		poru4ka.writeToDB();
 			 
 		// TODO: транзакция
@@ -703,20 +765,47 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 		cleanData();
 				
 		// set the message
-		errorMessage = "Поръчката беше актуализирана успешно!";
-					
+		errorMessage += "Поръчката беше актуализирана успешно!";
+			
+		flagReadIt = true;
 		readList();
 
 		return null;
 	}
 	
+	private int isServiceDone()
+	{
+		// брой извършени услуги
+		int iServiceDone = 0; 
+		for (ServiceForClientOrder clSer : spisukUslugi) {
+			if( clSer.isDone())
+				iServiceDone++;
+		}
+		
+		return iServiceDone;
+	}
+	
+	private int isUsedSparePart()
+	{
+		// брой резервни части чието количество е напълно вложено в поръчката
+		int iUsedPart = 0; 
+		for (SparePartForClientOrder clSp : spisukRezervni4asti) {
+			if( clSp.getClPart().getQuantity() == clSp.getQuantityUsed())
+				iUsedPart++;
+		}
+		return iUsedPart;
+		
+	}
+	
 	private void cleanData(){
+		
 		poru4ka = new ClientOrder();
 		spisukRezervni4asti.clear();
 		spisukUslugi.clear();
 		missingSpPart = false;
 		clientOrderPrice = 0;
 		setInAutoservice(false);
+		flagReadIt = true;
 	}
 	
 }

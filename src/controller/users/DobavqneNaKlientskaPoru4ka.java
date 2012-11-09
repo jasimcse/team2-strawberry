@@ -64,6 +64,11 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 				this.poru4ka = ((DobavqneNaKlientskaPoru4ka)dataRequest.requestObject).poru4ka;
 				this.spisukUslugi = ((DobavqneNaKlientskaPoru4ka)dataRequest.requestObject).spisukUslugi;
 				this.spisukRezervni4asti = ((DobavqneNaKlientskaPoru4ka)dataRequest.requestObject).spisukRezervni4asti;
+				if(((DobavqneNaKlientskaPoru4ka)dataRequest.requestObject).inAutoservice == true)
+				{
+					this.poru4ka.setVehiclePresent(ClientOrder.VEHICLE_PRESENTS);
+					setInAutoservice(true);
+				}
 				
 				if(dataRequest.dataPage.equals("/users/AktualiziraneNaAvtomobil.jsf"))
 				{
@@ -233,14 +238,6 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		poru4ka.setEmployee(employee);
 	}
 
-	public String getVehiclePresent() {
-		return poru4ka.getVehiclePresent();
-	}
-
-	public void setVehiclePresent(String vehiclePresent) {
-		poru4ka.setVehiclePresent(vehiclePresent);
-	}
-
 	
 	public boolean isInAutoservice() {
 		return inAutoservice;
@@ -266,27 +263,6 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		this.clientOrderPrice = clientOrderPrice;
 	}
 
-//	public List< String > getStatusPoru4ka() 
-//	{
-//		// 1 = задържана, 2 = изпълнявана, 3 = завършена, 4 = платена, 5 = блокирана.
-//		List<String> listStatus =  new ArrayList<String>();
-//		// при създаването си поръчката е нова
-//		listStatus.add("нова");
-//		// в статус задържана е ако се очаква пристигането на части 
-//		// за извършване на ремонта или автомобила не е приет
-//		listStatus.add("задържана");
-//		// в статус изпълнявана е когато е се извършва поне една услуга 
-//		// или е изписана поне една нужна за ремонта рез. част
-//		//listStatus.add("изпълнявана");
-//		// завършена е когато са изпълнени всички услуги и са вложени всички части
-//		//listStatus.add("завършена");
-//		// когато клиента заплати поръчката
-//		//listStatus.add("платена");
-//		// когато клиента се откаже от поръчката, но по нея няма извършени услуги и вложени рез.части
-//		//listStatus.add("блокирана");
-//		return listStatus;
-//	}
-
 	public String getWhoWillPay(String strWhoPay) 
 	{
 		if(strWhoPay.equals(ClientOrderPart.INSURER_PAYS))
@@ -308,7 +284,7 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 
 	public String addClientOrder()
 	{	
-		//TODO:
+
 		if (poru4ka.getVehicleID() == null) {
 			// set the message
 			errorMessage = "Не е избран автомобил!";
@@ -325,13 +301,13 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		poru4ka.setDate(new Date());
 		poru4ka.setEmployeeID(currEmployee.getEmployeeID());
 		poru4ka.setAutoserviceID(currEmployee.getAutoserviceID());
+		
 		if( inAutoservice )
 			poru4ka.setVehiclePresent(ClientOrder.VEHICLE_PRESENTS);
 		else
 			poru4ka.setVehiclePresent(ClientOrder.VEHICLE_NOT_PRESENTS);
 	
 						
-		// TODO: проверка дали всички части са налични
 		if( !missingSpPart && inAutoservice )
 			poru4ka.setStatus(ClientOrder.NEW);
 		else
@@ -342,8 +318,6 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		// TODO: транзакция
 		for (ServiceForClientOrder clSer : spisukUslugi) {
 			clSer.getClService().setClientOrderID(poru4ka.getID());
-			//TODO: това трябва да е ID-то на автомонтжора извършил услугата
-			//clSer.getClService().setEmployeeID(currEmployee.getEmployeeID());
 			clSer.getClService().writeToDB();
 		}
 		
@@ -454,7 +428,6 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		
 	}
 
-	
 	public void deleteUsluga(ServiceForClientOrder clService)
 	{
 		clientOrderPrice -= clService.getFullPrice();
@@ -477,7 +450,6 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		return dataRequest.dataPage + "?faces-redirect=true";
 		
 	}
-
 	
 	public void toggleEditSparePartForClientOrder(SparePartForClientOrder spForClO) {
 		spForClO.toggleEditing();
@@ -499,14 +471,12 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 			
 		}
 	}
-	
-	
+		
 	public void deleteSparePart(SparePartForClientOrder sPart)
 	{
 		clientOrderPrice -= sPart.getFullPrice();
 		spisukRezervni4asti.remove(sPart); 
 		
 	}
-	
 	
 }

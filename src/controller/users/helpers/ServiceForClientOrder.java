@@ -51,6 +51,12 @@ public class ServiceForClientOrder   implements Serializable {
 		return editing;
 	}
 	
+	public boolean isDone() {
+		if (clService.getEmployee() == null )
+			return false;
+		return true;
+	}
+	
 	public void recalculateFullPrice() {
 		fullPrice = this.serviceDuration * clService.getPriceHour();
 	}

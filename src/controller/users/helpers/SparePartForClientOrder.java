@@ -18,7 +18,7 @@ public class SparePartForClientOrder  implements Serializable {
 	private double quantityAvailable;
 	private double fullPrice;
 	private double quantityReserved;
-	private double quantityUsed;
+	private double quantityUsed = 0;
 	private boolean editing;
 	
 	public double getQuantityAvailable() {
@@ -61,11 +61,17 @@ public class SparePartForClientOrder  implements Serializable {
 		return editing;
 	}
 	
+	public boolean isUsed() {
+		if (quantityUsed == 0 )
+			return false;
+		return true;
+	}
+	
 	public void recalculateFullPrice() {
 		fullPrice = this.clPart.getPriceUnit() * this.clPart.getQuantity();
 	}
 	
-	//TODO:
+	
 	public void toggleEditing() {
 		if (editing) {
 			recalculateFullPrice();
