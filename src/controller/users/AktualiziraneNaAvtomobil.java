@@ -20,6 +20,8 @@ import controller.common.CurrentEmployee;
 import controller.common.InterPageDataRequest;
 
 import model.Client;
+import model.Company;
+import model.Person;
 import model.Vehicle;
 import model.VehicleModel;
 import model.WarrantyConditions;
@@ -50,6 +52,11 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 	private int page = 0;
 	private int pagesCount;
 	private int rowsCount;
+	
+	private String searchPlateNumber;
+	private String searchNamePerson;
+	private String searchFamilyPerson;
+	private String searchNameCompany;
 	
 	private InterPageDataRequest dataRequest;
 
@@ -295,6 +302,113 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 			
 		return dataRequest.dataPage + "?faces-redirect=true";
 		
+	}
+	
+	public String getSearchPlateNumber() {
+		return searchPlateNumber;
+	}
+
+	public void setSearchPlateNumber(String searchPlateNumber) {
+		if ("".equals(searchPlateNumber)) {
+			this.searchPlateNumber = null;
+			return;
+		}
+		this.searchPlateNumber = searchPlateNumber;
+	}
+	
+	public String getSearchNamePerson() {
+		return searchNamePerson;
+	}
+
+	public void setSearchNamePerson(String searchNamePerson) {
+		if ("".equals(searchNamePerson)) {
+			this.searchNamePerson = null;
+			return;
+		}
+		this.searchNamePerson = searchNamePerson;
+	}
+
+	public String getSearchFamilyPerson() {
+		return searchFamilyPerson;
+	}
+
+	public void setSearchFamilyPerson(String searchFamilyPerson) {
+		if ("".equals(searchFamilyPerson)) {
+			this.searchFamilyPerson = null;
+			return;
+		}
+		this.searchFamilyPerson = searchFamilyPerson;
+	}
+	
+	public String getSearchNameCompany() {
+		return searchNameCompany;
+	}
+
+	public void setSearchNameCompany(String searchNameCompany) {
+		if ("".equals(searchNameCompany)) {
+			this.searchNameCompany = null;
+			return;
+		}
+		this.searchNameCompany = searchNameCompany;
+	}
+	
+	public void searchIt() {
+		if (((searchPlateNumber == null) && (searchNamePerson == null) &&
+			 (searchFamilyPerson == null) && (searchNameCompany == null)) ||
+			(((searchNamePerson != null) || (searchFamilyPerson != null)) && (searchNameCompany != null))) {
+			readList();
+			return;
+		}
+		
+		spisukAvtomobili.clear();
+		rowsCount = 0;
+		
+		if ((searchNamePerson != null) || (searchFamilyPerson != null)) {
+			List<Person> personList = Person.querySearchByNameFamily(searchNamePerson, searchFamilyPerson, page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
+			for (Person person : personList) {
+				List<Vehicle> vehicleList = Vehicle.queryGetAll(0, 1000, person.getClientID());
+				if (searchPlateNumber != null) {
+					for (Vehicle vehicle : vehicleList) {
+						if (vehicle.getPlateNumber().toLowerCase().indexOf(searchPlateNumber.toLowerCase()) != -1) {
+							spisukAvtomobili.add(vehicle);
+							rowsCount++;
+						}
+					}
+				} else {
+					spisukAvtomobili.addAll(vehicleList);
+				}
+			}
+		} else if (searchNameCompany != null) {
+			List<Company> companyList = Company.querySearchByName(searchNameCompany, page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
+			for (Company company : companyList) {
+				List<Vehicle> vehicleList = Vehicle.queryGetAll(0, 1000, company.getClientID());
+				if (searchPlateNumber != null) {
+					for (Vehicle vehicle : vehicleList) {
+						if (vehicle.getPlateNumber().toLowerCase().indexOf(searchPlateNumber.toLowerCase()) != -1) {
+							spisukAvtomobili.add(vehicle);
+							rowsCount++;
+						}
+					}
+				} else {
+					spisukAvtomobili.addAll(vehicleList);
+				}
+			}
+		} else {
+			spisukAvtomobili = Vehicle.querySearchByPlateNumber(searchPlateNumber, page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
+			rowsCount = Vehicle.countSearchByNameFamily(searchPlateNumber);
+		}
+		
+		page = 0;
+		avtomobil = new Vehicle();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
+	}
+	
+	public void resetSearch() {
+		searchNamePerson = null;
+		searchFamilyPerson = null;
+		searchNameCompany = null;
+		searchIt();
 	}
 
 }

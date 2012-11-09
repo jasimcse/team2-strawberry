@@ -10,6 +10,7 @@ import java.util.Set;
 
 import model.util.EntityHelper;
 import model.util.LimitedString;
+import model.util.StringSearchAttribute;
 
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -371,6 +372,37 @@ public class Vehicle implements Serializable {
 	public static int countGetWarrantyOK() {
 		return getPreparedQueryWarrantyOK().
 				countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<Vehicle> querySearchByPlateNumber(String plateNumber, int offset, int count) {
+		List<StringSearchAttribute> searchStrings = new ArrayList<StringSearchAttribute>();
+		List<Entity> oldList;
+		if (plateNumber != null) {
+			searchStrings.add(new StringSearchAttribute("plateNumber", plateNumber));
+		}
+		
+		if (searchStrings.size() > 0) {
+			oldList = EntityHelper.stringSearchFilter(
+					getPreparedQueryAll().asIterator(), searchStrings, offset, count);
+		} else {
+			oldList = new ArrayList<Entity>();
+		}
+			
+		return readList(oldList);
+	}
+	
+	public static int countSearchByNameFamily(String plateNumber) {
+		List<StringSearchAttribute> searchStrings = new ArrayList<StringSearchAttribute>();
+		if (plateNumber != null) {
+			searchStrings.add(new StringSearchAttribute("plateNumber", plateNumber));
+		}
+		
+		if (searchStrings.size() > 0) {
+			return EntityHelper.stringSearchCount(
+					getPreparedQueryAll().asIterator(), searchStrings);
+		} else {
+			return 0;
+		}
 	}
 	
 }
