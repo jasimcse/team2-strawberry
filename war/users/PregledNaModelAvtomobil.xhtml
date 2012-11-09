@@ -17,16 +17,16 @@
 		<h:form>
 			<h:panelGroup>
 				<h:outputLabel value="Марка на автомобила">
-					<h:inputText value="" maxlength="50" />
+					<h:inputText value="#{pregledNaModelAvtomobil.searchBrand}" maxlength="50" />
 				</h:outputLabel>
 				<br />
 				<h:outputLabel value="Модел на автомобила">
-					<h:inputText value="" maxlength="50" />
+					<h:inputText value="#{pregledNaModelAvtomobil.searchModel}" maxlength="50" />
 				</h:outputLabel>
 				<br />
 				
-				<h:commandButton value="Търси" disabled="true" />
-				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
+				<h:commandButton value="Търси" action="#{pregledNaModelAvtomobil.searchIt()}"/>
+				<h:commandButton value="Изчисти" action="#{pregledNaModelAvtomobil.resetSearch()}"/>
 			</h:panelGroup>
 		</h:form>
 		

@@ -30,6 +30,9 @@ public class PregledNaModelAvtomobil implements Serializable {
 	
 	private String errorMessage;
 	
+	private String searchBrand;
+	private String searchModel;
+	
 	@SuppressWarnings("unchecked")
 	public PregledNaModelAvtomobil() {
 		
@@ -145,4 +148,53 @@ public class PregledNaModelAvtomobil implements Serializable {
 		// отиваме на страницата която е направила заявката
 		return dataRequest.returnPage + "?faces-redirect=true";
 	}
+
+	/**
+	 * @return the searchBrand
+	 */
+	public String getSearchBrand() {
+		return searchBrand;
+	}
+
+	/**
+	 * @param searchBrand the searchBrand to set
+	 */
+	public void setSearchBrand(String searchBrand) {
+		this.searchBrand = searchBrand;
+	}
+
+	/**
+	 * @return the searchModel
+	 */
+	public String getSearchModel() {
+		return searchModel;
+	}
+
+	/**
+	 * @param searchModel the searchModel to set
+	 */
+	public void setSearchModel(String searchModel) {
+		this.searchModel = searchModel;
+	}
+
+	public void searchIt() {
+		if ((searchBrand == null || searchBrand.isEmpty()) && (searchModel == null || searchModel.isEmpty())) {
+			readList();
+			return;
+		}
+		
+		spisukModeliAvtomobili = VehicleModel.querySearchByBrandModel(searchBrand, searchModel, page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
+		page = 0;
+		rowsCount = VehicleModel.countSearchByBrandModel(searchBrand, searchModel);
+		modelAvtomobil = new VehicleModel();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
+	}
+	
+	public void resetSearch() {
+		searchBrand = null;
+		searchModel = null;
+		searchIt();
+	}
+	
 }

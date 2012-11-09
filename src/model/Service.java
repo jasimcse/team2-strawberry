@@ -9,6 +9,7 @@ import java.util.Set;
 
 import model.util.EntityHelper;
 import model.util.LimitedString;
+import model.util.StringSearchAttribute;
 
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -166,6 +167,35 @@ public class Service implements Serializable {
 	
 	public static int countGetByForeignID(String foreignID) {
 		return getPreparedQueryByForeignID(foreignID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+
+	public static List<Service> querySearchByDescription(String description, int offset, int count) {
+		List<StringSearchAttribute> searchStrings = new ArrayList<StringSearchAttribute>();
+		List<Entity> oldList;
+		if (description != null && !description.isEmpty()) {
+			searchStrings.add(new StringSearchAttribute("description", description));
+		}
+		
+		if (searchStrings.size() > 0) {
+			oldList = EntityHelper.stringSearchFilter(getPreparedQueryAll().asIterator(), searchStrings, offset, count);
+		} else {
+			oldList = new ArrayList<Entity>();
+		}
+			
+		return readList(oldList);
+	}
+	
+	public static int countSearchByDescription(String description) {
+		List<StringSearchAttribute> searchStrings = new ArrayList<StringSearchAttribute>();
+		if (description != null && !description.isEmpty()) {
+			searchStrings.add(new StringSearchAttribute("description", description));
+		}
+		
+		if (searchStrings.size() > 0) {
+			return EntityHelper.stringSearchCount(getPreparedQueryAll().asIterator(), searchStrings);
+		}
+
+		return 0;
 	}
 	
 }

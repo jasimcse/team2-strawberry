@@ -9,6 +9,7 @@ import java.util.Set;
 
 import model.util.EntityHelper;
 import model.util.LimitedString;
+import model.util.StringSearchAttribute;
 
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -178,6 +179,42 @@ public class VehicleModel implements Serializable {
 		return getPreparedQueryByForeignID(foreignID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
+	
+	public static List<VehicleModel> querySearchByBrandModel(String brand, String model, int offset, int count) {
+		List<StringSearchAttribute> searchStrings = new ArrayList<StringSearchAttribute>();
+		List<Entity> oldList;
+		if (brand != null && !brand.isEmpty()) {
+			searchStrings.add(new StringSearchAttribute("brand", brand));
+		}
+		if (model != null && !model.isEmpty()) {
+			searchStrings.add(new StringSearchAttribute("model", model));
+		}
+		
+		if (searchStrings.size() > 0) {
+			oldList = EntityHelper.stringSearchFilter(getPreparedQueryAll().asIterator(), searchStrings, offset, count);
+		} else {
+			oldList = new ArrayList<Entity>();
+		}
+			
+		return readList(oldList);
+	}
+	
+	public static int countSearchByBrandModel(String brand, String model) {
+		List<StringSearchAttribute> searchStrings = new ArrayList<StringSearchAttribute>();
+		if (brand != null && !brand.isEmpty()) {
+			searchStrings.add(new StringSearchAttribute("brand", brand));
+		}
+		if (model != null && !model.isEmpty()) {
+			searchStrings.add(new StringSearchAttribute("model", model));
+		}
+		
+		if (searchStrings.size() > 0) {
+			return EntityHelper.stringSearchCount(getPreparedQueryAll().asIterator(), searchStrings);
+		}
+	
+		return 0;
+	}
+
 }
 
 /*	
