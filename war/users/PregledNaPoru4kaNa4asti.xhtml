@@ -13,34 +13,34 @@
 		<h:form>
 			<h:panelGroup>
 				<h:outputLabel value="Име на доставчик">
-					<h:selectOneMenu>
-						<f:selectItems value="#{pregledNaPoru4kaNa4asti.suppliers}" var="currSupplier"
-							itemLabel="#{currSupplier.name}" itemValue="#(currSupplier.ID)" />					
-					</h:selectOneMenu>
+					<h:inputText value="#{pregledNaPoru4kaNa4asti.searchName}" maxlength="100" />
 				</h:outputLabel>
 				<br />
 				<h:outputLabel value="Статус">
-					<h:selectOneMenu>
-						<f:selectItems value="#{pregledNaPoru4kaNa4asti.statuses}" var="currSstatus"/>					
+					<h:selectOneMenu value="#{pregledNaPoru4kaNa4asti.searchStatus}">
+						<f:selectItems value="#{pregledNaPoru4kaNa4asti.statuses}" />					
 					</h:selectOneMenu>
+				</h:outputLabel>
+				<h:outputLabel value="Вземи предвид статуса">
+					<h:selectBooleanCheckbox value="#{pregledNaPoru4kaNa4asti.searchByStatus}" />
 				</h:outputLabel>
 				<br />
 				<h:outputLabel value="Дата (от)">
-					<h:inputText id="dateFrom"
-						validatorMessage="Невалидна дата. Пример: 21.12.2012">
-						<f:validateRegex pattern="^[0-3]?[0-9]\.[0-3]?[0-9]\.[0-9]{4}$"/>
+					<h:inputText value="#{pregledNaPoru4kaNa4asti.searchDateFrom}" title="формат: ДД.ММ.ГГГГ"
+						convertorMessage="Невалидна дата. Пример: 21.12.2012">
+						<f:convertDateTime pattern="dd.MM.yyyy" />
 					</h:inputText>
 				</h:outputLabel>
 				<h:outputLabel value="Дата (до)">
-					<h:inputText id="dateTo"
-						validatorMessage="Невалидна дата. Пример: 21.12.2012">
-						<f:validateRegex pattern="^[0-3]?[0-9]\.[0-3]?[0-9]\.[0-9]{4}$"/>
+					<h:inputText value="#{pregledNaPoru4kaNa4asti.searchDateTo}" title="формат: ДД.ММ.ГГГГ"
+						convertorMessage="Невалидна дата. Пример: 21.12.2012">
+						<f:convertDateTime pattern="dd.MM.yyyy" />
 					</h:inputText>
 				</h:outputLabel>
 				<br />
 				
-				<h:commandButton value="Търси" disabled="true" />
-				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
+				<h:commandButton value="Търси" action="#{pregledNaPoru4kaNa4asti.searchIt()}" />
+				<h:commandButton value="Изчисти" action="#{pregledNaPoru4kaNa4asti.resetSearch()}" />
 			</h:panelGroup>
 		</h:form>
 		

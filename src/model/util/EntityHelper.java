@@ -11,6 +11,7 @@ import java.util.Set;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.PreparedQuery.TooManyResultsException;
@@ -448,7 +449,21 @@ public class EntityHelper {
 			Entity curr = iterator.next();
 			
 			for (StringSearchAttribute ssa : stringSearchAttributes) {
-				Object temp = curr.getProperty(ssa.getAttributeName());
+				List<String> parentList = ssa.getParentIDList();
+				Entity localCurr = curr;
+				for (String parentID : parentList) {
+					Key parentKey = (Key)localCurr.getProperty(parentID);
+					if (parentKey == null) {
+						// няма такъв родител
+						continue filter;
+					}
+					try {
+						localCurr = DatastoreServiceFactory.getDatastoreService().get(parentKey);
+					} catch (EntityNotFoundException e) {
+						throw new RuntimeException("Ooopsssieee", e);
+					}
+				}
+				Object temp = localCurr.getProperty(ssa.getAttributeName());
 				if (temp instanceof String) {
 					if (((String)temp).toLowerCase().indexOf(ssa.getSearchString().toLowerCase()) == -1) {
 						// не съвпада
