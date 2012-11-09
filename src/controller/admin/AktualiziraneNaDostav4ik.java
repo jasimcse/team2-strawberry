@@ -41,6 +41,8 @@ public class AktualiziraneNaDostav4ik implements Serializable {
 	
 	private String errorMessage;
 	
+	private String searchName;
+	
 	@SuppressWarnings("unchecked")
 	public AktualiziraneNaDostav4ik() {
 		
@@ -270,5 +272,41 @@ public class AktualiziraneNaDostav4ik implements Serializable {
 		
 		return dataRequest.returnPage + "?faces-redirect=true";
 	}
+
+	/**
+	 * @return the searchName
+	 */
+	public String getSearchName() {
+		return searchName;
+	}
+
+	/**
+	 * @param searchName the searchName to set
+	 */
+	public void setSearchName(String searchName) {
+		this.searchName = searchName;
+	}
+
+	public void searchIt() {
+		if (searchName == null || searchName.isEmpty()) {
+			readList();
+			return;
+		}
+		
+		spisukDostav4ici = Supplier.querySearchByName(searchName, page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
+		page = 0;
+		rowsCount = Supplier.countSearchByName(searchName);
+		dostav4ik = new Supplier();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
+		
+	}
+	
+	public void resetSearch() {
+		searchName = null;
+		searchIt();
+	}
+
+	
 	
 }

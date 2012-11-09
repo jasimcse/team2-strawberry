@@ -38,6 +38,8 @@ public class AktualiziraneNaUsluga implements Serializable {
 	
 	private String errorMessage;
 	
+	private String searchDescription;
+	
 	@SuppressWarnings("unchecked")
 	public AktualiziraneNaUsluga() {
 		
@@ -189,4 +191,39 @@ public class AktualiziraneNaUsluga implements Serializable {
 		return dataRequest.returnPage + "?faces-redirect=true";
 	}
 
+	/**
+	 * @return the searchDescription
+	 */
+	public String getSearchDescription() {
+		return searchDescription;
+	}
+
+	/**
+	 * @param searchDescription the searchDescription to set
+	 */
+	public void setSearchDescription(String searchDescription) {
+		this.searchDescription = searchDescription;
+	}
+
+
+	public void searchIt() {
+		if (searchDescription == null || searchDescription.isEmpty()) {
+			readList();
+			return;
+		}
+		
+		spisukUslugi = Service.querySearchByDescription(searchDescription, page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
+		page = 0;
+		rowsCount = Service.countSearchByDescription(searchDescription);
+		usluga = new Service();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
+	}
+	
+	public void resetSearch() {
+		searchDescription = null;
+		searchIt();
+	}
+	
+	
 }

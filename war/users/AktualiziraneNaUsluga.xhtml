@@ -17,12 +17,12 @@
 		<h:form>
 			<h:panelGroup>
 				<h:outputLabel value="Наименование на услугата">
-					<h:inputText value="" maxlength="100" />
+					<h:inputText value="#{aktualiziraneNaUsluga.searchDescription}" maxlength="100" />
 				</h:outputLabel>
 				
 				<br />
-				<h:commandButton value="Търси" disabled="true" />
-				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
+				<h:commandButton value="Търси" action="#{aktualiziraneNaUsluga.searchIt()}"/>
+				<h:commandButton value="Изчисти" action="#{aktualiziraneNaUsluga.resetSearch()}"/>
 			</h:panelGroup>
 		</h:form>
 	
