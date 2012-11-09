@@ -209,7 +209,13 @@
 	
 		<h:commandButton value="Запази" action="#{aktualiziraneNaDiagnostika.saveDiagnostika()}"
 			disabled="#{!aktualiziraneNaDiagnostika.rowSelected or !aktualiziraneNaDiagnostika.changingAllowed}"/>
-				
+		
+		</h:form>
+		
+		<h:form>
+		<!-- формата е разделена на две, за да не се проверяват данните
+		при натискането на бутоните "Отмени" и "Добави" -->
+		
 		<h:commandButton action="#{aktualiziraneNaDiagnostika.deselectRow()}" value="Отмени"
 			disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected}"/>
 					

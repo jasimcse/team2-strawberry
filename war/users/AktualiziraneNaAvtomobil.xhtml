@@ -264,7 +264,13 @@
 		<h:commandButton value="Запази" binding="#{aktualiziraneNaAvtomobil.changeButton}"
 		    action="#{aktualiziraneNaAvtomobil.saveAvtomobil()}"
 			disabled="#{!aktualiziraneNaAvtomobil.rowSelected or !aktualiziraneNaAvtomobil.changingAllowed}"/>
-			
+		
+		</h:form>
+		
+		<h:form>
+		<!-- формата е разделена на две, за да не се проверяват данните
+		при натискането на бутоните "Отмени" и "Добави" -->
+		
 		<h:commandButton action="#{aktualiziraneNaAvtomobil.deselectRow()}" value="Отмени"
 			disabled="#{!aktualiziraneNaAvtomobil.rowSelected}"/>
 				

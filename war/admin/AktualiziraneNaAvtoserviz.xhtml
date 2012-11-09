@@ -187,6 +187,12 @@
 		<h:commandButton value="Запази" action="#{aktualiziraneNaAvtoserviz.saveAutoserviz()}"
 			disabled="#{!aktualiziraneNaAvtoserviz.rowSelected or !aktualiziraneNaAvtoserviz.changingAllowed}" />
 		
+		</h:form>
+		
+		<h:form>
+		<!-- формата е разделена на две, за да не се проверяват данните
+		при натискането на бутоните "Отмени" и "Добави" -->
+		
 		<h:commandButton action="#{aktualiziraneNaAvtoserviz.deselectRow()}" value="Отмени"
 			disabled="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
 			
