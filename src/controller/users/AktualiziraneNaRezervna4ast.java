@@ -10,9 +10,12 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import com.google.appengine.api.datastore.Key;
+
 import model.SparePart;
 import model.SparePartGroup;
 import model.VehicleModel;
+import model.VehicleModelSparePart;
 import controller.common.AllPages;
 import controller.common.ConfigurationProperties;
 import controller.common.CurrentEmployee;
@@ -37,6 +40,11 @@ public class AktualiziraneNaRezervna4ast implements Serializable {
 	private List<SparePart> spisukRezervni4asti;
 	private int rowsCount;
 	private InterPageDataRequest dataRequest;
+	
+	private Key searchSparePartGroupID;
+	private boolean searchBySparePartGroup;
+	private Key searchSparePartModelID;
+	private boolean searchBySparePartModel;
 	
 	private String errorMessage;
 	
@@ -215,6 +223,85 @@ public class AktualiziraneNaRezervna4ast implements Serializable {
 	public List<VehicleModel> getVehicleModels() {
 		List<VehicleModel> vm = VehicleModel.queryGetAll(0, 1000);
 		return vm;
+	}
+	
+	public Key getSearchSparePartGroupID() {
+		return searchSparePartGroupID;
+	}
+
+	public void setSearchSparePartGroupID(Key searchSparePartGroupID) {
+		this.searchSparePartGroupID = searchSparePartGroupID;
+	}
+	
+	public Key getSearchSparePartModelID() {
+		return searchSparePartModelID;
+	}
+
+	public void setSearchSparePartModelID(Key searchSparePartModelID) {
+		this.searchSparePartModelID = searchSparePartModelID;
+	}
+	
+	public boolean isSearchBySparePartGroup() {
+		return searchBySparePartGroup;
+	}
+
+	public void setSearchBySparePartGroup(boolean searchBySparePartGroup) {
+		this.searchBySparePartGroup = searchBySparePartGroup;
+	}
+
+	public boolean isSearchBySparePartModel() {
+		return searchBySparePartModel;
+	}
+
+	public void setSearchBySparePartModel(boolean searchBySparePartModel) {
+		this.searchBySparePartModel = searchBySparePartModel;
+	}
+
+	public void searchIt() {
+
+		if (!searchBySparePartGroup) {
+			searchSparePartGroupID = null;
+		}
+		
+		if (!searchBySparePartModel) {
+			searchSparePartModelID = null;
+		}
+		
+		if ((searchSparePartGroupID == null) && (searchSparePartModelID == null)) {
+			readList();
+			return;
+		}
+		
+		spisukRezervni4asti.clear();
+		rowsCount = 0;
+		
+		if (searchSparePartModelID != null) {
+			List<VehicleModelSparePart> vehicleModelSparePartList = VehicleModelSparePart.queryGetAll(0, 1000, searchSparePartModelID);
+			for (VehicleModelSparePart vehicleModelSparePart : vehicleModelSparePartList) {
+				if ((searchSparePartGroupID == null) ||
+					vehicleModelSparePart.getSparePart().getSparePartGroupID().equals(searchSparePartGroupID)) {
+					
+					spisukRezervni4asti.add(vehicleModelSparePart.getSparePart());
+					rowsCount++;
+				}
+			}
+		} else {
+			spisukRezervni4asti = SparePart.queryGetBySparePartGroupID(searchSparePartGroupID, page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
+			rowsCount = SparePart.countGetBySparePartGroupID(searchSparePartGroupID);
+		}
+		
+		page = 0;
+		rezervna4ast = new SparePart();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
+	}
+	
+	public void resetSearch() {
+		searchSparePartGroupID = null;
+		searchSparePartModelID = null;
+		searchBySparePartGroup = false;
+		searchBySparePartModel = false;
+		searchIt();
 	}
 	
 }

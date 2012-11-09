@@ -32,7 +32,10 @@
   </binding>
   <service name="InsurerService">
     <port name="InsurerPort" binding="tns:InsurerPortBinding">
-      <soap:address location="http://localhost:8888/soap/InsurerService.soap"/>
+      <!-- 
+      <soap:address location="https://uni-ruse-autoservice.appspot.com/soap/ElectronicShopService.soap"/>
+      -->
+      <soap:address location="http://localhost:8888/soap/ElectronicShopService.soap"/>
     </port>
   </service>
 </definitions>

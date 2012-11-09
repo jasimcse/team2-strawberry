@@ -405,6 +405,7 @@ public class AktualiziraneNaAvtomobil implements Serializable {
 	}
 	
 	public void resetSearch() {
+		searchPlateNumber = null;
 		searchNamePerson = null;
 		searchFamilyPerson = null;
 		searchNameCompany = null;

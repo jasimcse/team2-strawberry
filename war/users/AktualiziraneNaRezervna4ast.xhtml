@@ -17,23 +17,28 @@
 		<h:form>
 			<h:panelGroup>
 				<h:outputLabel value="Група на резервната част">
-					<h:selectOneMenu value="">
+					<h:selectOneMenu value="#{aktualiziraneNaRezervna4ast.searchSparePartGroupID}">
 						<f:selectItems value="#{aktualiziraneNaRezervna4ast.sparePartGroups}" var="currentSparePartGroup" 
 		    				itemLabel="#{currentSparePartGroup.description}" itemValue="#{currentSparePartGroup.ID}" />
 					</h:selectOneMenu>
 				</h:outputLabel>
+				<h:outputLabel value="Вземи предвид групата">
+					<h:selectBooleanCheckbox value="#{aktualiziraneNaRezervna4ast.searchBySparePartGroup}" />
+				</h:outputLabel>
 				<br />
 				
 				<h:outputLabel value="Модел автомобил за който става резервната част">
-					<h:selectOneMenu value="">
+					<h:selectOneMenu value="#{aktualiziraneNaRezervna4ast.searchSparePartModelID}">
 						<f:selectItems value="#{aktualiziraneNaRezervna4ast.vehicleModels}" var="currentvehicleModel" 
 		    				itemLabel="#{currentvehicleModel.model}" itemValue="#{currentvehicleModel.ID}" />
 					</h:selectOneMenu>
 				</h:outputLabel>
-				
+				<h:outputLabel value="Вземи предвид модела">
+					<h:selectBooleanCheckbox value="#{aktualiziraneNaRezervna4ast.searchBySparePartModel}" />
+				</h:outputLabel>
 				<br />
-				<h:commandButton value="Търси" disabled="true" />
-				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
+				<h:commandButton value="Търси" action="#{aktualiziraneNaRezervna4ast.searchIt()}" />
+				<h:commandButton value="Изчисти" action="#{aktualiziraneNaRezervna4ast.resetSearch()}" />
 			</h:panelGroup>
 		</h:form>
 	
