@@ -12,6 +12,8 @@ import javax.faces.context.FacesContext;
 
 
 import model.Client;
+import model.Company;
+import model.Person;
 import controller.common.AllPages;
 import controller.common.ConfigurationProperties;
 import controller.common.CurrentEmployee;
@@ -39,6 +41,10 @@ public class AktualiziraneNaKlient implements Serializable {
 	private int page = 0;
 	private int pagesCount;
 	private int rowsCount;
+	
+	private String searchNamePerson;
+	private String searchFamilyPerson;
+	private String searchNameCompany;
 	
 	private InterPageDataRequest dataRequest;
 
@@ -314,6 +320,81 @@ public class AktualiziraneNaKlient implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("dataRequestStack", dataRequestStack);
 		
 		return dataRequest.returnPage + "?faces-redirect=true";
+	}
+	
+	public String getSearchNamePerson() {
+		return searchNamePerson;
+	}
+
+	public void setSearchNamePerson(String searchNamePerson) {
+		if ("".equals(searchNamePerson)) {
+			this.searchNamePerson = null;
+			return;
+		}
+		this.searchNamePerson = searchNamePerson;
+	}
+
+	public String getSearchFamilyPerson() {
+		return searchFamilyPerson;
+	}
+
+	public void setSearchFamilyPerson(String searchFamilyPerson) {
+		if ("".equals(searchFamilyPerson)) {
+			this.searchFamilyPerson = null;
+			return;
+		}
+		this.searchFamilyPerson = searchFamilyPerson;
+	}
+	
+	public String getSearchNameCompany() {
+		return searchNameCompany;
+	}
+
+	public void setSearchNameCompany(String searchNameCompany) {
+		if ("".equals(searchNameCompany)) {
+			this.searchNameCompany = null;
+			return;
+		}
+		this.searchNameCompany = searchNameCompany;
+	}
+	
+	public void searchIt() {
+		if (((searchNamePerson == null) && (searchFamilyPerson == null) && (searchNameCompany == null)) ||
+			(((searchNamePerson != null) || (searchFamilyPerson != null)) && (searchNameCompany != null))) {
+			readList();
+			return;
+		}
+		
+		spisukKlienti.clear();
+		rowsCount = 0;
+		
+		if ((searchNamePerson != null) || (searchFamilyPerson != null)) {
+			List<Person> personList = Person.querySearchByNameFamily(searchNamePerson, searchFamilyPerson, page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
+			rowsCount = Person.countSearchByNameFamily(searchNamePerson, searchFamilyPerson);
+			for (Person person : personList) {
+				spisukKlienti.add(person.getClient());
+			}
+		}
+		
+		if (searchNameCompany != null) {
+			List<Company> companyList = Company.querySearchByName(searchNameCompany, page * ConfigurationProperties.getPageSize(), ConfigurationProperties.getPageSize());
+			rowsCount = Company.countSearchByName(searchNameCompany);
+			for (Company company : companyList) {
+				spisukKlienti.add(company.getClient());
+			}
+		}
+		
+		page = 0;
+		klient = new Client();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
+	}
+	
+	public void resetSearch() {
+		searchNamePerson = null;
+		searchFamilyPerson = null;
+		searchNameCompany = null;
+		searchIt();
 	}
 	
 }

@@ -9,6 +9,7 @@ import java.util.Set;
 
 import model.util.EntityHelper;
 import model.util.LimitedString;
+import model.util.StringSearchAttribute;
 
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -164,11 +165,28 @@ public class Company implements Serializable {
 		this.contactPerson.setString(contactPerson);
 	}
 	
+	private static PreparedQuery getPreparedQueryAll() { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Company.class.getSimpleName()).
+				       addSort("__key__"));
+	}
+	
 	private static PreparedQuery getPreparedQueryAll(Key clientID) { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(Company.class.getSimpleName()).
 					   setAncestor(clientID).
 				       addSort("__key__"));
+	}
+	
+	public static List<Company> queryGetAll(int offset, int count) {
+		List<Entity> oldList = getPreparedQueryAll().
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetAll() {
+		return getPreparedQueryAll().countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
 	public static List<Company> queryGetAll(int offset, int count, Key clientID) {
@@ -180,6 +198,37 @@ public class Company implements Serializable {
 	
 	public static int countGetAll(Key clientID) {
 		return getPreparedQueryAll(clientID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+	public static List<Company> querySearchByName(String name, int offset, int count) {
+		List<StringSearchAttribute> searchStrings = new ArrayList<StringSearchAttribute>();
+		List<Entity> oldList;
+		if (name != null) {
+			searchStrings.add(new StringSearchAttribute("name", name));
+		}
+		
+		if (searchStrings.size() > 0) {
+			oldList = EntityHelper.stringSearchFilter(
+					getPreparedQueryAll().asIterator(), searchStrings, offset, count);
+		} else {
+			oldList = new ArrayList<Entity>();
+		}
+			
+		return readList(oldList);
+	}
+	
+	public static int countSearchByName(String name) {
+		List<StringSearchAttribute> searchStrings = new ArrayList<StringSearchAttribute>();
+		if (name != null) {
+			searchStrings.add(new StringSearchAttribute("name", name));
+		}
+		
+		if (searchStrings.size() > 0) {
+			return EntityHelper.stringSearchCount(
+					getPreparedQueryAll().asIterator(), searchStrings);
+		} else {
+			return 0;
+		}
 	}
 	
 }
