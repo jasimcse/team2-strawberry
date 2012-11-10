@@ -69,18 +69,16 @@
 		    	<br />
 		    		
 				<h:outputLabel value="Начална дата">
-					<h:inputText value="" maxlength="50" 
-						validatorMessage="Невалидна дата. Пример: 21.12.2012">
-						<f:validateRegex pattern="^[0-3]?[0-9]\.[0-3]?[0-9]\.[0-9]{4}$"/>
+					<h:inputText value="" title="формат: ДД.ММ.ГГГГ"
+						convertorMessage="Невалидна дата. Пример: 21.12.2012">
+						<f:convertDateTime pattern="dd.MM.yyyy" />
 					</h:inputText>
-					<f:convertDateTime pattern="dd.MM.yyyy" />
 				</h:outputLabel>
 				<h:outputLabel value="Крайна дата">
-					<h:inputText value="" maxlength="50" 
-						validatorMessage="Невалидна дата. Пример: 21.12.2012">
-						<f:validateRegex pattern="^[0-3]?[0-9]\.[0-3]?[0-9]\.[0-9]{4}$"/>
+					<h:inputText value="" title="формат: ДД.ММ.ГГГГ"
+						convertorMessage="Невалидна дата. Пример: 21.12.2012">
+						<f:convertDateTime pattern="dd.MM.yyyy" />
 					</h:inputText>
-					<f:convertDateTime pattern="dd.MM.yyyy" />
 				</h:outputLabel>
 				<br />
 				
