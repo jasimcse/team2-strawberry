@@ -14,7 +14,7 @@
 
 	<ui:define name="pageContent">
 	
-		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<div id="scroolTable"> <!-- scroll bar -->
 		<h:form>
 			
 			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
@@ -42,7 +42,7 @@
 				
 				<h:column>
 					<f:facet name="header">Прегледай</f:facet>
-					<h:commandLink action="#{pregledNaGarancionniUsloviq.selectRow(curr)}" value="Прегледай" />
+					<h:commandButton action="#{pregledNaGarancionniUsloviq.selectRow(curr)}" value="Прегледай" />
 				</h:column>
 				
 				<f:facet name="footer">
