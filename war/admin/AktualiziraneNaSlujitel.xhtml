@@ -171,10 +171,6 @@
 				<h:message for="phone" />
 			</h:outputLabel>
 			</div>
-			<div id="PromeniOtmeniDobavi">
-			<h:commandButton action="#{aktualiziraneNaSlujitel.writeIt()}" value="Промени"
-				disabled="#{!aktualiziraneNaSlujitel.rowSelected or !aktualiziraneNaSlujitel.changingAllowed}" />
-			</div>
 			
 			</div>
 			
@@ -183,7 +179,9 @@
 			<h:form>
 			<!-- формата е разделена на две, за да не се проверяват данните
 			при натискането на бутоните "Отмени" и "Добави" -->
-			
+			<div class="PromeniOtmeniDobavi">
+			<h:commandButton action="#{aktualiziraneNaSlujitel.writeIt()}" value="Промени"
+				disabled="#{!aktualiziraneNaSlujitel.rowSelected or !aktualiziraneNaSlujitel.changingAllowed}" />
 			<h:commandButton action="#{aktualiziraneNaSlujitel.deselectRow()}" value="Отмени"
 				disabled="#{!aktualiziraneNaSlujitel.rowSelected}" />
 				
@@ -191,6 +189,7 @@
 				disabled="#{!aktualiziraneNaSlujitel.goToAddAllowed}" />
 				
 			<h:outputText value="#{aktualiziraneNaSlujitel.errorMessage}"/>
+			</div>
 		</h:form>
 	    
 	</ui:define>
