@@ -26,7 +26,7 @@
 			</h:panelGroup>
 		</h:form>
 	
-		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<div id="scroolTable"> <!-- scroll bar -->
 		<h:form>
 			
 			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
@@ -89,7 +89,7 @@
 				
 				<h:column>
 					<f:facet name="header">Промени</f:facet>
-					<h:commandLink action="#{aktualiziraneNaDostav4ik.selectRow(curr)}" value="Промени" />
+					<h:commandButton action="#{aktualiziraneNaDostav4ik.selectRow(curr)}" value="Промени" />
 				</h:column>
 				
 				<h:column rendered="#{aktualiziraneNaDostav4ik.choosingAllowed}">
