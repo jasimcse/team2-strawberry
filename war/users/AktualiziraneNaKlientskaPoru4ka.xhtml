@@ -95,7 +95,7 @@
 		</h:form>
 		
 		
-		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<div id="scroolTable"> <!-- scroll bar -->
 		<h:form>
 			
 			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
@@ -158,12 +158,12 @@
 				
 				<h:column>
 					<f:facet name="header">Промени</f:facet>
-					<h:commandLink action="#{aktualiziraneNaKlientskaPoru4ka.selectRow(curr)}" value="Промени" />
+					<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.selectRow(curr)}" value="Промени" />
 				</h:column>
 				
 				<h:column rendered="#{aktualiziraneNaKlientskaPoru4ka.choosingAllowed}">
 					<f:facet name="header">Избери</f:facet>
-					<h:commandLink action="#{aktualiziraneNaKlientskaPoru4ka.choosePoru4ka(curr)}" value="Избери" />
+					<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.choosePoru4ka(curr)}" value="Избери" />
 				</h:column>
 				
 				<f:facet name="footer">
@@ -275,7 +275,7 @@
 	    </h:outputLabel>
 	    <br />
 	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове --> 
-		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<div id="scroolTable"> <!-- scroll bar -->
 		<h:dataTable
 			value="#{aktualiziraneNaKlientskaPoru4ka.spisukUslugi}"
 			var="curr"
@@ -315,13 +315,13 @@
 			
 			<h:column rendered="#{aktualiziraneNaKlientskaPoru4ka.isAvtomontior() and !aktualiziraneNaKlientskaPoru4ka.isPaied()}" >
 				<f:facet name="header">Извършена услуга</f:facet>
-				<h:commandLink action="#{aktualiziraneNaKlientskaPoru4ka.setEmployeeToService(curr)}" value="Извършена" 
+				<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.setEmployeeToService(curr)}" value="Извършена" 
 				disabled="#{curr.isDone()}"/>
 			</h:column> 
 			
 			<h:column rendered="#{aktualiziraneNaKlientskaPoru4ka.isPriemchik() and !aktualiziraneNaKlientskaPoru4ka.isPaied()}" >
 				<f:facet name="header">Премахни</f:facet>
-				<h:commandLink action="#{aktualiziraneNaKlientskaPoru4ka.deleteUsluga(curr)}" value="Премахни" 
+				<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.deleteUsluga(curr)}" value="Премахни" 
 				disabled="#{curr.isDone()}"/>
 			</h:column> 
 		</h:dataTable>
@@ -337,7 +337,7 @@
 	    <br /> 
 	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове 
 	    Оцветяване на ред с липсващи резервни части-->
-		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<div id="scroolTable"> <!-- scroll bar -->
 		<h:dataTable
 			value="#{aktualiziraneNaKlientskaPoru4ka.spisukRezervni4asti}"
 			var="curr"
@@ -403,12 +403,12 @@
 			
 			<h:column rendered="#{!aktualiziraneNaKlientskaPoru4ka.isPaied()}" >
 				<f:facet name="header">Промени</f:facet>
-				<h:commandLink action="#{aktualiziraneNaKlientskaPoru4ka.toggleEditSparePartForClientOrder(curr)}" value="Промени" />
+				<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.toggleEditSparePartForClientOrder(curr)}" value="Промени" />
 			</h:column>
 			
 			<h:column rendered="#{aktualiziraneNaKlientskaPoru4ka.isPriemchik() and !aktualiziraneNaKlientskaPoru4ka.isPaied()}" >
 				<f:facet name="header">Премахни</f:facet>
-				<h:commandLink action="#{aktualiziraneNaKlientskaPoru4ka.deleteSparePart(curr)}" value="Премахни" 
+				<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.deleteSparePart(curr)}" value="Премахни" 
 				disabled="#{curr.isUsed()}"/>
 			</h:column>
 		

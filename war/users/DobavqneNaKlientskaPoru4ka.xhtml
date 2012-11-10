@@ -64,7 +64,7 @@
 	    	<h:commandButton value="Избери" action="#{dobavqneNaKlientskaPoru4ka.chooseUsluga()}" /> 
 	    </h:outputLabel>
 	    <br />
-		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<div id="scroolTable"> <!-- scroll bar -->
 		<h:dataTable
 			value="#{dobavqneNaKlientskaPoru4ka.spisukUslugi}"
 			var="curr"
@@ -97,7 +97,7 @@
 			
 			<h:column>
 				<f:facet name="header">Премахни</f:facet>
-				<h:commandLink action="#{dobavqneNaKlientskaPoru4ka.deleteUsluga(curr)}" value="Премахни" />
+				<h:commandButton action="#{dobavqneNaKlientskaPoru4ka.deleteUsluga(curr)}" value="Премахни" />
 			</h:column> 
 		</h:dataTable>
 		</div>
@@ -109,7 +109,7 @@
 	    <br /> 
 	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове 
 	    Оцветяване на ред с липсващи резервни части-->
-		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<div id="scroolTable"> <!-- scroll bar -->
 		<h:dataTable
 			value="#{dobavqneNaKlientskaPoru4ka.spisukRezervni4asti}"
 			var="curr"

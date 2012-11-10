@@ -44,7 +44,7 @@
 			</h:panelGroup>
 		</h:form>
 		
-		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<div id="scroolTable"> <!-- scroll bar -->
 		<h:form>
 			
 			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
@@ -84,12 +84,12 @@
 				
 				<h:column>
 					<f:facet name="header">Прегледай</f:facet>
-					<h:commandLink action="#{pregledNaPoru4kaNa4asti.selectRow(curr)}" value="Прегледай" />
+					<h:commandButton action="#{pregledNaPoru4kaNa4asti.selectRow(curr)}" value="Прегледай" />
 				</h:column>
 				
 				<h:column rendered="#{pregledNaPoru4kaNa4asti.choosingAllowed}">
 					<f:facet name="header">Избери</f:facet>
-					<h:commandLink action="#{pregledNaPoru4kaNa4asti.chooseWarehouseOrder(curr)}" value="Избери" />
+					<h:commandButton action="#{pregledNaPoru4kaNa4asti.chooseWarehouseOrder(curr)}" value="Избери" />
 				</h:column>
 				
 				
@@ -163,7 +163,7 @@
 		<h:outputText value="Поръчани резервни части" />
 		<br />
 	    
-		<div style="overflow-x: auto;"> <!-- scroll bar -->
+		<div id="scroolTable"> <!-- scroll bar -->
 		<h:dataTable
 			value="#{pregledNaPoru4kaNa4asti.spisuk4asti}"
 			var="curr"
