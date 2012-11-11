@@ -25,6 +25,7 @@ import model.InsurerRequest;
 import model.Service;
 import model.SparePart;
 import model.SparePartAutoservice;
+import model.SparePartRequest;
 import model.SparePartReserved;
 import model.Vehicle;
 import model.VehicleModelService;
@@ -334,6 +335,10 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 				return null;
 			}
 			
+			SparePartReserved spPartReserved = new SparePartReserved();
+			spPartReserved.setClientOrderID(poru4ka.getID());
+			spPartReserved.setSparePartID(clSp.getClPart().getID());
+			
 			if ( clSp.getQuantityAvailable() >= clSp.getClPart().getQuantity() )
 			{
 				listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() + 
@@ -341,14 +346,27 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 				
 				listSpPartAuto.get(0).setQuantityAvailable(listSpPartAuto.get(0).getQuantityAvailable() - 
 						clSp.getClPart().getQuantity());
+				
+				spPartReserved.setQuantity(clSp.getClPart().getQuantity());
 			}
 			else
 			{
+				SparePartRequest spPartRequest = new SparePartRequest();
+				spPartRequest.setAutoserviceID(currEmployee.getAutoserviceID());
+				spPartRequest.setClientOrderID(poru4ka.getID());
+				spPartRequest.setSparePartID(clSp.getClPart().getID());
+				spPartRequest.setQuantity(clSp.getClPart().getQuantity() - listSpPartAuto.get(0).getQuantityAvailable());
+				spPartRequest.setQuantityDelivered(0);
+				spPartRequest.setStatus(SparePartRequest.NEW);
+				spPartRequest.writeToDB();
+				
 				listSpPartAuto.get(0).setQuantityRequested(listSpPartAuto.get(0).getQuantityRequested() + 
 						clSp.getClPart().getQuantity() - listSpPartAuto.get(0).getQuantityAvailable());
 				
 				listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() + 
 						listSpPartAuto.get(0).getQuantityAvailable());
+				
+				spPartReserved.setQuantity(listSpPartAuto.get(0).getQuantityAvailable());
 				
 				listSpPartAuto.get(0).setQuantityAvailable(0);
 				
@@ -356,10 +374,7 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 			
 			listSpPartAuto.get(0).writeToDB();
 			
-			SparePartReserved spPartReserved = new SparePartReserved();
-			spPartReserved.setClientOrderID(poru4ka.getID());
-			spPartReserved.setSparePartID(clSp.getClPart().getID());
-			spPartReserved.setQuantity(clSp.getClPart().getQuantity());
+			
 			spPartReserved.setUsed(0);
 			spPartReserved.writeToDB();
 		
@@ -374,7 +389,7 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		setInAutoservice(false);
 		
 		// set the message
-		errorMessage = "Поръчката беше добавен успешно!";
+		errorMessage = "Поръчката беше добавена успешно!";
 		
 		return null;
 	}
