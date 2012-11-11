@@ -172,6 +172,12 @@
 			</h:outputLabel>
 			</div>
 			
+			<!-- бутонът промени трябва да е в тази форма !!! -->
+			<div>
+			<h:commandButton action="#{aktualiziraneNaSlujitel.writeIt()}" value="Промени"
+				disabled="#{!aktualiziraneNaSlujitel.rowSelected or !aktualiziraneNaSlujitel.changingAllowed}" />
+			</div>
+			
 			</div>
 			
 			</h:form>
@@ -180,8 +186,6 @@
 			<!-- формата е разделена на две, за да не се проверяват данните
 			при натискането на бутоните "Отмени" и "Добави" -->
 			<div class="PromeniOtmeniDobavi">
-			<h:commandButton action="#{aktualiziraneNaSlujitel.writeIt()}" value="Промени"
-				disabled="#{!aktualiziraneNaSlujitel.rowSelected or !aktualiziraneNaSlujitel.changingAllowed}" />
 			<h:commandButton action="#{aktualiziraneNaSlujitel.deselectRow()}" value="Отмени"
 				disabled="#{!aktualiziraneNaSlujitel.rowSelected}" />
 				
