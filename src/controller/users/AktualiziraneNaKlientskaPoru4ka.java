@@ -68,13 +68,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	
 	@PostConstruct
 	public void init() {
-		readList();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public AktualiziraneNaKlientskaPoru4ka() {
-		
-		dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
+dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
 		
 		if (dataRequestStack != null) {
 			dataRequest = dataRequestStack.peek();
@@ -123,7 +117,11 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 				}
 			}
 		}
+		
+		readList();
 	}
+	
+	
 
 	public boolean addSeviceForClientOrder(Service service, String whoPay)
 	{
@@ -417,7 +415,8 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	
  	public void deleteUsluga(ServiceForClientOrder clService)
 	{
-		// ако не е извършена!
+		// // TODO: триене от БД
+ 		// ако не е извършена!
 		if(clService.getClService().getEmployee() != null)
 			return;
 		
@@ -482,8 +481,8 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 
 	public void deleteSparePart(SparePartForClientOrder sPart)
 	{
-		// TODO: ако количество от рез част е вложено тя не може да се изтрие!
-		
+		//ако количество от рез част е вложено тя не може да се изтрие!
+		// TODO: триене от БД
 		clientOrderPrice -= sPart.getFullPrice();
 		spisukRezervni4asti.remove(sPart); 	
 	}
@@ -608,10 +607,14 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 			
 	
 			List <SparePartReserved> listSpPartRes = SparePartReserved.queryGetBySparePart(clOrSer.getSparePartID(), 0, 1, poru4ka.getID());
-			//Резервирано количество за поръчката 
-			partClientOrder.setQuantityReserved(listSpPartRes.get(0).getQuantity());
-			//Вложено количество за поръчката
-			partClientOrder.setQuantityUsed(listSpPartRes.get(0).getUsed());
+		
+			if(listSpPartRes.size() == 1)
+			{
+				//Резервирано количество за поръчката 
+				partClientOrder.setQuantityReserved(listSpPartRes.get(0).getQuantity());
+				//Вложено количество за поръчката
+				partClientOrder.setQuantityUsed(listSpPartRes.get(0).getUsed());
+			}
 			
 			spisukRezervni4asti.add(partClientOrder);
 			
@@ -732,32 +735,32 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 				return null;
 			}
 					
-			if ( clSp.getQuantityAvailable() >= clSp.getClPart().getQuantity() )
-			{
-				listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() + 
-						clSp.getClPart().getQuantity());
-				listSpPartAuto.get(0).setQuantityAvailable(listSpPartAuto.get(0).getQuantityAvailable() - 
-						clSp.getClPart().getQuantity());
-			}
-			else
-			{
-				listSpPartAuto.get(0).setQuantityRequested(listSpPartAuto.get(0).getQuantityRequested() + 
-						clSp.getClPart().getQuantity() - listSpPartAuto.get(0).getQuantityAvailable());
-						
-				listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() + 
-						listSpPartAuto.get(0).getQuantityAvailable());
-						
-				listSpPartAuto.get(0).setQuantityAvailable(0);
-			}
-					
-			listSpPartAuto.get(0).writeToDB();
-					
-			SparePartReserved spPartReserved = new SparePartReserved();
-			spPartReserved.setClientOrderID(poru4ka.getID());
-			spPartReserved.setSparePartID(clSp.getClPart().getID());
-			spPartReserved.setQuantity(clSp.getClPart().getQuantity());
-			spPartReserved.setUsed(0);
-			spPartReserved.writeToDB();
+//			if ( clSp.getQuantityAvailable() >= clSp.getClPart().getQuantity() )
+//			{
+//				listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() + 
+//						clSp.getClPart().getQuantity());
+//				listSpPartAuto.get(0).setQuantityAvailable(listSpPartAuto.get(0).getQuantityAvailable() - 
+//						clSp.getClPart().getQuantity());
+//			}
+//			else
+//			{
+//				listSpPartAuto.get(0).setQuantityRequested(listSpPartAuto.get(0).getQuantityRequested() + 
+//						clSp.getClPart().getQuantity() - listSpPartAuto.get(0).getQuantityAvailable());
+//						
+//				listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() + 
+//						listSpPartAuto.get(0).getQuantityAvailable());
+//						
+//				listSpPartAuto.get(0).setQuantityAvailable(0);
+//			}
+//					
+//			listSpPartAuto.get(0).writeToDB();
+//					
+//			SparePartReserved spPartReserved = new SparePartReserved();
+//			spPartReserved.setClientOrderID(poru4ka.getID());
+//			spPartReserved.setSparePartID(clSp.getClPart().getID());
+//			spPartReserved.setQuantity(clSp.getClPart().getQuantity());
+//			spPartReserved.setUsed(0);
+//			spPartReserved.writeToDB();
 				
 		}
 				
