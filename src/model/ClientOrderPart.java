@@ -17,6 +17,7 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 @SuppressWarnings("serial")
 public class ClientOrderPart implements Serializable {
@@ -24,6 +25,9 @@ public class ClientOrderPart implements Serializable {
 	public static final String CLIENT_PAYS = "1";
 	public static final String INSURER_PAYS = "2";
 	public static final String PRODUCER_PAYS = "3";
+	
+	public static final String STATUS_NORMAL = "1";
+	public static final String STATUS_REMOVED = "2";
 	
 	private Entity thisEntity;
 	private ClientOrder clientOrder;
@@ -34,6 +38,7 @@ public class ClientOrderPart implements Serializable {
 	private Double quantity;
 	private Double priceUnit;
 	private LimitedString whoPays = new LimitedString(1, true);
+	private LimitedString status = new LimitedString(1, true);
 	
 	private static final String PARENT_FIELD = "clientOrderID";
 	
@@ -189,11 +194,31 @@ public class ClientOrderPart implements Serializable {
 		}
 	}
 	
+	public String getStatus() {
+		return status.getString();
+	}
+
+	public void setStatus(String status) {
+		if (STATUS_NORMAL.equals(status) || STATUS_REMOVED.equals(status)) {
+			this.status.setString(status);
+		} else {
+			throw new RuntimeException("The string doesn't match any of possible values");
+		}
+	}
+	
 	private static PreparedQuery getPreparedQueryAll(Key clientOrderID) { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(ClientOrderPart.class.getSimpleName()).
 					   setAncestor(clientOrderID).
 				       addSort("__key__"));
+	}
+	
+	private static PreparedQuery getPreparedQueryByStatus(Key clientOrderID, String status) { 
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(ClientOrderPart.class.getSimpleName()).
+					   setAncestor(clientOrderID).
+				       addSort("__key__").
+				       setFilter(new Query.FilterPredicate("status", FilterOperator.EQUAL, status)));
 	}
 	
 	public static List<ClientOrderPart> queryGetAll(int offset, int count, Key clientOrderID) {
@@ -207,6 +232,17 @@ public class ClientOrderPart implements Serializable {
 		return getPreparedQueryAll(clientOrderID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
+	public static List<ClientOrderPart> queryGetByStatus(String status, int offset, int count, Key clientOrderID) {
+		List<Entity> oldList = getPreparedQueryByStatus(clientOrderID, status).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		
+		return readList(oldList);
+	}
+	
+	public static int countGetByStatus(Key clientOrderID, String status) {
+		return getPreparedQueryByStatus(clientOrderID, status).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
 }
 
 /*
@@ -215,7 +251,8 @@ CREATE TABLE Client_Order_Part (
 	Spare_Part_ID BIGINT NOT NULL,
 	Quantity FLOAT NOT NULL,
 	Price_Unit FLOAT NOT NULL,
-	Who_Pays SMALLINT NOT NULL
+	Who_Pays SMALLINT NOT NULL,
+	Status CHAR(1) NOT NULL
 );
 
 ALTER TABLE Client_Order_Part ADD CONSTRAINT PK_Client_Order_Part 
