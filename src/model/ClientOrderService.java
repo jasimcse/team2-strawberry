@@ -46,6 +46,7 @@ public class ClientOrderService implements Serializable {
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS",
 					      "CLIENT_PAYS", "INSURER_PAYS", "PRODUCER_PAYS",
+					      "STATUS_NORMAL", "STATUS_REMOVED",
 					      "thisEntity", "clientOrder", "service", "employee"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
