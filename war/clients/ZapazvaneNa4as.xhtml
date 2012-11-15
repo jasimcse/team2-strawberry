@@ -7,103 +7,96 @@
 	xmlns:f="http://java.sun.com/jsf/core">
 
 <ui:composition template="/common/template.xhtml">
-	
+
 	<ui:define name="pageContent">
-	    <h:form>
-		<div>
-		<h:outputLabel value="Име на клиента"><br />
-	    	<h:inputText id="name" value="#{zapazvaneNa4as.clientName}" maxlength="100"
-	    		validatorMessage="Дължината на името не може да надвишава 100 символа">
-	    		<f:validateLength minimum="0" maximum="100"/>
-	    	</h:inputText>
-	    	<h:message for="name" /> 
-	    </h:outputLabel> 
-	    </div>
-	    <div>
-	    
-	    <h:outputLabel value="Телефонен номер за обратна връзка"><br />
-	    	<h:inputText id="phone" value="#{zapazvaneNa4as.phoneNumber}" maxlength="15" 
-	    		validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
-	    		<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)"/>
-	    	</h:inputText>
-	    	<h:message for="phone" />
-	    </h:outputLabel>
-	    </div> 
-	    <br />
-	    <div id="clear">
-	    <h:outputLabel value="Автосервиз*">
-			<h:selectOneMenu value="#{zapazvaneNa4as.autoserviceID}">
-				<f:selectItems value="#{zapazvaneNa4as.autoservices}" var="currentAutoservice" 
-    				itemLabel="#{currentAutoservice.name}" itemValue="#{currentAutoservice.ID}" />
-			</h:selectOneMenu>
-		</h:outputLabel>
-		<br />
-		<span id="proveriZaSvobodni4asove">
-		<h:commandButton action="#{zapazvaneNa4as.chooseAutoservice()}" value="Провери за свободни часове" />
-		</span>
-		<br />
-		
-		<h:panelGroup>
-		<span id="zapazvane">
-			<h:commandButton action="#{zapazvaneNa4as.changeMonth(-1)}"
-				disabled="#{!zapazvaneNa4as.prevMonthAllowed}"
-				value="Предишен месец" />
-			<h:outputText value=" " />
-			
-			<ui:repeat value="#{zapazvaneNa4as.linkListPrev}" var="currLink">
-				<h:commandLink action="#{zapazvaneNa4as.changeDay(currLink.param)}"
-					disabled="#{currLink.disabled}"
-					value="#{currLink.text}" />
-				<h:outputText value=" " />
-			</ui:repeat>
-			
-			<ui:repeat value="#{zapazvaneNa4as.linkListNext}" var="currLink">
-				<h:commandLink action="#{zapazvaneNa4as.changeDay(currLink.param)}"
-					disabled="#{currLink.disabled}"
-					value="#{currLink.text}" />
-				<h:outputText value=" " />
-			</ui:repeat>
-			
-			<h:commandButton action="#{zapazvaneNa4as.changeMonth(1)}"
-				value="Следващ месец" />
-			<h:outputText value=" " />
-			</span>
+		<h:form>
+			<table class="mainTable">
+				<tr>
+					<td><h:outputLabel value="Име на клиента">
+							<br />
+							<h:inputText id="name" value="#{zapazvaneNa4as.clientName}"
+								maxlength="100"
+								validatorMessage="Дължината на името не може да надвишава 100 символа">
+								<f:validateLength minimum="0" maximum="100" />
+							</h:inputText>
+							<h:message for="name" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Телефонен номер за обратна връзка">
+							<br />
+							<h:inputText id="phone" value="#{zapazvaneNa4as.phoneNumber}"
+								maxlength="15"
+								validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
+								<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)" />
+							</h:inputText>
+							<h:message for="phone" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Автосервиз*">
+							<h:selectOneMenu value="#{zapazvaneNa4as.autoserviceID}">
+								<f:selectItems value="#{zapazvaneNa4as.autoservices}"
+									var="currentAutoservice" itemLabel="#{currentAutoservice.name}"
+									itemValue="#{currentAutoservice.ID}" />
+							</h:selectOneMenu>
+						</h:outputLabel></td>
+					<td><span id="proveriZaSvobodni4asove"> <h:commandButton
+								action="#{zapazvaneNa4as.chooseAutoservice()}"
+								value="Провери за свободни часове" />
+					</span></td>
+				</tr>
+			</table>
 			<br />
-			<span id="dataZapazvane">
-			<h:outputLabel value="Дата: ">
-			<h:outputText value="#{zapazvaneNa4as.date}">
-				<f:convertDateTime pattern="dd.MM.yyyy" />
-			</h:outputText>
-			</h:outputLabel>
-			</span>
-			<br />
-			
-			<h:outputLabel value="Свободни часове*">
-				<h:selectOneRadio value="#{zapazvaneNa4as.date}" layout="pageDirection"
-					border="1" id="hours" converter="javax.faces.DateTime"
-					required="#{not empty param[zapazvaneNa4as.reserveButton.clientId]}" requiredMessage="задължително поле!">
-					<f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
-					
-					<f:selectItems value="#{zapazvaneNa4as.spisukZapazeni4asove}" var="currZapazen4as"
-						itemLabel="#{currZapazen4as.text}"
-						itemValue="#{currZapazen4as.time}" 
-						itemDisabled="#{currZapazen4as.disabled}" />
+			<div id="clear">
+				<h:panelGroup>
+					<span id="zapazvane"> <h:commandButton
+							action="#{zapazvaneNa4as.changeMonth(-1)}"
+							disabled="#{!zapazvaneNa4as.prevMonthAllowed}"
+							value="Предишен месец" /> <h:outputText value=" " /> <ui:repeat
+							value="#{zapazvaneNa4as.linkListPrev}" var="currLink">
+							<h:commandLink
+								action="#{zapazvaneNa4as.changeDay(currLink.param)}"
+								disabled="#{currLink.disabled}" value="#{currLink.text}" />
+							<h:outputText value=" " />
+						</ui:repeat> <ui:repeat value="#{zapazvaneNa4as.linkListNext}" var="currLink">
+							<h:commandLink
+								action="#{zapazvaneNa4as.changeDay(currLink.param)}"
+								disabled="#{currLink.disabled}" value="#{currLink.text}" />
+							<h:outputText value=" " />
+						</ui:repeat> <h:commandButton action="#{zapazvaneNa4as.changeMonth(1)}"
+							value="Следващ месец" /> <h:outputText value=" " />
+					</span>
 					<br />
-				</h:selectOneRadio>
-				<h:message for="hours" />
-			</h:outputLabel>
-		</h:panelGroup>
-		<br />
-		<span id="rezervirai">
-		<h:commandButton action="#{zapazvaneNa4as.writeIt()}" value="Резервирай"
-			binding="#{zapazvaneNa4as.reserveButton}" />
-		</span>
-		<br />
-	    
-	    <h:outputText value="#{zapazvaneNa4as.errorMessage}"/>
-	    </div>
-	    </h:form>
+					<span id="dataZapazvane"> <h:outputLabel value="Дата: ">
+							<h:outputText value="#{zapazvaneNa4as.date}">
+								<f:convertDateTime pattern="dd.MM.yyyy" />
+							</h:outputText>
+						</h:outputLabel>
+					</span>
+					<br />
+					<h:outputLabel value="Свободни часове*">
+						<h:selectOneRadio value="#{zapazvaneNa4as.date}"
+							layout="pageDirection" border="1" id="hours"
+							converter="javax.faces.DateTime"
+							required="#{not empty param[zapazvaneNa4as.reserveButton.clientId]}"
+							requiredMessage="задължително поле!">
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+
+							<f:selectItems value="#{zapazvaneNa4as.spisukZapazeni4asove}"
+								var="currZapazen4as" itemLabel="#{currZapazen4as.text}"
+								itemValue="#{currZapazen4as.time}"
+								itemDisabled="#{currZapazen4as.disabled}" />
+							<br />
+						</h:selectOneRadio>
+						<h:message for="hours" />
+					</h:outputLabel>
+				</h:panelGroup>
+				<br /> <span id="rezervirai"> <h:commandButton
+						action="#{zapazvaneNa4as.writeIt()}" value="Резервирай"
+						binding="#{zapazvaneNa4as.reserveButton}" />
+				</span> <br />
+				<h:outputText value="#{zapazvaneNa4as.errorMessage}" />
+			</div>
+		</h:form>
 	</ui:define>
-	
 </ui:composition>
 </html>
