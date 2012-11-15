@@ -20,6 +20,7 @@
 	    <h:form>
 	    
 	    <h:outputLabel value="Номер на рама*">
+	    <br />
 	    	<h:inputText id="vin" value="#{dobavqneNaAvtomobilDebug.VIN}" maxlength="17" 
 	    		required="true" requiredMessage="задължително поле!" 
 	    		validatorMessage="Номерът на рамата се състои от 17 символа - главни латински букви и цифри.">
@@ -30,6 +31,7 @@
 	    <br />
 
 		<h:outputLabel value="Номер на двигател*">
+		<br />
 	    	<h:inputText id="enginenum" value="#{dobavqneNaAvtomobilDebug.engineNumber}" maxlength="50" 
 	    		required="true" requiredMessage="задължително поле!"
 	    		validatorMessage="Номерът на двигателя се състои от главни латински букви и цифри.">
@@ -40,6 +42,7 @@
 	    <br />
 	    
 	    <h:outputLabel value="Регистрационен номер*">
+	    <br />
 	    	<h:inputText id="platenum" value="#{dobavqneNaAvtomobilDebug.plateNumber}" maxlength="8" 
 	    		required="true" requiredMessage="задължително поле!" 
 	    		validatorMessage="Регистрационният номер се състои от главни латински букви и цифри.">
@@ -50,6 +53,7 @@
 	    <br /> 
 	    
 	    <h:outputLabel value="Модел на автомобила*">
+	    <br />
 		    <h:selectOneMenu value="#{dobavqneNaAvtomobilDebug.vehicleModelID}">
 				<f:selectItems value="#{dobavqneNaAvtomobilDebug.vehicleModels}" var="currentVehicleModel" 
 	   				itemLabel="#{currentVehicleModel.model}" itemValue="#{currentVehicleModel.ID}" />
@@ -58,6 +62,7 @@
 		<br />
 	    
 	    <h:outputLabel value="Ключ на клиента*">
+	    <br />
 		    <h:selectOneMenu value="#{dobavqneNaAvtomobilDebug.clientID}">
 				<f:selectItems value="#{dobavqneNaAvtomobilDebug.clients}" var="currentClient" 
 	   				itemLabel="#{currentClient.foreignID}" itemValue="#{currentClient.ID}" />
@@ -66,6 +71,7 @@
 		<br />
 		
 		<h:outputLabel value="Ключ гаранционните условия*">
+		<br />
 		    <h:selectOneMenu value="#{dobavqneNaAvtomobilDebug.warrantyConditionsID}">
 				<f:selectItems value="#{dobavqneNaAvtomobilDebug.warrantyConditions}" var="currentWarrantyConditions" 
 	   				itemLabel="#{currentWarrantyConditions.foreignID}"
@@ -75,6 +81,7 @@
 		<br />
 		
 		<h:outputLabel value="Дата на закупуване*">
+		<br />
 			<h:inputText id="purchaseDate" value="#{dobavqneNaAvtomobilDebug.purchaseDate}" title="формат: ДД.ММ.ГГГГ">
 				<f:convertDateTime pattern="dd.MM.yyyy" />
 			</h:inputText>
@@ -83,7 +90,8 @@
 		<br />
 	    
 	    
-	   	<h:commandButton value="Добави"
+	   	<h:commandButton value="Добави" class="regButton"
+							style="width:80px;height:40px;margin-left:80px;margin-top: 20px;"
 	   		 action="#{dobavqneNaAvtomobilDebug.writeIt()}"/> &lt;--- добавя се чрез WSDL и SOAP затова може да се забави
 	    <br />
 	    
