@@ -17,7 +17,7 @@ public class SparePartForClientOrder  implements Serializable {
 	private ClientOrderPart clPart;
 	private double quantityAvailable;
 	private double fullPrice;
-	private double quantityReserved;
+	private double quantityReserved = 0;
 	private double quantityUsed = 0;
 	private boolean editing;
 	

@@ -22,6 +22,7 @@ import model.EmployeeAutoservice;
 import model.Service;
 import model.SparePart;
 import model.SparePartAutoservice;
+import model.SparePartRequest;
 import model.SparePartReserved;
 import model.Vehicle;
 import model.VehicleModelService;
@@ -57,6 +58,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	private String searchStatus;
 	private String searchAutoservice;
 	private boolean flagReadIt = true;
+	private double dOldQuantityUsedPart = 0;
 	
 	private Stack<InterPageDataRequest> dataRequestStack;
 	
@@ -68,7 +70,8 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	
 	@PostConstruct
 	public void init() {
-dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
+		
+		dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("dataRequestStack");
 		
 		if (dataRequestStack != null) {
 			dataRequest = dataRequestStack.peek();
@@ -121,8 +124,6 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 		readList();
 	}
 	
-	
-
 	public boolean addSeviceForClientOrder(Service service, String whoPay)
 	{
 		ClientOrderService clService = new ClientOrderService();
@@ -267,12 +268,56 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 							if(status.equals("блокирана") )
 								poru4ka.setStatus(ClientOrder.BLOCKED);
 	}
+	
 	public void finishedOrder( boolean bDone)
 	{
+		if( isInAutoservice() )
+		{
+			errorMessage = "Автомобилът трябва да бъде изписан за да се приключи поръчка!";
+			return;
+		}
+		
 		if( bDone )
 			poru4ka.setStatus(ClientOrder.PAYED);
 		else
-			poru4ka.setStatus(ClientOrder.BLOCKED);
+		{
+			
+			for (ServiceForClientOrder clSer : spisukUslugi) {
+				clSer.getClService().setStatus(ClientOrderService.STATUS_REMOVED);
+			}
+			
+
+			for (SparePartForClientOrder clSp : spisukRezervni4asti) 
+			{
+				clSp.getClPart().setStatus(ClientOrderService.STATUS_REMOVED);
+				
+				List<SparePartAutoservice> listSpPartAuto = SparePartAutoservice.queryGetBySparePartID(
+						clSp.getClPart().getSparePartID(), 0, 1, currEmployee.getAutoserviceID());
+				
+				List<SparePartReserved> listSpPartRes = SparePartReserved.queryGetBySparePart(
+						clSp.getClPart().getSparePartID(), 0, 1, poru4ka.getID());
+				
+				if(listSpPartAuto.size() == 1 && listSpPartRes.size() == 1)
+				{
+					listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() - clSp.getQuantityReserved());
+					
+					if(clSp.getClPart().getQuantity() - clSp.getQuantityReserved() != 0)
+					{
+						listSpPartAuto.get(0).setQuantityRequested(listSpPartAuto.get(0).getQuantityRequested() +
+							clSp.getClPart().getQuantity() - clSp.getQuantityReserved());
+						
+						List<SparePartRequest> listSpPartReq = SparePartRequest.queryGetBySparePart(
+								clSp.getClPart().getSparePartID(), 0, 1, poru4ka.getID());
+						
+						if( listSpPartReq.size() == 1 )
+							listSpPartReq.get(0).setQuantity(listSpPartReq.get(0).getQuantity() +
+									clSp.getClPart().getQuantity() - clSp.getQuantityReserved());
+					}
+				}
+			
+				poru4ka.setStatus(ClientOrder.BLOCKED);
+			}
+		}
 	}
 
 	public String getPaymentNumber() {
@@ -415,11 +460,11 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 	
  	public void deleteUsluga(ServiceForClientOrder clService)
 	{
-		// // TODO: триене от БД
  		// ако не е извършена!
 		if(clService.getClService().getEmployee() != null)
 			return;
 		
+		clService.getClService().setStatus(ClientOrderService.STATUS_REMOVED);
 		clientOrderPrice -= clService.getFullPrice();
 		spisukUslugi.remove(clService);
 	}
@@ -442,21 +487,26 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 	}
 	
 	public void toggleEditSparePartForClientOrder(SparePartForClientOrder spForClO) {
-		
-		// TODO: Редактирай – колона с бутони редактирай която прави полето нужно количество възможно за редакция. 
-		// Не може нужно количество да стане по малко от вложеното количество до момента.
-
+	
 		if(spForClO.getClPart().getQuantity() < spForClO.getQuantityUsed())
 		{
-			errorMessage = "Нужното количество от резервната чaст трябва да е по-голямо или равно на " + spForClO.getQuantityUsed();
+			if(currEmployee.getPositionString().equals(EmployeeAutoservice.CASHIER))
+				errorMessage = "Нужното количество от резервната чaст трябва да е по-голямо или равно на вложеното - " + spForClO.getQuantityUsed();
+			
+			if(currEmployee.getPositionString().equals(EmployeeAutoservice.WAREHOUSEMAN))
+				errorMessage = "Нужното количество от резервната чaст трябва да е по-малко или равно на нужното за поръчката - " + spForClO.getClPart().getQuantity();
+				
 			return;
 		}
-		
-		if(spForClO.getQuantityUsed() > spForClO.getClPart().getQuantity())
+		if(spForClO.isEditing())
 		{
-			errorMessage = "Нужното количество от резервната чст трябва да е по-голямо или равно на " + spForClO.getQuantityUsed();
-			return;
+			dOldQuantityUsedPart = spForClO.getQuantityUsed();
 		}
+		else
+			if( dOldQuantityUsedPart > spForClO.getQuantityUsed())
+			{
+				errorMessage = "Вече е вложено количество " + dOldQuantityUsedPart;
+			}
 		
 		spForClO.toggleEditing();
 		checkMissingSpPart(spForClO);
@@ -482,7 +532,41 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 	public void deleteSparePart(SparePartForClientOrder sPart)
 	{
 		//ако количество от рез част е вложено тя не може да се изтрие!
-		// TODO: триене от БД
+		List<SparePartReserved> listSpPartReserved = SparePartReserved.queryGetBySparePart(
+				sPart.getClPart().getSparePartID(), 0, 1, poru4ka.getID());
+		if(listSpPartReserved.get(0).getUsed() != 0)
+		{
+			errorMessage = "Не може да се премахне вече вложена резервна част!";
+			return;
+		}
+		
+		sPart.getClPart().setStatus(ClientOrderService.STATUS_REMOVED);
+			
+		List<SparePartAutoservice> listSpPartAuto = SparePartAutoservice.queryGetBySparePartID(
+			sPart.getClPart().getSparePartID(), 0, 1, currEmployee.getAutoserviceID());
+			
+		List<SparePartReserved> listSpPartRes = SparePartReserved.queryGetBySparePart(
+			sPart.getClPart().getSparePartID(), 0, 1, poru4ka.getID());
+			
+		if(listSpPartAuto.size() == 1 && listSpPartRes.size() == 1)
+		{
+			listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() - sPart.getQuantityReserved());
+				
+			if(sPart.getClPart().getQuantity() - sPart.getQuantityReserved() != 0)
+			{
+				listSpPartAuto.get(0).setQuantityRequested(listSpPartAuto.get(0).getQuantityRequested() +
+						sPart.getClPart().getQuantity() - sPart.getQuantityReserved());
+					
+				List<SparePartRequest> listSpPartReq = SparePartRequest.queryGetBySparePart(
+						sPart.getClPart().getSparePartID(), 0, 1, poru4ka.getID());
+					
+				if( listSpPartReq.size() == 1 )
+					listSpPartReq.get(0).setQuantity(listSpPartReq.get(0).getQuantity() +
+							sPart.getClPart().getQuantity() - sPart.getQuantityReserved());
+			}
+		}
+		
+		
 		clientOrderPrice -= sPart.getFullPrice();
 		spisukRezervni4asti.remove(sPart); 	
 	}
@@ -540,7 +624,8 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 
 	private void readList() {
 		if (flagReadIt) {
-		//TODO: За автосервиза
+			// TODO: при търсене да се ползва автосервиза от търсенето
+			// сега се използва автосервиза на служителя
 		spisukPoru4ki = ClientOrder.queryGetAll(page * ConfigurationProperties.getPageSize(), 
 				ConfigurationProperties.getPageSize(), currEmployee.getAutoserviceID());
 		poru4ka = new ClientOrder();
@@ -577,8 +662,8 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 		cleanData();
 		poru4ka = order;	
 			
-		List <ClientOrderService> spisukClOrderService = ClientOrderService.queryGetAll(0, 
-			ClientOrderService.countGetAll(poru4ka.getID()), poru4ka.getID());
+		List <ClientOrderService> spisukClOrderService = ClientOrderService.queryGetByStatus(ClientOrderService.STATUS_NORMAL, 0, 
+			ClientOrderService.countGetByStatus(poru4ka.getID(), ClientOrderService.STATUS_NORMAL), poru4ka.getID());
 
 		for (ClientOrderService clOrSer : spisukClOrderService) 
 		{
@@ -593,20 +678,20 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 		}
 		
 		
-		List <ClientOrderPart> spisukClOrderPart = ClientOrderPart.queryGetAll(0, 
-			ClientOrderPart.countGetAll(poru4ka.getID()), poru4ka.getID());
+		List <ClientOrderPart> spisukClOrderPart = ClientOrderPart.queryGetByStatus(ClientOrderPart.STATUS_NORMAL, 0, 
+			ClientOrderPart.countGetByStatus(poru4ka.getID(), ClientOrderPart.STATUS_NORMAL), poru4ka.getID());
 
-		for (ClientOrderPart clOrSer : spisukClOrderPart) 
+		for (ClientOrderPart clOrPart : spisukClOrderPart) 
 		{
 			SparePartForClientOrder partClientOrder = new SparePartForClientOrder();
-			partClientOrder.setClPart(clOrSer);
+			partClientOrder.setClPart(clOrPart);
 			
-			List <SparePartAutoservice> listAutosevicePart = SparePartAutoservice.queryGetBySparePartID(clOrSer.getSparePartID(), 0, 1, currEmployee.getAutoserviceID());
+			List <SparePartAutoservice> listAutosevicePart = SparePartAutoservice.queryGetBySparePartID(clOrPart.getSparePartID(), 0, 1, currEmployee.getAutoserviceID());
 			partClientOrder.setQuantityAvailable(listAutosevicePart.get(0).getQuantityAvailable());
 			partClientOrder.recalculateFullPrice();
 			
 	
-			List <SparePartReserved> listSpPartRes = SparePartReserved.queryGetBySparePart(clOrSer.getSparePartID(), 0, 1, poru4ka.getID());
+			List <SparePartReserved> listSpPartRes = SparePartReserved.queryGetBySparePart(clOrPart.getSparePartID(), 0, 1, poru4ka.getID());
 		
 			if(listSpPartRes.size() == 1)
 			{
@@ -669,12 +754,6 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 	
 	public String saveOrder()
 	{	
-		//	Запази – актуализиране на запис в таблица Client_Order. 
-		// Актуализиране на записи в таблиците Client_Order_Part и/или Client_Order_Service.
-		// Актуализиране на записите в Spare_Part_Available (намали нужното количество от съответната част с 
-		// количеството нужно за изпълнение на поръчката. Внимание: Не трябва да остава отрицателно количество от частта!) 
-		// Spare_Part_Reserved и Spare_Part_Request (ако няма наличното количество).
-
 		if (!isChangingAllowed()) {
 			errorMessage = "Нямате права за актуализирането на данните!";
 			return null;
@@ -692,8 +771,8 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 		else
 			poru4ka.setVehiclePresent(ClientOrder.VEHICLE_NOT_PRESENTS);
 			
-		int doneService = isServiceDone();
-		int usedPart = isUsedSparePart();
+		int doneService = howManyServiceDone();
+		int usedPart = howManySparePartUsed();
 		
 		if(poru4ka.getStatus() != ClientOrder.BLOCKED && poru4ka.getStatus() != ClientOrder.PAYED)
 		{
@@ -719,49 +798,170 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 			 
 		// TODO: транзакция
 		for (ServiceForClientOrder clSer : spisukUslugi) {
+			if(clSer.getClService().getClientOrder() == null )
+			{
+				clSer.getClService().setStatus(ClientOrderService.STATUS_NORMAL);
+				clSer.getClService().setClientOrderID(poru4ka.getID());
+			}
 			clSer.getClService().writeToDB();
 		}
 		
-		//TODO:
 		for (SparePartForClientOrder clSp : spisukRezervni4asti) {
+			boolean newSpPart = false;
+			if(clSp.getClPart().getClientOrder() == null )
+			{
+				clSp.getClPart().setClientOrderID(poru4ka.getID());
+				clSp.getClPart().setStatus(ClientOrderPart.STATUS_NORMAL);
+				newSpPart = true;
+			}
+			
+			List<ClientOrderPart> listOldClOrderPart = ClientOrderPart.queryGetBySparePartID(
+					clSp.getClPart().getSparePartID(), 0, 1, poru4ka.getID());
+			
 			clSp.getClPart().writeToDB();
 					
 			List<SparePartAutoservice> listSpPartAuto = SparePartAutoservice.queryGetBySparePartID(
 					clSp.getClPart().getSparePartID(), 0, 1, currEmployee.getAutoserviceID());
 					
-			if(listSpPartAuto.size() != 1)
+			if(listSpPartAuto.size() != 1 || listOldClOrderPart.size()  != 1)
 			{
 				errorMessage = "Грешно зададена резервна част!";
 				return null;
 			}
 					
-//			if ( clSp.getQuantityAvailable() >= clSp.getClPart().getQuantity() )
-//			{
-//				listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() + 
-//						clSp.getClPart().getQuantity());
-//				listSpPartAuto.get(0).setQuantityAvailable(listSpPartAuto.get(0).getQuantityAvailable() - 
-//						clSp.getClPart().getQuantity());
-//			}
-//			else
-//			{
-//				listSpPartAuto.get(0).setQuantityRequested(listSpPartAuto.get(0).getQuantityRequested() + 
-//						clSp.getClPart().getQuantity() - listSpPartAuto.get(0).getQuantityAvailable());
-//						
-//				listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() + 
-//						listSpPartAuto.get(0).getQuantityAvailable());
-//						
-//				listSpPartAuto.get(0).setQuantityAvailable(0);
-//			}
-//					
-//			listSpPartAuto.get(0).writeToDB();
-//					
-//			SparePartReserved spPartReserved = new SparePartReserved();
-//			spPartReserved.setClientOrderID(poru4ka.getID());
-//			spPartReserved.setSparePartID(clSp.getClPart().getID());
-//			spPartReserved.setQuantity(clSp.getClPart().getQuantity());
-//			spPartReserved.setUsed(0);
-//			spPartReserved.writeToDB();
+			if( newSpPart )
+			{
+				SparePartReserved spPartReserved = new SparePartReserved();
+				spPartReserved.setClientOrderID(poru4ka.getID());
+				spPartReserved.setSparePartID(clSp.getClPart().getID());
+			
+				if ( clSp.getQuantityAvailable() >= clSp.getClPart().getQuantity() )
+				{
+					listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() + 
+						clSp.getClPart().getQuantity());
 				
+					listSpPartAuto.get(0).setQuantityAvailable(listSpPartAuto.get(0).getQuantityAvailable() - 
+						clSp.getClPart().getQuantity());
+				
+					spPartReserved.setQuantity(clSp.getClPart().getQuantity());
+				}
+				else
+				{
+					SparePartRequest spPartRequest = new SparePartRequest();
+					spPartRequest.setAutoserviceID(currEmployee.getAutoserviceID());
+					spPartRequest.setClientOrderID(poru4ka.getID());
+					spPartRequest.setSparePartID(clSp.getClPart().getID());
+					spPartRequest.setQuantity(clSp.getClPart().getQuantity() - listSpPartAuto.get(0).getQuantityAvailable());
+					spPartRequest.setQuantityDelivered(0);
+					spPartRequest.setStatus(SparePartRequest.NEW);
+					spPartRequest.writeToDB();
+				
+					listSpPartAuto.get(0).setQuantityRequested(listSpPartAuto.get(0).getQuantityRequested() + 
+						clSp.getClPart().getQuantity() - listSpPartAuto.get(0).getQuantityAvailable());
+				
+					listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() + 
+						listSpPartAuto.get(0).getQuantityAvailable());
+				
+					spPartReserved.setQuantity(listSpPartAuto.get(0).getQuantityAvailable());
+				
+					listSpPartAuto.get(0).setQuantityAvailable(0);
+				
+				}
+			
+				listSpPartAuto.get(0).writeToDB();
+			
+			
+				spPartReserved.setUsed(0);
+				spPartReserved.writeToDB();
+			}
+			else
+			{
+				List<SparePartReserved> listSpPartReserved = SparePartReserved.queryGetBySparePart(
+						clSp.getClPart().getSparePartID(), 0, 1, poru4ka.getID());
+				
+				// TODO: ако е променено исканото количество
+				if(listOldClOrderPart.get(0).getQuantity() != clSp.getClPart().getQuantity())
+				{
+					
+					if(listSpPartReserved.size() != 1)
+					{
+						errorMessage = "Грешно зададена резервна част!";
+						return null;
+					}
+			
+					// ако са нужни повече части от предварително заявените
+					if(listOldClOrderPart.get(0).getQuantity() < clSp.getClPart().getQuantity())
+					{
+						double dSpPartMore = clSp.getClPart().getQuantity() - listOldClOrderPart.get(0).getQuantity();
+						
+						if ( clSp.getQuantityAvailable() >= dSpPartMore )
+						{
+							listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() + 
+									dSpPartMore);
+				
+							listSpPartAuto.get(0).setQuantityAvailable(listSpPartAuto.get(0).getQuantityAvailable() - 
+									dSpPartMore);
+				
+							listSpPartReserved.get(0).setQuantity(clSp.getClPart().getQuantity());
+							
+						}
+						else
+						{
+							
+							List<SparePartRequest> listSpPartRequest = SparePartRequest.queryGetBySparePart(
+									clSp.getClPart().getSparePartID(), 0, 1, poru4ka.getID());
+							if(listSpPartRequest.size() != 1)
+							{
+								errorMessage = "Грешно зададена резервна част!";
+								return null;
+							}
+							
+							listSpPartRequest.get(0).setQuantity(listSpPartRequest.get(0).getQuantity() + dSpPartMore - listSpPartAuto.get(0).getQuantityAvailable());
+							listSpPartRequest.get(0).writeToDB();
+				
+							listSpPartAuto.get(0).setQuantityRequested(listSpPartAuto.get(0).getQuantityRequested() + 
+									dSpPartMore - listSpPartAuto.get(0).getQuantityAvailable());
+				
+							listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() + 
+									listSpPartAuto.get(0).getQuantityAvailable());
+				
+							listSpPartReserved.get(0).setQuantity(listSpPartAuto.get(0).getQuantityAvailable());
+				
+							listSpPartAuto.get(0).setQuantityAvailable(0);		
+						}
+					}
+					//ако са нужни по-малко части от предварително заявените
+					else
+					{
+						double dSpPartLess = listOldClOrderPart.get(0).getQuantity() - clSp.getClPart().getQuantity();
+						
+						listSpPartAuto.get(0).setQuantityReserved(listSpPartAuto.get(0).getQuantityReserved() - dSpPartLess);
+			
+						listSpPartAuto.get(0).setQuantityAvailable(listSpPartAuto.get(0).getQuantityAvailable() + dSpPartLess);
+			
+						listSpPartReserved.get(0).setQuantity(clSp.getClPart().getQuantity());
+						
+						List<SparePartRequest> listSpPartRequest = SparePartRequest.queryGetBySparePart(
+								clSp.getClPart().getSparePartID(), 0, 1, poru4ka.getID());
+						if(listSpPartRequest.size() == 1)
+						{
+							listSpPartRequest.get(0).setQuantity(listSpPartRequest.get(0).getQuantity() - dSpPartLess);
+							listSpPartRequest.get(0).writeToDB();
+						}
+		
+					
+					}			
+				}
+				
+				// TODO: ако е променено вложеното количество
+				if( clSp.getQuantityUsed() > listSpPartReserved.get(0).getUsed() )
+				{
+					listSpPartReserved.get(0).setUsed(clSp.getQuantityUsed());
+				}
+			
+				listSpPartReserved.get(0).writeToDB();
+				listSpPartAuto.get(0).writeToDB();
+			}	
 		}
 				
 		// clean the data
@@ -776,7 +976,7 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 		return null;
 	}
 	
-	private int isServiceDone()
+	public int howManyServiceDone()
 	{
 		// брой извършени услуги
 		int iServiceDone = 0; 
@@ -788,7 +988,7 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 		return iServiceDone;
 	}
 	
-	private int isUsedSparePart()
+	public int howManySparePartUsed()
 	{
 		// брой резервни части чието количество е напълно вложено в поръчката
 		int iUsedPart = 0; 
@@ -799,7 +999,7 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 		return iUsedPart;
 		
 	}
-	
+
 	private void cleanData(){
 		
 		poru4ka = new ClientOrder();
@@ -809,6 +1009,7 @@ dataRequestStack = (Stack<InterPageDataRequest>)FacesContext.getCurrentInstance(
 		clientOrderPrice = 0;
 		setInAutoservice(false);
 		flagReadIt = true;
+		dOldQuantityUsedPart = 0;
 	}
 	
 }
