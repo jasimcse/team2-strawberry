@@ -9,96 +9,120 @@
 <ui:composition template="/common/template.xhtml">
 
 	<ui:define name="headSection">
-		
+
 	</ui:define>
 
 	<ui:define name="pageContent">
 		<h:form>
-			<h:outputLabel value="Наименование*">
-				<h:inputText id="name" value="#{dobavqneNaZastrahovatel.name}" maxlength="100"
-					required="true" requiredMessage="задължително поле!" />
-				<h:message for="name" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Лице за контакт*">
-				<h:inputText id="contactPerson" value="#{dobavqneNaZastrahovatel.contactPerson}"
-					maxlength="100" required="true" requiredMessage="задължително поле!" />
-				<h:message for="contactPerson" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Населено място*">
-				<h:inputText id="city" value="#{dobavqneNaZastrahovatel.addressCity}" maxlength="30"
-					required="true" requiredMessage="задължително поле!" />
-				<h:message for="city" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Адрес*">
-				<h:inputText id="address" value="#{dobavqneNaZastrahovatel.addressLine}" maxlength="100"
-					required="true" requiredMessage="задължително поле!" />
-				<h:message for="address" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Електронна поща*">
-				<h:inputText id="mail" value="#{dobavqneNaZastrahovatel.mail}" maxlength="50"
-					required="true" requiredMessage="задължително поле!" 
-	    			validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
-	    			<f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$"/>
-	    		</h:inputText>
-				<h:message for="mail" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Телефонен номер*">
-				<h:inputText id="phone" value="#{dobavqneNaZastrahovatel.phoneNumber}" maxlength="15"
-					required="true" requiredMessage="задължително поле!" 
-		    		validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
-		    		<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)"/>
-		    	</h:inputText>
-				<h:message for="phone" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Номер на банковата сметка*">
-				<h:inputText id="IBANNumber" value="#{dobavqneNaZastrahovatel.IBANNumber}" maxlength="30"
-					required="true" requiredMessage="задължително поле!" 
-					validatorMessage="Позволени символи за номер на сметка са главни латински букви и цифри.">
-					<f:validateRegex pattern="^[A-Z0-9]+$"/>
-				</h:inputText>
-				<h:message for="IBANNumber" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Банков код*">
-				<h:inputText id="SWIFT" value="#{dobavqneNaZastrahovatel.SWIFTCode}" maxlength="20"
-					required="true" requiredMessage="задължително поле!"
-					validatorMessage="Позволени символи за банков код са главни латински букви и цифри.">
-					<f:validateRegex pattern="^[A-Z0-9]+$"/>
-				</h:inputText>
-				<h:message for="SWIFT" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Единен идентификационен код (ЕИК)*">
-				<h:inputText id="regnumber" value="#{dobavqneNaZastrahovatel.registrationNumber}"
-					maxlength="9" required="true" requiredMessage="задължително поле!" 
-					validatorMessage="ЕИК трябва да се състои от точно 9 цифри.">
-					<f:validateRegex pattern="^[0-9]{9}$"/>
-				</h:inputText>
-				<h:message for="regnumber" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="ДДС номер">
-				<h:inputText id="vat" value="#{dobavqneNaZastrahovatel.VATNumber}"
-					maxlength="11" required="false"
-					validatorMessage="ДДС номерът се състои от 11 символа - главни латински букви и цифри.">
-					<f:validateRegex pattern="^[A-Z0-9]{11}$"/>
-				</h:inputText>
-				<h:message for="vat" />
-			</h:outputLabel>
-			<br />
-
-			<h:commandButton value="Добави" action="#{dobavqneNaZastrahovatel.writeIt()}"/> 
-	    	<br />
-			<h:outputText value="#{dobavqneNaZastrahovatel.errorMessage}"/>
+			<table class="mainTable">
+				<tr>
+					<td><h:outputLabel value="Наименование*">
+							<br />
+							<h:inputText id="name" value="#{dobavqneNaZastrahovatel.name}"
+								maxlength="100" required="true"
+								requiredMessage="задължително поле!" />
+							<h:message for="name" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Лице за контакт*">
+							<br />
+							<h:inputText id="contactPerson"
+								value="#{dobavqneNaZastrahovatel.contactPerson}" maxlength="100"
+								required="true" requiredMessage="задължително поле!" />
+							<h:message for="contactPerson" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Населено място*">
+							<br />
+							<h:inputText id="city"
+								value="#{dobavqneNaZastrahovatel.addressCity}" maxlength="30"
+								required="true" requiredMessage="задължително поле!" />
+							<h:message for="city" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Адрес*">
+							<br />
+							<h:inputText id="address"
+								value="#{dobavqneNaZastrahovatel.addressLine}" maxlength="100"
+								required="true" requiredMessage="задължително поле!" />
+							<h:message for="address" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Електронна поща*">
+							<br />
+							<h:inputText id="mail" value="#{dobavqneNaZastrahovatel.mail}"
+								maxlength="50" required="true"
+								requiredMessage="задължително поле!"
+								validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
+								<f:validateRegex
+									pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$" />
+							</h:inputText>
+							<h:message for="mail" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Телефонен номер*">
+							<br />
+							<h:inputText id="phone"
+								value="#{dobavqneNaZastrahovatel.phoneNumber}" maxlength="15"
+								required="true" requiredMessage="задължително поле!"
+								validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
+								<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)" />
+							</h:inputText>
+							<h:message for="phone" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Номер на банковата сметка*">
+							<br />
+							<h:inputText id="IBANNumber"
+								value="#{dobavqneNaZastrahovatel.IBANNumber}" maxlength="30"
+								required="true" requiredMessage="задължително поле!"
+								validatorMessage="Позволени символи за номер на сметка са главни латински букви и цифри.">
+								<f:validateRegex pattern="^[A-Z0-9]+$" />
+							</h:inputText>
+							<h:message for="IBANNumber" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Банков код*">
+							<br />
+							<h:inputText id="SWIFT"
+								value="#{dobavqneNaZastrahovatel.SWIFTCode}" maxlength="20"
+								required="true" requiredMessage="задължително поле!"
+								validatorMessage="Позволени символи за банков код са главни латински букви и цифри.">
+								<f:validateRegex pattern="^[A-Z0-9]+$" />
+							</h:inputText>
+							<h:message for="SWIFT" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="ДДС номер">
+							<br />
+							<h:inputText id="vat"
+								value="#{dobavqneNaZastrahovatel.VATNumber}" maxlength="11"
+								required="false"
+								validatorMessage="ДДС номерът се състои от 11 символа - главни латински букви и цифри.">
+								<f:validateRegex pattern="^[A-Z0-9]{11}$" />
+							</h:inputText>
+							<h:message for="vat" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td colspan="2"><h:outputLabel
+							value="Единен идентификационен код (ЕИК)*">
+							<br />
+							<h:inputText id="regnumber"
+								value="#{dobavqneNaZastrahovatel.registrationNumber}"
+								maxlength="9" required="true"
+								requiredMessage="задължително поле!"
+								validatorMessage="ЕИК трябва да се състои от точно 9 цифри.">
+								<f:validateRegex pattern="^[0-9]{9}$" />
+							</h:inputText>
+							<br />
+							<h:message for="regnumber" />
+						</h:outputLabel></td>
+					<td><h:commandButton value="Добави" class="regButton"
+							style="width:80px;height:40px;margin-left:80px;margin-top: 20px;"
+							action="#{dobavqneNaZastrahovatel.writeIt()}" /> <br /> <h:outputText
+							value="#{dobavqneNaZastrahovatel.errorMessage}" /></td>
+				</tr>
+			</table>
 		</h:form>
-	    
+
 	</ui:define>
-	
+
 </ui:composition>
 </html>
