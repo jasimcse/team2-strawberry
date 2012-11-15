@@ -9,194 +9,224 @@
 <ui:composition template="/common/template.xhtml">
 
 	<ui:define name="headSection">
-		
+
 	</ui:define>
 
 	<ui:define name="pageContent">
-	
+
 		<h:form>
 			<h:panelGroup>
-			<div>
-				<h:outputLabel value="Име">
-					<h:inputText value="#{aktualiziraneNaSlujitel.searchName}" maxlength="50" />
-				</h:outputLabel>
-				</div>
-				<div>
-				<h:outputLabel value="Фамилия">
-					<h:inputText value="#{aktualiziraneNaSlujitel.searchFamily}" maxlength="50" />
-				</h:outputLabel>
-				</div>
-				<br />
-				<span id="tyrsiIz4isti">
-				<h:commandButton value="Търси" action="#{aktualiziraneNaSlujitel.searchIt()}" />
-				<h:commandButton value="Изчисти" action="#{aktualiziraneNaSlujitel.resetSearch()}" />
-				</span>
+				<table class="mainTable" style="margin-bottom: 10px;">
+					<tr>
+						<td><h:outputLabel value="Име">
+								<br />
+								<h:inputText value="#{aktualiziraneNaSlujitel.searchName}"
+									maxlength="50" />
+							</h:outputLabel></td>
+						<td><h:outputLabel value="Фамилия">
+								<br />
+								<h:inputText value="#{aktualiziraneNaSlujitel.searchFamily}"
+									maxlength="50" />
+							</h:outputLabel></td>
+						<td>
+							<table class="buttonTable">
+								<tr>
+									<td><h:commandButton value="Търси" class="regButton"
+											style="width:80px;height:40px;margin-left:-55px;margin-top: 20px;"
+											action="#{aktualiziraneNaSlujitel.searchIt()}" /> <h:commandButton
+											value="Изчисти" class="regButton"
+											style="width:80px;height:40px;"
+											action="#{aktualiziraneNaSlujitel.resetSearch()}" /></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
 			</h:panelGroup>
 		</h:form>
-	
-		<div id="scroolTable"> <!-- scroll bar -->
-		<h:form>
-			
-			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
-			<h:dataTable
-				rows="#{configurationProperties.getPageSize()}"
-				value="#{aktualiziraneNaSlujitel.spisukSlujiteli}"
-			    first="0"
-			    var="curr"
-			    rowClasses="#{aktualiziraneNaSlujitel.rowStyleClasses}">
-				
-				<h:column>
-					<f:facet name="header">Име</f:facet>
+
+		<div id="scroolTable">
+			<!-- scroll bar -->
+			<h:form>
+
+				<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+				<h:dataTable rows="#{configurationProperties.getPageSize()}"
+					value="#{aktualiziraneNaSlujitel.spisukSlujiteli}" first="0"
+					var="curr" rowClasses="#{aktualiziraneNaSlujitel.rowStyleClasses}">
+
+					<h:column>
+						<f:facet name="header">Име</f:facet>
 					#{curr.name}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Фамилия</f:facet>
+
+					<h:column>
+						<f:facet name="header">Фамилия</f:facet>
 					#{curr.family}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Населено място</f:facet>
+
+					<h:column>
+						<f:facet name="header">Населено място</f:facet>
 					#{curr.addressCity}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Адрес</f:facet>
+
+					<h:column>
+						<f:facet name="header">Адрес</f:facet>
 					#{curr.addressLine}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Електронна поща</f:facet>
+
+					<h:column>
+						<f:facet name="header">Електронна поща</f:facet>
 					#{curr.mail}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Телефонен номер</f:facet>
+
+					<h:column>
+						<f:facet name="header">Телефонен номер</f:facet>
 					#{curr.phoneNumber}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Промени</f:facet>
-					<h:commandButton action="#{aktualiziraneNaSlujitel.selectRow(curr)}" value="Промени" />
-				</h:column>
-				
-				<h:column rendered="#{aktualiziraneNaSlujitel.choosingAllowed}">
-					<f:facet name="header">Избери</f:facet>
-					<h:commandLink action="#{aktualiziraneNaSlujitel.chooseEmployee(curr)}" value="Избери" />
-				</h:column>
-				
-				<f:facet name="footer">
-				
-					<!-- предишна страница -->
-					<h:commandLink disabled="#{aktualiziraneNaSlujitel.page - 1 lt 0}"
-						action="#{aktualiziraneNaSlujitel.setPage(aktualiziraneNaSlujitel.page - 1)}"
-						value="&lt;&lt;" />
-						
-					<h:outputText value=" " />
-						
-					<!-- други страници -->
-					<ui:repeat value="#{aktualiziraneNaSlujitel.pagesList}" var="currPage">
+
+					<h:column>
+						<f:facet name="header">Промени</f:facet>
+						<h:commandButton
+							action="#{aktualiziraneNaSlujitel.selectRow(curr)}"
+							value="Промени" />
+					</h:column>
+
+					<h:column rendered="#{aktualiziraneNaSlujitel.choosingAllowed}">
+						<f:facet name="header">Избери</f:facet>
 						<h:commandLink
-							disabled="#{aktualiziraneNaSlujitel.getPage() eq currPage.intValue() - 1}"
-							action="#{aktualiziraneNaSlujitel.setPage(currPage.intValue() - 1)}"
-							value="#{currPage}" />
-							
+							action="#{aktualiziraneNaSlujitel.chooseEmployee(curr)}"
+							value="Избери" />
+					</h:column>
+
+					<f:facet name="footer">
+
+						<!-- предишна страница -->
+						<h:commandLink disabled="#{aktualiziraneNaSlujitel.page - 1 lt 0}"
+							action="#{aktualiziraneNaSlujitel.setPage(aktualiziraneNaSlujitel.page - 1)}"
+							value="&lt;&lt;" />
+
 						<h:outputText value=" " />
-					</ui:repeat>
-					
-					<!-- следваща страница -->
-					<h:commandLink disabled="#{aktualiziraneNaSlujitel.page + 1 ge aktualiziraneNaSlujitel.pagesCount}"
-						action="#{aktualiziraneNaSlujitel.setPage(aktualiziraneNaSlujitel.page + 1)}"
-						value="&gt;&gt;" />
-							
-				</f:facet>
-				 
-			</h:dataTable>
+
+						<!-- други страници -->
+						<ui:repeat value="#{aktualiziraneNaSlujitel.pagesList}"
+							var="currPage">
+							<h:commandLink
+								disabled="#{aktualiziraneNaSlujitel.getPage() eq currPage.intValue() - 1}"
+								action="#{aktualiziraneNaSlujitel.setPage(currPage.intValue() - 1)}"
+								value="#{currPage}" />
+
+							<h:outputText value=" " />
+						</ui:repeat>
+
+						<!-- следваща страница -->
+						<h:commandLink
+							disabled="#{aktualiziraneNaSlujitel.page + 1 ge aktualiziraneNaSlujitel.pagesCount}"
+							action="#{aktualiziraneNaSlujitel.setPage(aktualiziraneNaSlujitel.page + 1)}"
+							value="&gt;&gt;" />
+
+					</f:facet>
+
+				</h:dataTable>
 			</h:form>
-			</div>
-			
-			<h:form>
-		<div id="AktualiziraneNaSlujitel">
-		<div>
-			<h:outputLabel value="Име*">
-				<h:inputText id="name" value="#{aktualiziraneNaSlujitel.name}" maxlength="50"
-					required="true" requiredMessage="задължително поле!" 
-					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
-				<h:message for="name" />
-			</h:outputLabel>
-			</div>
-			<div>
-			<h:outputLabel value="Фамилия*">
-				<h:inputText id="family" value="#{aktualiziraneNaSlujitel.family}" maxlength="50"
-					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
-				<h:message for="family" />
-			</h:outputLabel>
-			</div>
-			<div>
-			<h:outputLabel value="Град*">
-				<h:inputText id="city" value="#{aktualiziraneNaSlujitel.addressCity}" maxlength="30"
-					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
-				<h:message for="city" />
-			</h:outputLabel>
-			</div>
-			<div>
-			<h:outputLabel value="Адрес*">
-				<h:inputText id="address" value="#{aktualiziraneNaSlujitel.addressLine}" maxlength="100"
-					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
-				<h:message for="address" />
-			</h:outputLabel>
-			</div>
-			<div>
-			<h:outputLabel value="Електронна поща*">
-				<h:inputText id="mail" value="#{aktualiziraneNaSlujitel.mail}" maxlength="15"
-					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaSlujitel.rowSelected}"
-	    			validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
-	    			<f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$"/>
-	    		</h:inputText>
-				<h:message for="mail" />
-			</h:outputLabel>
-			</div>
-			<div>
-			<h:outputLabel value="Телефонен номер*">
-				<h:inputText id="phone" value="#{aktualiziraneNaSlujitel.phoneNumber}" maxlength="50"
-					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaSlujitel.rowSelected}"
-	    			validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
-	    			<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)"/>
-	    		</h:inputText>
-				<h:message for="phone" />
-			</h:outputLabel>
-			</div>
-			
-			<!-- бутонът промени трябва да е в тази форма !!! -->
-			<div>
-			<h:commandButton action="#{aktualiziraneNaSlujitel.writeIt()}" value="Промени"
-				disabled="#{!aktualiziraneNaSlujitel.rowSelected or !aktualiziraneNaSlujitel.changingAllowed}" />
-			</div>
-			
-			</div>
-			
-			</h:form>
-			
-			<h:form>
-			<!-- формата е разделена на две, за да не се проверяват данните
-			при натискането на бутоните "Отмени" и "Добави" -->
-			<div class="PromeniOtmeniDobavi">
-			<h:commandButton action="#{aktualiziraneNaSlujitel.deselectRow()}" value="Отмени"
-				disabled="#{!aktualiziraneNaSlujitel.rowSelected}" />
-				
-			<h:commandButton action="#{aktualiziraneNaSlujitel.goToAdd()}" value="Добави"
-				disabled="#{!aktualiziraneNaSlujitel.goToAddAllowed}" />
-				
-			<h:outputText value="#{aktualiziraneNaSlujitel.errorMessage}"/>
-			</div>
+		</div>
+
+		<h:form>
+			<table class="mainTable" style="margin-left: -20px;">
+				<tr>
+					<td><h:outputLabel value="Име*">
+							<br />
+							<h:inputText id="name" value="#{aktualiziraneNaSlujitel.name}"
+								maxlength="50" required="true"
+								requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
+							<h:message for="name" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Фамилия*">
+							<br />
+							<h:inputText id="family"
+								value="#{aktualiziraneNaSlujitel.family}" maxlength="50"
+								required="true" requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
+							<h:message for="family" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Град*">
+							<br />
+							<h:inputText id="city"
+								value="#{aktualiziraneNaSlujitel.addressCity}" maxlength="30"
+								required="true" requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
+							<h:message for="city" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Адрес*">
+							<br />
+							<h:inputText id="address"
+								value="#{aktualiziraneNaSlujitel.addressLine}" maxlength="100"
+								required="true" requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaSlujitel.rowSelected}" />
+							<h:message for="address" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Електронна поща*">
+							<br />
+							<h:inputText id="mail" value="#{aktualiziraneNaSlujitel.mail}"
+								maxlength="15" required="true"
+								requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaSlujitel.rowSelected}"
+								validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
+								<f:validateRegex
+									pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$" />
+							</h:inputText>
+							<h:message for="mail" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Телефонен номер*">
+							<br />
+							<h:inputText id="phone"
+								value="#{aktualiziraneNaSlujitel.phoneNumber}" maxlength="50"
+								required="true" requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaSlujitel.rowSelected}"
+								validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
+								<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)" />
+							</h:inputText>
+							<h:message for="phone" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+
+					<td colspan="3">
+						<!-- бутонът промени трябва да е в тази форма !!! --> <h:commandButton
+							action="#{aktualiziraneNaSlujitel.writeIt()}" value="Промени"
+							class="regButton"
+							style="width:80px;height:40px;margin-left: 650px;"
+							disabled="#{!aktualiziraneNaSlujitel.rowSelected or !aktualiziraneNaSlujitel.changingAllowed}" />
+					</td>
+				</tr>
+			</table>
+
 		</h:form>
-	    
+
+		<h:form>
+			<table class="buttonTable" style="margin-left: -20px;">
+				<!-- формата е разделена на две, за да не се проверяват данните
+			при натискането на бутоните "Отмени" и "Добави" -->
+				<tr><td></td><td></td>
+					<td><h:commandButton
+							action="#{aktualiziraneNaSlujitel.deselectRow()}" value="Отмени"
+							class="regButton" style="width:80px;height:40px;margin-left:554px;"
+							disabled="#{!aktualiziraneNaSlujitel.rowSelected}" />
+					<h:commandButton
+							action="#{aktualiziraneNaSlujitel.goToAdd()}" value="Добави"
+							class="regButton" style="width:80px;height:40px;"
+							disabled="#{!aktualiziraneNaSlujitel.goToAddAllowed}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText
+							value="#{aktualiziraneNaSlujitel.errorMessage}" /></td>
+				</tr>
+			</table>
+		</h:form>
+
 	</ui:define>
-	
+
 </ui:composition>
 </html>
