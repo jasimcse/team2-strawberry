@@ -9,151 +9,158 @@
 <ui:composition template="/common/template.xhtml">
 
 	<ui:define name="headSection">
-		
+
 	</ui:define>
 
 	<ui:define name="pageContent">
-	
-		 <div id="scroolTable"> <!-- scroll bar --><!-- scroll bar -->
-		<h:form>
-			
-			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
-			<h:dataTable
-				rows="#{configurationProperties.getPageSize()}"
-				value="#{aktualiziraneNaPotrebitel.spisukPotrebiteli}"
-			    first="0"
-			    var="curr"
-			    rowClasses="#{aktualiziraneNaPotribetel.rowStyleClasses}">
-				
-				<h:column>
-					<f:facet name="header">Име</f:facet>
+		<div id="scroolTable">
+			<!-- scroll bar -->
+			<!-- scroll bar -->
+			<h:form>
+				<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+				<h:dataTable rows="#{configurationProperties.getPageSize()}"
+					value="#{aktualiziraneNaPotrebitel.spisukPotrebiteli}" first="0"
+					var="curr"
+					rowClasses="#{aktualiziraneNaPotribetel.rowStyleClasses}">
+					<h:column>
+						<f:facet name="header">Име</f:facet>
 					#{curr.employee.name}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Фамилия</f:facet>
+					<h:column>
+						<f:facet name="header">Фамилия</f:facet>
 					#{curr.employee.family}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Автосервиз</f:facet>
+					<h:column>
+						<f:facet name="header">Автосервиз</f:facet>
 					#{curr.autoservice.name}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Позиция</f:facet>
+					<h:column>
+						<f:facet name="header">Позиция</f:facet>
 					#{curr.position}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Потребителско име</f:facet>
+					<h:column>
+						<f:facet name="header">Потребителско име</f:facet>
 					#{curr.username}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Промени</f:facet>
-					<h:commandButton action="#{aktualiziraneNaPotrebitel.selectRow(curr)}" value="Промени" />
-				</h:column>
-				
-				<f:facet name="footer">
-				
-					<!-- предишна страница -->
-					<h:commandLink disabled="#{aktualiziraneNaPotribetel.page - 1 lt 0}"
-						action="#{aktualiziraneNaPotribetel.setPage(aktualiziraneNaPotribetel.page - 1)}"
-						value="&lt;&lt;" />
-						
-					<h:outputText value=" " />
-						
-					<!-- други страници -->
-					<ui:repeat value="#{aktualiziraneNaPotribetel.pagesList}" var="currPage">
+					<h:column>
+						<f:facet name="header">Промени</f:facet>
+						<h:commandButton
+							action="#{aktualiziraneNaPotrebitel.selectRow(curr)}"
+							value="Промени" />
+					</h:column>
+					<f:facet name="footer">
+						<!-- предишна страница -->
 						<h:commandLink
-							disabled="#{aktualiziraneNaPotribetel.getPage() eq currPage.intValue() - 1}"
-							action="#{aktualiziraneNaPotribetel.setPage(currPage.intValue() - 1)}"
-							value="#{currPage}" />
-							
+							disabled="#{aktualiziraneNaPotribetel.page - 1 lt 0}"
+							action="#{aktualiziraneNaPotribetel.setPage(aktualiziraneNaPotribetel.page - 1)}"
+							value="&lt;&lt;" />
 						<h:outputText value=" " />
-					</ui:repeat>
-					
-					<!-- следваща страница -->
-					<h:commandLink disabled="#{aktualiziraneNaPotribetel.page + 1 ge aktualiziraneNaPotribetel.pagesCount}"
-						action="#{aktualiziraneNaPotribetel.setPage(aktualiziraneNaPotribetel.page + 1)}"
-						value="&gt;&gt;" />
-							
-				</f:facet>
-				 
-			</h:dataTable>
+						<!-- други страници -->
+						<ui:repeat value="#{aktualiziraneNaPotribetel.pagesList}"
+							var="currPage">
+							<h:commandLink
+								disabled="#{aktualiziraneNaPotribetel.getPage() eq currPage.intValue() - 1}"
+								action="#{aktualiziraneNaPotribetel.setPage(currPage.intValue() - 1)}"
+								value="#{currPage}" />
+							<h:outputText value=" " />
+						</ui:repeat>
+						<!-- следваща страница -->
+						<h:commandLink
+							disabled="#{aktualiziraneNaPotribetel.page + 1 ge aktualiziraneNaPotribetel.pagesCount}"
+							action="#{aktualiziraneNaPotribetel.setPage(aktualiziraneNaPotribetel.page + 1)}"
+							value="&gt;&gt;" />
+					</f:facet>
+				</h:dataTable>
 			</h:form>
-			</div>
-			
-			<h:form>
-			<h:outputLabel value="Име">
-				<h:inputText id="name" value="#{aktualiziraneNaPotrebitel.employeeName}"
-					readonly="true" />
-				<h:message for="name" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Фамилия">
-				<h:inputText id="family" value="#{aktualiziraneNaPotrebitel.employeeFamily}"
-					readonly="true" />
-				<h:message for="family" />
-			</h:outputLabel>
-			<br />
-			
-			<h:outputLabel value="Автосервиз">
-				<h:inputText id="autoserviceName" value="#{aktualiziraneNaPotrebitel.autoserviceName}"
-					readonly="true" />
-				<h:message for="autoserviceName" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Потребителско име">
-				<h:inputText id="username" value="#{aktualiziraneNaPotrebitel.username}"
-					readonly="true" />
-				<h:message for="username" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Позиция">
-				<h:selectOneMenu value="#{aktualiziraneNaPotrebitel.position}"
-					disabled="#{!aktualiziraneNaPotrebitel.generateNewPasswordAllowed or !aktualiziraneNaPotrebitel.rowSelected}" >
-					<f:selectItems value="#{aktualiziraneNaPotrebitel.positions}" />
-				</h:selectOneMenu>
-			</h:outputLabel>
-			<h:commandButton action="#{aktualiziraneNaPotrebitel.changePosition()}"
-				disabled="#{!aktualiziraneNaPotrebitel.generateNewPasswordAllowed or !aktualiziraneNaPotrebitel.rowSelected}"
-				value="Смени заеманата позиция" />
-
-			<br />
-			<h:commandButton action="#{aktualiziraneNaPotrebitel.generateNewPassword()}"
-				disabled="#{!aktualiziraneNaPotrebitel.generateNewPasswordAllowed or !aktualiziraneNaPotrebitel.rowSelected}"
-				value="Генерирай нова парола" />
-			<br />
-			<br />
-			
-			<h:outputLabel value="Нова парола">
-				<h:inputText id="newPassword" value="#{aktualiziraneNaPotrebitel.newPassword}" maxlength="50"
-					required="#{not empty param[aktualiziraneNaPotrebitel.changeButton.clientId]}"
-					requiredMessage="задължително поле!"
-					disabled="#{!aktualiziraneNaPotrebitel.changePasswordAllowed}" />
-				<h:message for="newPassword" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Повтори новата парола">
-				<h:inputText id="repeatNewPassword" value="#{aktualiziraneNaPotrebitel.repeatNewPassword}"
-					required="#{not empty param[aktualiziraneNaPotrebitel.changeButton.clientId]}"
-					requiredMessage="задължително поле!"
-					disabled="#{!aktualiziraneNaPotrebitel.changePasswordAllowed}" />
-				<h:message for="repeatNewPassword" />
-			</h:outputLabel>
-			<br />
-			
-			<h:commandButton binding="#{aktualiziraneNaPotrebitel.changeButton}" action="#{aktualiziraneNaPotrebitel.changePassword()}"
-				disabled="#{!aktualiziraneNaPotrebitel.changePasswordAllowed}"
-				value="Смени паролата" />
-			<br />
-			
-			<h:outputText value="#{aktualiziraneNaPotrebitel.errorMessage}"/>
+		</div>
+		<h:form>
+			<table class="mainTable">
+				<tr>
+					<td><h:outputLabel value="Име">
+							<br />
+							<h:inputText id="name"
+								value="#{aktualiziraneNaPotrebitel.employeeName}"
+								readonly="true" />
+							<h:message for="name" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Фамилия">
+							<br />
+							<h:inputText id="family"
+								value="#{aktualiziraneNaPotrebitel.employeeFamily}"
+								readonly="true" />
+							<h:message for="family" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Автосервиз">
+							<br />
+							<h:inputText id="autoserviceName"
+								value="#{aktualiziraneNaPotrebitel.autoserviceName}"
+								readonly="true" />
+							<h:message for="autoserviceName" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Потребителско име">
+							<br />
+							<h:inputText id="username"
+								value="#{aktualiziraneNaPotrebitel.username}" readonly="true" />
+							<h:message for="username" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Позиция">
+							<h:selectOneMenu value="#{aktualiziraneNaPotrebitel.position}"
+								disabled="#{!aktualiziraneNaPotrebitel.generateNewPasswordAllowed or !aktualiziraneNaPotrebitel.rowSelected}">
+								<f:selectItems value="#{aktualiziraneNaPotrebitel.positions}" />
+							</h:selectOneMenu>
+						</h:outputLabel></td>
+					<td><h:commandButton
+							action="#{aktualiziraneNaPotrebitel.changePosition()}"
+							disabled="#{!aktualiziraneNaPotrebitel.generateNewPasswordAllowed or !aktualiziraneNaPotrebitel.rowSelected}"
+							value="Смени заеманата позиция" class="regButton"
+							style="width:190px;height:40px;margin-top:17px;margin-left:35px;" />
+					</td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Нова парола">
+							<br />
+							<h:inputText id="newPassword"
+								value="#{aktualiziraneNaPotrebitel.newPassword}" maxlength="50"
+								required="#{not empty param[aktualiziraneNaPotrebitel.changeButton.clientId]}"
+								requiredMessage="задължително поле!"
+								disabled="#{!aktualiziraneNaPotrebitel.changePasswordAllowed}" />
+							<h:message for="newPassword" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Повтори новата парола">
+							<br />
+							<h:inputText id="repeatNewPassword"
+								value="#{aktualiziraneNaPotrebitel.repeatNewPassword}"
+								required="#{not empty param[aktualiziraneNaPotrebitel.changeButton.clientId]}"
+								requiredMessage="задължително поле!"
+								disabled="#{!aktualiziraneNaPotrebitel.changePasswordAllowed}" />
+							<h:message for="repeatNewPassword" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:commandButton
+							action="#{aktualiziraneNaPotrebitel.generateNewPassword()}"
+							disabled="#{!aktualiziraneNaPotrebitel.generateNewPasswordAllowed or !aktualiziraneNaPotrebitel.rowSelected}"
+							value="Генерирай нова парола" class="regButton"
+							style="width:190px;height:40px;margin-top:17px;margin-left:35px;" />
+					</td>
+					<td><h:commandButton
+							binding="#{aktualiziraneNaPotrebitel.changeButton}"
+							action="#{aktualiziraneNaPotrebitel.changePassword()}"
+							disabled="#{!aktualiziraneNaPotrebitel.changePasswordAllowed}"
+							value="Смени паролата" class="regButton"
+							style="width:190px;height:40px;margin-top:17px;margin-left:35px;" />
+					</td>
+				</tr>
+				<tr>
+					<td><h:outputText
+							value="#{aktualiziraneNaPotrebitel.errorMessage}" /></td>
+				</tr>
+			</table>
 		</h:form>
-	    
 	</ui:define>
-	
 </ui:composition>
 </html>

@@ -7,249 +7,258 @@
 	xmlns:f="http://java.sun.com/jsf/core">
 
 <ui:composition template="/common/template.xhtml">
-	
+
 	<ui:define name="headSection">
-		
+
 	</ui:define>
 
 	<ui:define name="pageContent">
-	
+
 		<h:form>
 			<h:panelGroup>
-				<h:outputLabel value="Наименование">
-					<h:inputText value="#{aktualiziraneNaDostav4ik.searchName}" maxlength="100" />
-				</h:outputLabel>
-				
-				<br />
-				<h:commandButton value="Търси" action="#{aktualiziraneNaDostav4ik.searchIt()}"/>
-				<h:commandButton value="Изчисти" action="#{aktualiziraneNaDostav4ik.resetSearch()}"/>
+				<table class="buttonTable"	style="margin-bottom: 10px; margin-left: -15px">
+					<tr>
+						<td><h:outputLabel value="Наименование"
+								style="margin-right: 10px;">
+								<h:inputText value="#{aktualiziraneNaDostav4ik.searchName}"
+									maxlength="100" />
+							</h:outputLabel></td>
+						<td><h:commandButton value="Търси" class="regButton"
+								style="width:80px;height:40px;margin-top: 20px;"
+								action="#{aktualiziraneNaDostav4ik.searchIt()}" /></td>
+						<td><h:commandButton value="Изчисти" class="regButton"
+								style="width:80px;height:40px;margin-top: 20px"
+								action="#{aktualiziraneNaDostav4ik.resetSearch()}" /></td>
+					</tr>
+				</table>
 			</h:panelGroup>
 		</h:form>
-	
-		<div id="scroolTable"> <!-- scroll bar -->
-		<h:form>
-			
-			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
-			<h:dataTable
-				rows="#{configurationProperties.getPageSize()}"
-				value="#{aktualiziraneNaDostav4ik.spisukDostav4ici}"
-			    first="0"
-			    var="curr"
-			    rowClasses="#{aktualiziraneNaDostav4ik.rowStyleClasses}">
-				
-				<h:column>
-					<f:facet name="header">Наименование</f:facet>
+		<div id="scroolTable">
+			<!-- scroll bar -->
+			<h:form>
+				<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+				<h:dataTable rows="#{configurationProperties.getPageSize()}"
+					value="#{aktualiziraneNaDostav4ik.spisukDostav4ici}" first="0"
+					var="curr" rowClasses="#{aktualiziraneNaDostav4ik.rowStyleClasses}">
+					<h:column>
+						<f:facet name="header">Наименование</f:facet>
 					#{curr.name}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Лице за контакт</f:facet>
+					<h:column>
+						<f:facet name="header">Лице за контакт</f:facet>
 					#{curr.contactPerson}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Населено място</f:facet>
+					<h:column>
+						<f:facet name="header">Населено място</f:facet>
 					#{curr.addressCity}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Адрес</f:facet>
+					<h:column>
+						<f:facet name="header">Адрес</f:facet>
 					#{curr.addressLine}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Електронна поща</f:facet>
+					<h:column>
+						<f:facet name="header">Електронна поща</f:facet>
 					#{curr.mail}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Телефонен номер</f:facet>
+					<h:column>
+						<f:facet name="header">Телефонен номер</f:facet>
 					#{curr.phoneNumber}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Номер на банковата сметка</f:facet>
+					<h:column>
+						<f:facet name="header">Номер на банковата сметка</f:facet>
 					#{curr.IBANNumber}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Банков код</f:facet>
+					<h:column>
+						<f:facet name="header">Банков код</f:facet>
 					#{curr.SWIFTCode}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">ЕИК</f:facet>
+					<h:column>
+						<f:facet name="header">ЕИК</f:facet>
 					#{curr.registrationNumber}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">ДДС номер</f:facet>
+					<h:column>
+						<f:facet name="header">ДДС номер</f:facet>
 					#{curr.VATNumber}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Промени</f:facet>
-					<h:commandButton action="#{aktualiziraneNaDostav4ik.selectRow(curr)}" value="Промени" />
-				</h:column>
-				
-				<h:column rendered="#{aktualiziraneNaDostav4ik.choosingAllowed}">
-					<f:facet name="header">Избери</f:facet>
-					<h:commandLink action="#{aktualiziraneNaDostav4ik.chooseSupplier(curr)}" value="Избери" />
-				</h:column>
-				
-				<f:facet name="footer">
-				
-					<!-- предишна страница -->
-					<h:commandLink disabled="#{aktualiziraneNaDostav4ik.page - 1 lt 0}"
-						action="#{aktualiziraneNaDostav4ik.setPage(aktualiziraneNaDostav4ik.page - 1)}"
-						value="&lt;&lt;" />
-						
-					<h:outputText value=" " />
-						
-					<!-- други страници -->
-					<ui:repeat value="#{aktualiziraneNaDostav4ik.pagesList}" var="currPage">
+					<h:column>
+						<f:facet name="header">Промени</f:facet>
+						<h:commandButton
+							action="#{aktualiziraneNaDostav4ik.selectRow(curr)}"
+							value="Промени" />
+					</h:column>
+					<h:column rendered="#{aktualiziraneNaDostav4ik.choosingAllowed}">
+						<f:facet name="header">Избери</f:facet>
 						<h:commandLink
-							disabled="#{aktualiziraneNaDostav4ik.getPage() eq currPage.intValue() - 1}"
-							action="#{aktualiziraneNaDostav4ik.setPage(currPage.intValue() - 1)}"
-							value="#{currPage}" />
-							
+							action="#{aktualiziraneNaDostav4ik.chooseSupplier(curr)}"
+							value="Избери" />
+					</h:column>
+					<f:facet name="footer">
+						<!-- предишна страница -->
+						<h:commandLink
+							disabled="#{aktualiziraneNaDostav4ik.page - 1 lt 0}"
+							action="#{aktualiziraneNaDostav4ik.setPage(aktualiziraneNaDostav4ik.page - 1)}"
+							value="&lt;&lt;" />
 						<h:outputText value=" " />
-					</ui:repeat>
-					
-					<!-- следваща страница -->
-					<h:commandLink disabled="#{aktualiziraneNaDostav4ik.page + 1 ge aktualiziraneNaDostav4ik.pagesCount}"
-						action="#{aktualiziraneNaDostav4ik.setPage(aktualiziraneNaDostav4ik.page + 1)}"
-						value="&gt;&gt;" />
-							
-				</f:facet>
-				 
-			</h:dataTable>
-		</h:form>
-		</div>
-			
-	    <h:form>
-	    
-	    	<h:outputLabel value="Код за достъп">
-				<h:inputText id="key" value="#{aktualiziraneNaDostav4ik.ID}" readonly="true" />
-				<h:message for="key" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Наименование*">
-				<h:inputText id="name" value="#{aktualiziraneNaDostav4ik.name}"
-					maxlength="100" required="true"	requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" />
-				<h:message for="name" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Лице за контакт*">
-				<h:inputText id="contactPerson"
-					value="#{aktualiziraneNaDostav4ik.contactPerson}" maxlength="100"
-					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" />
-				<h:message for="contactPerson" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Населено място*">
-				<h:inputText id="city"
-					value="#{aktualiziraneNaDostav4ik.addressCity}" maxlength="30"
-					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" />
-				<h:message for="city" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Адрес*">
-				<h:inputText id="address"
-					value="#{aktualiziraneNaDostav4ik.addressLine}" maxlength="100"
-					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" />
-				<h:message for="address" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Електронна поща*">
-				<h:inputText id="mail" value="#{aktualiziraneNaDostav4ik.mail}"
-					maxlength="50" required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" 
-	    			validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
-	    			<f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$"/>
-	    		</h:inputText>
-				<h:message for="mail" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Телефонен номер*">
-				<h:inputText id="phone"
-					value="#{aktualiziraneNaDostav4ik.phoneNumber}" maxlength="15"
-					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" 
-	    			validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
-	    			<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)"/>
-	    		</h:inputText>
-				<h:message for="phone" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Номер на банковата сметка*">
-				<h:inputText id="IBANNumber"
-					value="#{aktualiziraneNaDostav4ik.IBANNumber}" maxlength="30"
-					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" 
-					validatorMessage="Позволени символи за номер на сметка са главни латински букви и цифри.">
-					<f:validateRegex pattern="^[A-Z0-9]+$"/>
-				</h:inputText>
-				<h:message for="IBANNumber" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Банков код*">
-				<h:inputText id="SWIFT" value="#{aktualiziraneNaDostav4ik.SWIFTCode}"
-					maxlength="20" required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" 
-					validatorMessage="Позволени символи за банков код са главни латински букви и цифри.">
-					<f:validateRegex pattern="^[A-Z0-9]+$"/>
-				</h:inputText>
-				<h:message for="SWIFT" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="Единен идентификационен код (ЕИК)*">
-				<h:inputText id="regnumber"
-					value="#{aktualiziraneNaDostav4ik.registrationNumber}" maxlength="9"
-					required="true" requiredMessage="задължително поле!"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" 
-					validatorMessage="ЕИК трябва да се състои от точно 9 цифри.">
-					<f:validateRegex pattern="^[0-9]{9}$"/>
-				</h:inputText>
-				<h:message for="regnumber" />
-			</h:outputLabel>
-			<br />
-			<h:outputLabel value="ДДС номер">
-				<h:inputText id="vat" value="#{aktualiziraneNaDostav4ik.VATNumber}"
-					maxlength="11" required="false"
-					readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" 
-					validatorMessage="ДДС номерът се състои от 11 символа - главни латински букви и цифри.">
-					<f:validateRegex pattern="^[A-Z0-9]{11}$"/>
-				</h:inputText>
-				<h:message for="vat" />
-			</h:outputLabel>
-			<br />
-
-			<h:commandButton value="Запази" action="#{aktualiziraneNaDostav4ik.writeIt()}"
-				disabled="#{!aktualiziraneNaDostav4ik.rowSelected or !aktualiziraneNaDostav4ik.changingAllowed}" />
-			
+						<!-- други страници -->
+						<ui:repeat value="#{aktualiziraneNaDostav4ik.pagesList}"
+							var="currPage">
+							<h:commandLink
+								disabled="#{aktualiziraneNaDostav4ik.getPage() eq currPage.intValue() - 1}"
+								action="#{aktualiziraneNaDostav4ik.setPage(currPage.intValue() - 1)}"
+								value="#{currPage}" />
+							<h:outputText value=" " />
+						</ui:repeat>
+						<!-- следваща страница -->
+						<h:commandLink
+							disabled="#{aktualiziraneNaDostav4ik.page + 1 ge aktualiziraneNaDostav4ik.pagesCount}"
+							action="#{aktualiziraneNaDostav4ik.setPage(aktualiziraneNaDostav4ik.page + 1)}"
+							value="&gt;&gt;" />
+					</f:facet>
+				</h:dataTable>
 			</h:form>
-			
-			<h:form>
+		</div>
+		<h:form>
+			<table class="mainTable">
+				<tr>
+					<td><h:outputLabel value="Код за достъп">
+							<br />
+							<h:inputText id="key" value="#{aktualiziraneNaDostav4ik.ID}"
+								readonly="true" />
+							<h:message for="key" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Наименование*">
+							<br />
+							<h:inputText id="name" value="#{aktualiziraneNaDostav4ik.name}"
+								maxlength="100" required="true"
+								requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" />
+							<h:message for="name" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Лице за контакт*">
+							<br />
+							<h:inputText id="contactPerson"
+								value="#{aktualiziraneNaDostav4ik.contactPerson}"
+								maxlength="100" required="true"
+								requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" />
+							<h:message for="contactPerson" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Населено място*">
+							<br />
+							<h:inputText id="city"
+								value="#{aktualiziraneNaDostav4ik.addressCity}" maxlength="30"
+								required="true" requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" />
+							<h:message for="city" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Адрес*">
+							<br />
+							<h:inputText id="address"
+								value="#{aktualiziraneNaDostav4ik.addressLine}" maxlength="100"
+								required="true" requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaDostav4ik.rowSelected}" />
+							<h:message for="address" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Електронна поща*">
+							<br />
+							<h:inputText id="mail" value="#{aktualiziraneNaDostav4ik.mail}"
+								maxlength="50" required="true"
+								requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaDostav4ik.rowSelected}"
+								validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
+								<f:validateRegex
+									pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$" />
+							</h:inputText>
+							<h:message for="mail" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Телефонен номер*">
+							<br />
+							<h:inputText id="phone"
+								value="#{aktualiziraneNaDostav4ik.phoneNumber}" maxlength="15"
+								required="true" requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaDostav4ik.rowSelected}"
+								validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
+								<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)" />
+							</h:inputText>
+							<h:message for="phone" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Номер на банковата сметка*">
+							<br />
+							<h:inputText id="IBANNumber"
+								value="#{aktualiziraneNaDostav4ik.IBANNumber}" maxlength="30"
+								required="true" requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaDostav4ik.rowSelected}"
+								validatorMessage="Позволени символи за номер на сметка са главни латински букви и цифри.">
+								<f:validateRegex pattern="^[A-Z0-9]+$" />
+							</h:inputText>
+							<h:message for="IBANNumber" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Банков код*">
+							<br />
+							<h:inputText id="SWIFT"
+								value="#{aktualiziraneNaDostav4ik.SWIFTCode}" maxlength="20"
+								required="true" requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaDostav4ik.rowSelected}"
+								validatorMessage="Позволени символи за банков код са главни латински букви и цифри.">
+								<f:validateRegex pattern="^[A-Z0-9]+$" />
+							</h:inputText>
+							<h:message for="SWIFT" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="ДДС номер">
+							<br />
+							<h:inputText id="vat"
+								value="#{aktualiziraneNaDostav4ik.VATNumber}" maxlength="11"
+								required="false"
+								readonly="#{!aktualiziraneNaDostav4ik.rowSelected}"
+								validatorMessage="ДДС номерът се състои от 11 символа - главни латински букви и цифри.">
+								<f:validateRegex pattern="^[A-Z0-9]{11}$" />
+							</h:inputText>
+							<h:message for="vat" />
+						</h:outputLabel></td>
+					<td colspan="2"><h:outputLabel
+							value="Единен идентификационен код (ЕИК)*">
+							<br />
+							<h:inputText id="regnumber"
+								value="#{aktualiziraneNaDostav4ik.registrationNumber}"
+								maxlength="9" required="true"
+								requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaDostav4ik.rowSelected}"
+								validatorMessage="ЕИК трябва да се състои от точно 9 цифри.">
+								<f:validateRegex pattern="^[0-9]{9}$" />
+							</h:inputText>
+							<h:message for="regnumber" />
+						</h:outputLabel> <h:commandButton value="Запази" class="regButton"
+							style="width:80px;height:40px; margin-left: 50px;"
+							action="#{aktualiziraneNaDostav4ik.writeIt()}"
+							disabled="#{!aktualiziraneNaDostav4ik.rowSelected or !aktualiziraneNaDostav4ik.changingAllowed}" />
+					</td>
+				</tr>
+			</table>
+		</h:form>
+		<h:form>
 			<!-- формата е разделена на две, за да не се проверяват данните
 			при натискането на бутоните "Отмени" и "Добави" -->
-			
-			<h:commandButton action="#{aktualiziraneNaDostav4ik.deselectRow()}" value="Отмени"
-				disabled="#{!aktualiziraneNaDostav4ik.rowSelected}" />
-				
-			<h:commandButton action="#{aktualiziraneNaDostav4ik.goToAdd()}" value="Добави"
-				disabled="#{!aktualiziraneNaDostav4ik.goToAddAllowed}" />
-			
-			<br />
-			<h:outputText value="#{dobavqneNaDostav4ik.errorMessage}" />
-
+			<table class="buttonTable"
+				style="margin-left: 60px; margin-top: 10px">
+				<tr>
+					<td><h:commandButton
+							action="#{aktualiziraneNaDostav4ik.deselectRow()}" value="Отмени"
+							class="regButton" style="width:80px;height:40px;"
+							disabled="#{!aktualiziraneNaDostav4ik.rowSelected}" /></td>
+					<td><h:commandButton
+							action="#{aktualiziraneNaDostav4ik.goToAdd()}" value="Добави"
+							class="regButton" style="width:80px;height:40px;"
+							disabled="#{!aktualiziraneNaDostav4ik.goToAddAllowed}" /> <br />
+						<h:outputText value="#{dobavqneNaDostav4ik.errorMessage}" /></td>
+				</tr>
+			</table>
 		</h:form>
-	    
 	</ui:define>
-	
 </ui:composition>
 </html>
