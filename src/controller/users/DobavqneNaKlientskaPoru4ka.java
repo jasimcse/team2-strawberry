@@ -319,11 +319,13 @@ public class DobavqneNaKlientskaPoru4ka implements Serializable {
 		// TODO: транзакция
 		for (ServiceForClientOrder clSer : spisukUslugi) {
 			clSer.getClService().setClientOrderID(poru4ka.getID());
+			clSer.getClService().setStatus(ClientOrderService.STATUS_NORMAL);
 			clSer.getClService().writeToDB();
 		}
 		
 		for (SparePartForClientOrder clSp : spisukRezervni4asti) {
 			clSp.getClPart().setClientOrderID(poru4ka.getID());
+			clSp.getClPart().setStatus(ClientOrderPart.STATUS_NORMAL);
 			clSp.getClPart().writeToDB();
 			
 			List<SparePartAutoservice> listSpPartAuto = SparePartAutoservice.queryGetBySparePartID(
