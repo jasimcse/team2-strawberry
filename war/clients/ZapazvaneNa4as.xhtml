@@ -41,7 +41,8 @@
 						</h:outputLabel></td>
 					<td><span id="proveriZaSvobodni4asove"> <h:commandButton
 								action="#{zapazvaneNa4as.chooseAutoservice()}"
-								value="Провери за свободни часове" />
+								value="Провери за свободни часове" 
+								class="regButton" style="width:200px;height:40px;margin-left:-15px"/>
 					</span></td>
 				</tr>
 			</table>
@@ -51,7 +52,8 @@
 					<span id="zapazvane"> <h:commandButton
 							action="#{zapazvaneNa4as.changeMonth(-1)}"
 							disabled="#{!zapazvaneNa4as.prevMonthAllowed}"
-							value="Предишен месец" /> <h:outputText value=" " /> <ui:repeat
+							value="Предишен месец" 
+							/> <h:outputText value=" " /> <ui:repeat
 							value="#{zapazvaneNa4as.linkListPrev}" var="currLink">
 							<h:commandLink
 								action="#{zapazvaneNa4as.changeDay(currLink.param)}"
