@@ -255,6 +255,9 @@ ul {
 input[type="text"]{
 	width: 200px;
 }
+input[type="password"]{
+	width: 200px;
+}
 #rezervirai{
 	display: block;
 	margin-left: 40px;
