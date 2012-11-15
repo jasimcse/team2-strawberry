@@ -78,6 +78,13 @@ ul {
 	border-radius: 5px;
 	font-size: 90%;
 }
+.regButton:ACTIVE{
+	-webkit-transform: scale(0.9);
+     -moz-transform: scale(0.9);
+      -ms-transform: scale(0.9);
+       -o-transform: scale(0.9);
+          transform: scale(0.9);
+}
 
 #loginSection div span{
 	display: block;
