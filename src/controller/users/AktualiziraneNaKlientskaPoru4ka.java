@@ -68,6 +68,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 	
 	private InterPageDataRequest dataRequest;
 	
+	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void init() {
 		
@@ -307,7 +308,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 							clSp.getClPart().getQuantity() - clSp.getQuantityReserved());
 						
 						List<SparePartRequest> listSpPartReq = SparePartRequest.queryGetBySparePart(
-								clSp.getClPart().getSparePartID(), 0, 1, poru4ka.getID());
+								clSp.getClPart().getSparePartID(), 0, 1, currEmployee.getAutoserviceID());
 						
 						if( listSpPartReq.size() == 1 )
 							listSpPartReq.get(0).setQuantity(listSpPartReq.get(0).getQuantity() +
@@ -558,7 +559,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 						sPart.getClPart().getQuantity() - sPart.getQuantityReserved());
 					
 				List<SparePartRequest> listSpPartReq = SparePartRequest.queryGetBySparePart(
-						sPart.getClPart().getSparePartID(), 0, 1, poru4ka.getID());
+						sPart.getClPart().getSparePartID(), 0, 1, currEmployee.getAutoserviceID());
 					
 				if( listSpPartReq.size() == 1 )
 					listSpPartReq.get(0).setQuantity(listSpPartReq.get(0).getQuantity() +
@@ -909,7 +910,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 						{
 							
 							List<SparePartRequest> listSpPartRequest = SparePartRequest.queryGetBySparePart(
-									clSp.getClPart().getSparePartID(), 0, 1, poru4ka.getID());
+									clSp.getClPart().getSparePartID(), 0, 1, currEmployee.getAutoserviceID());
 							if(listSpPartRequest.size() != 1)
 							{
 								errorMessage = "Грешно зададена резервна част!";
@@ -942,7 +943,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 						listSpPartReserved.get(0).setQuantity(clSp.getClPart().getQuantity());
 						
 						List<SparePartRequest> listSpPartRequest = SparePartRequest.queryGetBySparePart(
-								clSp.getClPart().getSparePartID(), 0, 1, poru4ka.getID());
+								clSp.getClPart().getSparePartID(), 0, 1, currEmployee.getAutoserviceID());
 						if(listSpPartRequest.size() == 1)
 						{
 							listSpPartRequest.get(0).setQuantity(listSpPartRequest.get(0).getQuantity() - dSpPartLess);

@@ -234,10 +234,10 @@ public class SparePartRequest implements Serializable {
 				       addSort("__key__"));
 	}
 	
-	private static PreparedQuery getPreparedQueryBySparePart(Key clientOrderID, Key sparePartID) { 
+	private static PreparedQuery getPreparedQueryBySparePart(Key autoserviceID, Key sparePartID) { 
 		return DatastoreServiceFactory.getDatastoreService().
 			   prepare(new Query(SparePartReserved.class.getSimpleName()).
-					   setAncestor(clientOrderID).
+					   setAncestor(autoserviceID).
 				       addSort("__key__").
 				       setFilter(new Query.FilterPredicate("sparePartID", FilterOperator.EQUAL, sparePartID)));
 	}
@@ -261,8 +261,8 @@ public class SparePartRequest implements Serializable {
 		return getPreparedQueryAll(autoserviceID).countEntities(FetchOptions.Builder.withLimit(10000));
 	}
 	
-	public static List<SparePartRequest> queryGetBySparePart(Key sparePartID, int offset, int count, Key clientOrderID) {
-		List<Entity> oldList = getPreparedQueryBySparePart(clientOrderID, sparePartID).
+	public static List<SparePartRequest> queryGetBySparePart(Key sparePartID, int offset, int count, Key autoserviceID) {
+		List<Entity> oldList = getPreparedQueryBySparePart(autoserviceID, sparePartID).
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
 		
 		return readList(oldList);
