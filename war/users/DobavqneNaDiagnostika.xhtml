@@ -10,40 +10,50 @@
 	
 	<ui:define name="pageContent">
 	    <h:form>
-
-	    <h:outputLabel value="Номер на рама*">
+	<table class="mainTable">
+	<tr><td>
+	    <h:outputLabel value="Номер на рама*"><br />
 	    	<h:inputText id="vin" value="#{dobavqneNaDiagnostika.vehicle.VIN}"
 	    		readonly="true"/>
 	    	<h:message for="vin" />
 	    </h:outputLabel> 
-	    <h:commandButton value="Избери" action="#{dobavqneNaDiagnostika.chooseAvtomobil()}" /> 
-	    <br />
-	    
-	    <h:outputLabel value="Пробег (километра)*">
+	    </td>
+	    <td>
+	    <h:commandButton value="Избери" class="regButton"
+							style="width:80px;height:40px;margin-top:20px;" action="#{dobavqneNaDiagnostika.chooseAvtomobil()}" /> 
+	    </td>
+	    </tr>
+	    <tr>
+	    <td>
+	    <h:outputLabel value="Пробег (километра)*"><br />
 	    	<h:inputText id="mileage" value="#{dobavqneNaDiagnostika.mileage}"
 	    		required="true"/>
 	    	<h:message for="mileage" requiredMessage="задължително поле!" />
 	    </h:outputLabel> 
-	    <br />
-	    
-	    <h:outputLabel value="Цена на диагностиката*">
+	   	</td>
+	    <td>
+	    <h:outputLabel value="Цена на диагностиката*"><br />
 	    	<h:inputText id="price" value="#{dobavqneNaDiagnostika.price}" maxlength="10" 
 	    		required="true" requiredMessage="задължително поле!" />
 	    	<h:message for="price" />
 	    </h:outputLabel>
-	     <br />
-	    
-	    <h:outputLabel value="Статус на диагностиката*">
+	     </td>
+	    <td>
+	    <h:outputLabel value="Статус на диагностиката*"><br />
 	    	<h:selectOneMenu value="#{dobavqneNaDiagnostika.status}">
 				<f:selectItems value="#{dobavqneNaDiagnostika.diagStatus}"  />
 			</h:selectOneMenu>
 	    </h:outputLabel>
-	    <br />
-	   
-	    <h:outputLabel value="Номер на платежно нареждане">
+	    </td>
+	    </tr>
+	   <tr>
+	   <td>
+	    <h:outputLabel value="Номер на платежно нареждане"><br />
 	    	<h:inputText id="paynumber" value="#{dobavqneNaDiagnostika.paymentNumber}" maxlength="50" />
 	    </h:outputLabel> 
-	    <br />
+	    </td>
+	    </tr>
+	    </table>
 	    
 	    
 		<h:outputLabel value="Услуги, които трябва да бъдат извършени според извършената диагностика:">
@@ -109,14 +119,16 @@
 		
 			</h:dataTable>
 		</div>
-		<br />
-
+		
+		<table class="buttonTable"><tr><td>
 	   	<h:commandButton value="Добави" 
+	   	class="regButton"
+							style="width:80px;height:40px;margin-top:20px;margin-left:-40px;"
 	   		 action="#{dobavqneNaDiagnostika.addDiagnostika()}"/> 
 	    <br />
 	    
 	    <h:outputText value="#{dobavqneNaDiagnostika.errorMessage}"/>
-	    
+	    </td></tr></table>
 	    </h:form>
 	</ui:define>
 	

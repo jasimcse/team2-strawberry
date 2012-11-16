@@ -8,238 +8,282 @@
 
 
 <ui:composition template="/common/template.xhtml">
-	
+
 	<ui:define name="headSection">
-		
+
 	</ui:define>
 
 	<ui:define name="pageContent">
-	
+
 		<h:form>
 			<h:panelGroup>
-				<h:outputLabel value="Име">
-					<h:inputText value="#{aktualiziraneNaKlient.searchNamePerson}" maxlength="50" />
-				</h:outputLabel>
-				<br />
-				<h:outputLabel value="Фамилия">
-					<h:inputText value="#{aktualiziraneNaKlient.searchFamilyPerson}" maxlength="50" />
-				</h:outputLabel>
-				<br />
-				<h:outputLabel value="Наименование на юридическо лице">
-					<h:inputText value="#{aktualiziraneNaKlient.searchNameCompany}" maxlength="100" />
-				</h:outputLabel>
-				
-				<br />
-				<h:commandButton value="Търси" action="#{aktualiziraneNaKlient.searchIt()}" />
-				<h:commandButton value="Изчисти" action="#{aktualiziraneNaKlient.resetSearch()}" />
+				<table class="mainTable">
+					<tr>
+						<td><h:outputLabel value="Име">
+								<br />
+								<h:inputText value="#{aktualiziraneNaKlient.searchNamePerson}"
+									maxlength="50" />
+							</h:outputLabel></td>
+						<td><h:outputLabel value="Фамилия">
+								<br />
+								<h:inputText value="#{aktualiziraneNaKlient.searchFamilyPerson}"
+									maxlength="50" />
+							</h:outputLabel></td>
+						<td><h:outputLabel value="Наименование на юридическо лице">
+								<br />
+								<h:inputText value="#{aktualiziraneNaKlient.searchNameCompany}"
+									maxlength="100" />
+							</h:outputLabel></td>
+					</tr>
+					<tr>
+						<td><h:commandButton value="Търси" class="regButton"
+								style="width:80px;height:40px;margin-left:20px;"
+								action="#{aktualiziraneNaKlient.searchIt()}" /> <h:commandButton
+								value="Изчисти" class="regButton"
+								style="width:80px;height:40px;"
+								action="#{aktualiziraneNaKlient.resetSearch()}" /></td>
+					</tr>
+				</table>
 			</h:panelGroup>
 		</h:form>
-		
-		<div id="scroolTable"> <!-- scroll bar -->
-		<h:form>
-			
-			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
-			<h:dataTable
-				rows="#{configurationProperties.getPageSize()}"
-				value="#{aktualiziraneNaKlient.spisukKlienti}"
-			    first="0"
-			    var="curr"
-			    rowClasses="#{aktualiziraneNaKlient.rowStyleClasses}">
-				
-				
-				<h:column>
-					<f:facet name="header">Име</f:facet>
-					<h:outputText value="#{curr.person.name}" rendered="#{not empty curr.person}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Фамилия</f:facet>
-					<h:outputText value="#{curr.person.family}" rendered="#{not empty curr.person}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Наименование на юридическо лице</f:facet>
-					<h:outputText value="#{curr.company.name}" rendered="#{not empty curr.company.name}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Населено място</f:facet>
-					<h:outputText value="#{curr.addressCity}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Адрес</f:facet>
-					<h:outputText value="#{curr.addressLine}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Телефонен номер</f:facet>
-					<h:outputText value="#{curr.phoneNumber}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Електронна поща</f:facet>
-					<h:outputText value="#{curr.mail}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Промени</f:facet>
-					<h:commandButton action="#{aktualiziraneNaKlient.selectRow(curr)}" value="Промени" />
-				</h:column>
-				
-				<h:column rendered="#{aktualiziraneNaKlient.choosingAllowed}">
-					<f:facet name="header">Избери</f:facet>
-					<h:commandButton action="#{aktualiziraneNaKlient.chooseClient(curr)}" value="Избери" />
-				</h:column>
-				
-				<f:facet name="footer">
-				
-					<!-- предишна страница -->
-					<h:commandLink disabled="#{aktualiziraneNaKlient.page - 1 lt 0}"
-						action="#{aktualiziraneNaKlient.setPage(aktualiziraneNaKlient.page - 1)}"
-						value="&lt;&lt;" />
-						
-					<h:outputText value=" " />
-						
-					<!-- други страници -->
-					<ui:repeat value="#{aktualiziraneNaKlient.pagesList}" var="currPage">
-						<h:commandLink
-							disabled="#{aktualiziraneNaKlient.getPage() eq currPage.intValue() - 1}"
-							action="#{aktualiziraneNaKlient.setPage(currPage.intValue() - 1)}"
-							value="#{currPage}" />
-							
+
+		<div id="scroolTable">
+			<!-- scroll bar -->
+			<h:form>
+
+				<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+				<h:dataTable rows="#{configurationProperties.getPageSize()}"
+					value="#{aktualiziraneNaKlient.spisukKlienti}" first="0" var="curr"
+					rowClasses="#{aktualiziraneNaKlient.rowStyleClasses}">
+
+
+					<h:column>
+						<f:facet name="header">Име</f:facet>
+						<h:outputText value="#{curr.person.name}"
+							rendered="#{not empty curr.person}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Фамилия</f:facet>
+						<h:outputText value="#{curr.person.family}"
+							rendered="#{not empty curr.person}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Наименование на юридическо лице</f:facet>
+						<h:outputText value="#{curr.company.name}"
+							rendered="#{not empty curr.company.name}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Населено място</f:facet>
+						<h:outputText value="#{curr.addressCity}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Адрес</f:facet>
+						<h:outputText value="#{curr.addressLine}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Телефонен номер</f:facet>
+						<h:outputText value="#{curr.phoneNumber}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Електронна поща</f:facet>
+						<h:outputText value="#{curr.mail}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Промени</f:facet>
+						<h:commandButton action="#{aktualiziraneNaKlient.selectRow(curr)}"
+							value="Промени" />
+					</h:column>
+
+					<h:column rendered="#{aktualiziraneNaKlient.choosingAllowed}">
+						<f:facet name="header">Избери</f:facet>
+						<h:commandButton
+							action="#{aktualiziraneNaKlient.chooseClient(curr)}"
+							value="Избери" />
+					</h:column>
+
+					<f:facet name="footer">
+
+						<!-- предишна страница -->
+						<h:commandLink disabled="#{aktualiziraneNaKlient.page - 1 lt 0}"
+							action="#{aktualiziraneNaKlient.setPage(aktualiziraneNaKlient.page - 1)}"
+							value="&lt;&lt;" />
+
 						<h:outputText value=" " />
-					</ui:repeat>
-					
-					<!-- следваща страница -->
-					<h:commandLink disabled="#{aktualiziraneNaKlient.page + 1 ge aktualiziraneNaKlient.pagesCount}"
-						action="#{aktualiziraneNaKlient.setPage(aktualiziraneNaKlient.page + 1)}"
-						value="&gt;&gt;" />
-							
-				</f:facet>
-				 
-			</h:dataTable>
-			
-		</h:form>
+
+						<!-- други страници -->
+						<ui:repeat value="#{aktualiziraneNaKlient.pagesList}"
+							var="currPage">
+							<h:commandLink
+								disabled="#{aktualiziraneNaKlient.getPage() eq currPage.intValue() - 1}"
+								action="#{aktualiziraneNaKlient.setPage(currPage.intValue() - 1)}"
+								value="#{currPage}" />
+
+							<h:outputText value=" " />
+						</ui:repeat>
+
+						<!-- следваща страница -->
+						<h:commandLink
+							disabled="#{aktualiziraneNaKlient.page + 1 ge aktualiziraneNaKlient.pagesCount}"
+							action="#{aktualiziraneNaKlient.setPage(aktualiziraneNaKlient.page + 1)}"
+							value="&gt;&gt;" />
+
+					</f:facet>
+
+				</h:dataTable>
+
+			</h:form>
 		</div>
 
-	    <h:form>
+		<h:form>
 
 			<h:panelGroup rendered="#{aktualiziraneNaKlient.person}">
-		    	<!-- ако клиентът е физическо лице се изчертава това -->
-			    <h:outputLabel value="Име*">
-			    	<h:inputText id="personname" value="#{aktualiziraneNaKlient.namePerson}" maxlength="50" 
-			    		required="true" requiredMessage="задължително поле!" />
-			    	<h:message for="personname" />
-			    </h:outputLabel> 
-			    <br />
-			    
-			    <h:outputLabel value="Фамилия*">
-			    	<h:inputText id="family" value="#{aktualiziraneNaKlient.familyPerson}" maxlength="50" 
-			    		required="true" requiredMessage="задължително поле!" />
-			    	<h:message for="family" />
-			    </h:outputLabel> 
-			    <br />
+				<!-- ако клиентът е физическо лице се изчертава това -->
+				<table class="mainTable">
+					<tr>
+						<td><h:outputLabel value="Име*">
+								<br />
+								<h:inputText id="personname"
+									value="#{aktualiziraneNaKlient.namePerson}" maxlength="50"
+									required="true" requiredMessage="задължително поле!" />
+								<h:message for="personname" />
+							</h:outputLabel></td>
+						<td><h:outputLabel value="Фамилия*">
+								<br />
+								<h:inputText id="family"
+									value="#{aktualiziraneNaKlient.familyPerson}" maxlength="50"
+									required="true" requiredMessage="задължително поле!" />
+								<h:message for="family" />
+							</h:outputLabel></td>
+					</tr>
+				</table>
 			</h:panelGroup>
-		    
-		    <h:panelGroup rendered="#{aktualiziraneNaKlient.company}">
-		    	<!-- ако клиентът е физическо лице се изчертава това -->
-			    <h:outputLabel value="Наименование на компанията*">
-			    	<h:inputText id="companyname" value="#{aktualiziraneNaKlient.nameCompany}" maxlength="100" 
-			    		required="true" requiredMessage="задължително поле!" />
-			    	<h:message for="companyname" />
-			    </h:outputLabel> 
-			    <br />
-		
-			    <h:outputLabel value="Единен идентификационен код (ЕИК)*">
-			    	<h:inputText id="regnumber" value="#{aktualiziraneNaKlient.registrationNumberCompany}" maxlength="9" 
-			    		required="#{aktualiziraneNaKlient.company}"  requiredMessage="задължително поле!" />
-			    	<h:message for="regnumber" />
-			    </h:outputLabel> 
-			    <br />
-			   
-			    <h:outputLabel value="ДДС номер">
-			    	<h:inputText id="vat" value="#{aktualiziraneNaKlient.VATNumberCompany}" maxlength="11" />
-			    	<h:message for="vat" />
-			    </h:outputLabel> 
-			    <br />
-			    
-			    <h:outputLabel value="Лице за контакт">
-			    	<h:inputText id="contactperson" value="#{aktualiziraneNaKlient.contactPersonCompany}" maxlength="100" />
-			    	<h:message for="contactperson" />
-			    </h:outputLabel> 
-			    <br />
-		    </h:panelGroup>
-		     
-		    <h:outputLabel value="Населено място*">
-		    	<h:inputText id="city" value="#{aktualiziraneNaKlient.addressCity}" maxlength="30" 
-		    		required="true" requiredMessage="задължително поле!" 
-		    		readonly="#{!aktualiziraneNaKlient.rowSelected}" />
-		    	<h:message for="city" />
-		    </h:outputLabel> 
-		    <br />
-		    
-		    <h:outputLabel value="Адрес*">
-		    	<h:inputText id="address" value="#{aktualiziraneNaKlient.addressLine}" maxlength="100" 
-		    		required="true" requiredMessage="задължително поле!" 
-		    		readonly="#{!aktualiziraneNaKlient.rowSelected}" />
-		    	<h:message for="address" />
-		    </h:outputLabel> 
-		    <br />
-		    
-		    <h:outputLabel value="Телефонен номер">
-		    	<h:inputText id="phone" value="#{aktualiziraneNaKlient.phoneNumber}" maxlength="15" 
-		    		readonly="#{!aktualiziraneNaKlient.rowSelected}" 
-		    		validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
-		    		<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)"/>
-		    	</h:inputText>
-		    	<h:message for="phone" />
-		    </h:outputLabel> 
-		    <br />
-		    
-		    <h:outputLabel value="Електронна поща">
-		    	<h:inputText id="mail" value="#{aktualiziraneNaKlient.mail}" maxlength="50"
-		    		readonly="#{!aktualiziraneNaKlient.rowSelected}" 
-	    			validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
-	    			<f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$"/>
-	    		</h:inputText>
-		    	<h:message for="mail" />
-		    </h:outputLabel> 
-		    <br />
-		    
-		    <h:outputLabel value="Номер на банковата сметка">
-		    	<h:inputText id="iban" value="#{aktualiziraneNaKlient.IBANNumber}" maxlength="30"
-		    		readonly="#{!aktualiziraneNaKlient.rowSelected}" />
-		    	<h:message for="iban" />
-		    </h:outputLabel> 
-		    <br />
-		    
-		    <h:outputLabel value="Банков код">
-		    	<h:inputText id="swiftcode" value="#{aktualiziraneNaKlient.SWIFTCode}" maxlength="20"
-		    		readonly="#{!aktualiziraneNaKlient.rowSelected}" />
-		    	<h:message for="swiftcode" />
-		    </h:outputLabel> 
-		    <br />
-		    
-			<h:commandButton value="Запази" action="#{aktualiziraneNaKlient.saveClient()}"
-				disabled="#{!aktualiziraneNaKlient.rowSelected or !aktualiziraneNaKlient.changingAllowed}"/>
-			
-			</h:form>
-			
-			<h:form>
+
+			<h:panelGroup rendered="#{aktualiziraneNaKlient.company}">
+				<!-- ако клиентът е физическо лице се изчертава това -->
+				<table class="mainTable">
+					<tr>
+						<td><h:outputLabel value="Наименование на компанията*">
+								<br />
+								<h:inputText id="companyname"
+									value="#{aktualiziraneNaKlient.nameCompany}" maxlength="100"
+									required="true" requiredMessage="задължително поле!" />
+								<h:message for="companyname" />
+							</h:outputLabel></td>
+						<td><h:outputLabel value="Единен идентификационен код (ЕИК)*">
+								<br />
+								<h:inputText id="regnumber"
+									value="#{aktualiziraneNaKlient.registrationNumberCompany}"
+									maxlength="9" required="#{aktualiziraneNaKlient.company}"
+									requiredMessage="задължително поле!" />
+								<h:message for="regnumber" />
+							</h:outputLabel></td>
+					</tr>
+					<tr>
+						<td><h:outputLabel value="ДДС номер">
+								<br />
+								<h:inputText id="vat"
+									value="#{aktualiziraneNaKlient.VATNumberCompany}"
+									maxlength="11" />
+								<h:message for="vat" />
+							</h:outputLabel></td>
+						<td><h:outputLabel value="Лице за контакт">
+								<br />
+								<h:inputText id="contactperson"
+									value="#{aktualiziraneNaKlient.contactPersonCompany}"
+									maxlength="100" />
+								<h:message for="contactperson" />
+							</h:outputLabel></td>
+					</tr>
+				</table>
+			</h:panelGroup>
+			<table class="mainTable">
+				<tr>
+					<td><h:outputLabel value="Населено място*">
+							<br />
+							<h:inputText id="city"
+								value="#{aktualiziraneNaKlient.addressCity}" maxlength="30"
+								required="true" requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaKlient.rowSelected}" />
+							<h:message for="city" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Адрес*">
+							<br />
+							<h:inputText id="address"
+								value="#{aktualiziraneNaKlient.addressLine}" maxlength="100"
+								required="true" requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaKlient.rowSelected}" />
+							<h:message for="address" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Телефонен номер">
+							<br />
+							<h:inputText id="phone"
+								value="#{aktualiziraneNaKlient.phoneNumber}" maxlength="15"
+								readonly="#{!aktualiziraneNaKlient.rowSelected}"
+								validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
+								<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)" />
+							</h:inputText>
+							<h:message for="phone" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Електронна поща">
+							<br />
+							<h:inputText id="mail" value="#{aktualiziraneNaKlient.mail}"
+								maxlength="50" readonly="#{!aktualiziraneNaKlient.rowSelected}"
+								validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
+								<f:validateRegex
+									pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$" />
+							</h:inputText>
+							<h:message for="mail" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Номер на банковата сметка">
+							<br />
+							<h:inputText id="iban"
+								value="#{aktualiziraneNaKlient.IBANNumber}" maxlength="30"
+								readonly="#{!aktualiziraneNaKlient.rowSelected}" />
+							<h:message for="iban" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Банков код">
+							<br />
+							<h:inputText id="swiftcode"
+								value="#{aktualiziraneNaKlient.SWIFTCode}" maxlength="20"
+								readonly="#{!aktualiziraneNaKlient.rowSelected}" />
+							<h:message for="swiftcode" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:commandButton value="Запази" class="regButton"
+							style="width:80px;height:40px;margin-left:20px;"
+							action="#{aktualiziraneNaKlient.saveClient()}"
+							disabled="#{!aktualiziraneNaKlient.rowSelected or !aktualiziraneNaKlient.changingAllowed}" />
+					</td>
+				</tr>
+			</table>
+		</h:form>
+
+		<h:form>
 			<!-- формата е разделена на две, за да не се проверяват данните
 			при натискането на бутоните "Отмени" и "Добави" -->
-			
-			<h:commandButton action="#{aktualiziraneNaKlient.deselectRow()}" value="Отмени"
-				disabled="#{!aktualiziraneNaKlient.rowSelected}" />
-				
-			<h:commandButton action="#{aktualiziraneNaKlient.goToAdd()}" value="Добави"
-				disabled="#{!aktualiziraneNaKlient.goToAddAllowed}" />
-				
-		    <br />
-		    <h:outputText value="#{aktualiziraneNaKlient.errorMessage}"/>
-	    
-	    </h:form>
+			<table class="buttonTable" style="margin-left: 35px;">
+				<tr>
+					<td><h:commandButton
+							action="#{aktualiziraneNaKlient.deselectRow()}" value="Отмени"
+							class="regButton" style="width:80px;height:40px;"
+							disabled="#{!aktualiziraneNaKlient.rowSelected}" /> <h:commandButton
+							action="#{aktualiziraneNaKlient.goToAdd()}" value="Добави"
+							class="regButton" style="width:80px;height:40px;"
+							disabled="#{!aktualiziraneNaKlient.goToAddAllowed}" /> <h:outputText
+							value="#{aktualiziraneNaKlient.errorMessage}" /></td>
+				</tr>
+			</table>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>

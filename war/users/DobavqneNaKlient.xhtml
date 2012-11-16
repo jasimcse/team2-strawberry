@@ -8,146 +8,188 @@
 
 
 <ui:composition template="/common/template.xhtml">
-	
+
 	<ui:define name="pageContent">
-	    <h:form>
-		
-			<table>
+		<h:form>
+
+			<table class="mainTable">
 				<tr>
-					<td>
-						<h:outputLabel value="Име*">
-					    	<h:inputText id="personname" value="#{dobavqneNaKlient.namePerson}" maxlength="50" 
-					    		required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}" requiredMessage="задължително поле!" />
-					    	<h:message for="personname" />
-					    </h:outputLabel>
-					    <br />
-					     <h:outputLabel value="Фамилия*">
-					    	<h:inputText id="family" value="#{dobavqneNaKlient.familyPerson}" maxlength="50" 
-					    		required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}"  requiredMessage="задължително поле!" />
-					    	<h:message for="family" />
-					    </h:outputLabel>
-					    <br />
-					    <h:outputLabel value="Населено място*">
-					    	<h:inputText id="cityPerson" value="#{dobavqneNaKlient.addressCityPerson}" maxlength="30" 
-					    		required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}" requiredMessage="задължително поле!" />
-					    	<h:message for="cityPerson" />
-					    </h:outputLabel> 
-					    <br />
-					    <h:outputLabel value="Адрес*">
-					    	<h:inputText id="addressPerson" value="#{dobavqneNaKlient.addressLinePerson}" maxlength="100" 
-					    		required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}" requiredMessage="задължително поле!" />
-					    	<h:message for="addressPerson" />
-					    </h:outputLabel> 
-					    <br />
-					    <h:outputLabel value="Телефонен номер">
-					    	<h:inputText id="phonePerson" value="#{dobavqneNaKlient.phoneNumberPerson}" maxlength="15" 
-					    		validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
-					    		<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)"/>
-					    	</h:inputText>
-					    	<h:message for="phonePerson" />
-					    </h:outputLabel> 
-					    <br />
-					    <h:outputLabel value="Електронна поща">
-					    	<h:inputText id="mailPerson" value="#{dobavqneNaKlient.mailPerson}" maxlength="50"
-	    						validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
-	    						<f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$"/>
-	    					</h:inputText>
-					    	<h:message for="mailPerson" />
-					    </h:outputLabel> 
-					    <br />
-					    <h:outputLabel value="Номер на банковата сметка">
-					    	<h:inputText id="ibanPerson" value="#{dobavqneNaKlient.IBANNumberPerson}" maxlength="30"/>
-					    	<h:message for="ibanPerson" />
-					    </h:outputLabel> 
-					    <br />
-					    <h:outputLabel value="Банков код">
-					    	<h:inputText id="swiftCodePerson" value="#{dobavqneNaKlient.SWIFTCodePerson}" maxlength="20"/>
-					    	<h:message for="swiftCodePerson" />
-					    </h:outputLabel> 
-					    <br />
-					    
-					    
-				    	<h:commandButton value="Добави физическо лице" 
-				    	binding="#{dobavqneNaKlient.addPerson}" action="#{dobavqneNaKlient.addPerson()}"/> 
-				    	
-					</td>
-					
-					<td>
-					
-						<h:outputLabel value="Наименование на компанията*">
-					    	<h:inputText id="companyname" value="#{dobavqneNaKlient.nameCompany}" maxlength="100" 
-					    		required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}"  requiredMessage="задължително поле!" />
-					    	<h:message for="companyname" />
-					    </h:outputLabel>
-					    <br />
-					     <h:outputLabel value="Единен идентификационен код (ЕИК)*">
-					    	<h:inputText id="regnumber" value="#{dobavqneNaKlient.registrationNumberCompany}" maxlength="9" 
-					    		required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}"  requiredMessage="задължително поле!" />
-					    	<h:message for="regnumber" />
-					    </h:outputLabel> 
-					    <br />
-					    <h:outputLabel value="ДДС номер">
-					    	<h:inputText id="vat" value="#{dobavqneNaKlient.VATNumberCompany}" maxlength="11" />
-					    	<h:message for="vat" />
-					    </h:outputLabel> 
-					    <br />
-					    <h:outputLabel value="Лице за контакт">
-					    	<h:inputText id="contactperson" value="#{dobavqneNaKlient.contactPersonCompany}" maxlength="100" />
-					    	<h:message for="contactperson" />
-					    </h:outputLabel> 
-					    <br />
-					    <h:outputLabel value="Населено място*">
-					    	<h:inputText id="cityCompany" value="#{dobavqneNaKlient.addressCityCompany}" maxlength="30" 
-					    		required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}" requiredMessage="задължително поле!" />
-					    	<h:message for="cityCompany" />
-					    </h:outputLabel> 
-					    <br />
-					    <h:outputLabel value="Адрес*">
-					    	<h:inputText id="addressCompany" value="#{dobavqneNaKlient.addressLineCompany}" maxlength="100" 
-					    		required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}" requiredMessage="задължително поле!" />
-					    	<h:message for="addressCompany" />
-					    </h:outputLabel> 
-					    <br />
-					    <h:outputLabel value="Телефонен номер">
-					    	<h:inputText id="phoneCompany" value="#{dobavqneNaKlient.phoneNumberCompany}" maxlength="15" 
-					    		validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
-					    		<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)"/>
-					    	</h:inputText>
-					    	<h:message for="phoneCompany" />
-					    </h:outputLabel> 
-					    <br />
-					    <h:outputLabel value="Електронна поща">
-					    	<h:inputText id="mailCompany" value="#{dobavqneNaKlient.mailCompany}" maxlength="50"
-	    						validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
-	    						<f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$"/>
-	    					</h:inputText>
-					    	<h:message for="mailCompany" />
-					    </h:outputLabel> 
-					    <br />
-					    <h:outputLabel value="Номер на банковата сметка">
-					    	<h:inputText id="ibanCompany" value="#{dobavqneNaKlient.IBANNumberCompany}" maxlength="30"/>
-					    	<h:message for="ibanCompany" />
-					    </h:outputLabel> 
-					    <br />
-					    <h:outputLabel value="Банков код">
-					    	<h:inputText id="swiftCodeCompany" value="#{dobavqneNaKlient.SWIFTCodeCompany}" maxlength="20"/>
-					    	<h:message for="swiftCodeCompany" />
-					    </h:outputLabel> 
-					    <br />
-					    
-					    
-				   		<h:commandButton value="Добави юридическо лице" 
-				   		binding="#{dobavqneNaKlient.addCompany}" action="#{dobavqneNaKlient.addCompany()}"/> 
-					    <br />
-					    
-					</td>
+					<td><h:outputLabel value="Име*">
+							<br />
+							<h:inputText id="personname"
+								value="#{dobavqneNaKlient.namePerson}" maxlength="50"
+								required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}"
+								requiredMessage="задължително поле!" />
+							<h:message for="personname" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Фамилия*">
+							<br />
+							<h:inputText id="family" value="#{dobavqneNaKlient.familyPerson}"
+								maxlength="50"
+								required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}"
+								requiredMessage="задължително поле!" />
+							<h:message for="family" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Населено място*">
+							<br />
+							<h:inputText id="cityPerson"
+								value="#{dobavqneNaKlient.addressCityPerson}" maxlength="30"
+								required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}"
+								requiredMessage="задължително поле!" />
+							<h:message for="cityPerson" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Адрес*">
+							<br />
+							<h:inputText id="addressPerson"
+								value="#{dobavqneNaKlient.addressLinePerson}" maxlength="100"
+								required="#{not empty param[dobavqneNaKlient.addPerson.clientId]}"
+								requiredMessage="задължително поле!" />
+							<h:message for="addressPerson" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Телефонен номер">
+							<br />
+							<h:inputText id="phonePerson"
+								value="#{dobavqneNaKlient.phoneNumberPerson}" maxlength="15"
+								validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
+								<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)" />
+							</h:inputText>
+							<h:message for="phonePerson" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Електронна поща">
+							<br />
+							<h:inputText id="mailPerson"
+								value="#{dobavqneNaKlient.mailPerson}" maxlength="50"
+								validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
+								<f:validateRegex
+									pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$" />
+							</h:inputText>
+							<h:message for="mailPerson" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Номер на банковата сметка">
+							<br />
+							<h:inputText id="ibanPerson"
+								value="#{dobavqneNaKlient.IBANNumberPerson}" maxlength="30" />
+							<h:message for="ibanPerson" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Банков код">
+							<br />
+							<h:inputText id="swiftCodePerson"
+								value="#{dobavqneNaKlient.SWIFTCodePerson}" maxlength="20" />
+							<h:message for="swiftCodePerson" />
+						</h:outputLabel></td>
+
+				</tr>
+				<tr>
+					<td><h:commandButton value="Добави физическо лице"
+							class="regButton"
+							style="width:180px;height:40px;margin-left:20px;margin-top:20px;margin-bottom:30px;"
+							binding="#{dobavqneNaKlient.addPerson}"
+							action="#{dobavqneNaKlient.addPerson()}" /></td>
 				</tr>
 			</table>
-	    
-	    <h:outputText value="#{dobavqneNaKlient.errorMessage}"/>
-	    
-	    </h:form>
+			<table class="mainTable" style="border-top:2px solid black">
+				<tr>
+					<td><h:outputLabel value="Наименование на компанията*">
+							<br />
+							<h:inputText id="companyname"
+								value="#{dobavqneNaKlient.nameCompany}" maxlength="100"
+								required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}"
+								requiredMessage="задължително поле!" />
+							<h:message for="companyname" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Единен идентификационен код (ЕИК)*">
+							<br />
+							<h:inputText id="regnumber"
+								value="#{dobavqneNaKlient.registrationNumberCompany}"
+								maxlength="9"
+								required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}"
+								requiredMessage="задължително поле!" />
+							<h:message for="regnumber" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="ДДС номер">
+							<br />
+							<h:inputText id="vat"
+								value="#{dobavqneNaKlient.VATNumberCompany}" maxlength="11" />
+							<h:message for="vat" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Лице за контакт">
+							<br />
+							<h:inputText id="contactperson"
+								value="#{dobavqneNaKlient.contactPersonCompany}" maxlength="100" />
+							<h:message for="contactperson" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Населено място*">
+							<br />
+							<h:inputText id="cityCompany"
+								value="#{dobavqneNaKlient.addressCityCompany}" maxlength="30"
+								required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}"
+								requiredMessage="задължително поле!" />
+							<h:message for="cityCompany" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Адрес*">
+							<br />
+							<h:inputText id="addressCompany"
+								value="#{dobavqneNaKlient.addressLineCompany}" maxlength="100"
+								required="#{not empty param[dobavqneNaKlient.addCompany.clientId]}"
+								requiredMessage="задължително поле!" />
+							<h:message for="addressCompany" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Телефонен номер">
+							<br />
+							<h:inputText id="phoneCompany"
+								value="#{dobavqneNaKlient.phoneNumberCompany}" maxlength="15"
+								validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
+								<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)" />
+							</h:inputText>
+							<h:message for="phoneCompany" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Електронна поща">
+							<br />
+							<h:inputText id="mailCompany"
+								value="#{dobavqneNaKlient.mailCompany}" maxlength="50"
+								validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
+								<f:validateRegex
+									pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$" />
+							</h:inputText>
+							<h:message for="mailCompany" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Номер на банковата сметка">
+							<br />
+							<h:inputText id="ibanCompany"
+								value="#{dobavqneNaKlient.IBANNumberCompany}" maxlength="30" />
+							<h:message for="ibanCompany" />
+						</h:outputLabel></td>
+
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Банков код">
+							<br />
+							<h:inputText id="swiftCodeCompany"
+								value="#{dobavqneNaKlient.SWIFTCodeCompany}" maxlength="20" />
+							<h:message for="swiftCodeCompany" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:commandButton value="Добави юридическо лице"
+							class="regButton"
+							style="width:180px;height:40px;margin-left:20px;margin-top:20px;"
+							binding="#{dobavqneNaKlient.addCompany}"
+							action="#{dobavqneNaKlient.addCompany()}" /></td>
+				</tr>
+			</table>
+
+			<h:outputText value="#{dobavqneNaKlient.errorMessage}" />
+
+		</h:form>
 	</ui:define>
-	
+
 </ui:composition>
 </html>

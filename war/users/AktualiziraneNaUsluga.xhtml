@@ -7,121 +7,138 @@
 	xmlns:f="http://java.sun.com/jsf/core">
 
 <ui:composition template="/common/template.xhtml">
-	
+
 	<ui:define name="headSection">
-		
+
 	</ui:define>
 
 	<ui:define name="pageContent">
-	
+
 		<h:form>
 			<h:panelGroup>
 				<h:outputLabel value="Наименование на услугата">
-					<h:inputText value="#{aktualiziraneNaUsluga.searchDescription}" maxlength="100" />
+					<br />
+					<h:inputText value="#{aktualiziraneNaUsluga.searchDescription}"
+						maxlength="100" />
 				</h:outputLabel>
-				
+
 				<br />
-				<h:commandButton value="Търси" action="#{aktualiziraneNaUsluga.searchIt()}"/>
-				<h:commandButton value="Изчисти" action="#{aktualiziraneNaUsluga.resetSearch()}"/>
+				<h:commandButton value="Търси" class="regButton"
+					style="width:80px;height:40px;margin-left:20px;"
+					action="#{aktualiziraneNaUsluga.searchIt()}" />
+				<h:commandButton value="Изчисти" class="regButton"
+					style="width:80px;height:40px;"
+					action="#{aktualiziraneNaUsluga.resetSearch()}" />
 			</h:panelGroup>
 		</h:form>
-	
+
 		<h:form>
-		<div style="overflow-x: auto;"> <!-- scroll bar -->
-			
-			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
-			<h:dataTable
-				rows="#{configurationProperties.getPageSize()}"
-				value="#{aktualiziraneNaUsluga.spisukUslugi}"
-			    first="0"
-			    var="curr"
-			    rowClasses="#{aktualiziraneNaUsluga.rowStyleClasses}">
-				
-				<h:column>
-					<f:facet name="header">Наименование на услугата</f:facet>
+			<div style="overflow-x: auto;">
+				<!-- scroll bar -->
+
+				<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+				<h:dataTable rows="#{configurationProperties.getPageSize()}"
+					value="#{aktualiziraneNaUsluga.spisukUslugi}" first="0" var="curr"
+					rowClasses="#{aktualiziraneNaUsluga.rowStyleClasses}">
+
+					<h:column>
+						<f:facet name="header">Наименование на услугата</f:facet>
 					#{curr.description}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Цена на услугата за час</f:facet>
+
+					<h:column>
+						<f:facet name="header">Цена на услугата за час</f:facet>
 					#{curr.priceHour}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Промени</f:facet>
-					<h:commandLink action="#{aktualiziraneNaUsluga.selectRow(curr)}" value="Промени" />
-				</h:column>
-				
-				<h:column rendered="#{aktualiziraneNaUsluga.choosingAllowed}">
-					<f:facet name="header">Избери</f:facet>
-					<h:commandLink action="#{aktualiziraneNaUsluga.chooseService(curr)}" value="Избери" />
-				</h:column>
-				
-				<f:facet name="footer">
-				
-					<!-- предишна страница -->
-					<h:commandLink disabled="#{aktualiziraneNaUsluga.page - 1 lt 0}"
-						action="#{aktualiziraneNaUsluga.setPage(aktualiziraneNaUsluga.page - 1)}"
-						value="&lt;&lt;" />
-						
-					<h:outputText value=" " />
-						
-					<!-- други страници -->
-					<ui:repeat value="#{aktualiziraneNaUsluga.pagesList}" var="currPage">
+
+					<h:column>
+						<f:facet name="header">Промени</f:facet>
+						<h:commandLink action="#{aktualiziraneNaUsluga.selectRow(curr)}"
+							value="Промени" />
+					</h:column>
+
+					<h:column rendered="#{aktualiziraneNaUsluga.choosingAllowed}">
+						<f:facet name="header">Избери</f:facet>
 						<h:commandLink
-							disabled="#{aktualiziraneNaUsluga.getPage() eq currPage.intValue() - 1}"
-							action="#{aktualiziraneNaUsluga.setPage(currPage.intValue() - 1)}"
-							value="#{currPage}" />
-							
+							action="#{aktualiziraneNaUsluga.chooseService(curr)}"
+							value="Избери" />
+					</h:column>
+
+					<f:facet name="footer">
+
+						<!-- предишна страница -->
+						<h:commandLink disabled="#{aktualiziraneNaUsluga.page - 1 lt 0}"
+							action="#{aktualiziraneNaUsluga.setPage(aktualiziraneNaUsluga.page - 1)}"
+							value="&lt;&lt;" />
+
 						<h:outputText value=" " />
-					</ui:repeat>
-					
-					<!-- следваща страница -->
-					<h:commandLink disabled="#{aktualiziraneNaUsluga.page + 1 ge aktualiziraneNaUsluga.pagesCount}"
-						action="#{aktualiziraneNaUsluga.setPage(aktualiziraneNaUsluga.page + 1)}"
-						value="&gt;&gt;" />
-							
-				</f:facet>
-				 
-			</h:dataTable>
-		</div>
-		
-		<h:outputLabel value="Наименование на услугата">
-			<h:inputText id="description"
-				value="#{aktualiziraneNaUsluga.description}" readonly="true" />
-			<h:message for="description" />
-		</h:outputLabel>
-		<br />
 
-		<h:outputLabel value="Цена на услугата за час*">
-			<h:inputText id="priceHour" 
-				value="#{aktualiziraneNaUsluga.priceHour}"
-				required="true" requiredMessage="задължително поле!"
-				readonly="#{!aktualiziraneNaUsluga.rowSelected or !aktualiziraneNaUsluga.changingAllowed}">
-					<f:validateDoubleRange minimum="0" maximum="10000" />
-			</h:inputText>
-			<h:message for="priceHour" />
-		</h:outputLabel>
-		<br />
-		
-		<h:commandButton value="Запази" action="#{aktualiziraneNaUsluga.writeIt()}"
-				disabled="#{!aktualiziraneNaUsluga.rowSelected or !aktualiziraneNaUsluga.changingAllowed}"/>
+						<!-- други страници -->
+						<ui:repeat value="#{aktualiziraneNaUsluga.pagesList}"
+							var="currPage">
+							<h:commandLink
+								disabled="#{aktualiziraneNaUsluga.getPage() eq currPage.intValue() - 1}"
+								action="#{aktualiziraneNaUsluga.setPage(currPage.intValue() - 1)}"
+								value="#{currPage}" />
 
+							<h:outputText value=" " />
+						</ui:repeat>
+
+						<!-- следваща страница -->
+						<h:commandLink
+							disabled="#{aktualiziraneNaUsluga.page + 1 ge aktualiziraneNaUsluga.pagesCount}"
+							action="#{aktualiziraneNaUsluga.setPage(aktualiziraneNaUsluga.page + 1)}"
+							value="&gt;&gt;" />
+
+					</f:facet>
+
+				</h:dataTable>
+			</div>
+			<table class="mainTable" style="margin-left: 0px;">
+				<tr>
+					<td><h:outputLabel value="Наименование на услугата">
+							<br />
+							<h:inputText id="description"
+								value="#{aktualiziraneNaUsluga.description}" readonly="true" />
+							<h:message for="description" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Цена на услугата за час*">
+							<br />
+							<h:inputText id="priceHour"
+								value="#{aktualiziraneNaUsluga.priceHour}" required="true"
+								requiredMessage="задължително поле!"
+								readonly="#{!aktualiziraneNaUsluga.rowSelected or !aktualiziraneNaUsluga.changingAllowed}">
+								<f:validateDoubleRange minimum="0" maximum="10000" />
+							</h:inputText>
+							<h:message for="priceHour" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:commandButton value="Запази" class="regButton"
+							style="width:80px;height:40px;margin-left:20px;"
+							action="#{aktualiziraneNaUsluga.writeIt()}"
+							disabled="#{!aktualiziraneNaUsluga.rowSelected or !aktualiziraneNaUsluga.changingAllowed}" />
+					</td>
+				</tr>
+			</table>
 		</h:form>
-		
+
 		<h:form>
-		<!-- формата е разделена на две, за да не се проверяват данните
+			<!-- формата е разделена на две, за да не се проверяват данните
 		при натискането на бутоните "Отмени" и "Добави" -->
-		
-		<h:commandButton action="#{aktualiziraneNaUsluga.deselectRow()}" value="Отмени"
-			disabled="#{!aktualiziraneNaUsluga.rowSelected}" />
-			
-		<br />
-		<h:outputText value="#{aktualiziraneNaUsluga.errorMessage}" />
-
+			<table class="buttonTable">
+				<tr>
+					<td><h:commandButton
+							action="#{aktualiziraneNaUsluga.deselectRow()}" value="Отмени"
+							class="regButton"
+							style="width:80px;height:40px;margin-left:-60px;"
+							disabled="#{!aktualiziraneNaUsluga.rowSelected}" /> <br /> <h:outputText
+							value="#{aktualiziraneNaUsluga.errorMessage}" /></td>
+				</tr>
+			</table>
 		</h:form>
-			
+
 	</ui:define>
-	
+
 </ui:composition>
 </html>
