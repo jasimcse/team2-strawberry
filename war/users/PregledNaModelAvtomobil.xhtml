@@ -7,127 +7,147 @@
 	xmlns:f="http://java.sun.com/jsf/core">
 
 <ui:composition template="/common/template.xhtml">
-	
+
 	<ui:define name="headSection">
-		
+
 	</ui:define>
 
 	<ui:define name="pageContent">
-	
+
 		<h:form>
 			<h:panelGroup>
-				<h:outputLabel value="Марка на автомобила">
-					<h:inputText value="#{pregledNaModelAvtomobil.searchBrand}" maxlength="50" />
-				</h:outputLabel>
-				<br />
-				<h:outputLabel value="Модел на автомобила">
-					<h:inputText value="#{pregledNaModelAvtomobil.searchModel}" maxlength="50" />
-				</h:outputLabel>
-				<br />
-				
-				<h:commandButton value="Търси" action="#{pregledNaModelAvtomobil.searchIt()}"/>
-				<h:commandButton value="Изчисти" action="#{pregledNaModelAvtomobil.resetSearch()}"/>
+				<table class="mainTable">
+					<tr>
+						<td><h:outputLabel value="Марка на автомобила">
+								<br />
+								<h:inputText value="#{pregledNaModelAvtomobil.searchBrand}"
+									maxlength="50" />
+							</h:outputLabel></td>
+						<td><h:outputLabel value="Модел на автомобила">
+								<br />
+								<h:inputText value="#{pregledNaModelAvtomobil.searchModel}"
+									maxlength="50" />
+							</h:outputLabel></td>
+					</tr>
+					<tr>
+						<td><h:commandButton value="Търси" class="regButton"
+								style="width:80px;height:40px;margin-left:20px;"
+								action="#{pregledNaModelAvtomobil.searchIt()}" /> <h:commandButton
+								value="Изчисти" class="regButton"
+								style="width:80px;height:40px;"
+								action="#{pregledNaModelAvtomobil.resetSearch()}" /></td>
+					</tr>
+				</table>
 			</h:panelGroup>
 		</h:form>
-		
-	
-		<div id="scroolTable"> <!-- scroll bar -->
-		<h:form>
-			
-			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
-			<h:dataTable
-				rows="#{configurationProperties.getPageSize()}"
-				value="#{pregledNaModelAvtomobil.spisukModeliAvtomobili}"
-			    first="0"
-			    var="curr"
-			    rowClasses="#{pregledNaModelAvtomobil.rowStyleClasses}">
-				
-				<h:column>
-					<f:facet name="header">Марка на автомобила</f:facet>
+
+
+		<div id="scroolTable" style="margin-top: 10px;">
+			<!-- scroll bar -->
+			<h:form>
+
+				<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+				<h:dataTable rows="#{configurationProperties.getPageSize()}"
+					value="#{pregledNaModelAvtomobil.spisukModeliAvtomobili}" first="0"
+					var="curr" rowClasses="#{pregledNaModelAvtomobil.rowStyleClasses}">
+
+					<h:column>
+						<f:facet name="header">Марка на автомобила</f:facet>
 					#{curr.brand}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Модел на автомобила</f:facet>
+
+					<h:column>
+						<f:facet name="header">Модел на автомобила</f:facet>
 					#{curr.model}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Прегледай</f:facet>
-					<h:commandButton action="#{pregledNaModelAvtomobil.selectRow(curr)}" value="Прегледай" />
-				</h:column>
-				
-				<h:column rendered="#{pregledNaModelAvtomobil.choosingAlowed}">
-					<f:facet name="header">Избери</f:facet>
-					<h:commandButton action="#{pregledNaModelAvtomobil.chooseVehicleModel(curr)}" value="Избери" />
-				</h:column>
-				
-				<f:facet name="footer">
-				
-					<!-- предишна страница -->
-					<h:commandLink disabled="#{pregledNaModelAvtomobil.page - 1 lt 0}"
-						action="#{pregledNaModelAvtomobil.setPage(pregledNaModelAvtomobil.page - 1)}"
-						value="&lt;&lt;" />
-						
-					<h:outputText value=" " />
-						
-					<!-- други страници -->
-					<ui:repeat value="#{pregledNaModelAvtomobil.pagesList}" var="currPage">
-						<h:commandLink
-							disabled="#{pregledNaModelAvtomobil.getPage() eq currPage.intValue() - 1}"
-							action="#{pregledNaModelAvtomobil.setPage(currPage.intValue() - 1)}"
-							value="#{currPage}" />
-							
+
+					<h:column>
+						<f:facet name="header">Прегледай</f:facet>
+						<h:commandButton
+							action="#{pregledNaModelAvtomobil.selectRow(curr)}"
+							value="Прегледай" />
+					</h:column>
+
+					<h:column rendered="#{pregledNaModelAvtomobil.choosingAlowed}">
+						<f:facet name="header">Избери</f:facet>
+						<h:commandButton
+							action="#{pregledNaModelAvtomobil.chooseVehicleModel(curr)}"
+							value="Избери" />
+					</h:column>
+
+					<f:facet name="footer">
+
+						<!-- предишна страница -->
+						<h:commandLink disabled="#{pregledNaModelAvtomobil.page - 1 lt 0}"
+							action="#{pregledNaModelAvtomobil.setPage(pregledNaModelAvtomobil.page - 1)}"
+							value="&lt;&lt;" />
+
 						<h:outputText value=" " />
-					</ui:repeat>
-					
-					<!-- следваща страница -->
-					<h:commandLink disabled="#{pregledNaModelAvtomobil.page + 1 ge pregledNaModelAvtomobil.pagesCount}"
-						action="#{pregledNaModelAvtomobil.setPage(pregledNaModelAvtomobil.page + 1)}"
-						value="&gt;&gt;" />
-							
-				</f:facet>
-				 
-			</h:dataTable>
-		</h:form>
-		</div>
-		
-		<h:form>
-	    
-			<h:outputLabel value="Марка на автомобила*">
-				<h:inputText id="brand"
-					value="#{pregledNaModelAvtomobil.brand}" readonly="true" />
-				<h:message for="brand" />
-			</h:outputLabel>
-			<br />
 
-			<h:outputLabel value="Модел на автомобила*">
-				<h:inputText id="model"
-					value="#{pregledNaModelAvtomobil.model}" readonly="true" />
-				<h:message for="model" />
-			</h:outputLabel>
-			<br />
+						<!-- други страници -->
+						<ui:repeat value="#{pregledNaModelAvtomobil.pagesList}"
+							var="currPage">
+							<h:commandLink
+								disabled="#{pregledNaModelAvtomobil.getPage() eq currPage.intValue() - 1}"
+								action="#{pregledNaModelAvtomobil.setPage(currPage.intValue() - 1)}"
+								value="#{currPage}" />
 
-			<h:outputLabel value="Характеристики">
-				<h:inputTextarea id="characteristics"
-					value="#{pregledNaModelAvtomobil.characteristics}"
-					readonly="true" />
-				<h:message for="characteristics" />
-			</h:outputLabel>
-			<br />
-			
+							<h:outputText value=" " />
+						</ui:repeat>
+
+						<!-- следваща страница -->
+						<h:commandLink
+							disabled="#{pregledNaModelAvtomobil.page + 1 ge pregledNaModelAvtomobil.pagesCount}"
+							action="#{pregledNaModelAvtomobil.setPage(pregledNaModelAvtomobil.page + 1)}"
+							value="&gt;&gt;" />
+
+					</f:facet>
+
+				</h:dataTable>
 			</h:form>
-			
-			<h:form>
+		</div>
+
+		<h:form>
+			<table class="mainTable">
+				<tr>
+					<td><h:outputLabel value="Марка на автомобила*">
+							<br />
+							<h:inputText id="brand" value="#{pregledNaModelAvtomobil.brand}"
+								readonly="true" />
+							<h:message for="brand" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Модел на автомобила*">
+							<br />
+							<h:inputText id="model" value="#{pregledNaModelAvtomobil.model}"
+								readonly="true" />
+							<h:message for="model" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Характеристики">
+							<br />
+							<h:inputTextarea id="characteristics"
+								value="#{pregledNaModelAvtomobil.characteristics}"
+								readonly="true" />
+							<h:message for="characteristics" />
+						</h:outputLabel></td>
+				</tr>
+			</table>
+		</h:form>
+
+		<h:form>
 			<!-- формата е разделена на две, за да не се проверяват данните
 			при натискането на бутоните "Отмени" и "Добави" -->
-			
-			<h:commandButton action="#{pregledNaModelAvtomobil.deselectRow()}" value="Отмени"
-				disabled="#{!pregledNaModelAvtomobil.rowSelected}" />
-				
+			<table class="buttonTable">
+				<tr>
+					<td><h:commandButton
+							action="#{pregledNaModelAvtomobil.deselectRow()}" value="Отмени"
+							class="regButton"
+							style="width:80px;height:40px;margin-left:-40px;"
+							disabled="#{!pregledNaModelAvtomobil.rowSelected}" /></td>
+				</tr>
+			</table>
 		</h:form>
-			
+
 	</ui:define>
-	
+
 </ui:composition>
 </html>

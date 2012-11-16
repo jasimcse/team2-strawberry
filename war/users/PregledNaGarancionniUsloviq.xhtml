@@ -7,112 +7,121 @@
 	xmlns:f="http://java.sun.com/jsf/core">
 
 <ui:composition template="/common/template.xhtml">
-	
+
 	<ui:define name="headSection">
-		
+
 	</ui:define>
 
 	<ui:define name="pageContent">
-	
-		<div id="scroolTable"> <!-- scroll bar -->
-		<h:form>
-			
-			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
-			<h:dataTable
-				rows="#{configurationProperties.getPageSize()}"
-				value="#{pregledNaGarancionniUsloviq.spisukGarancionniUsloviq}"
-			    first="0"
-			    var="curr"
-			    rowClasses="#{pregledNaGarancionniUsloviq.rowStyleClasses}">
-				
-				<h:column>
-					<f:facet name="header">Месеци гаранция</f:facet>
+
+		<div id="scroolTable">
+			<!-- scroll bar -->
+			<h:form>
+
+				<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+				<h:dataTable rows="#{configurationProperties.getPageSize()}"
+					value="#{pregledNaGarancionniUsloviq.spisukGarancionniUsloviq}"
+					first="0" var="curr"
+					rowClasses="#{pregledNaGarancionniUsloviq.rowStyleClasses}">
+
+					<h:column>
+						<f:facet name="header">Месеци гаранция</f:facet>
 					#{curr.months}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Километри гаранция</f:facet>
+
+					<h:column>
+						<f:facet name="header">Километри гаранция</f:facet>
 					#{curr.mileage}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Други гаранционни условия</f:facet>
+
+					<h:column>
+						<f:facet name="header">Други гаранционни условия</f:facet>
 					#{curr.otherConditions}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Прегледай</f:facet>
-					<h:commandButton action="#{pregledNaGarancionniUsloviq.selectRow(curr)}" value="Прегледай" />
-				</h:column>
-				
-				<f:facet name="footer">
-				
-					<!-- предишна страница -->
-					<h:commandLink disabled="#{pregledNaGarancionniUsloviq.page - 1 lt 0}"
-						action="#{pregledNaGarancionniUsloviq.setPage(pregledNaGarancionniUsloviq.page - 1)}"
-						value="&lt;&lt;" />
-						
-					<h:outputText value=" " />
-						
-					<!-- други страници -->
-					<ui:repeat value="#{pregledNaGarancionniUsloviq.pagesList}" var="currPage">
+
+					<h:column>
+						<f:facet name="header">Прегледай</f:facet>
+						<h:commandButton
+							action="#{pregledNaGarancionniUsloviq.selectRow(curr)}"
+							value="Прегледай" />
+					</h:column>
+
+					<f:facet name="footer">
+
+						<!-- предишна страница -->
 						<h:commandLink
-							disabled="#{pregledNaGarancionniUsloviq.getPage() eq currPage.intValue() - 1}"
-							action="#{pregledNaGarancionniUsloviq.setPage(currPage.intValue() - 1)}"
-							value="#{currPage}" />
-							
+							disabled="#{pregledNaGarancionniUsloviq.page - 1 lt 0}"
+							action="#{pregledNaGarancionniUsloviq.setPage(pregledNaGarancionniUsloviq.page - 1)}"
+							value="&lt;&lt;" />
+
 						<h:outputText value=" " />
-					</ui:repeat>
-					
-					<!-- следваща страница -->
-					<h:commandLink disabled="#{pregledNaGarancionniUsloviq.page + 1 ge pregledNaGarancionniUsloviq.pagesCount}"
-						action="#{pregledNaGarancionniUsloviq.setPage(pregledNaGarancionniUsloviq.page + 1)}"
-						value="&gt;&gt;" />
-							
-				</f:facet>
-				 
-			</h:dataTable>
-		</h:form>
-		</div>
-		
-		<h:form>
-	    
-			<h:outputLabel value="Месеци гаранция">
-				<h:inputText id="months"
-					value="#{pregledNaGarancionniUsloviq.months}" readonly="true" />
-				<h:message for="months" />
-			</h:outputLabel>
-			<br />
 
-			<h:outputLabel value="Километри гаранция*">
-				<h:inputText id="milage" 
-					value="#{pregledNaGarancionniUsloviq.mileage}" readonly="true" />
-				<h:message for="milage" />
-			</h:outputLabel>
-			<br />
+						<!-- други страници -->
+						<ui:repeat value="#{pregledNaGarancionniUsloviq.pagesList}"
+							var="currPage">
+							<h:commandLink
+								disabled="#{pregledNaGarancionniUsloviq.getPage() eq currPage.intValue() - 1}"
+								action="#{pregledNaGarancionniUsloviq.setPage(currPage.intValue() - 1)}"
+								value="#{currPage}" />
 
-			<h:outputLabel value="Други гаранционни условия">
-				<h:inputTextarea id="otherConditions"
-					value="#{pregledNaGarancionniUsloviq.otherConditions}" readonly="true" />
-				<h:message for="otherConditions" />
-			</h:outputLabel>
-			<br />
-			
+							<h:outputText value=" " />
+						</ui:repeat>
+
+						<!-- следваща страница -->
+						<h:commandLink
+							disabled="#{pregledNaGarancionniUsloviq.page + 1 ge pregledNaGarancionniUsloviq.pagesCount}"
+							action="#{pregledNaGarancionniUsloviq.setPage(pregledNaGarancionniUsloviq.page + 1)}"
+							value="&gt;&gt;" />
+
+					</f:facet>
+
+				</h:dataTable>
 			</h:form>
-			
-			<h:form>
+		</div>
+
+		<h:form>
+			<table class="mainTable">
+				<tr>
+					<td><h:outputLabel value="Месеци гаранция">
+							<br />
+							<h:inputText id="months"
+								value="#{pregledNaGarancionniUsloviq.months}" readonly="true" />
+							<h:message for="months" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Километри гаранция*">
+							<br />
+							<h:inputText id="milage"
+								value="#{pregledNaGarancionniUsloviq.mileage}" readonly="true" />
+							<h:message for="milage" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Други гаранционни условия">
+							<br />
+							<h:inputTextarea id="otherConditions"
+								value="#{pregledNaGarancionniUsloviq.otherConditions}"
+								readonly="true" />
+							<h:message for="otherConditions" />
+						</h:outputLabel></td>
+				</tr>
+			</table>
+		</h:form>
+
+		<h:form>
 			<!-- формата е разделена на две, за да не се проверяват данните
 			при натискането на бутоните "Отмени" и "Добави" -->
-			
-			<h:commandButton action="#{pregledNaGarancionniUsloviq.deselectRow()}" value="Отмени"
-				disabled="#{!pregledNaGarancionniUsloviq.rowSelected}" />
-				
-			<br />
-			<h:outputText value="#{pregledNaGarancionniUsloviq.errorMessage}" />
-
+			<table class="buttonTable">
+				<tr>
+					<td><h:commandButton
+							action="#{pregledNaGarancionniUsloviq.deselectRow()}"
+							value="Отмени" class="regButton"
+							style="width:80px;height:40px;margin-left:-40px;"
+							disabled="#{!pregledNaGarancionniUsloviq.rowSelected}" /> <br />
+						<h:outputText value="#{pregledNaGarancionniUsloviq.errorMessage}" />
+					</td>
+				</tr>
+			</table>
 		</h:form>
-			
+
 	</ui:define>
-	
+
 </ui:composition>
 </html>
