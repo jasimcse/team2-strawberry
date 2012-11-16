@@ -43,7 +43,7 @@ public class SparePartRequest implements Serializable {
 	private static final Set<String> IGNORED_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {"PARENT_FIELD", "IGNORED_FIELDS", "NULLABLE_FIELDS",
 					      "NEW", "COMPLETED",
-					      "thisEntity", "clientOrder", "sparePart"}));
+					      "thisEntity", "clientOrder", "sparePart", "autoservice"}));
 	
 	private static final Set<String> NULLABLE_FIELDS = new HashSet<String>(Arrays.asList(
 			new String[] {}));
