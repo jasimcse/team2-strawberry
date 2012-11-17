@@ -89,9 +89,9 @@
 					</h:column>
 					<h:column rendered="#{aktualiziraneNaDostav4ik.choosingAllowed}">
 						<f:facet name="header">Избери</f:facet>
-						<h:commandLink
+						<h:commandButton
 							action="#{aktualiziraneNaDostav4ik.chooseSupplier(curr)}"
-							value="Избери" />
+							value="Избери" class="inTableButton"/>
 					</h:column>
 					<f:facet name="footer">
 						<!-- предишна страница -->
