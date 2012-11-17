@@ -12,92 +12,126 @@
 	  
 	  <h:form>
 			<h:panelGroup>
-			
+				<table class="mainTable" style="margin-bottom:10px;">
+				<tr>
+				<td>
 				<h:outputLabel value="Избери клиент" />
-				<h:commandButton value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseClient()}" /> 
+				</td>
+				<td>
+				<h:commandButton value="Избери" class="regButton" style="width:80px;height:40px;margin-left:20px;margin-top:20px;" action="#{aktualiziraneNaKlientskaPoru4ka.chooseClient()}" /> 
+				</td>
+				</tr>
 				<h:panelGroup rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.person}">
 	    			<!-- ако клиентът е физическо лице се изчертава това -->
-		    		<h:outputLabel value="Име на клиент">
+	    			<tr><td>
+		    		<h:outputLabel value="Име на клиент"><br />
 		    			<h:inputText id="searchpersonname" value="#{aktualiziraneNaKlientskaPoru4ka.client.person.name}" maxlength="50" 
 							readonly = "true" />
 		    			<h:message for="searchpersonname" />
 		   			</h:outputLabel>
-		    		<h:outputLabel value="Фамилия на клиент">
+		   			</td>
+		   			<td>
+		    		<h:outputLabel value="Фамилия на клиент"><br />
 		   	 			<h:inputText id="searchpersonfamily" value="#{aktualiziraneNaKlientskaPoru4ka.client.person.family}" maxlength="50" 
 							readonly = "true" />
 		    			<h:message for="searchpersonfamily" />
 		    		</h:outputLabel>
+		    		</td>
+		    		</tr>
 				</h:panelGroup>
 	         
 	    		<h:panelGroup rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.company}">
 	    			<!-- ако клиентът е юридическо лице се изчертава това -->
+	    			<tr>
+	    			<td>
 					<h:outputLabel value="Наименование на фирма">
 						<h:inputText id="searchcompanyname" value="#{aktualiziraneNaKlientskaPoru4ka.client.company.name}" maxlength="100" 
 							readonly = "true" />
 		   				<h:message for="searchcompanyname" />
 					</h:outputLabel>
-				</h:panelGroup>
-				<br />
-				
-		
-				<h:outputLabel value="Регистрационен номер на автомобила">
+					</td>
+					</tr>
+				</h:panelGroup>		
+		<tr>
+		<td>
+				<h:outputLabel value="Рег.№ на автомобила">
 	    			<h:inputText id="searchplatenum" value="#{aktualiziraneNaKlientskaPoru4ka.vehicle.plateNumber}" maxlength="8" 
 	    				readonly="true"/>
 	    			<h:message for="searchplatenum" />
-	   		 	</h:outputLabel> 
-	   			 <h:commandButton value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseAvtomobil()}" /> 
-	    		<br />
-	    		
+	   		 	</h:outputLabel>
+	   		 	</td>
+	   		 	<td>
+	   			 <h:commandButton value="Избери" 
+	   			 class="regButton" style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
+	   			 action="#{aktualiziraneNaKlientskaPoru4ka.chooseAvtomobil()}" /> 
+	    		</td> 
+	    		</tr>
+	    		<tr><td>
 	    		<h:outputLabel value="Автосервиз">
 	    			<h:selectOneMenu value="#{aktualiziraneNaKlientskaPoru4ka.searchAutoservice}">
 						<f:selectItems value="#{aktualiziraneNaKlientskaPoru4ka.autoservices}" />
 					</h:selectOneMenu>
 	    		</h:outputLabel>
-	    		<br />
-	    		
-	    		<h:outputLabel value="Име на служител">
+	    		</td>
+	    		</tr>
+	    		<tr>
+	    		<td>
+	    		<h:outputLabel value="Име на служител"><br />
 		    		<h:inputText id="searchempname" value="#{aktualiziraneNaKlientskaPoru4ka.employee.name}" maxlength="50" 
 						readonly = "true" />
 		    		<h:message for="searchempname" />
 		   		</h:outputLabel>
-		    	<h:outputLabel value="Фамилия на служител">
+		   		<h:outputLabel value="Фамилия на служител"><br />
 		   	 		<h:inputText id="searchempfamily" value="#{aktualiziraneNaKlientskaPoru4ka.employee.family}" maxlength="50" 
 						readonly = "true" />
 		    		<h:message for="searchempfamily" />
 		    	</h:outputLabel>
-		    	<h:commandButton value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseEmployee()}" /> 
-		    	<br />
-		    		
-				<h:outputLabel value="Начална дата">
+		   		</td>
+		   		<td>
+		    	
+		    	<h:commandButton value="Избери" 
+		    	class="regButton" style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
+		    	action="#{aktualiziraneNaKlientskaPoru4ka.chooseEmployee()}" /> 
+		    	</td>
+		    	</tr>
+		    	<tr>
+		    	<td>	
+				<h:outputLabel value="Начална дата"><br />
 					<h:inputText value="" title="формат: ДД.ММ.ГГГГ"
 						convertorMessage="Невалидна дата. Пример: 21.12.2012">
 						<f:convertDateTime pattern="dd.MM.yyyy" />
 					</h:inputText>
 				</h:outputLabel>
-				<h:outputLabel value="Крайна дата">
+				<h:outputLabel value="Крайна дата"><br />
 					<h:inputText value="" title="формат: ДД.ММ.ГГГГ"
 						convertorMessage="Невалидна дата. Пример: 21.12.2012">
 						<f:convertDateTime pattern="dd.MM.yyyy" />
 					</h:inputText>
 				</h:outputLabel>
-				<br />
+				</td>
 				
+				</tr>
+				<tr><td>
 				<h:outputLabel value="Статус на поръчката">
 	    			<h:selectOneMenu value="#{aktualiziraneNaKlientskaPoru4ka.searchStatus}">
 						<f:selectItems value="#{aktualiziraneNaKlientskaPoru4ka.orderStatus}" />
 					</h:selectOneMenu>
 	    		</h:outputLabel>
-	    		<br />
-		
-				<h:commandButton value="Търси" disabled="true" />
-				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
+	    		</td>
+	    		<td>
+				<h:commandButton value="Търси" class="regButton" style="width:80px;height:40px;margin-left:20px;margin-top:20px;" disabled="true" />
+				<h:commandButton value="Изчисти" class="regButton" style="width:80px;height:40px;" disabled="true" /> &lt;---- Да се направи
+				</td>
+	    		</tr>
+				
+				</table>
 			</h:panelGroup>
 		</h:form>
 		
 		
 		<div id="scroolTable"> <!-- scroll bar -->
 		<h:form>
-			
+			<table>
 			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
 			<h:dataTable
 				rows="#{configurationProperties.getPageSize()}"
@@ -193,56 +227,65 @@
 				</f:facet>
 				 
 			</h:dataTable>
-			
+			</table>
 	   </h:form>
 	   </div>
 	   
 	   
 		<h:form>
 	     
-	     
+	     <table class="mainTable">
 	     	<h:panelGroup rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.person}">
 	    	<!-- ако клиентът е физическо лице се изчертава това -->
-		    <h:outputLabel value="Име на клиент">
+	    	<tr>
+	    	<td>
+		    <h:outputLabel value="Име на клиент"><br />
 		    	<h:inputText id="personname" value="#{aktualiziraneNaKlientskaPoru4ka.client.person.name}" maxlength="50" 
 		    		required="false" requiredMessage="задължително поле!" 
 					readonly = "true" />
 		    	<h:message for="personname" />
 		    </h:outputLabel>
-		    <h:outputLabel value="Фамилия на клиент">
+		    </td>
+		    <td>
+		    <h:outputLabel value="Фамилия на клиент"><br />
 		    	<h:inputText id="personfamily" value="#{aktualiziraneNaKlientskaPoru4ka.client.person.family}" maxlength="50" 
 		    		required="false" requiredMessage="задължително поле!"
 					readonly = "true" />
 		    	<h:message for="personfamily" />
 		    </h:outputLabel>
+		    </td>
+		    </tr>
 		</h:panelGroup>
 	         
 	    <h:panelGroup rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.company}">
 	    	<!-- ако клиентът е юридическо лице се изчертава това -->
-			<h:outputLabel value="Наименование на фирма">
+	    	<tr><td>
+			<h:outputLabel value="Наименование на фирма"><br />
 				<h:inputText id="companyname" value="#{aktualiziraneNaKlientskaPoru4ka.client.company.name}" maxlength="100" 
 		   			required="false" requiredMessage="задължително поле!"
 					readonly = "true" />
 		   		<h:message for="companyname" />
 			</h:outputLabel>
+			</td>
+			</tr>
 		</h:panelGroup>
-		<br />
- 		
- 		<h:outputLabel value="Регистрационен номер на автомобила">
+ 		<tr><td>
+ 		<h:outputLabel value="Рег.№ на автомобила"><br />
 	    	<h:inputText id="platenum" value="#{aktualiziraneNaKlientskaPoru4ka.vehicle.plateNumber}" maxlength="8" 
 	    		readonly="true"/>
 	    	<h:message for="platenum" />
 	    </h:outputLabel>
-	     <br />
+	     </td>
+	     <td>
 	     
-	     
-	     <h:outputLabel value="Автосервиз, в който се изпълнява поръчката:">
+	     <h:outputLabel value="Автосервиз, в който се изпълнява поръчката:"><br />
 	    	<h:inputText id="autoservice" value="#{aktualiziraneNaKlientskaPoru4ka.autoservice.name}" maxlength="100" 
 	    		readonly="true"/>
 	    	<h:message for="autoservice" />
 	    </h:outputLabel> 
-	    <br />
-	    
+	    </td>
+	    </tr>
+	    <tr><td colspan="2">
 	    <h:outputLabel value="Служител създал поръчката:">
 	    	<h:inputText id="empname" value="#{aktualiziraneNaKlientskaPoru4ka.employee.name}" maxlength="50" 
 	    		readonly="true"/>
@@ -251,31 +294,35 @@
 	    		readonly="true"/>
 	    	<h:message for="empfamily" />
 	    </h:outputLabel> 
-	    <br />
-	  
-		 <h:outputLabel value="Дата:">
+	    </td></tr>
+	  <tr>
+	  <td>
+		 <h:outputLabel value="Дата:"><br />
 	    	<h:inputText id="date" value="#{aktualiziraneNaKlientskaPoru4ka.date}" 
 	    		readonly="true">
 	    	<f:convertDateTime pattern="dd.MM.yyyy" />
 	    	</h:inputText>
 	    </h:outputLabel> 
-	    <br />
-		
-		<h:outputLabel value="Автомобилът е приет за ремонт">
-	   		<h:selectBooleanCheckbox value="#{aktualiziraneNaKlientskaPoru4ka.inAutoservice}"  
+	   	</td>
+		<td>
+		<h:outputLabel value="Автомобилът е приет за ремонт" style="height:50px;">
+	   		<h:selectBooleanCheckbox value="#{aktualiziraneNaKlientskaPoru4ka.inAutoservice}" style="margin-top:15px;" 
 	   			disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or
 	   			aktualiziraneNaKlientskaPoru4ka.isPaied() or !aktualiziraneNaKlientskaPoru4ka.isPriemchik()}" />
 	    </h:outputLabel>
-	    <br />
-	    
+	    </td>
+	    </tr>
+	    <tr><td colspan="2">
 	    <h:outputLabel value="Услуги, които ще бъдат извършени:">
 	    	<h:commandButton value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseUsluga()}" 
 				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or 
 				aktualiziraneNaKlientskaPoru4ka.isPaied() or !aktualiziraneNaKlientskaPoru4ka.isPriemchik()}"/> 
 	    </h:outputLabel>
-	    <br />
+	    </td></tr>
+	    </table>
 	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове --> 
 		<div id="scroolTable"> <!-- scroll bar -->
+		<table>
 		<h:dataTable
 			value="#{aktualiziraneNaKlientskaPoru4ka.spisukUslugi}"
 			var="curr"
@@ -325,11 +372,12 @@
 				disabled="#{curr.isDone()}"/>
 			</h:column> 
 		</h:dataTable>
+		</table>
 		</div>
 		<br />
 		
 		
-		<h:outputLabel value="Резервни части, които ще бъдат вложени:">
+		<h:outputLabel value="Резервни части, които ще бъдат вложени:" style="margin-bottom:10px;">
 	    	<h:commandButton  value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseSparePart()}"
 				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or 
 				!aktualiziraneNaKlientskaPoru4ka.isPriemchik() or aktualiziraneNaKlientskaPoru4ka.isPaied()}"/>
@@ -338,6 +386,7 @@
 	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове 
 	    Оцветяване на ред с липсващи резервни части-->
 		<div id="scroolTable"> <!-- scroll bar -->
+		<table>
 			<h:dataTable
 				value="#{aktualiziraneNaKlientskaPoru4ka.spisukRezervni4asti}"
 				var="curr"
@@ -413,23 +462,22 @@
 				</h:column>
 		
 				</h:dataTable>
+				<h:outputText value="Обща цена на поръчката: #{aktualiziraneNaKlientskaPoru4ka.clientOrderPrice}" />
+				</table>
 			</div>
-			<br />
-		
-			<h:outputText value="Обща цена на поръчката: #{aktualiziraneNaKlientskaPoru4ka.clientOrderPrice}" />
-			<br />
-
-	
-	    	<h:outputLabel value="Номер на платежно нареждане">
+			<table class="mainTable">
+			<tr><td>
+			<h:outputLabel value="Номер на платежно нареждане">
 	    		<h:inputText id="paynum" value="#{aktualiziraneNaKlientskaPoru4ka.paymentNumber}" maxlength="30" 
 	    			readonly="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.isPriemchik() or
 	    			aktualiziraneNaKlientskaPoru4ka.isPaied()}"/>
 	    		<h:message for="paynum" />
 	    	</h:outputLabel> 
-	    	<br />
-	    
+	    	</td></tr>
+	    	<tr><td>
 	    	 <h:outputLabel value="Статус на поръчката: #{aktualiziraneNaKlientskaPoru4ka.status}"/>
-	     	<br />
+	     	</td></tr>
+	     	<tr><td>
 	     	<h:outputLabel value="Промени статуса на поръчката: ">
 	     		<h:commandButton value="Платена поръчка" action="#{aktualiziraneNaKlientskaPoru4ka.finishedOrder(true)}"
 					disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or
@@ -440,28 +488,34 @@
 					aktualiziraneNaKlientskaPoru4ka.isPaied() or !aktualiziraneNaKlientskaPoru4ka.isPriemchik() or
 					aktualiziraneNaKlientskaPoru4ka.howManyServiceDone() != 0 or aktualiziraneNaKlientskaPoru4ka.howManySparePartUsed() != 0}"/>
 	    	</h:outputLabel>
-	    	<br />	
-	    
+	    	</td></tr>	
+	    	<tr><td>
 
-			<h:commandButton value="Запази" action="#{aktualiziraneNaKlientskaPoru4ka.saveOrder()}"
+			<h:commandButton value="Запази" 
+			class="regButton" style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
+			action="#{aktualiziraneNaKlientskaPoru4ka.saveOrder()}"
 				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed}"/>
-
-				
+</td></tr>
+				</table>
 		</h:form>
 		
 		<h:form>
 			<!-- формата е разделена на две, за да не се проверяват данните
 			при натискането на бутоните "Отмени" и "Добави" -->
-		
+		<table class="buttonTable">
+		<tr><td>
 			<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.deselectRow()}" value="Отмени"
+			class="regButton" style="width:80px;height:40px;margin-left:-40px;"
 				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected}"/>
 				
 			<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.goToAdd()}" value="Добави"
+			class="regButton" style="width:80px;height:40px;"
 				disabled="#{!aktualiziraneNaKlientskaPoru4ka.goToAddAllowed}" />
     		<br />
     
     		<h:outputText value="#{aktualiziraneNaKlientskaPoru4ka.errorMessage}"/>
-	    
+    		</td></tr>
+	    </table>
 		</h:form>
 	</ui:define>
 	
