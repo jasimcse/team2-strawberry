@@ -53,6 +53,7 @@
 							action="#{zapazvaneNa4as.changeMonth(-1)}"
 							disabled="#{!zapazvaneNa4as.prevMonthAllowed}"
 							value="Предишен месец" 
+							class="inTableButton"
 							/> <h:outputText value=" " /> <ui:repeat
 							value="#{zapazvaneNa4as.linkListPrev}" var="currLink">
 							<h:commandLink
@@ -65,7 +66,9 @@
 								disabled="#{currLink.disabled}" value="#{currLink.text}" />
 							<h:outputText value=" " />
 						</ui:repeat> <h:commandButton action="#{zapazvaneNa4as.changeMonth(1)}"
-							value="Следващ месец" /> <h:outputText value=" " />
+							value="Следващ месец" 
+							class="inTableButton"
+							/> <h:outputText value=" " />
 					</span>
 					<br />
 					<span> <h:outputLabel value="Дата: ">

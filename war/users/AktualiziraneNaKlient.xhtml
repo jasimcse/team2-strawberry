@@ -98,14 +98,14 @@
 					<h:column>
 						<f:facet name="header">Промени</f:facet>
 						<h:commandButton action="#{aktualiziraneNaKlient.selectRow(curr)}"
-							value="Промени" />
+							value="Промени" class="inTableButton"/>
 					</h:column>
 
 					<h:column rendered="#{aktualiziraneNaKlient.choosingAllowed}">
 						<f:facet name="header">Избери</f:facet>
 						<h:commandButton
 							action="#{aktualiziraneNaKlient.chooseClient(curr)}"
-							value="Избери" />
+							value="Избери" class="inTableButton"/>
 					</h:column>
 
 					<f:facet name="footer">

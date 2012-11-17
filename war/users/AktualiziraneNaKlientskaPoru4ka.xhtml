@@ -192,12 +192,12 @@
 				
 				<h:column>
 					<f:facet name="header">Промени</f:facet>
-					<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.selectRow(curr)}" value="Промени" />
+					<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.selectRow(curr)}" value="Промени" class="inTableButton"/>
 				</h:column>
 				
 				<h:column rendered="#{aktualiziraneNaKlientskaPoru4ka.choosingAllowed}">
 					<f:facet name="header">Избери</f:facet>
-					<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.choosePoru4ka(curr)}" value="Избери" />
+					<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.choosePoru4ka(curr)}" value="Избери" class="inTableButton"/>
 				</h:column>
 				
 				<f:facet name="footer">
@@ -314,7 +314,7 @@
 	    </tr>
 	    <tr><td colspan="2">
 	    <h:outputLabel value="Услуги, които ще бъдат извършени:">
-	    	<h:commandButton value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseUsluga()}" 
+	    	<h:commandButton value="Избери" class="inTableButton" action="#{aktualiziraneNaKlientskaPoru4ka.chooseUsluga()}" 
 				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or 
 				aktualiziraneNaKlientskaPoru4ka.isPaied() or !aktualiziraneNaKlientskaPoru4ka.isPriemchik()}"/> 
 	    </h:outputLabel>
@@ -363,12 +363,14 @@
 			<h:column rendered="#{aktualiziraneNaKlientskaPoru4ka.isAvtomontior() and !aktualiziraneNaKlientskaPoru4ka.isPaied()}" >
 				<f:facet name="header">Извършена услуга</f:facet>
 				<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.setEmployeeToService(curr)}" value="Извършена" 
+				class="inTableButton"
 				disabled="#{curr.isDone() or !aktualiziraneNaKlientskaPoru4ka.isInAutoservice()}"/>
 			</h:column> 
 			
 			<h:column rendered="#{aktualiziraneNaKlientskaPoru4ka.isPriemchik() and !aktualiziraneNaKlientskaPoru4ka.isPaied()}" >
 				<f:facet name="header">Премахни</f:facet>
 				<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.deleteUsluga(curr)}" value="Премахни" 
+				class="inTableButton"
 				disabled="#{curr.isDone()}"/>
 			</h:column> 
 		</h:dataTable>
@@ -378,7 +380,7 @@
 		
 		
 		<h:outputLabel value="Резервни части, които ще бъдат вложени:" style="margin-bottom:10px;">
-	    	<h:commandButton  value="Избери" action="#{aktualiziraneNaKlientskaPoru4ka.chooseSparePart()}"
+	    	<h:commandButton  value="Избери" class="inTableButton" action="#{aktualiziraneNaKlientskaPoru4ka.chooseSparePart()}"
 				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or 
 				!aktualiziraneNaKlientskaPoru4ka.isPriemchik() or aktualiziraneNaKlientskaPoru4ka.isPaied()}"/>
 	    </h:outputLabel>
@@ -452,12 +454,13 @@
 			
 				<h:column rendered="#{!aktualiziraneNaKlientskaPoru4ka.isPaied()}" >
 					<f:facet name="header">Промени</f:facet>
-					<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.toggleEditSparePartForClientOrder(curr)}" value="Промени" />
+					<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.toggleEditSparePartForClientOrder(curr)}" value="Промени" class="inTableButton"/>
 				</h:column>
 			
 				<h:column rendered="#{aktualiziraneNaKlientskaPoru4ka.isPriemchik() and !aktualiziraneNaKlientskaPoru4ka.isPaied()}" >
 					<f:facet name="header">Премахни</f:facet>
 					<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.deleteSparePart(curr)}" value="Премахни" 
+					class="inTableButton"
 						disabled="#{curr.isUsed()}"/>
 				</h:column>
 		
@@ -479,11 +482,12 @@
 	     	</td></tr>
 	     	<tr><td>
 	     	<h:outputLabel value="Промени статуса на поръчката: ">
-	     		<h:commandButton value="Платена поръчка" action="#{aktualiziraneNaKlientskaPoru4ka.finishedOrder(true)}"
+	     		<h:commandButton value="Платена поръчка" 
+	     		class="inTableButton" action="#{aktualiziraneNaKlientskaPoru4ka.finishedOrder(true)}"
 					disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or
 					aktualiziraneNaKlientskaPoru4ka.isPaied() or !aktualiziraneNaKlientskaPoru4ka.isPriemchik() or
 					aktualiziraneNaKlientskaPoru4ka.getStatus() != 'завършена' }"/>
-				<h:commandButton value="Блокирана поръчка" action="#{aktualiziraneNaKlientskaPoru4ka.finishedOrder(false)}"
+				<h:commandButton value="Блокирана поръчка" class="inTableButton" action="#{aktualiziraneNaKlientskaPoru4ka.finishedOrder(false)}"
 					disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or
 					aktualiziraneNaKlientskaPoru4ka.isPaied() or !aktualiziraneNaKlientskaPoru4ka.isPriemchik() or
 					aktualiziraneNaKlientskaPoru4ka.howManyServiceDone() != 0 or aktualiziraneNaKlientskaPoru4ka.howManySparePartUsed() != 0}"/>

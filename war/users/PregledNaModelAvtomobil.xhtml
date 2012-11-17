@@ -65,14 +65,14 @@
 						<f:facet name="header">Прегледай</f:facet>
 						<h:commandButton
 							action="#{pregledNaModelAvtomobil.selectRow(curr)}"
-							value="Прегледай" />
+							value="Прегледай" class="inTableButton"/>
 					</h:column>
 
 					<h:column rendered="#{pregledNaModelAvtomobil.choosingAlowed}">
 						<f:facet name="header">Избери</f:facet>
 						<h:commandButton
 							action="#{pregledNaModelAvtomobil.chooseVehicleModel(curr)}"
-							value="Избери" />
+							value="Избери" class="inTableButton"/>
 					</h:column>
 
 					<f:facet name="footer">

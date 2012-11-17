@@ -73,13 +73,13 @@
 				<tr>
 					<td><h:outputLabel value="Използвай доклад от диагностика:">
 							<h:commandButton value="Избери"
-								action="#{dobavqneNaKlientskaPoru4ka.chooseDiagnostika()}" />
+								action="#{dobavqneNaKlientskaPoru4ka.chooseDiagnostika()}" class="inTableButton"/>
 						</h:outputLabel></td>
 				</tr>
 				<tr>
 					<td><h:outputLabel value="Услуги, които ще бъдат извършени:">
 							<h:commandButton value="Избери"
-								action="#{dobavqneNaKlientskaPoru4ka.chooseUsluga()}" />
+								action="#{dobavqneNaKlientskaPoru4ka.chooseUsluga()}" class="inTableButton"/>
 						</h:outputLabel></td>
 				</tr>
 			</table>
@@ -117,7 +117,7 @@
 						<f:facet name="header">Премахни</f:facet>
 						<h:commandButton
 							action="#{dobavqneNaKlientskaPoru4ka.deleteUsluga(curr)}"
-							value="Премахни" />
+							value="Премахни" class="inTableButton"/>
 					</h:column>
 				</h:dataTable>
 			</div>
@@ -127,7 +127,7 @@
 					<td><h:outputLabel
 							value="Резервни части, които трябва ще бъдат вложени:">
 							<h:commandButton value="Избери"
-								action="#{dobavqneNaKlientskaPoru4ka.chooseSparePart()}" />
+								action="#{dobavqneNaKlientskaPoru4ka.chooseSparePart()}" class="inTableButton"/>
 						</h:outputLabel></td>
 				</tr>
 			</table>
