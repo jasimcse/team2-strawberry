@@ -834,7 +834,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 			{
 				SparePartReserved spPartReserved = new SparePartReserved();
 				spPartReserved.setClientOrderID(poru4ka.getID());
-				spPartReserved.setSparePartID(clSp.getClPart().getID());
+				spPartReserved.setSparePartID(clSp.getClPart().getSparePartID());
 			
 				if ( clSp.getQuantityAvailable() >= clSp.getClPart().getQuantity() )
 				{
@@ -851,7 +851,7 @@ public class AktualiziraneNaKlientskaPoru4ka implements Serializable {
 					SparePartRequest spPartRequest = new SparePartRequest();
 					spPartRequest.setAutoserviceID(currEmployee.getAutoserviceID());
 					spPartRequest.setClientOrderID(poru4ka.getID());
-					spPartRequest.setSparePartID(clSp.getClPart().getID());
+					spPartRequest.setSparePartID(clSp.getClPart().getSparePartID());
 					spPartRequest.setQuantity(clSp.getClPart().getQuantity() - listSpPartAuto.get(0).getQuantityAvailable());
 					spPartRequest.setQuantityDelivered(0);
 					spPartRequest.setStatus(SparePartRequest.NEW);
