@@ -467,9 +467,10 @@
 				</h:dataTable>
 				
 				</table>
-				<h:outputText value="Обща цена на поръчката: #{aktualiziraneNaKlientskaPoru4ka.clientOrderPrice}" />
+				
 			</div>
-			<table class="mainTable">
+			<h:outputText value="Обща цена на поръчката: #{aktualiziraneNaKlientskaPoru4ka.clientOrderPrice}" style="float:left;"/>
+			<table class="mainTable" style="clear:left;">
 			<tr><td>
 			<h:outputLabel value="Номер на платежно нареждане">
 	    		<h:inputText id="paynum" value="#{aktualiziraneNaKlientskaPoru4ka.paymentNumber}" maxlength="30" 
