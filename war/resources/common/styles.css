@@ -99,7 +99,7 @@ input[disabled='disabled']:hover{
 	background-color:#329555;
 	color: white;
 }
-.inTableButton.ACTIVE{
+.inTableButton:ACTIVE{
 	-webkit-transform: scale(0.9);
      -moz-transform: scale(0.9);
       -ms-transform: scale(0.9);
