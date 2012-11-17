@@ -22,14 +22,71 @@ a:hover{
 ul {
 	list-style-type: none;
 }
+table {
+	border: 1px solid #70DB93;;
+	padding: 0px;
+	margin: 0px;
+	border-collapse: collapse;
+}
+table td{
+	color: #FF3300;
+	text-shadow: 5px 5px 10px #FF3300;
+}
+tr {
+	padding: 0px;
+	margin: 0px;
+}
+
+th, td {
+	margin: 0;
+	border: 0;
+	color: #CD0000;
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-left: 2px;
+	padding-right: 2px;
+	border-right: 1px solid #70DB93;
+	border-left: 0px solid #70DB93;
+}
+
+thead>tr {
+	border: 1px solid #70DB93;
+	
+}
+
+tfoot>tr {
+	text-align: center;
+	border: 1px solid #70DB93;
+}
+
+
+.allowedLink {
+	font-style: italic;
+}
+
+
+.disabledLink {
+	font-weight: bold;
+}
+#scroolTable{
+	overflow-x: auto;
+	width: 900px;
+}
+
+/* Input type Text and Password */
+
+input, a {
+	margin: 4px;
+}
+
 input[type="text"]{
 	width: 200px;
-	background-color:transparent;
 	outline:none;
 	padding:1px;
-	border: 1px solid white;
 	color: black;
 	font-weight: bold;
+	background-color:transparent;
+	border: 1px solid white;
 	text-shadow: 5px 5px 10px #70DB93;
 	-webkit-border-radius: 2px 2px 2px 2px;
 	-moz-border-radius: 2px 2px 2px 2px;
@@ -38,21 +95,24 @@ input[type="text"]{
 	-moz-box-shadow: 2px 2px 3px  2px #097ec3;
 	box-shadow: 2px 2px 3px 2px #097ec3;
 }
+
 input[type="text"]:focus{
-	background-color:#FFF8DC;
+	background-color:#FEE5AC;
 }
+
 input[type="text"]:hover{
-	background-color:#FFF8DC;
+	background-color:#FEE5AC;
 }
+
 #serviceNotLogged input[type="text"],
 #serviceNotLogged input[type="password"]{
 	width: 200px;
 	outline: none;
-	border: 1px solid white;
 	color: #FC0000;
 	text-shadow: 5px 5px 10px #FC0000;
 	font-weight: bold;
 	background-color: transparent;
+	border: 1px solid white;
 	-webkit-border-radius: 2px 0 2px 0;
 	-moz-border-radius: 2px 0 2px 0;
 	border-radius: 2px 0 2px 0;
@@ -60,17 +120,11 @@ input[type="text"]:hover{
 	-moz-box-shadow: 2px 2px 3px  2px #FC0000;
 	box-shadow: 2px 2px 3px 2px #FC0000;
 }
-#serviceNotLogged input[type="text"]:hover,
-#serviceNotLogged input[type="password"]:hover{
-	background-color:#FFF8DC;
-}
-#serviceNotLogged input[type="text"]:focus,
-#serviceNotLogged input[type="password"]:focus{
-	background-color:#FFF8DC;
-}
+
 input[disabled='disabled']{
 	background-color: grey;
 }
+
 input[disabled='disabled']:ACTIVE{
 	-webkit-transform: none;
      -moz-transform: none;
@@ -78,36 +132,47 @@ input[disabled='disabled']:ACTIVE{
        -o-transform: none;
           transform: none;
 }
+
 input[disabled='disabled']:hover{
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
 }
+
 input[disabled='disabled']:hover{
 	background-color: grey;
 }
-.inTableButton{
-	border:none;
-	background-color:#70DB93;
-	color: white;
-	padding: 5px;
-	cursor: pointer;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	font-size: 90%;
-}
-.inTableButton:hover{
-	background-color:#329555;
-	color: white;
-}
-.inTableButton:ACTIVE{
-	-webkit-transform: scale(0.9);
-     -moz-transform: scale(0.9);
-      -ms-transform: scale(0.9);
-       -o-transform: scale(0.9);
-          transform: scale(0.9);
-}
+
+
+/* Button Styles */
+
+	/* Button outside from class mainTable */
+
+	.inTableButton{
+		border:none;
+		background-color:#70DB93;
+		color: white;
+		padding: 5px;
+		cursor: pointer;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		font-size: 90%;
+	}
+	
+	.inTableButton:hover{
+		background-color:#329555;
+		color: white;
+	}
+	
+	.inTableButton:active{
+		-webkit-transform: scale(0.9);
+	     -moz-transform: scale(0.9);
+	      -ms-transform: scale(0.9);
+	       -o-transform: scale(0.9);
+	          transform: scale(0.9);
+	}
+
 
 /* Header section */
 
@@ -124,6 +189,7 @@ input[disabled='disabled']:hover{
 	-moz-border-radius: 15px 2px 2px 15px;
 	border-radius: 15px 2px 2px 15px;
 }
+
 #title{
 	font-size: 30px;
 	margin-top: 20px;
@@ -133,7 +199,15 @@ input[disabled='disabled']:hover{
 	font-weight: bold;
 }
 
+
 /* Login Section */
+
+#loginSection {
+	float: right;
+	margin-right: 25px;
+	margin-top: 20px;
+	
+}
 
 #loginSection div span{
 	display: block;
@@ -147,20 +221,23 @@ input[disabled='disabled']:hover{
 	font-weight: bold;
 }
 
-
 #exitButton,
 #LoginButton{
 	float: left;
 }
+
 #LoginButton{
 	margin-top: -5px;
 }
 
-#loginSection {
-	float: right;
-	margin-right: 25px;
-	margin-top: 20px;
-	
+#serviceNotLogged input[type="text"]:hover,
+#serviceNotLogged input[type="password"]:hover{
+	background-color:#FEE5AC;
+}
+
+#serviceNotLogged input[type="text"]:focus,
+#serviceNotLogged input[type="password"]:focus{
+	background-color:#FEE5AC;
 }
 
 #serviceLogged {
@@ -180,7 +257,6 @@ input[disabled='disabled']:hover{
 	-moz-border-radius: 2px 15px 15px 2px;
 	border-radius: 2px 15px 15px 2px;
 }
-
 
 #errorMessage{
 	color: red !important;
@@ -219,6 +295,7 @@ input[disabled='disabled']:hover{
 	-o-transition: all 0.4s ease;
 	transition: all 0.4s ease;
 }
+
 #leftSection li a{
 	display:block;
 }
@@ -252,45 +329,50 @@ input[disabled='disabled']:hover{
 /* Main site Section */
 	/* Table styles */
 
-#tableClear{
-	clear: both;
-}
-		/* Main Table */
+	#tableClear{
+		clear: both;
+	}
+	
+	/* Main Table */
 		
-.mainTable{
-	float: left;
-	margin-left: 20px;
-	margin-top:20px;
-	border: none;
-	border-collapse: collapse;
-}
-.mainTable td{
-	border: none;
-}
-.mainTable label{
-	color: #097ec3;
-	text-shadow: 5px 5px 10px #097ec3;
+	.mainTable{
+		float: left;
+		margin-left: 20px;
+		margin-top:20px;
+		border: none;
+		border-collapse: collapse;
+	}
+	
+	.mainTable td{
+		border: none;
+	}
+	
+	.mainTable label{
+		color: #097ec3;
+		text-shadow: 5px 5px 10px #097ec3;
+		}
+	
+	.selectedRow{
+		background: #D3D3D3;
 	}
 
-.selectedRow{
-	background: #D3D3D3;
-}
-
-		/* Button Table */
-.buttonTable{
-	float: left;
-	clear: left;
-	margin-left: 80px;
-	border: none;
-	border-collapse: collapse;
-}
-.buttonTable td{
-	border: none;
-}
-.buttonTable label{
-	color: #097ec3;
-	text-shadow: 5px 5px 10px #097ec3;
-}
+	/* Button Table */
+	.buttonTable{
+		float: left;
+		clear: left;
+		margin-left: 80px;
+		border: none;
+		border-collapse: collapse;
+	}
+	
+	.buttonTable td{
+		border: none;
+	}
+	
+	.buttonTable label{
+		color: #097ec3;
+		text-shadow: 5px 5px 10px #097ec3;
+	}
 
 /* Buttons */
 
@@ -305,13 +387,15 @@ input[disabled='disabled']:hover{
 	border-radius: 5px;
 	font-size: 90%;
 }
-.regButton:ACTIVE{
+
+.regButton:active{
 	-webkit-transform: scale(0.9);
      -moz-transform: scale(0.9);
       -ms-transform: scale(0.9);
        -o-transform: scale(0.9);
           transform: scale(0.9);
 }
+
 .regButton:hover{
 	-webkit-box-shadow: 0px 0px 3px 2px #097ec3;
 	-moz-box-shadow: 0px 0px 3px 2px #097ec3;
@@ -328,7 +412,6 @@ input[disabled='disabled']:hover{
 	margin-top: 40px;
 }
 
-
 #centralSection div{
 	float: left;
 }
@@ -343,15 +426,17 @@ input[disabled='disabled']:hover{
 	cursor: mouse;
 }
 
-/* OLD STYLES */
-
 #buttonAction{
 	margin-left: 25px;
 	margin-top: 35px;
 }
 
+
 /* Запазване на час */
 
+#zapazvane input[type="submit"]{
+	border: 1px solid black;
+}
 
 #proveriZaSvobodni4asove{
 	display: block;
@@ -359,9 +444,7 @@ input[disabled='disabled']:hover{
 	margin-left: 20px;
 	text-align: center;
 }
-#zapazvane input[type="submit"]{
-	border: 1px solid black;
-}
+
 #zapazvane{
 	width: 500px;
 	margin-top: 10px;
@@ -378,17 +461,18 @@ input[disabled='disabled']:hover{
 	display: block;
 	margin-left: 40px;
 }
+
 #zap4as{
 	display:inline-block;
 	margin-left:170px;
 	margin-top:10px;
 }
+
 #zap4as label{
 	color: #097ec3;
 	text-shadow: 5px 5px 10px #097ec3;
 }
 
-/* END Запазване на час */
 
 /* Актуализиране на служител */
 
@@ -400,61 +484,4 @@ input[disabled='disabled']:hover{
 #tyrsiIz4isti{
 	display:block;
 	margin-top: 5px;
-}
-
-/* END Актуализиране на служител */
-
-input, a {
-	margin: 4px;
-}
-
-table {
-	border: 1px solid #70DB93;;
-	padding: 0px;
-	margin: 0px;
-	border-collapse: collapse;
-}
-table td{
-	color: #FF3300;
-	text-shadow: 5px 5px 10px #FF3300;
-}
-tr {
-	padding: 0px;
-	margin: 0px;
-}
-
-th, td {
-	margin: 0;
-	border: 0;
-	color: #CD0000;
-	padding-top: 0;
-	padding-bottom: 0;
-	padding-left: 2px;
-	padding-right: 2px;
-	border-right: 1px solid #70DB93;
-	border-left: 0px solid #70DB93;
-}
-
-thead>tr {
-	border: 1px solid #70DB93;
-	
-}
-
-tfoot>tr {
-	text-align: center;
-	border: 1px solid #70DB93;
-}
-
-/* използвани в главното меню */
-.allowedLink {
-	font-style: italic;
-}
-
-/* използвани в главното меню */
-.disabledLink {
-	font-weight: bold;
-}
-#scroolTable{
-	overflow-x: auto;
-	width: 900px;
 }
