@@ -15,13 +15,12 @@
 	<ui:define name="pageContent">
 		<div id="scroolTable">
 			<!-- scroll bar -->
-			<!-- scroll bar -->
 			<h:form>
 				<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
 				<h:dataTable rows="#{configurationProperties.getPageSize()}"
 					value="#{aktualiziraneNaPotrebitel.spisukPotrebiteli}" first="0"
 					var="curr"
-					rowClasses="#{aktualiziraneNaPotribetel.rowStyleClasses}">
+					rowClasses="#{aktualiziraneNaPotrebitel.rowStyleClasses}">
 					<h:column>
 						<f:facet name="header">Име</f:facet>
 					#{curr.employee.name}
@@ -52,23 +51,23 @@
 					<f:facet name="footer">
 						<!-- предишна страница -->
 						<h:commandLink
-							disabled="#{aktualiziraneNaPotribetel.page - 1 lt 0}"
-							action="#{aktualiziraneNaPotribetel.setPage(aktualiziraneNaPotribetel.page - 1)}"
+							disabled="#{aktualiziraneNaPotrebitel.page - 1 lt 0}"
+							action="#{aktualiziraneNaPotrebitel.setPage(aktualiziraneNaPotrebitel.page - 1)}"
 							value="&lt;&lt;" />
 						<h:outputText value=" " />
 						<!-- други страници -->
-						<ui:repeat value="#{aktualiziraneNaPotribetel.pagesList}"
+						<ui:repeat value="#{aktualiziraneNaPotrebitel.pagesList}"
 							var="currPage">
 							<h:commandLink
-								disabled="#{aktualiziraneNaPotribetel.getPage() eq currPage.intValue() - 1}"
-								action="#{aktualiziraneNaPotribetel.setPage(currPage.intValue() - 1)}"
+								disabled="#{aktualiziraneNaPotrebitel.getPage() eq currPage.intValue() - 1}"
+								action="#{aktualiziraneNaPotrebitel.setPage(currPage.intValue() - 1)}"
 								value="#{currPage}" />
 							<h:outputText value=" " />
 						</ui:repeat>
 						<!-- следваща страница -->
 						<h:commandLink
-							disabled="#{aktualiziraneNaPotribetel.page + 1 ge aktualiziraneNaPotribetel.pagesCount}"
-							action="#{aktualiziraneNaPotribetel.setPage(aktualiziraneNaPotribetel.page + 1)}"
+							disabled="#{aktualiziraneNaPotrebitel.page + 1 ge aktualiziraneNaPotrebitel.pagesCount}"
+							action="#{aktualiziraneNaPotrebitel.setPage(aktualiziraneNaPotrebitel.page + 1)}"
 							value="&gt;&gt;" />
 					</f:facet>
 				</h:dataTable>
