@@ -42,7 +42,7 @@
 					<td><span id="proveriZaSvobodni4asove"> <h:commandButton
 								action="#{zapazvaneNa4as.chooseAutoservice()}"
 								value="Провери за свободни часове" 
-								class="regButton" style="width:200px;height:40px;margin-left:-15px"/>
+								class="regButton" style="width:200px;height:40px;margin-left:-15px;margin-bottom:10px;"/>
 					</span></td>
 				</tr>
 			</table>
@@ -68,13 +68,14 @@
 							value="Следващ месец" /> <h:outputText value=" " />
 					</span>
 					<br />
-					<span id="dataZapazvane"> <h:outputLabel value="Дата: ">
+					<span> <h:outputLabel value="Дата: ">
 							<h:outputText value="#{zapazvaneNa4as.date}">
 								<f:convertDateTime pattern="dd.MM.yyyy" />
 							</h:outputText>
 						</h:outputLabel>
 					</span>
 					<br />
+					
 					<h:outputLabel value="Свободни часове*"><br />
 						<h:selectOneRadio value="#{zapazvaneNa4as.date}"
 							layout="pageDirection" border="1" id="hours"
@@ -82,18 +83,20 @@
 							required="#{not empty param[zapazvaneNa4as.reserveButton.clientId]}"
 							requiredMessage="задължително поле!">
 							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
-
 							<f:selectItems value="#{zapazvaneNa4as.spisukZapazeni4asove}"
 								var="currZapazen4as" itemLabel="#{currZapazen4as.text}"
 								itemValue="#{currZapazen4as.time}"
 								itemDisabled="#{currZapazen4as.disabled}" />
 							<br />
+					
 						</h:selectOneRadio>
 						<h:message for="hours" />
 					</h:outputLabel>
+					
 				</h:panelGroup>
 				<br /> <span id="rezervirai"> <h:commandButton
 						action="#{zapazvaneNa4as.writeIt()}" value="Резервирай"
+						class="regButton" style="width:100px;height:40px;margin-bottom:10px;"
 						binding="#{zapazvaneNa4as.reserveButton}" />
 				</span> <br />
 				<h:outputText value="#{zapazvaneNa4as.errorMessage}" />
