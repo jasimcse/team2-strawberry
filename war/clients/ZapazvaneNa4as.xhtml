@@ -71,6 +71,7 @@
 							/> <h:outputText value=" " />
 					</span>
 					<br />
+					<span id="zap4as">
 					<span> <h:outputLabel value="Дата: ">
 							<h:outputText value="#{zapazvaneNa4as.date}">
 								<f:convertDateTime pattern="dd.MM.yyyy" />
@@ -78,8 +79,9 @@
 						</h:outputLabel>
 					</span>
 					<br />
-					
+					<span>
 					<h:outputLabel value="Свободни часове*"><br />
+					<span>
 						<h:selectOneRadio value="#{zapazvaneNa4as.date}"
 							layout="pageDirection" border="1" id="hours"
 							converter="javax.faces.DateTime"
@@ -94,15 +96,18 @@
 					
 						</h:selectOneRadio>
 						<h:message for="hours" />
+						</span>
 					</h:outputLabel>
-					
+					</span>
+					</span>
 				</h:panelGroup>
 				<br /> <span id="rezervirai"> <h:commandButton
 						action="#{zapazvaneNa4as.writeIt()}" value="Резервирай"
-						class="regButton" style="width:100px;height:40px;margin-bottom:10px;"
+						class="regButton" style="width:100px;height:40px;margin-bottom:10px;margin-left:150px;"
 						binding="#{zapazvaneNa4as.reserveButton}" />
 				</span> <br />
 				<h:outputText value="#{zapazvaneNa4as.errorMessage}" />
+				
 			</div>
 		</h:form>
 	</ui:define>
