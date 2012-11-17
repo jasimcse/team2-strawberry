@@ -35,7 +35,7 @@
 						<h:outputText value="Позиция: #{currentEmployee.positionString}" /> <br/>
 					</span>
 					<span id="exitButton">
-						<h:commandButton action="#{loginController.logout()}"	value="Излез" />
+						<h:commandButton action="#{loginController.logout()}"	value="Излез" class="inTableButton"/>
 					</span>
 				</div>
 			</h:panelGroup>
@@ -56,7 +56,7 @@
 					</span>
 				</h:panelGroup>
 					<span id="LoginButton">
-						<h:commandButton action="#{loginController.login()}" value="Влез" />
+						<h:commandButton action="#{loginController.login()}" value="Влез" class="inTableButton" style="margin-top:15px;display:block;background-color:red;"/>
 					</span>
 				</div>
 			</h:panelGroup>
