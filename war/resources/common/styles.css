@@ -270,6 +270,10 @@ input[disabled='disabled']:hover{
 .buttonTable td{
 	border: none;
 }
+.buttonTable label{
+	color: #097ec3;
+	text-shadow: 5px 5px 10px #097ec3;
+}
 
 /* Buttons */
 
@@ -390,10 +394,14 @@ input, a {
 }
 
 table {
-	border: 1px solid black;
+	border: 1px solid #70DB93;;
 	padding: 0px;
 	margin: 0px;
 	border-collapse: collapse;
+}
+table td{
+	color: #FF3300;
+	text-shadow: 5px 5px 10px #FF3300;
 }
 tr {
 	padding: 0px;
@@ -407,17 +415,18 @@ th, td {
 	padding-bottom: 0;
 	padding-left: 2px;
 	padding-right: 2px;
-	border-right: 1px solid black;
-	border-left: 0px solid black;
+	border-right: 1px solid #70DB93;
+	border-left: 0px solid #70DB93;
 }
 
 thead>tr {
-	border: 2px solid black;
+	border: 1px solid #70DB93;
+	
 }
 
 tfoot>tr {
 	text-align: center;
-	border: 2px solid black;
+	border: 1px solid #70DB93;
 }
 
 /* използвани в главното меню */
