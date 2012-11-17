@@ -80,14 +80,14 @@
 						<f:facet name="header">Промени</f:facet>
 						<h:commandButton
 							action="#{aktualiziraneNaDiagnostika.selectRow(curr)}"
-							value="Промени" />
+							value="Промени" class="inTableButton"/>
 					</h:column>
 
 					<h:column rendered="#{aktualiziraneNaDiagnostika.choosingAllowed}">
 						<f:facet name="header">Избери</f:facet>
 						<h:commandButton
 							action="#{aktualiziraneNaDiagnostika.chooseDiagnostika(curr)}"
-							value="Избери" />
+							value="Избери" class="inTableButton"/>
 					</h:column>
 
 					<f:facet name="footer">

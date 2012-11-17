@@ -96,14 +96,14 @@
 						<f:facet name="header">Прегледай</f:facet>
 						<h:commandButton
 							action="#{pregledNaPoru4kaNa4asti.selectRow(curr)}"
-							value="Прегледай" />
+							value="Прегледай" class="inTableButton"/>
 					</h:column>
 
 					<h:column rendered="#{pregledNaPoru4kaNa4asti.choosingAllowed}">
 						<f:facet name="header">Избери</f:facet>
 						<h:commandButton
 							action="#{pregledNaPoru4kaNa4asti.chooseWarehouseOrder(curr)}"
-							value="Избери" />
+							value="Избери" class="inTableButton"/>
 					</h:column>
 
 
