@@ -49,15 +49,16 @@ input[type="text"]:hover{
 	width: 200px;
 	outline: none;
 	border: 1px solid white;
-	color: red;
+	color: #FC0000;
+	text-shadow: 5px 5px 10px #FC0000;
 	font-weight: bold;
 	background-color: transparent;
 	-webkit-border-radius: 2px 0 2px 0;
 	-moz-border-radius: 2px 0 2px 0;
 	border-radius: 2px 0 2px 0;
-	-webkit-box-shadow: 2px 2px 3px 2px red;
-	-moz-box-shadow: 2px 2px 3px  2px red;
-	box-shadow: 2px 2px 3px 2px red;
+	-webkit-box-shadow: 2px 2px 3px 2px #FC0000;
+	-moz-box-shadow: 2px 2px 3px  2px #FC0000;
+	box-shadow: 2px 2px 3px 2px #FC0000;
 }
 #serviceNotLogged input[type="text"]:hover,
 #serviceNotLogged input[type="password"]:hover{
@@ -145,6 +146,7 @@ input[disabled='disabled']:hover{
 	color: #FC0000;
 	font-weight: bold;
 }
+
 
 #exitButton,
 #LoginButton{
