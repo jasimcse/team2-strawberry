@@ -27,7 +27,7 @@
 							style="color:red;" /></td>
 				</tr>
 			</table>
-			<table style="border: none;">
+			<table style="border: none;clear:both;">
 				<tr>
 					<td style="border: none;">
 						<div style="overflow-x: auto;">
@@ -82,7 +82,7 @@
 					<td></td>
 				</tr>
 			</table>
-			<table style="border: none;">
+			<table style="border: none;clear:both;">
 				<tr>
 					<td style="border: none;">
 						<div style="overflow-x: auto;">
@@ -139,14 +139,14 @@
 
 								<h:column>
 									<f:facet name="header">Промени</f:facet>
-									<h:commandLink
+									<h:commandButton
 										action="#{poru4kaNa4asti.toggleEditSparePartForOrder(curr)}"
 										value="Промени" />
 								</h:column>
 
 								<h:column>
 									<f:facet name="header">Премахни</f:facet>
-									<h:commandLink
+									<h:commandButton
 										action="#{poru4kaNa4asti.removeSparePartForOrder(curr)}"
 										value="Премахни" />
 								</h:column>
