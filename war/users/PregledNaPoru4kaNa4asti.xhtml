@@ -7,197 +7,208 @@
 	xmlns:f="http://java.sun.com/jsf/core">
 
 <ui:composition template="/common/template.xhtml">
-	
+
 	<ui:define name="pageContent">
-	
+
 		<h:form>
 			<h:panelGroup>
-				<h:outputLabel value="Име на доставчик">
-					<h:inputText value="#{pregledNaPoru4kaNa4asti.searchName}" maxlength="100" />
-				</h:outputLabel>
-				<br />
-				<h:outputLabel value="Статус">
-					<h:selectOneMenu value="#{pregledNaPoru4kaNa4asti.searchStatus}">
-						<f:selectItems value="#{pregledNaPoru4kaNa4asti.statuses}" />					
-					</h:selectOneMenu>
-				</h:outputLabel>
-				<h:outputLabel value="Вземи предвид статуса">
-					<h:selectBooleanCheckbox value="#{pregledNaPoru4kaNa4asti.searchByStatus}" />
-				</h:outputLabel>
-				<br />
-				<h:outputLabel value="Дата (от)">
-					<h:inputText value="#{pregledNaPoru4kaNa4asti.searchDateFrom}" title="формат: ДД.ММ.ГГГГ"
-						convertorMessage="Невалидна дата. Пример: 21.12.2012">
-						<f:convertDateTime pattern="dd.MM.yyyy" />
-					</h:inputText>
-				</h:outputLabel>
-				<h:outputLabel value="Дата (до)">
-					<h:inputText value="#{pregledNaPoru4kaNa4asti.searchDateTo}" title="формат: ДД.ММ.ГГГГ"
-						convertorMessage="Невалидна дата. Пример: 21.12.2012">
-						<f:convertDateTime pattern="dd.MM.yyyy" />
-					</h:inputText>
-				</h:outputLabel>
-				<br />
-				
-				<h:commandButton value="Търси" action="#{pregledNaPoru4kaNa4asti.searchIt()}" />
-				<h:commandButton value="Изчисти" action="#{pregledNaPoru4kaNa4asti.resetSearch()}" />
+				<table class="mainTable" style="margin-bottom: 10px;">
+					<tr>
+						<td><h:outputLabel value="Име на доставчик">
+								<br />
+								<h:inputText value="#{pregledNaPoru4kaNa4asti.searchName}"
+									maxlength="100" />
+							</h:outputLabel></td>
+						<td><h:outputLabel value="Статус">
+								<h:selectOneMenu value="#{pregledNaPoru4kaNa4asti.searchStatus}">
+									<f:selectItems value="#{pregledNaPoru4kaNa4asti.statuses}" />
+								</h:selectOneMenu>
+							</h:outputLabel> <h:outputLabel value="Вземи предвид статуса">
+								<h:selectBooleanCheckbox
+									value="#{pregledNaPoru4kaNa4asti.searchByStatus}" />
+							</h:outputLabel></td>
+					</tr>
+					<tr>
+						<td><h:outputLabel value="Дата (от)">
+								<h:inputText value="#{pregledNaPoru4kaNa4asti.searchDateFrom}"
+									title="формат: ДД.ММ.ГГГГ"
+									convertorMessage="Невалидна дата. Пример: 21.12.2012">
+									<f:convertDateTime pattern="dd.MM.yyyy" />
+								</h:inputText>
+							</h:outputLabel></td>
+						<td><h:outputLabel value="Дата (до)">
+								<h:inputText value="#{pregledNaPoru4kaNa4asti.searchDateTo}"
+									title="формат: ДД.ММ.ГГГГ"
+									convertorMessage="Невалидна дата. Пример: 21.12.2012">
+									<f:convertDateTime pattern="dd.MM.yyyy" />
+								</h:inputText>
+							</h:outputLabel></td>
+					</tr>
+					<tr>
+						<td><h:commandButton value="Търси" class="regButton"
+								style="width:80px;height:40px;margin-left:20px;"
+								action="#{pregledNaPoru4kaNa4asti.searchIt()}" /> <h:commandButton
+								value="Изчисти" class="regButton"
+								style="width:80px;height:40px;"
+								action="#{pregledNaPoru4kaNa4asti.resetSearch()}" /></td>
+					</tr>
+				</table>
 			</h:panelGroup>
 		</h:form>
-		
-		<div id="scroolTable"> <!-- scroll bar -->
-		<h:form>
-			
-			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
-			<h:dataTable
-				rows="#{configurationProperties.getPageSize()}"
-				value="#{pregledNaPoru4kaNa4asti.spisukPoru4ki}"
-			    first="0"
-			    var="curr"
-			    rowClasses="#{pregledNaPoru4kaNa4asti.rowStyleClasses}">
-				
-				<h:column>
-					<f:facet name="header">Наименование на доставчик</f:facet>
-					<h:outputText value="#{curr.supplier.name}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Име на служител</f:facet>
-					<h:outputText value="#{curr.employee.name}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Фамилия на служител</f:facet>
-					<h:outputText value="#{curr.employee.family}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Дата на поръчка</f:facet>
-					<h:outputText value="#{curr.date}">
-						<f:convertDateTime pattern="dd.MM.yyyy" />
-					</h:outputText>
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Статус</f:facet>
-					<h:outputText value="#{curr.status == '1' ? 'Нова' : 'Изпълнена'}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Прегледай</f:facet>
-					<h:commandButton action="#{pregledNaPoru4kaNa4asti.selectRow(curr)}" value="Прегледай" />
-				</h:column>
-				
-				<h:column rendered="#{pregledNaPoru4kaNa4asti.choosingAllowed}">
-					<f:facet name="header">Избери</f:facet>
-					<h:commandButton action="#{pregledNaPoru4kaNa4asti.chooseWarehouseOrder(curr)}" value="Избери" />
-				</h:column>
-				
-				
-				<f:facet name="footer">
-				
-					<!-- предишна страница -->
-					<h:commandLink disabled="#{pregledNaPoru4kaNa4asti.page - 1 lt 0}"
-						action="#{pregledNaPoru4kaNa4asti.setPage(pregledNaPoru4kaNa4asti.page - 1)}"
-						value="&lt;&lt;" />
-						
-					<h:outputText value=" " />
-						
-					<!-- други страници -->
-					<ui:repeat value="#{pregledNaPoru4kaNa4asti.pagesList}" var="currPage">
-						<h:commandLink
-							disabled="#{pregledNaPoru4kaNa4asti.getPage() eq currPage.intValue() - 1}"
-							action="#{pregledNaPoru4kaNa4asti.setPage(currPage.intValue() - 1)}"
-							value="#{currPage}" />
-							
-						<h:outputText value=" " />
-					</ui:repeat>
-					
-					<!-- следваща страница -->
-					<h:commandLink disabled="#{pregledNaPoru4kaNa4asti.page + 1 ge pregledNaPoru4kaNa4asti.pagesCount}"
-						action="#{pregledNaPoru4kaNa4asti.setPage(pregledNaPoru4kaNa4asti.page + 1)}"
-						value="&gt;&gt;" />
-							
-				</f:facet>
-				 
-			</h:dataTable>
-		</h:form>
-		</div>
-		
 
-	    <h:outputLabel value="Име доставчик">
-	    	<h:inputText id="supplierName" value="#{pregledNaPoru4kaNa4asti.supplier.name}"
-	    		readonly="true"/>
-	    </h:outputLabel> 
-	    <br />
-	    
-	    <h:outputLabel value="Име автосервиз">
-	    	<h:inputText id="autoserviceName" value="#{pregledNaPoru4kaNa4asti.autoservice.name}"
-	    		readonly="true"/>
-	    </h:outputLabel> 
-	    <br />
-	    
-	    <h:outputLabel value="Име служител">
-	    	<h:inputText id="employeeName" value="#{pregledNaPoru4kaNa4asti.employee.name}"
-	    		readonly="true"/>
-	    	<h:inputText id="employeeFamily" value="#{pregledNaPoru4kaNa4asti.employee.family}"
-	    		readonly="true"/>
-	    </h:outputLabel> 
-	    <br />
-	    
-	    <h:outputLabel value="Дата на поръчката">
-	    	<h:inputText id="date" value="#{pregledNaPoru4kaNa4asti.date}"
-	    		readonly="true">
-	    		<f:convertDateTime pattern="dd.MM.yyyy" />
-	    	</h:inputText>
-	    </h:outputLabel> 
-	    <br />
-	    
-	    <h:outputLabel value="Статус на поръчката">
-	    	<h:inputText id="status" value="#{pregledNaPoru4kaNa4asti.status}"
-	    		readonly="true" />
-	    </h:outputLabel> 
-	    <br />
-	    
-	    
-	    
-		<h:outputText value="Поръчани резервни части" />
-		<br />
-	    
-		<div id="scroolTable"> <!-- scroll bar -->
-		<h:dataTable
-			value="#{pregledNaPoru4kaNa4asti.spisuk4asti}"
-			var="curr"
-			rowClasses="notSelectedRow">
-			
-			<h:column>
-				<f:facet name="header">Група</f:facet>
+		<div id="scroolTable">
+			<!-- scroll bar -->
+			<h:form>
+
+				<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+				<h:dataTable rows="#{configurationProperties.getPageSize()}"
+					value="#{pregledNaPoru4kaNa4asti.spisukPoru4ki}" first="0"
+					var="curr" rowClasses="#{pregledNaPoru4kaNa4asti.rowStyleClasses}">
+
+					<h:column>
+						<f:facet name="header">Наименование на доставчик</f:facet>
+						<h:outputText value="#{curr.supplier.name}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Име на служител</f:facet>
+						<h:outputText value="#{curr.employee.name}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Фамилия на служител</f:facet>
+						<h:outputText value="#{curr.employee.family}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Дата на поръчка</f:facet>
+						<h:outputText value="#{curr.date}">
+							<f:convertDateTime pattern="dd.MM.yyyy" />
+						</h:outputText>
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Статус</f:facet>
+						<h:outputText value="#{curr.status == '1' ? 'Нова' : 'Изпълнена'}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Прегледай</f:facet>
+						<h:commandButton
+							action="#{pregledNaPoru4kaNa4asti.selectRow(curr)}"
+							value="Прегледай" />
+					</h:column>
+
+					<h:column rendered="#{pregledNaPoru4kaNa4asti.choosingAllowed}">
+						<f:facet name="header">Избери</f:facet>
+						<h:commandButton
+							action="#{pregledNaPoru4kaNa4asti.chooseWarehouseOrder(curr)}"
+							value="Избери" />
+					</h:column>
+
+
+					<f:facet name="footer">
+
+						<!-- предишна страница -->
+						<h:commandLink disabled="#{pregledNaPoru4kaNa4asti.page - 1 lt 0}"
+							action="#{pregledNaPoru4kaNa4asti.setPage(pregledNaPoru4kaNa4asti.page - 1)}"
+							value="&lt;&lt;" />
+
+						<h:outputText value=" " />
+
+						<!-- други страници -->
+						<ui:repeat value="#{pregledNaPoru4kaNa4asti.pagesList}"
+							var="currPage">
+							<h:commandLink
+								disabled="#{pregledNaPoru4kaNa4asti.getPage() eq currPage.intValue() - 1}"
+								action="#{pregledNaPoru4kaNa4asti.setPage(currPage.intValue() - 1)}"
+								value="#{currPage}" />
+
+							<h:outputText value=" " />
+						</ui:repeat>
+
+						<!-- следваща страница -->
+						<h:commandLink
+							disabled="#{pregledNaPoru4kaNa4asti.page + 1 ge pregledNaPoru4kaNa4asti.pagesCount}"
+							action="#{pregledNaPoru4kaNa4asti.setPage(pregledNaPoru4kaNa4asti.page + 1)}"
+							value="&gt;&gt;" />
+
+					</f:facet>
+
+				</h:dataTable>
+			</h:form>
+		</div>
+		<table class="mainTable" style="margin-bottom: 10px;">
+			<tr>
+				<td><h:outputLabel value="Име доставчик">
+						<h:inputText id="supplierName"
+							value="#{pregledNaPoru4kaNa4asti.supplier.name}" readonly="true" />
+					</h:outputLabel></td>
+				<td><h:outputLabel value="Име автосервиз">
+						<h:inputText id="autoserviceName"
+							value="#{pregledNaPoru4kaNa4asti.autoservice.name}"
+							readonly="true" />
+					</h:outputLabel></td>
+			</tr>
+			<tr>
+				<td colspan="2"><h:outputLabel value="Име служител">
+						<h:inputText id="employeeName"
+							value="#{pregledNaPoru4kaNa4asti.employee.name}" readonly="true" />
+						<h:inputText id="employeeFamily"
+							value="#{pregledNaPoru4kaNa4asti.employee.family}"
+							readonly="true" />
+					</h:outputLabel></td>
+			</tr>
+			<tr>
+				<td><h:outputLabel value="Дата на поръчката">
+						<h:inputText id="date" value="#{pregledNaPoru4kaNa4asti.date}"
+							readonly="true">
+							<f:convertDateTime pattern="dd.MM.yyyy" />
+						</h:inputText>
+					</h:outputLabel></td>
+				<td><h:outputLabel value="Статус на поръчката">
+						<h:inputText id="status" value="#{pregledNaPoru4kaNa4asti.status}"
+							readonly="true" />
+					</h:outputLabel></td>
+			</tr>
+			<tr>
+				<td><h:outputText value="Поръчани резервни части" /></td>
+			</tr>
+		</table>
+		<div id="scroolTable">
+			<!-- scroll bar -->
+			<h:dataTable value="#{pregledNaPoru4kaNa4asti.spisuk4asti}"
+				var="curr" rowClasses="notSelectedRow">
+
+				<h:column>
+					<f:facet name="header">Група</f:facet>
 				#{curr.sparePart.sparePartGroup.description}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Наименование</f:facet>
+
+				<h:column>
+					<f:facet name="header">Наименование</f:facet>
 				#{curr.sparePart.name}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Мерна единица</f:facet>
+
+				<h:column>
+					<f:facet name="header">Мерна единица</f:facet>
 				#{curr.sparePart.measuringUnit}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Поръчано количество</f:facet>
+
+				<h:column>
+					<f:facet name="header">Поръчано количество</f:facet>
 				#{curr.orderedQuantity}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Доставено количество</f:facet>
+
+				<h:column>
+					<f:facet name="header">Доставено количество</f:facet>
 				#{curr.deliveredQuantity}
 			</h:column>
-				
-		</h:dataTable>
+
+			</h:dataTable>
 		</div>
 
 	</ui:define>
-	
+
 </ui:composition>
 </html>
