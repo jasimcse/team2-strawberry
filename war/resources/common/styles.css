@@ -64,6 +64,18 @@ input[type="text"]:hover{
 input[disabled='disabled']{
 	background-color: grey;
 }
+input[disabled='disabled']:ACTIVE{
+	-webkit-transform: none;
+     -moz-transform: none;
+      -ms-transform: none;
+       -o-transform: none;
+          transform: none;
+}
+input[disabled='disabled']:hover{
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
 input[disabled='disabled']:hover{
 	background-color: grey;
 }
