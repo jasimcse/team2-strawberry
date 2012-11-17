@@ -17,13 +17,14 @@
 		<h:form>
 		
 		<h:commandButton action="#{pregledNaZapazeni4asove.changeDay(-1)}" value="Преден ден"
+		class="regButton" style="width:100px;height:40px;"
 			disabled="#{!pregledNaZapazeni4asove.prevDayAllowed}" />
 		
 		<h:outputText value="#{pregledNaZapazeni4asove.date}">
 			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Sofia" />
 		</h:outputText>
 		
-		<h:commandButton action="#{pregledNaZapazeni4asove.changeDay(1)}" value="Следващ ден" />
+		<h:commandButton action="#{pregledNaZapazeni4asove.changeDay(1)}" value="Следващ ден" class="regButton" style="width:100px;height:40px;"/>
 		<br />
 		
 		<div id="scroolTable"> <!-- scroll bar -->

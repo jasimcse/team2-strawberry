@@ -7,181 +7,196 @@
 	xmlns:f="http://java.sun.com/jsf/core">
 
 <ui:composition template="/common/template.xhtml">
-	
-	<ui:define name="pageContent">
-	    <h:form>
 
-	    <h:outputLabel value="Име доставчик*">
-	    	<h:inputText id="supplierName" value="#{priemaneNa4asti.supplier.name}"
-	    		readonly="true"/>
-	    	<h:message for="supplierName" />
-	    </h:outputLabel> 
-	    <h:commandButton value="Избери" action="#{priemaneNa4asti.chooseSupplier()}" /> 
-	    <br />
-	    
-	    <h:outputLabel value="Номер на придружаващия документ*">
-	    	<h:inputText id="documentNumber" value="#{priemaneNa4asti.documentNumber}"
-	    		required="#{not empty param[priemaneNa4asti.writeItButton.clientId]}" requiredMessage="задължително поле!" maxlength="50" />
-	    	<h:message for="documentNumber" />
-	    </h:outputLabel>
-	    <br />
-	    
-	    <h:outputLabel value="Дата на придружаващия документ*">
-	    	<h:inputText id="documentDate" value="#{priemaneNa4asti.documentDate}"
-	    		required="#{not empty param[priemaneNa4asti.writeItButton.clientId]}" requiredMessage="задължително поле!" title="формат: ДД.ММ.ГГГГ"
-	    		converterMessage="Невалидна дата. Пример: 21.12.2012">
-	    		<f:convertDateTime pattern="dd.MM.yyyy" />
-	    	</h:inputText>
-	    	<h:message for="documentDate" />
-	    </h:outputLabel>
-	    <br />
-	    
-	    <h:outputLabel value="Общо">
-	    	<h:inputText id="fullPrice" value="#{priemaneNa4asti.fullPrice}"
-	    		readonly="true"/>
-	    </h:outputLabel>
-	    <br />
-	    
-	    
-		<h:outputText value="Поръчки направени към този доставчик" />
-		<br />
-	    
-		<div style="overflow-x: auto;"> <!-- scroll bar -->
-		<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
-		<h:dataTable
-			value="#{priemaneNa4asti.spisukPoru4ki}"
-			var="curr"
-			rowClasses="#{priemaneNa4asti.spisukPoru4kiRowStyleClasses}">
-			
-			<h:column>
-				<f:facet name="header">Дата</f:facet>
+	<ui:define name="pageContent">
+		<h:form>
+			<table class="mainTable">
+				<tr>
+					<td><h:outputLabel value="Име доставчик*">
+							<h:inputText id="supplierName"
+								value="#{priemaneNa4asti.supplier.name}" readonly="true" />
+							<h:message for="supplierName" />
+						</h:outputLabel></td>
+					<td><h:commandButton value="Избери" class="regButton"
+							style="width:80px;height:40px;margin-left:20px;margin-bottom:20px;"
+							action="#{priemaneNa4asti.chooseSupplier()}" /></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Номер на придружаващия документ*">
+							<br />
+							<h:inputText id="documentNumber"
+								value="#{priemaneNa4asti.documentNumber}"
+								required="#{not empty param[priemaneNa4asti.writeItButton.clientId]}"
+								requiredMessage="задължително поле!" maxlength="50" />
+							<h:message for="documentNumber" />
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Дата на придружаващия документ*">
+							<br />
+							<h:inputText id="documentDate"
+								value="#{priemaneNa4asti.documentDate}"
+								required="#{not empty param[priemaneNa4asti.writeItButton.clientId]}"
+								requiredMessage="задължително поле!" title="формат: ДД.ММ.ГГГГ"
+								converterMessage="Невалидна дата. Пример: 21.12.2012">
+								<f:convertDateTime pattern="dd.MM.yyyy" />
+							</h:inputText>
+							<h:message for="documentDate" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Общо">
+							<h:inputText id="fullPrice" value="#{priemaneNa4asti.fullPrice}"
+								readonly="true" />
+						</h:outputLabel></td>
+				</tr>
+			</table>
+
+			<div style="overflow-x: auto;">
+				<!-- scroll bar -->
+				<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+				<table>
+					<h:outputText value="Поръчки направени към този доставчик" />
+					<h:dataTable value="#{priemaneNa4asti.spisukPoru4ki}" var="curr"
+						rowClasses="#{priemaneNa4asti.spisukPoru4kiRowStyleClasses}">
+
+						<h:column>
+							<f:facet name="header">Дата</f:facet>
 				#{curr.date}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Избери</f:facet>
-				<h:commandLink action="#{priemaneNa4asti.chooseOrder(curr)}" value="Избери" />
-			</h:column>
-			
-		</h:dataTable>
-		</div>
-		<br />
 
-		
-		<h:outputText value="Резервни части участващи в избраната поръчка, но все още недоставени" />
-	    <br /> 
-	    
-		<div style="overflow-x: auto;"> <!-- scroll bar -->
-		
-		<h:dataTable
-			value="#{priemaneNa4asti.spisuk4astiPoru4ani}"
-			var="curr"
-			rowClasses="notSelectedRow">
-			
-			<h:column>
-				<f:facet name="header">Група</f:facet>
+						<h:column>
+							<f:facet name="header">Избери</f:facet>
+							<h:commandLink action="#{priemaneNa4asti.chooseOrder(curr)}"
+								value="Избери" />
+						</h:column>
+
+					</h:dataTable>
+				</table>
+			</div>
+			<div style="overflow-x: auto; clear: left;">
+				<!-- scroll bar -->
+				<table>
+					<h:outputText
+						value="Резервни части участващи в избраната поръчка, но все още недоставени" />
+					<h:dataTable value="#{priemaneNa4asti.spisuk4astiPoru4ani}"
+						var="curr" rowClasses="notSelectedRow">
+
+						<h:column>
+							<f:facet name="header">Група</f:facet>
 				#{curr.sparePart.sparePartGroup.description}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Наименование</f:facet>
+
+						<h:column>
+							<f:facet name="header">Наименование</f:facet>
 				#{curr.sparePart.name}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Мерна единица</f:facet>
+
+						<h:column>
+							<f:facet name="header">Мерна единица</f:facet>
 				#{curr.sparePart.measuringUnit}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Поръчано</f:facet>
+
+						<h:column>
+							<f:facet name="header">Поръчано</f:facet>
 				#{curr.orderedQuantity}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Доставено</f:facet>
+
+						<h:column>
+							<f:facet name="header">Доставено</f:facet>
 				#{curr.deliveredQuantity}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Добави</f:facet>
-				<h:commandLink action="#{priemaneNa4asti.addSparePartDelivered(curr)}" value="Добави" />
-			</h:column>
-			
-			</h:dataTable>
-		</div>
-		<br />
-		
-		
-		<h:outputText value="Доставени резервни части" />
-	    <br /> 
-	    
-		<div style="overflow-x: auto;"> <!-- scroll bar -->
-		
-		<!-- selectedRow, notSelectedRow за избран , неизбран ред -->
-		<h:dataTable
-			value="#{priemaneNa4asti.spisuk4astiDostaveni}"
-			var="curr"
-			rowClasses="#{priemaneNa4asti.spisuk4astiDostaveniRowStyleClasses}">
-			
-			<h:column>
-				<f:facet name="header">Група</f:facet>
+
+						<h:column>
+							<f:facet name="header">Добави</f:facet>
+							<h:commandLink
+								action="#{priemaneNa4asti.addSparePartDelivered(curr)}"
+								value="Добави" />
+						</h:column>
+
+					</h:dataTable>
+				</table>
+			</div>
+			<br />
+
+
+
+			<br />
+
+			<div style="overflow-x: auto;">
+				<!-- scroll bar -->
+				<table>
+					<h:outputText value="Доставени резервни части" />
+					<!-- selectedRow, notSelectedRow за избран , неизбран ред -->
+					<h:dataTable value="#{priemaneNa4asti.spisuk4astiDostaveni}"
+						var="curr"
+						rowClasses="#{priemaneNa4asti.spisuk4astiDostaveniRowStyleClasses}">
+
+						<h:column>
+							<f:facet name="header">Група</f:facet>
 				#{curr.warehouseOrderPartDelivery.sparePart.sparePartGroup.description}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Наименование</f:facet>
+
+						<h:column>
+							<f:facet name="header">Наименование</f:facet>
 				#{curr.warehouseOrderPartDelivery.sparePart.name}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Мерна единица</f:facet>
+
+						<h:column>
+							<f:facet name="header">Мерна единица</f:facet>
 				#{curr.warehouseOrderPartDelivery.sparePart.measuringUnit}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Недоставено</f:facet>
+
+						<h:column>
+							<f:facet name="header">Недоставено</f:facet>
 				#{curr.quantityNotDelivered}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Доставено</f:facet>
-				<h:outputText value="#{curr.warehouseOrderPartDelivery.quantity}" rendered="#{!curr.editing}" />
-				<h:inputText value="#{curr.warehouseOrderPartDelivery.quantity}" rendered="#{curr.editing}" />
-			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Цена</f:facet>
+
+						<h:column>
+							<f:facet name="header">Доставено</f:facet>
+							<h:outputText value="#{curr.warehouseOrderPartDelivery.quantity}"
+								rendered="#{!curr.editing}" />
+							<h:inputText value="#{curr.warehouseOrderPartDelivery.quantity}"
+								rendered="#{curr.editing}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Цена</f:facet>
 				#{curr.warehouseOrderPartDelivery.price}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Общо</f:facet>
+
+						<h:column>
+							<f:facet name="header">Общо</f:facet>
 				#{curr.fullPrice}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Промени</f:facet>
-				<h:commandLink action="#{priemaneNa4asti.toggleEditSparePartDelivered(curr)}" value="Промени" />
-			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Премахни</f:facet>
-				<h:commandLink action="#{priemaneNa4asti.removeSparePartDelivered(curr)}" value="Премахни" />
-			</h:column>
-			
-			</h:dataTable>
-		</div>
-		
 
-	   	<h:commandButton value="Запиши" binding="#{priemaneNa4asti.writeItButton}"
-	   		 action="#{priemaneNa4asti.writeIt()}"/> 
-	    <br />
-	    
-	    <h:outputText value="#{priemaneNa4asti.errorMessage}"/>
-	    
-	    </h:form>
+						<h:column>
+							<f:facet name="header">Промени</f:facet>
+							<h:commandLink
+								action="#{priemaneNa4asti.toggleEditSparePartDelivered(curr)}"
+								value="Промени" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Премахни</f:facet>
+							<h:commandLink
+								action="#{priemaneNa4asti.removeSparePartDelivered(curr)}"
+								value="Премахни" />
+						</h:column>
+
+					</h:dataTable>
+				</table>
+			</div>
+
+			<table class="buttonTable">
+				<tr>
+					<td><h:commandButton value="Запиши" class="regButton"
+							style="width:80px;height:40px;margin-left:-80px;margin-top:10px;"
+							binding="#{priemaneNa4asti.writeItButton}"
+							action="#{priemaneNa4asti.writeIt()}" /> <br /> <h:outputText
+							value="#{priemaneNa4asti.errorMessage}" /></td>
+				</tr>
+			</table>
+		</h:form>
 	</ui:define>
-	
+
 </ui:composition>
 </html>

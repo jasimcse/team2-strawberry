@@ -12,33 +12,47 @@
 	
 		<h:form>
 			<h:panelGroup>
+			<table class="mainTable">
+			<tr>
+			<td>
 				<h:outputLabel value="Име на доставчик">
 					<h:selectOneMenu>
 						<f:selectItems value="#{pregledNaPriemaneNa4asti.suppliers}" var="currSupplier"
 							itemLabel="#{currSupplier.name}" itemValue="#(currSupplier.ID)" />					
 					</h:selectOneMenu>
 				</h:outputLabel>
-				<br />
+				</td>
+				<td>
 				<h:outputLabel value="Статус">
 					<h:selectOneMenu>
 						<f:selectItems value="#{pregledNaPriemaneNa4asti.statuses}" var="currSstatus"/>					
 					</h:selectOneMenu>
 				</h:outputLabel>
-				<br />
+				</td>
+				</tr>
+				<tr>
+				<td>
 				<h:outputLabel value="Дата на доставката(от)">
 					<h:inputText id="dateFrom" validatorMessage="Невалидна дата. Пример: 21.12.2012">
 						<f:validateRegex pattern="^[0-3]?[0-9]\.[0-3]?[0-9]\.[0-9]{4}$"/>
 					</h:inputText>
 				</h:outputLabel>
+				</td>
+				<td>
 				<h:outputLabel value="Дата на доставката(до)">
 					<h:inputText id="dateTo" validatorMessage="Невалидна дата. Пример: 21.12.2012">
 						<f:validateRegex pattern="^[0-3]?[0-9]\.[0-3]?[0-9]\.[0-9]{4}$"/>
 					</h:inputText>
 				</h:outputLabel>
-				<br />
-				
-				<h:commandButton value="Търси" disabled="true" />
-				<h:commandButton value="Изчисти" disabled="true" /> &lt;---- Да се направи
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<h:commandButton value="Търси" class="regButton" style="width:80px;height:40px;margin-top:20px;margin-left:20px;" disabled="true" />
+				<h:commandButton value="Изчисти" class="regButton" style="width:80px;height:40px;" disabled="true" /> &lt;---- Да се направи
+				</td>
+				</tr>
+				</table>
 			</h:panelGroup>
 		</h:form>
 		
@@ -125,68 +139,81 @@
 		</h:dataTable>
 		</div>
 		<br />
-		
-		<h:outputLabel value="Номер на придружаващ документ">
+		<table class="mainTable" style="margin-bottom:10px;">
+		<tr>
+		<td>
+		<h:outputLabel value="Номер на придружаващ документ"><br />
 	    	<h:inputText id="documentNumber" value="#{pregledNaPriemaneNa4asti.documentNumber}" 
 	    		readonly="true" />
 	    	<h:message for="documentNumber" />
 	    </h:outputLabel>
-	    <br />
-	    
-	    <h:outputLabel value="Дата на придружаващ документ">
+	    </td>
+	    <td>
+	    <h:outputLabel value="Дата на придружаващ документ"><br />
 	    	<h:inputText id="documentDate" value="#{pregledNaPriemaneNa4asti.documentDate}" 
 	    		readonly="true">
 	    		<f:convertDateTime pattern="dd.MM.yyyy" />
 	    	</h:inputText>
 	    	<h:message for="documentDate" />
 	    </h:outputLabel>
-	    <br />
-	    
-	    <h:outputLabel value="Дата на доставката">
+	    </td>
+	    <td>
+	    <h:outputLabel value="Дата на доставката"><br />
 	    	<h:inputText id="deliveryDate" value="#{pregledNaPriemaneNa4asti.deliveryDate}" 
 	    		readonly="true">
 	    		<f:convertDateTime pattern="dd.MM.yyyy" />
 	    	</h:inputText>
 	    	<h:message for="deliveryDate" />
 	    </h:outputLabel>
-	    <br />
-	    
-	    <h:outputLabel value="Статус*">
+	    </td>
+	    </tr>
+	    <tr>
+	    <td>
+	    <h:outputLabel value="Статус*" style="width:242px;height:40px;">
 			<h:selectOneMenu value="#{pregledNaPriemaneNa4asti.status}"
 				readonly="#{(pregledNaPriemaneNa4asti.status eq 'Платена') or (!pregledNaPriemaneNa4asti.rowSelected)}">
 				<f:selectItems value="#{pregledNaPriemaneNa4asti.statuses}" />
 			</h:selectOneMenu>
 		</h:outputLabel>
-		<br />
+		</td>
+		<td>
 		
-		<h:outputLabel value="Номер на платежно нареждане">
+		<h:outputLabel value="Номер на платежно нареждане"><br />
 	    	<h:inputText id="paymentNumber" value="#{pregledNaPriemaneNa4asti.paymentNumber}"
 	    		readonly="#{(pregledNaPriemaneNa4asti.status eq 'Платена') or (!pregledNaPriemaneNa4asti.rowSelected)}" />
 	    	<h:message for="paymentNumber" />
 	    </h:outputLabel>
-	    <br />
-		
-		<h:outputLabel value="Обща цена">
+	    </td>
+		<td>
+		<h:outputLabel value="Обща цена"><br />
 	    	<h:inputText id="fullPrice" value="#{pregledNaPriemaneNa4asti.fullPrice}" 
 	    		readonly="true" />
 	    	<h:message for="fullPrice" />
 	    </h:outputLabel>
-	    <br />
-
-		<h:commandButton value="Запиши" action="#{pregledNaPriemaneNa4asti.writeIt()}"
+	    </td>
+	    </tr>
+	    <tr>
+		<td>
+		<h:commandButton value="Запиши" 
+		class="regButton" style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
+		action="#{pregledNaPriemaneNa4asti.writeIt()}"
 	   		disabled="#{(pregledNaPriemaneNa4asti.status eq 'Платена') or !pregledNaPriemaneNa4asti.rowSelected or !pregledNaPriemaneNa4asti.changingAllowed}" />
 	   		
 	   	<h:commandButton action="#{pregledNaPriemaneNa4asti.deselectRow()}" value="Отмени"
+	   	class="regButton" style="width:80px;height:40px;"
 			disabled="#{!pregledNaPriemaneNa4asti.rowSelected}" />
 			 
-	    <br />
 	    
 	    <h:outputText value="#{pregledNaPriemaneNa4asti.errorMessage}"/>
-	    <br />
+	    </td>
+	    </tr>
 		
-		
+		<tr>
+		<td>
 		<h:outputText value="Доставени резервни части" />
-	    <br /> 
+	    </td>
+	    </tr>
+	    </table>
 	    
 		<div id="scroolTable"> <!-- scroll bar -->
 		
