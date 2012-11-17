@@ -58,8 +58,6 @@
 		
 	    <h:form>
 
-		<h:outputText value="Доставки" />
-		<br />
 	    
 		<div id="scroolTable"> <!-- scroll bar -->
 		<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
@@ -69,6 +67,10 @@
 			var="curr"
 			first="0"
 			rowClasses="#{pregledNaPriemaneNa4asti.rowStyleClasses}">
+			
+			<f:facet name="header">
+			Доставки
+			</f:facet>
 			
 			<h:column>
 				<f:facet name="header">Номер на придружаващ документ</f:facet>
@@ -207,12 +209,6 @@
 	    <h:outputText value="#{pregledNaPriemaneNa4asti.errorMessage}"/>
 	    </td>
 	    </tr>
-		
-		<tr>
-		<td>
-		<h:outputText value="Доставени резервни части" />
-	    </td>
-	    </tr>
 	    </table>
 	    
 		<div id="scroolTable"> <!-- scroll bar -->
@@ -221,7 +217,9 @@
 			value="#{pregledNaPriemaneNa4asti.spisuk4asti}"
 			var="curr"
 			rowClasses="notSelectedRow">
-			
+			<f:facet name="header">
+		Доставени резервни части
+		</f:facet>
 			<h:column>
 				<f:facet name="header">Група</f:facet>
 				#{curr.sparePart.sparePartGroup.description}

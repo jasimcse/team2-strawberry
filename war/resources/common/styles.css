@@ -111,7 +111,7 @@ input[disabled='disabled']:hover{
 	margin-top: 20px;
 	margin-bottom: 15px;
 	width: 900px;
-	height: 150px;
+	height: 162px;
 	
 	-webkit-border-radius: 15px;
 	-moz-border-radius: 15px;
@@ -131,7 +131,7 @@ input[disabled='disabled']:hover{
 #loginSection div span{
 	display: block;
 	padding-bottom:10px;
-	color: #0000ad;
+	color: #097ec3;
 	font-weight: bold;
 }
 
@@ -152,16 +152,25 @@ input[disabled='disabled']:hover{
 	float: right;
 	margin-right: 25px;
 	margin-top: 20px;
+	
 }
 
 #serviceLogged {
 	width: 210px;
-	height: 110px;
+	height: 120px;
+	border: 1px solid #097ec3;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px
 }
 
 #serviceNotLogged{
 	width: 210px;
-	height: 110px;
+	height: 120px;
+	border: 1px solid red;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
 }
 
 
@@ -411,6 +420,7 @@ tr {
 th, td {
 	margin: 0;
 	border: 0;
+	color: #CD0000;
 	padding-top: 0;
 	padding-bottom: 0;
 	padding-left: 2px;
