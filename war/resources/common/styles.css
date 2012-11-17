@@ -27,6 +27,9 @@ input[type="text"]{
 	outline:none;
 	padding:1px;
 	border: 1px solid white;
+	color: black;
+	font-weight: bold;
+	text-shadow: 5px 5px 10px #70DB93;
 	-webkit-border-radius: 2px 2px 2px 2px;
 	-moz-border-radius: 2px 2px 2px 2px;
 	border-radius: 2px 2px 2px 2px;
@@ -45,6 +48,8 @@ input[type="text"]:hover{
 	width: 200px;
 	outline: none;
 	border: 1px solid white;
+	color: red;
+	font-weight: bold;
 	background-color: transparent;
 	-webkit-border-radius: 2px 0 2px 0;
 	-moz-border-radius: 2px 0 2px 0;
