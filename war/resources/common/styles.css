@@ -111,17 +111,17 @@ input[disabled='disabled']:hover{
 /* Header section */
 
 #header {
-	background-image: url("img/header_3.jpg");
+	background-image: url("img/header_3.png");
 	background-repeat: no-repeat;
 	float: left;
 	margin-top: 20px;
 	margin-bottom: 15px;
 	width: 900px;
-	height: 162px;
-	
-	-webkit-border-radius: 15px;
-	-moz-border-radius: 15px;
-	border-radius: 15px;
+	height: 160px;
+	border: 1px solid #097ec3;
+	-webkit-border-radius: 15px 2px 2px 15px;
+	-moz-border-radius: 15px 2px 2px 15px;
+	border-radius: 15px 2px 2px 15px;
 }
 #title{
 	font-size: 30px;
@@ -165,18 +165,18 @@ input[disabled='disabled']:hover{
 	width: 210px;
 	height: 120px;
 	border: 1px solid #097ec3;
-	-webkit-border-radius: 15px;
-	-moz-border-radius: 15px;
-	border-radius: 15px
+	-webkit-border-radius: 2px 15px 15px 2px;
+	-moz-border-radius: 2px 15px 15px 2px;
+	border-radius: 2px 15px 15px 2px;
 }
 
 #serviceNotLogged{
 	width: 210px;
 	height: 120px;
 	border: 1px solid red;
-	-webkit-border-radius: 15px;
-	-moz-border-radius: 15px;
-	border-radius: 15px;
+	-webkit-border-radius: 2px 15px 15px 2px;
+	-moz-border-radius: 2px 15px 15px 2px;
+	border-radius: 2px 15px 15px 2px;
 }
 
 
@@ -402,8 +402,6 @@ input[disabled='disabled']:hover{
 
 /* END Актуализиране на служител */
 
-
-/* Венци */
 input, a {
 	margin: 4px;
 }
