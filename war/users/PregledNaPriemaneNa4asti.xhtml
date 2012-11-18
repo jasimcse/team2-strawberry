@@ -16,16 +16,16 @@
 			<tr>
 			<td>
 				<h:outputLabel value="Име на доставчик">
-					<h:selectOneMenu>
+					<h:selectOneMenu value="#{pregledNaPriemaneNa4asti.searchSupplier}">
 						<f:selectItems value="#{pregledNaPriemaneNa4asti.suppliers}" var="currSupplier"
-							itemLabel="#{currSupplier.name}" itemValue="#(currSupplier.ID)" />					
+							itemLabel="#{currSupplier.name}" itemValue="#{currSupplier.ID}" />
 					</h:selectOneMenu>
 				</h:outputLabel>
 				</td>
 				<td>
 				<h:outputLabel value="Статус">
-					<h:selectOneMenu>
-						<f:selectItems value="#{pregledNaPriemaneNa4asti.statuses}" var="currSstatus"/>					
+					<h:selectOneMenu value="#{pregledNaPriemaneNa4asti.searchStatus}">
+						<f:selectItems value="#{pregledNaPriemaneNa4asti.statuses}" var="currSstatus"/>
 					</h:selectOneMenu>
 				</h:outputLabel>
 				</td>
@@ -33,23 +33,27 @@
 				<tr>
 				<td>
 				<h:outputLabel value="Дата на доставката(от)">
-					<h:inputText id="dateFrom" validatorMessage="Невалидна дата. Пример: 21.12.2012">
-						<f:validateRegex pattern="^[0-3]?[0-9]\.[0-3]?[0-9]\.[0-9]{4}$"/>
+					<h:inputText id="dateFrom" value="#{pregledNaPriemaneNa4asti.searchDateFrom}"
+						convertorMessage="Невалидна дата. Пример: 21.12.2012" >
+						<f:convertDateTime pattern="dd.MM.yyyy" />
 					</h:inputText>
 				</h:outputLabel>
 				</td>
 				<td>
 				<h:outputLabel value="Дата на доставката(до)">
-					<h:inputText id="dateTo" validatorMessage="Невалидна дата. Пример: 21.12.2012">
-						<f:validateRegex pattern="^[0-3]?[0-9]\.[0-3]?[0-9]\.[0-9]{4}$"/>
+					<h:inputText id="dateTo" value="#{pregledNaPriemaneNa4asti.searchDateFrom}"
+						convertorMessage="Невалидна дата. Пример: 21.12.2012" >
+						<f:convertDateTime pattern="dd.MM.yyyy" />
 					</h:inputText>
 				</h:outputLabel>
 				</td>
 				</tr>
 				<tr>
 				<td>
-				<h:commandButton value="Търси" class="regButton" style="width:80px;height:40px;margin-top:20px;margin-left:20px;" disabled="true" />
-				<h:commandButton value="Изчисти" class="regButton" style="width:80px;height:40px;" disabled="true" /> &lt;---- Да се направи
+				<h:commandButton value="Търси" class="regButton" action="#{pregledNaPriemaneNa4asti.searchIt()}"
+					style="width:80px;height:40px;margin-top:20px;margin-left:20px;" />
+				<h:commandButton value="Изчисти" class="regButton"  action="#{pregledNaPriemaneNa4asti.searchIt()}"
+					style="width:80px;height:40px;"/>
 				</td>
 				</tr>
 				</table>
