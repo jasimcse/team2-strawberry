@@ -20,30 +20,32 @@
 					<tr>
 						<td><h:outputLabel value="Регистрационен номер">
 								<br />
-								<h:inputText value="" maxlength="8" />
+								<h:inputText value="#{aktualiziraneNaDiagnostika.searchPlateNumber}" maxlength="8" />
 							</h:outputLabel></td>
 						<td><h:outputLabel value="Начална дата">
 								<br />
-								<h:inputText value="" title="ДД.ММ.ГГГГ"
+								<h:inputText value="#{aktualiziraneNaDiagnostika.searchDateFrom}" title="ДД.ММ.ГГГГ"
 									convertorMessage="Невалидна дата. Пример: 21.12.2012">
 									<f:convertDateTime pattern="dd.MM.yyyy" />
 								</h:inputText>
 							</h:outputLabel></td>
 						<td><h:outputLabel value="Крайна дата">
 								<br />
-								<h:inputText value="" title="ДД.ММ.ГГГГ"
+								<h:inputText value="#{aktualiziraneNaDiagnostika.searchDateTo}" title="ДД.ММ.ГГГГ"
 									convertorMessage="Невалидна дата. Пример: 21.12.2012">
 									<f:convertDateTime pattern="dd.MM.yyyy" />
 								</h:inputText>
 							</h:outputLabel></td>
 					</tr>
 					<tr>
-						<td colspan="2"><h:commandButton value="Търси"
-								class="regButton"
-								style="width:80px;height:40px;margin-left:20px;" disabled="true" />
+						<td colspan="2">
+							<h:commandButton value="Търси" class="regButton"
+								style="width:80px;height:40px;margin-left:20px;"
+								action="#{aktualiziraneNaDiagnostika.searchIt()}" />
 							<h:commandButton value="Изчисти" class="regButton"
-								style="width:80px;height:40px;" disabled="true" /> &lt;---- Да
-							се направи</td>
+								style="width:80px;height:40px;"
+								action="#{aktualiziraneNaDiagnostika.resetSearch()}" />
+						</td>
 					</tr>
 				</table>
 			</h:panelGroup>
@@ -62,6 +64,11 @@
 					<h:column>
 						<f:facet name="header">Номер на рама</f:facet>
 						<h:outputText value="#{curr.vehicle.VIN}" />
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Регистрационен номер</f:facet>
+						<h:outputText value="#{curr.vehicle.plateNumber}" />
 					</h:column>
 
 					<h:column>
