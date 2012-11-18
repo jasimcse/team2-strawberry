@@ -86,7 +86,7 @@ input[type="text"]{
 	color: black;
 	font-weight: bold;
 	background-color:transparent;
-	border: 1px solid white;
+	border: 1px solid #097ec3;
 	text-shadow: 5px 5px 10px #70DB93;
 	-webkit-border-radius: 2px 2px 2px 2px;
 	-moz-border-radius: 2px 2px 2px 2px;
