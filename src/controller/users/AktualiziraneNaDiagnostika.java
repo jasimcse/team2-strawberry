@@ -56,6 +56,11 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 	
 	private InterPageDataRequest dataRequest;
 	
+	private String searchPlateNumber;
+	private Date searchDateFrom;
+	private Date searchDateTo;
+	
+	
 	@SuppressWarnings("unchecked")
 	public AktualiziraneNaDiagnostika() {
 		
@@ -302,6 +307,101 @@ public class AktualiziraneNaDiagnostika  implements Serializable {
 		
 		return null;
 	}
+
+	/**
+	 * @return the searchPlateNumber
+	 */
+	public String getSearchPlateNumber() {
+		return searchPlateNumber;
+	}
+
+	/**
+	 * @param searchPlateNumber the searchPlateNumber to set
+	 */
+	public void setSearchPlateNumber(String searchPlateNumber) {
+		this.searchPlateNumber = searchPlateNumber;
+	}
+
+	public Date getSearchDateFrom() {
+		return searchDateFrom;
+	}
+
+	public void setSearchDateFrom(Date searchDateFrom) {
+		this.searchDateFrom = searchDateFrom;
+	}
+
+	public Date getSearchDateTo() {
+		return searchDateTo;
+	}
+
+	public void setSearchDateTo(Date searchDateTo) {
+		this.searchDateTo = searchDateTo;
+	}
+	
+	public void searchIt() {
+
+		if ((searchPlateNumber == null || searchPlateNumber.isEmpty()) &&
+				(searchDateTo == null) && (searchDateFrom == null)) {
+			readList();
+			return;
+		}
+		
+		page = 0;
+		
+		if ( searchDateFrom != null || searchDateTo != null )
+		{
+			spisukDiagnostiki = Diagnosis.querySearchByDates(
+					currEmployee.getAutoserviceID(),
+					searchDateFrom,
+					searchDateTo,
+					page * ConfigurationProperties.getPageSize(),
+					ConfigurationProperties.getPageSize());
+			
+			rowsCount = Diagnosis.countSearchByDates(
+					currEmployee.getAutoserviceID(),
+					searchDateFrom,
+					searchDateTo);
+			
+			if ( !spisukDiagnostiki.isEmpty() && (searchPlateNumber != null)) {
+				List<Diagnosis> tempListDiagnosis = new ArrayList<Diagnosis>();
+				for ( Diagnosis diag : spisukDiagnostiki) {
+					if ( diag.getVehicle().getPlateNumber().toUpperCase().contains(searchPlateNumber.toUpperCase()) ) {
+						tempListDiagnosis.add(diag);
+					}
+				}
+				
+				spisukDiagnostiki = tempListDiagnosis;
+				rowsCount = spisukDiagnostiki.size();
+			}
+		}
+		else // няма зададени дати
+		{
+			if ((searchPlateNumber != null && !searchPlateNumber.isEmpty())) {
+				spisukDiagnostiki = Diagnosis.queryGetAll(0, 1000, currEmployee.getAutoserviceID());
+				List<Diagnosis> tempListDiagnosis = new ArrayList<Diagnosis>();
+				for ( Diagnosis diag : spisukDiagnostiki) {
+					if ( diag.getVehicle().getPlateNumber().toUpperCase().contains(searchPlateNumber.toUpperCase()) ) {
+						tempListDiagnosis.add(diag);
+					}
+				}
+				
+				spisukDiagnostiki = tempListDiagnosis;
+				rowsCount = spisukDiagnostiki.size();	
+			}
+		}
+		
+		diagnostika = new Diagnosis();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
+	}
+	
+	public void resetSearch() {
+		searchPlateNumber = null;
+		searchDateFrom = null;
+		searchDateTo = null;
+		searchIt();
+	}
+
 	
 }
 

@@ -10,7 +10,6 @@ import java.util.Set;
 
 import model.util.EntityHelper;
 import model.util.LimitedString;
-
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
@@ -18,6 +17,9 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 @SuppressWarnings("serial")
 public class Diagnosis implements Serializable {
@@ -239,6 +241,29 @@ public class Diagnosis implements Serializable {
 				       addSort("__key__"));
 	}
 	
+	private static PreparedQuery getPreparedQueryByDates(Key autoserviceID, Date startDate, Date endDate) {
+		Filter filter = null;
+
+		if (startDate != null) {
+			filter = new Query.FilterPredicate("date", FilterOperator.GREATER_THAN_OR_EQUAL, startDate);
+		}
+		
+		if (endDate != null) {
+			if (filter == null) {
+				filter = new Query.FilterPredicate("date", FilterOperator.LESS_THAN_OR_EQUAL, endDate);
+			} else {
+				filter = CompositeFilterOperator.and(
+						filter,
+						new Query.FilterPredicate("date", FilterOperator.LESS_THAN_OR_EQUAL, endDate));
+			}
+		}
+		return DatastoreServiceFactory.getDatastoreService().
+			   prepare(new Query(Diagnosis.class.getSimpleName()).
+					   setAncestor(autoserviceID).
+				       addSort("date").
+				       setFilter(filter));
+	}
+	
 	public static List<Diagnosis> queryGetAll(int offset, int count, Key autoserviceID) {
 		List<Entity> oldList = getPreparedQueryAll(autoserviceID).
 				asList(FetchOptions.Builder.withOffset(offset).limit(count));
@@ -248,6 +273,35 @@ public class Diagnosis implements Serializable {
 	
 	public static int countGetAll(Key autoserviceID) {
 		return getPreparedQueryAll(autoserviceID).countEntities(FetchOptions.Builder.withLimit(10000));
+	}
+	
+
+	public static List<Diagnosis> querySearchByDates(Key autoserviceID, Date dayStart, Date dayEnd, int offset, int count) {
+		//List<StringSearchAttribute> searchStrings = new ArrayList<StringSearchAttribute>();
+		List<Entity> oldList;
+		
+		if ((dayStart != null) || (dayEnd != null)) {
+			oldList = getPreparedQueryByDates(autoserviceID, dayStart, dayEnd).
+				asList(FetchOptions.Builder.withOffset(offset).limit(count));
+		} else {
+			oldList = new ArrayList<Entity>();
+		}
+
+		return readList(oldList);
+	}
+	
+	public static int countSearchByDates(Key autoserviceID, Date dayStart, Date dayEnd) {
+		
+		List<Entity> oldList;
+		
+		if ((dayStart != null) || (dayEnd != null)) {
+			oldList = getPreparedQueryByDates(autoserviceID, dayStart, dayEnd).
+				asList(FetchOptions.Builder.withOffset(0));
+		} else {
+			oldList = new ArrayList<Entity>();
+		}
+		
+		return oldList.size();
 	}
 	
 }
