@@ -48,6 +48,12 @@ public class PregledNaPriemaneNa4asti implements Serializable {
 	private Stack<InterPageDataRequest> dataRequestStack;
 	private InterPageDataRequest dataRequest;
 	
+	// атрибути за търсене
+	private String searchSupplier;
+	private String searchStatus;
+	private Date searchDateFrom;
+	private Date searchDateTo;
+	
 	@SuppressWarnings("unchecked")
 	public void PregledNaGarancionniUsloviq() {
 		
@@ -236,4 +242,76 @@ public class PregledNaPriemaneNa4asti implements Serializable {
 		
 		return null;
 	}
+	
+
+	public String getSearchSupplier() {
+		return searchSupplier;
+	}
+
+	public void setSearchSupplier(String searchSupplier) {
+		this.searchSupplier = searchSupplier;
+	}
+
+	public String getSearchStatus() {
+		return searchStatus;
+	}
+
+	public void setSearchStatus(String searchStatus) {
+		this.searchStatus = searchStatus;
+	}
+
+	public Date getSearchDateFrom() {
+		return searchDateFrom;
+	}
+
+	public void setSearchDateFrom(Date searchDateFrom) {
+		this.searchDateFrom = searchDateFrom;
+	}
+
+	public Date getSearchDateTo() {
+		return searchDateTo;
+	}
+
+	public void setSearchDateTo(Date searchDateTo) {
+		this.searchDateTo = searchDateTo;
+	}
+	
+
+	public void searchIt() {
+
+		if ((searchDateTo == null) && (searchDateFrom == null)) {
+			readList();
+			return;
+		}
+		
+		page = 0;
+
+		spisukDostavki = SparePartsDelivery.querySearch(
+				currEmployee.getAutoserviceID(),
+				searchSupplier,
+				searchStatus,
+				searchDateFrom,
+				searchDateTo,
+				page * ConfigurationProperties.getPageSize(),
+				ConfigurationProperties.getPageSize());
+
+		rowsCount = SparePartsDelivery.countSearch(
+				currEmployee.getAutoserviceID(),
+				searchSupplier,
+				searchStatus,
+				searchDateFrom,
+				searchDateTo);
+		dostavka = new SparePartsDelivery();
+		pagesCount = rowsCount / ConfigurationProperties.getPageSize() +
+				(rowsCount % ConfigurationProperties.getPageSize() > 0 ? 1 : 0);
+	}
+	
+	public void resetSearch() {
+		
+		searchDateFrom = null;
+		searchDateTo = null;
+		searchIt();
+	}
+
+	
 }
