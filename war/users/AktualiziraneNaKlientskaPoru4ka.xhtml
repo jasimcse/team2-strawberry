@@ -9,521 +9,562 @@
 <ui:composition template="/common/template.xhtml">
 
 	<ui:define name="pageContent">
-	  
-	  <h:form>
+
+		<!--  Търсене на клиентска поръчка не е готово! (ui:remove)-->
+		<ui:remove>
+		<h:form>
 			<h:panelGroup>
-				<table class="mainTable" style="margin-bottom:10px;">
-				<tr>
-				<td>
-				<h:outputLabel value="Избери клиент" />
-				</td>
-				<td>
-				<h:commandButton value="Избери" class="regButton" style="width:80px;height:40px;margin-left:20px;margin-top:20px;" action="#{aktualiziraneNaKlientskaPoru4ka.chooseClient()}" /> 
-				</td>
-				</tr>
-				<h:panelGroup rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.person}">
-	    			<!-- ако клиентът е физическо лице се изчертава това -->
-	    			<tr><td>
-		    		<h:outputLabel value="Име на клиент"><br />
-		    			<h:inputText id="searchpersonname" value="#{aktualiziraneNaKlientskaPoru4ka.client.person.name}" maxlength="50" 
-							readonly = "true" />
-		    			<h:message for="searchpersonname" />
-		   			</h:outputLabel>
-		   			</td>
-		   			<td>
-		    		<h:outputLabel value="Фамилия на клиент"><br />
-		   	 			<h:inputText id="searchpersonfamily" value="#{aktualiziraneNaKlientskaPoru4ka.client.person.family}" maxlength="50" 
-							readonly = "true" />
-		    			<h:message for="searchpersonfamily" />
-		    		</h:outputLabel>
-		    		</td>
-		    		</tr>
-				</h:panelGroup>
-	         
-	    		<h:panelGroup rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.company}">
-	    			<!-- ако клиентът е юридическо лице се изчертава това -->
-	    			<tr>
-	    			<td>
-					<h:outputLabel value="Наименование на фирма">
-						<h:inputText id="searchcompanyname" value="#{aktualiziraneNaKlientskaPoru4ka.client.company.name}" maxlength="100" 
-							readonly = "true" />
-		   				<h:message for="searchcompanyname" />
-					</h:outputLabel>
-					</td>
+				<table class="mainTable" style="margin-bottom: 10px;">
+					<tr>
+						<td><h:outputLabel value="Избери клиент" /></td>
+						<td><h:commandButton value="Избери" class="regButton"
+								style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
+								action="#{aktualiziraneNaKlientskaPoru4ka.chooseClient()}" /></td>
 					</tr>
-				</h:panelGroup>		
-		<tr>
-		<td>
-				<h:outputLabel value="Рег.№ на автомобила">
-	    			<h:inputText id="searchplatenum" value="#{aktualiziraneNaKlientskaPoru4ka.vehicle.plateNumber}" maxlength="8" 
-	    				readonly="true"/>
-	    			<h:message for="searchplatenum" />
-	   		 	</h:outputLabel>
-	   		 	</td>
-	   		 	<td>
-	   			 <h:commandButton value="Избери" 
-	   			 class="regButton" style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
-	   			 action="#{aktualiziraneNaKlientskaPoru4ka.chooseAvtomobil()}" /> 
-	    		</td> 
-	    		</tr>
-	    		<tr><td>
-	    		<h:outputLabel value="Автосервиз">
-	    			<h:selectOneMenu value="#{aktualiziraneNaKlientskaPoru4ka.searchAutoservice}">
-						<f:selectItems value="#{aktualiziraneNaKlientskaPoru4ka.autoservices}" />
-					</h:selectOneMenu>
-	    		</h:outputLabel>
-	    		</td>
-	    		</tr>
-	    		<tr>
-	    		<td>
-	    		<h:outputLabel value="Име на служител"><br />
-		    		<h:inputText id="searchempname" value="#{aktualiziraneNaKlientskaPoru4ka.employee.name}" maxlength="50" 
-						readonly = "true" />
-		    		<h:message for="searchempname" />
-		   		</h:outputLabel>
-		   		<h:outputLabel value="Фамилия на служител"><br />
-		   	 		<h:inputText id="searchempfamily" value="#{aktualiziraneNaKlientskaPoru4ka.employee.family}" maxlength="50" 
-						readonly = "true" />
-		    		<h:message for="searchempfamily" />
-		    	</h:outputLabel>
-		   		</td>
-		   		<td>
-		    	
-		    	<h:commandButton value="Избери" 
-		    	class="regButton" style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
-		    	action="#{aktualiziraneNaKlientskaPoru4ka.chooseEmployee()}" /> 
-		    	</td>
-		    	</tr>
-		    	<tr>
-		    	<td>	
-				<h:outputLabel value="Начална дата"><br />
-					<h:inputText value="" title="формат: ДД.ММ.ГГГГ"
-						convertorMessage="Невалидна дата. Пример: 21.12.2012">
-						<f:convertDateTime pattern="dd.MM.yyyy" />
-					</h:inputText>
-				</h:outputLabel>
-				<h:outputLabel value="Крайна дата"><br />
-					<h:inputText value="" title="формат: ДД.ММ.ГГГГ"
-						convertorMessage="Невалидна дата. Пример: 21.12.2012">
-						<f:convertDateTime pattern="dd.MM.yyyy" />
-					</h:inputText>
-				</h:outputLabel>
-				</td>
-				
-				</tr>
-				<tr><td>
-				<h:outputLabel value="Статус на поръчката">
-	    			<h:selectOneMenu value="#{aktualiziraneNaKlientskaPoru4ka.searchStatus}">
-						<f:selectItems value="#{aktualiziraneNaKlientskaPoru4ka.orderStatus}" />
-					</h:selectOneMenu>
-	    		</h:outputLabel>
-	    		</td>
-	    		<td>
-				<h:commandButton value="Търси" class="regButton" style="width:80px;height:40px;margin-left:20px;margin-top:20px;" disabled="true" />
-				<h:commandButton value="Изчисти" class="regButton" style="width:80px;height:40px;" disabled="true" /> &lt;---- Да се направи
-				</td>
-	    		</tr>
-				
+					<h:panelGroup
+						rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.person}">
+						<!-- ако клиентът е физическо лице се изчертава това -->
+						<tr>
+							<td><h:outputLabel value="Име на клиент">
+									<br />
+									<h:inputText id="searchpersonname"
+										value="#{aktualiziraneNaKlientskaPoru4ka.client.person.name}"
+										maxlength="50" readonly="true" />
+									<h:message for="searchpersonname" />
+								</h:outputLabel></td>
+							<td><h:outputLabel value="Фамилия на клиент">
+									<br />
+									<h:inputText id="searchpersonfamily"
+										value="#{aktualiziraneNaKlientskaPoru4ka.client.person.family}"
+										maxlength="50" readonly="true" />
+									<h:message for="searchpersonfamily" />
+								</h:outputLabel></td>
+						</tr>
+					</h:panelGroup>
+
+					<h:panelGroup
+						rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.company}">
+						<!-- ако клиентът е юридическо лице се изчертава това -->
+						<tr>
+							<td><h:outputLabel value="Наименование на фирма">
+									<h:inputText id="searchcompanyname"
+										value="#{aktualiziraneNaKlientskaPoru4ka.client.company.name}"
+										maxlength="100" readonly="true" />
+									<h:message for="searchcompanyname" />
+								</h:outputLabel></td>
+						</tr>
+					</h:panelGroup>
+					<tr>
+						<td><h:outputLabel value="Рег.№ на автомобила">
+								<h:inputText id="searchplatenum"
+									value="#{aktualiziraneNaKlientskaPoru4ka.vehicle.plateNumber}"
+									maxlength="8" readonly="true" />
+								<h:message for="searchplatenum" />
+							</h:outputLabel></td>
+						<td><h:commandButton value="Избери" class="regButton"
+								style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
+								action="#{aktualiziraneNaKlientskaPoru4ka.chooseAvtomobil()}" />
+						</td>
+					</tr>
+					<tr>
+						<td><h:outputLabel value="Автосервиз">
+								<h:selectOneMenu
+									value="#{aktualiziraneNaKlientskaPoru4ka.searchAutoservice}">
+									<f:selectItems
+										value="#{aktualiziraneNaKlientskaPoru4ka.autoservices}" />
+								</h:selectOneMenu>
+							</h:outputLabel></td>
+					</tr>
+					<tr>
+						<td><h:outputLabel value="Име на служител">
+								<br />
+								<h:inputText id="searchempname"
+									value="#{aktualiziraneNaKlientskaPoru4ka.employee.name}"
+									maxlength="50" readonly="true" />
+								<h:message for="searchempname" />
+							</h:outputLabel> <h:outputLabel value="Фамилия на служител">
+								<br />
+								<h:inputText id="searchempfamily"
+									value="#{aktualiziraneNaKlientskaPoru4ka.employee.family}"
+									maxlength="50" readonly="true" />
+								<h:message for="searchempfamily" />
+							</h:outputLabel></td>
+						<td><h:commandButton value="Избери" class="regButton"
+								style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
+								action="#{aktualiziraneNaKlientskaPoru4ka.chooseEmployee()}" />
+						</td>
+					</tr>
+					<tr>
+						<td><h:outputLabel value="Начална дата">
+								<br />
+								<h:inputText value="" title="формат: ДД.ММ.ГГГГ"
+									convertorMessage="Невалидна дата. Пример: 21.12.2012">
+									<f:convertDateTime pattern="dd.MM.yyyy" />
+								</h:inputText>
+							</h:outputLabel> <h:outputLabel value="Крайна дата">
+								<br />
+								<h:inputText value="" title="формат: ДД.ММ.ГГГГ"
+									convertorMessage="Невалидна дата. Пример: 21.12.2012">
+									<f:convertDateTime pattern="dd.MM.yyyy" />
+								</h:inputText>
+							</h:outputLabel></td>
+
+					</tr>
+					<tr>
+						<td><h:outputLabel value="Статус на поръчката">
+								<h:selectOneMenu
+									value="#{aktualiziraneNaKlientskaPoru4ka.searchStatus}">
+									<f:selectItems
+										value="#{aktualiziraneNaKlientskaPoru4ka.orderStatus}" />
+								</h:selectOneMenu>
+							</h:outputLabel></td>
+						<td><h:commandButton value="Търси" class="regButton"
+								style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
+								disabled="true" /> <h:commandButton value="Изчисти"
+								class="regButton" style="width:80px;height:40px;"
+								disabled="true" /></td>
+					</tr>
+
 				</table>
 			</h:panelGroup>
 		</h:form>
+		</ui:remove>
 		
-		
-		<div id="scroolTable"> <!-- scroll bar -->
-		<h:form>
-			<table>
-			<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
-			<h:dataTable
-				rows="#{configurationProperties.getPageSize()}"
-				value="#{aktualiziraneNaKlientskaPoru4ka.spisukPoru4ki}"
-			    first="0"
-			    var="curr"
-			    rowClasses="#{aktualiziraneNaKlientskaPoru4ka.rowStyleClasses}">
+		<div id="scroolTable">
+			<!-- scroll bar -->
+			<h:form>
+				<table>
+					<!-- за Калин - избрания ред ще има клас = "selectedRow", неизбраните = "notSelectedRow" -->
+					<h:dataTable rows="#{configurationProperties.getPageSize()}"
+						value="#{aktualiziraneNaKlientskaPoru4ka.spisukPoru4ki}" first="0"
+						var="curr"
+						rowClasses="#{aktualiziraneNaKlientskaPoru4ka.rowStyleClasses}">
 
 
-				<h:column>
-					<f:facet name="header">Име</f:facet>
-					<h:outputText value="#{curr.client.person.name}" rendered="#{not empty curr.client.person.name}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Фамилия</f:facet>
-					<h:outputText value="#{curr.client.person.family}" rendered="#{not empty curr.client.person.family}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Наименование на юридическо лице</f:facet>
-					<h:outputText value="#{curr.client.company.name}" rendered="#{not empty curr.client.company.name}" />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Регистрационен номер</f:facet>
-					<h:outputText value="#{curr.vehicle.plateNumber}"  />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Автосервиз</f:facet>
-					<h:outputText value="#{curr.autoservice.name}"  />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Приемчик</f:facet>
-					<h:outputText value="#{curr.employee.name}"  />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Приет автомобил</f:facet>
-					<h:outputText value="#{curr.vehiclePresent}"  />
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Дата</f:facet>
-					<h:outputText value="#{curr.date}">
-						<f:convertDateTime pattern="dd.MM.yyyy" />
-					</h:outputText>
-				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Статус</f:facet>
-					<h:outputText value="#{curr.status}"  />
-				</h:column>
-				
-				
-				
-				<h:column>
-					<f:facet name="header">Промени</f:facet>
-					<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.selectRow(curr)}" value="Промени" class="inTableButton"/>
-				</h:column>
-				
-				<h:column rendered="#{aktualiziraneNaKlientskaPoru4ka.choosingAllowed}">
-					<f:facet name="header">Избери</f:facet>
-					<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.choosePoru4ka(curr)}" value="Избери" class="inTableButton"/>
-				</h:column>
-				
-				<f:facet name="footer">
-				
-					<!-- предишна страница -->
-					<h:commandLink disabled="#{aktualiziraneNaKlientskaPoru4ka.page - 1 lt 0}"
-						action="#{aktualiziraneNaKlientskaPoru4ka.setPage(aktualiziraneNaKlientskaPoru4ka.page - 1)}"
-						value="&lt;&lt;" />
-						
-					<h:outputText value=" " />
-						
-					<!-- други страници -->
-					<ui:repeat value="#{aktualiziraneNaKlientskaPoru4ka.pagesList}" var="currPage">
-						<h:commandLink
-							disabled="#{aktualiziraneNaKlientskaPoru4ka.getPage() eq currPage.intValue() - 1}"
-							action="#{aktualiziraneNaKlientskaPoru4ka.setPage(currPage.intValue() - 1)}"
-							value="#{currPage}" />
-							
-						<h:outputText value=" " />
-					</ui:repeat>
-					
-					<!-- следваща страница -->
-					<h:commandLink disabled="#{aktualiziraneNaKlientskaPoru4ka.page + 1 ge aktualiziraneNaKlientskaPoru4ka.pagesCount}"
-						action="#{aktualiziraneNaKlientskaPoru4ka.setPage(aktualiziraneNaKlientskaPoru4ka.page + 1)}"
-						value="&gt;&gt;" />
-							
-				</f:facet>
-				 
-			</h:dataTable>
-			</table>
-	   </h:form>
-	   </div>
-	   
-	   
+						<h:column>
+							<f:facet name="header">Име</f:facet>
+							<h:outputText value="#{curr.client.person.name}"
+								rendered="#{not empty curr.client.person.name}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Фамилия</f:facet>
+							<h:outputText value="#{curr.client.person.family}"
+								rendered="#{not empty curr.client.person.family}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Наименование на юридическо лице</f:facet>
+							<h:outputText value="#{curr.client.company.name}"
+								rendered="#{not empty curr.client.company.name}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Регистрационен номер</f:facet>
+							<h:outputText value="#{curr.vehicle.plateNumber}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Автосервиз</f:facet>
+							<h:outputText value="#{curr.autoservice.name}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Приемчик</f:facet>
+							<h:outputText value="#{curr.employee.name}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Приет автомобил</f:facet>
+							<h:outputText value="#{curr.vehiclePresent}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Дата</f:facet>
+							<h:outputText value="#{curr.date}">
+								<f:convertDateTime pattern="dd.MM.yyyy" />
+							</h:outputText>
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Статус</f:facet>
+							<h:outputText value="#{curr.status}" />
+						</h:column>
+
+
+
+						<h:column>
+							<f:facet name="header">Промени</f:facet>
+							<h:commandButton
+								action="#{aktualiziraneNaKlientskaPoru4ka.selectRow(curr)}"
+								value="Промени" class="inTableButton" />
+						</h:column>
+
+						<h:column
+							rendered="#{aktualiziraneNaKlientskaPoru4ka.choosingAllowed}">
+							<f:facet name="header">Избери</f:facet>
+							<h:commandButton
+								action="#{aktualiziraneNaKlientskaPoru4ka.choosePoru4ka(curr)}"
+								value="Избери" class="inTableButton" />
+						</h:column>
+
+						<f:facet name="footer">
+
+							<!-- предишна страница -->
+							<h:commandLink
+								disabled="#{aktualiziraneNaKlientskaPoru4ka.page - 1 lt 0}"
+								action="#{aktualiziraneNaKlientskaPoru4ka.setPage(aktualiziraneNaKlientskaPoru4ka.page - 1)}"
+								value="&lt;&lt;" />
+
+							<h:outputText value=" " />
+
+							<!-- други страници -->
+							<ui:repeat value="#{aktualiziraneNaKlientskaPoru4ka.pagesList}"
+								var="currPage">
+								<h:commandLink
+									disabled="#{aktualiziraneNaKlientskaPoru4ka.getPage() eq currPage.intValue() - 1}"
+									action="#{aktualiziraneNaKlientskaPoru4ka.setPage(currPage.intValue() - 1)}"
+									value="#{currPage}" />
+
+								<h:outputText value=" " />
+							</ui:repeat>
+
+							<!-- следваща страница -->
+							<h:commandLink
+								disabled="#{aktualiziraneNaKlientskaPoru4ka.page + 1 ge aktualiziraneNaKlientskaPoru4ka.pagesCount}"
+								action="#{aktualiziraneNaKlientskaPoru4ka.setPage(aktualiziraneNaKlientskaPoru4ka.page + 1)}"
+								value="&gt;&gt;" />
+
+						</f:facet>
+
+					</h:dataTable>
+				</table>
+			</h:form>
+		</div>
+
+
 		<h:form>
-	     
-	     <table class="mainTable">
-	     	<h:panelGroup rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.person}">
-	    	<!-- ако клиентът е физическо лице се изчертава това -->
-	    	<tr>
-	    	<td>
-		    <h:outputLabel value="Име на клиент"><br />
-		    	<h:inputText id="personname" value="#{aktualiziraneNaKlientskaPoru4ka.client.person.name}" maxlength="50" 
-		    		required="false" requiredMessage="задължително поле!" 
-					readonly = "true" />
-		    	<h:message for="personname" />
-		    </h:outputLabel>
-		    </td>
-		    <td>
-		    <h:outputLabel value="Фамилия на клиент"><br />
-		    	<h:inputText id="personfamily" value="#{aktualiziraneNaKlientskaPoru4ka.client.person.family}" maxlength="50" 
-		    		required="false" requiredMessage="задължително поле!"
-					readonly = "true" />
-		    	<h:message for="personfamily" />
-		    </h:outputLabel>
-		    </td>
-		    </tr>
-		</h:panelGroup>
-	         
-	    <h:panelGroup rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.company}">
-	    	<!-- ако клиентът е юридическо лице се изчертава това -->
-	    	<tr><td>
-			<h:outputLabel value="Наименование на фирма"><br />
-				<h:inputText id="companyname" value="#{aktualiziraneNaKlientskaPoru4ka.client.company.name}" maxlength="100" 
-		   			required="false" requiredMessage="задължително поле!"
-					readonly = "true" />
-		   		<h:message for="companyname" />
-			</h:outputLabel>
-			</td>
-			</tr>
-		</h:panelGroup>
- 		<tr><td>
- 		<h:outputLabel value="Рег.№ на автомобила"><br />
-	    	<h:inputText id="platenum" value="#{aktualiziraneNaKlientskaPoru4ka.vehicle.plateNumber}" maxlength="8" 
-	    		readonly="true"/>
-	    	<h:message for="platenum" />
-	    </h:outputLabel>
-	     </td>
-	     <td>
-	     
-	     <h:outputLabel value="Автосервиз, в който се изпълнява поръчката:"><br />
-	    	<h:inputText id="autoservice" value="#{aktualiziraneNaKlientskaPoru4ka.autoservice.name}" maxlength="100" 
-	    		readonly="true"/>
-	    	<h:message for="autoservice" />
-	    </h:outputLabel> 
-	    </td>
-	    </tr>
-	    <tr><td colspan="2">
-	    <h:outputLabel value="Служител създал поръчката:">
-	    	<h:inputText id="empname" value="#{aktualiziraneNaKlientskaPoru4ka.employee.name}" maxlength="50" 
-	    		readonly="true"/>
-	    	<h:message for="empname" />
-	    	<h:inputText id="empfamily" value="#{aktualiziraneNaKlientskaPoru4ka.employee.family}" maxlength="50" 
-	    		readonly="true"/>
-	    	<h:message for="empfamily" />
-	    </h:outputLabel> 
-	    </td></tr>
-	  <tr>
-	  <td>
-		 <h:outputLabel value="Дата:"><br />
-	    	<h:inputText id="date" value="#{aktualiziraneNaKlientskaPoru4ka.date}" 
-	    		readonly="true">
-	    	<f:convertDateTime pattern="dd.MM.yyyy" />
-	    	</h:inputText>
-	    </h:outputLabel> 
-	   	</td>
-		<td>
-		<h:outputLabel value="Автомобилът е приет за ремонт" style="height:50px;">
-	   		<h:selectBooleanCheckbox value="#{aktualiziraneNaKlientskaPoru4ka.inAutoservice}" style="margin-top:15px;" 
-	   			disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or
+
+			<table class="mainTable">
+				<h:panelGroup
+					rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.person}">
+					<!-- ако клиентът е физическо лице се изчертава това -->
+					<tr>
+						<td><h:outputLabel value="Име на клиент">
+								<br />
+								<h:inputText id="personname"
+									value="#{aktualiziraneNaKlientskaPoru4ka.client.person.name}"
+									maxlength="50" required="false"
+									requiredMessage="задължително поле!" readonly="true" />
+								<h:message for="personname" />
+							</h:outputLabel></td>
+						<td><h:outputLabel value="Фамилия на клиент">
+								<br />
+								<h:inputText id="personfamily"
+									value="#{aktualiziraneNaKlientskaPoru4ka.client.person.family}"
+									maxlength="50" required="false"
+									requiredMessage="задължително поле!" readonly="true" />
+								<h:message for="personfamily" />
+							</h:outputLabel></td>
+					</tr>
+				</h:panelGroup>
+
+				<h:panelGroup
+					rendered="#{not empty aktualiziraneNaKlientskaPoru4ka.client.company}">
+					<!-- ако клиентът е юридическо лице се изчертава това -->
+					<tr>
+						<td><h:outputLabel value="Наименование на фирма">
+								<br />
+								<h:inputText id="companyname"
+									value="#{aktualiziraneNaKlientskaPoru4ka.client.company.name}"
+									maxlength="100" required="false"
+									requiredMessage="задължително поле!" readonly="true" />
+								<h:message for="companyname" />
+							</h:outputLabel></td>
+					</tr>
+				</h:panelGroup>
+				<tr>
+					<td><h:outputLabel value="Рег.№ на автомобила">
+							<br />
+							<h:inputText id="platenum"
+								value="#{aktualiziraneNaKlientskaPoru4ka.vehicle.plateNumber}"
+								maxlength="8" readonly="true" />
+							<h:message for="platenum" />
+						</h:outputLabel></td>
+					<td><h:outputLabel
+							value="Автосервиз, в който се изпълнява поръчката:">
+							<br />
+							<h:inputText id="autoservice"
+								value="#{aktualiziraneNaKlientskaPoru4ka.autoservice.name}"
+								maxlength="100" readonly="true" />
+							<h:message for="autoservice" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td colspan="2"><h:outputLabel
+							value="Служител създал поръчката:">
+							<h:inputText id="empname"
+								value="#{aktualiziraneNaKlientskaPoru4ka.employee.name}"
+								maxlength="50" readonly="true" />
+							<h:message for="empname" />
+							<h:inputText id="empfamily"
+								value="#{aktualiziraneNaKlientskaPoru4ka.employee.family}"
+								maxlength="50" readonly="true" />
+							<h:message for="empfamily" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Дата:">
+							<br />
+							<h:inputText id="date"
+								value="#{aktualiziraneNaKlientskaPoru4ka.date}" readonly="true">
+								<f:convertDateTime pattern="dd.MM.yyyy" />
+							</h:inputText>
+						</h:outputLabel></td>
+					<td><h:outputLabel value="Автомобилът е приет за ремонт"
+							style="height:50px;">
+							<h:selectBooleanCheckbox
+								value="#{aktualiziraneNaKlientskaPoru4ka.inAutoservice}"
+								style="margin-top:15px;"
+								disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or
 	   			aktualiziraneNaKlientskaPoru4ka.isPaied() or !aktualiziraneNaKlientskaPoru4ka.isPriemchik()}" />
-	    </h:outputLabel>
-	    </td>
-	    </tr>
-	    <tr><td colspan="2">
-	    <h:outputLabel value="Услуги, които ще бъдат извършени:">
-	    	<h:commandButton value="Избери" class="inTableButton" action="#{aktualiziraneNaKlientskaPoru4ka.chooseUsluga()}" 
-				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or 
-				aktualiziraneNaKlientskaPoru4ka.isPaied() or !aktualiziraneNaKlientskaPoru4ka.isPriemchik()}"/> 
-	    </h:outputLabel>
-	    </td></tr>
-	    </table>
-	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове --> 
-		<div id="scroolTable"> <!-- scroll bar -->
-		<table>
-		<h:dataTable
-			value="#{aktualiziraneNaKlientskaPoru4ka.spisukUslugi}"
-			var="curr"
-			rowClasses="notSelectedRow">
-				
-			<h:column>
-				<f:facet name="header">Наименование на услугата</f:facet>
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td colspan="2"><h:outputLabel
+							value="Услуги, които ще бъдат извършени:">
+							<h:commandButton value="Избери" class="inTableButton"
+								action="#{aktualiziraneNaKlientskaPoru4ka.chooseUsluga()}"
+								disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or 
+				aktualiziraneNaKlientskaPoru4ka.isPaied() or !aktualiziraneNaKlientskaPoru4ka.isPriemchik()}" />
+						</h:outputLabel></td>
+				</tr>
+			</table>
+			<!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове -->
+			<div id="scroolTable">
+				<!-- scroll bar -->
+				<table>
+					<h:dataTable
+						value="#{aktualiziraneNaKlientskaPoru4ka.spisukUslugi}" var="curr"
+						rowClasses="notSelectedRow">
+
+						<h:column>
+							<f:facet name="header">Наименование на услугата</f:facet>
 				#{curr.clService.service.description}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Време за извършване (часа)</f:facet>
+
+						<h:column>
+							<f:facet name="header">Време за извършване (часа)</f:facet>
 				#{curr.serviceDuration}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Цена на час</f:facet>
+
+						<h:column>
+							<f:facet name="header">Цена на час</f:facet>
 				#{curr.clService.priceHour}
 			</h:column>
-			
-			<h:column>
-				<f:facet name="header">Общо</f:facet>
+
+						<h:column>
+							<f:facet name="header">Общо</f:facet>
 				#{curr.fullPrice}
 			</h:column>
 
-			<h:column>
-				<f:facet name="header">Кой заплаща услугата</f:facet>
+						<h:column>
+							<f:facet name="header">Кой заплаща услугата</f:facet>
 				#{aktualiziraneNaKlientskaPoru4ka.getWhoWillPay(curr.clService.whoPays) }
 			</h:column>
-			
-			
-			<h:column>
-				<f:facet name="header">Кой е извършил услугата</f:facet>
+
+
+						<h:column>
+							<f:facet name="header">Кой е извършил услугата</f:facet>
 				#{curr.getEmployeeNames() }
 			</h:column>
-			
-			
-			<h:column rendered="#{aktualiziraneNaKlientskaPoru4ka.isAvtomontior() and !aktualiziraneNaKlientskaPoru4ka.isPaied()}" >
-				<f:facet name="header">Извършена услуга</f:facet>
-				<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.setEmployeeToService(curr)}" value="Извършена" 
-				class="inTableButton"
-				disabled="#{curr.isDone() or !aktualiziraneNaKlientskaPoru4ka.isInAutoservice()}"/>
-			</h:column> 
-			
-			<h:column rendered="#{aktualiziraneNaKlientskaPoru4ka.isPriemchik() and !aktualiziraneNaKlientskaPoru4ka.isPaied()}" >
-				<f:facet name="header">Премахни</f:facet>
-				<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.deleteUsluga(curr)}" value="Премахни" 
-				class="inTableButton"
-				disabled="#{curr.isDone()}"/>
-			</h:column> 
-		</h:dataTable>
-		</table>
-		</div>
-		<br />
-		
-		
-		<h:outputLabel value="Резервни части, които ще бъдат вложени:" style="margin-bottom:10px;">
-	    	<h:commandButton  value="Избери" class="inTableButton" action="#{aktualiziraneNaKlientskaPoru4ka.chooseSparePart()}"
-				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or 
-				!aktualiziraneNaKlientskaPoru4ka.isPriemchik() or aktualiziraneNaKlientskaPoru4ka.isPaied()}"/>
-	    </h:outputLabel>
-	    <br /> 
-	    <!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове 
+
+
+						<h:column
+							rendered="#{aktualiziraneNaKlientskaPoru4ka.isAvtomontior() and !aktualiziraneNaKlientskaPoru4ka.isPaied()}">
+							<f:facet name="header">Извършена услуга</f:facet>
+							<h:commandButton
+								action="#{aktualiziraneNaKlientskaPoru4ka.setEmployeeToService(curr)}"
+								value="Извършена" class="inTableButton"
+								disabled="#{curr.isDone() or !aktualiziraneNaKlientskaPoru4ka.isInAutoservice()}" />
+						</h:column>
+
+						<h:column
+							rendered="#{aktualiziraneNaKlientskaPoru4ka.isPriemchik() and !aktualiziraneNaKlientskaPoru4ka.isPaied()}">
+							<f:facet name="header">Премахни</f:facet>
+							<h:commandButton
+								action="#{aktualiziraneNaKlientskaPoru4ka.deleteUsluga(curr)}"
+								value="Премахни" class="inTableButton"
+								disabled="#{curr.isDone()}" />
+						</h:column>
+					</h:dataTable>
+				</table>
+			</div>
+			<br />
+
+
+			<h:outputLabel value="Резервни части, които ще бъдат вложени:"
+				style="margin-bottom:10px;">
+				<h:commandButton value="Избери" class="inTableButton"
+					action="#{aktualiziraneNaKlientskaPoru4ka.chooseSparePart()}"
+					disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or 
+				!aktualiziraneNaKlientskaPoru4ka.isPriemchik() or aktualiziraneNaKlientskaPoru4ka.isPaied()}" />
+			</h:outputLabel>
+			<br />
+			<!-- TODO: може ли да се сложи scroll bar по Y с определен брой редове 
 	    Оцветяване на ред с липсващи резервни части-->
-		<div id="scroolTable"> <!-- scroll bar -->
-		<table>
-			<h:dataTable
-				value="#{aktualiziraneNaKlientskaPoru4ka.spisukRezervni4asti}"
-				var="curr"
-				rowClasses="notSelectedRow">
-				
-				<h:column>
-					<f:facet name="header">Група на резервната част</f:facet>
+			<div id="scroolTable">
+				<!-- scroll bar -->
+				<table>
+					<h:dataTable
+						value="#{aktualiziraneNaKlientskaPoru4ka.spisukRezervni4asti}"
+						var="curr" rowClasses="notSelectedRow">
+
+						<h:column>
+							<f:facet name="header">Група на резервната част</f:facet>
 					#{curr.clPart.sparePart.sparePartGroup.description}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Име на резервната част</f:facet>
+
+						<h:column>
+							<f:facet name="header">Име на резервната част</f:facet>
 					#{curr.clPart.sparePart.name}
 				</h:column>
-				
-				<h:column>
-					<f:facet name="header">Нужно количество</f:facet>
-					<h:outputText value="#{curr.clPart.quantity}" rendered="#{!curr.editing}" />
-					<h:inputText value="#{curr.clPart.quantity}" rendered="#{curr.editing}" 
-					readonly="#{!aktualiziraneNaKlientskaPoru4ka.isPriemchik()}">
-					<f:validateDoubleRange minimum="0.001" />
-					</h:inputText>
-				</h:column>
-			
-				<h:column>
-					<f:facet name="header">Налично количество</f:facet>
+
+						<h:column>
+							<f:facet name="header">Нужно количество</f:facet>
+							<h:outputText value="#{curr.clPart.quantity}"
+								rendered="#{!curr.editing}" />
+							<h:inputText value="#{curr.clPart.quantity}"
+								rendered="#{curr.editing}"
+								readonly="#{!aktualiziraneNaKlientskaPoru4ka.isPriemchik()}">
+								<f:validateDoubleRange minimum="0.001" />
+							</h:inputText>
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Налично количество</f:facet>
 					#{curr.quantityAvailable}
 				</h:column>
-			
-				<h:column>
-					<f:facet name="header">Резервирано количество</f:facet>
+
+						<h:column>
+							<f:facet name="header">Резервирано количество</f:facet>
 					#{curr.quantityReserved}
 				</h:column>
-			
-				<h:column>
-					<f:facet name="header">Вложено количество</f:facet>
-					<h:outputText value="#{curr.quantityUsed}" rendered="#{!curr.editing}" />
-					<h:inputText value="#{curr.quantityUsed}" rendered="#{curr.editing}" 
-						readonly="#{!aktualiziraneNaKlientskaPoru4ka.isSklad()}">
-					<f:validateDoubleRange minimum="0.001" />
-					</h:inputText>
-				</h:column>
-		
-				<h:column>
-					<f:facet name="header">Мерна единица</f:facet>
+
+						<h:column>
+							<f:facet name="header">Вложено количество</f:facet>
+							<h:outputText value="#{curr.quantityUsed}"
+								rendered="#{!curr.editing}" />
+							<h:inputText value="#{curr.quantityUsed}"
+								rendered="#{curr.editing}"
+								readonly="#{!aktualiziraneNaKlientskaPoru4ka.isSklad()}">
+								<f:validateDoubleRange minimum="0.001" />
+							</h:inputText>
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Мерна единица</f:facet>
 					#{curr.clPart.sparePart.measuringUnit}
 				</h:column>
-			
-				<h:column>
-					<f:facet name="header">Единична цена</f:facet>
+
+						<h:column>
+							<f:facet name="header">Единична цена</f:facet>
 					#{curr.clPart.priceUnit}
 				</h:column>
-			
-				<h:column>
-					<f:facet name="header">Общо</f:facet>
+
+						<h:column>
+							<f:facet name="header">Общо</f:facet>
 					#{curr.fullPrice}
 				</h:column>
 
-				<h:column>
-					<f:facet name="header">Кой заплаща часта</f:facet>
+						<h:column>
+							<f:facet name="header">Кой заплаща часта</f:facet>
 					#{aktualiziraneNaKlientskaPoru4ka.getWhoWillPay(curr.clPart.whoPays)}
 				</h:column>
-			
-				<h:column rendered="#{!aktualiziraneNaKlientskaPoru4ka.isPaied()}" >
-					<f:facet name="header">Промени</f:facet>
-					<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.toggleEditSparePartForClientOrder(curr)}" value="Промени" class="inTableButton"/>
-				</h:column>
-			
-				<h:column rendered="#{aktualiziraneNaKlientskaPoru4ka.isPriemchik() and !aktualiziraneNaKlientskaPoru4ka.isPaied()}" >
-					<f:facet name="header">Премахни</f:facet>
-					<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.deleteSparePart(curr)}" value="Премахни" 
-					class="inTableButton"
-						disabled="#{curr.isUsed()}"/>
-				</h:column>
-		
-				</h:dataTable>
-				
-				</table>
-				
-			</div>
-			<h:outputText value="Обща цена на поръчката: #{aktualiziraneNaKlientskaPoru4ka.clientOrderPrice}" style="float:left;"/>
-			<table class="mainTable" style="clear:left;">
-			<tr><td>
-			<h:outputLabel value="Номер на платежно нареждане">
-	    		<h:inputText id="paynum" value="#{aktualiziraneNaKlientskaPoru4ka.paymentNumber}" maxlength="30" 
-	    			readonly="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.isPriemchik() or
-	    			aktualiziraneNaKlientskaPoru4ka.isPaied()}"/>
-	    		<h:message for="paynum" />
-	    	</h:outputLabel> 
-	    	</td></tr>
-	    	<tr><td>
-	    	 <h:outputLabel value="Статус на поръчката: #{aktualiziraneNaKlientskaPoru4ka.status}"/>
-	     	</td></tr>
-	     	<tr><td>
-	     	<h:outputLabel value="Промени статуса на поръчката: ">
-	     		<h:commandButton value="Платена поръчка" 
-	     		class="inTableButton" action="#{aktualiziraneNaKlientskaPoru4ka.finishedOrder(true)}"
-					disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or
-					aktualiziraneNaKlientskaPoru4ka.isPaied() or !aktualiziraneNaKlientskaPoru4ka.isPriemchik() or
-					aktualiziraneNaKlientskaPoru4ka.getStatus() != 'завършена' }"/>
-				<h:commandButton value="Блокирана поръчка" class="inTableButton" action="#{aktualiziraneNaKlientskaPoru4ka.finishedOrder(false)}"
-					disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or
-					aktualiziraneNaKlientskaPoru4ka.isPaied() or !aktualiziraneNaKlientskaPoru4ka.isPriemchik() or
-					aktualiziraneNaKlientskaPoru4ka.howManyServiceDone() != 0 or aktualiziraneNaKlientskaPoru4ka.howManySparePartUsed() != 0}"/>
-	    	</h:outputLabel>
-	    	</td></tr>	
-	    	<tr><td>
 
-			<h:commandButton value="Запази" 
-			class="regButton" style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
-			action="#{aktualiziraneNaKlientskaPoru4ka.saveOrder()}"
-				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed}"/>
-</td></tr>
+						<h:column rendered="#{!aktualiziraneNaKlientskaPoru4ka.isPaied()}">
+							<f:facet name="header">Промени</f:facet>
+							<h:commandButton
+								action="#{aktualiziraneNaKlientskaPoru4ka.toggleEditSparePartForClientOrder(curr)}"
+								value="Промени" class="inTableButton" />
+						</h:column>
+
+						<h:column
+							rendered="#{aktualiziraneNaKlientskaPoru4ka.isPriemchik() and !aktualiziraneNaKlientskaPoru4ka.isPaied()}">
+							<f:facet name="header">Премахни</f:facet>
+							<h:commandButton
+								action="#{aktualiziraneNaKlientskaPoru4ka.deleteSparePart(curr)}"
+								value="Премахни" class="inTableButton"
+								disabled="#{curr.isUsed()}" />
+						</h:column>
+
+					</h:dataTable>
+
 				</table>
+
+			</div>
+			<h:outputText
+				value="Обща цена на поръчката: #{aktualiziraneNaKlientskaPoru4ka.clientOrderPrice}"
+				style="float:left;" />
+			<table class="mainTable" style="clear: left;">
+				<tr>
+					<td><h:outputLabel value="Номер на платежно нареждане">
+							<h:inputText id="paynum"
+								value="#{aktualiziraneNaKlientskaPoru4ka.paymentNumber}"
+								maxlength="30"
+								readonly="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.isPriemchik() or
+	    			aktualiziraneNaKlientskaPoru4ka.isPaied()}" />
+							<h:message for="paynum" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:outputLabel
+							value="Статус на поръчката: #{aktualiziraneNaKlientskaPoru4ka.status}" />
+					</td>
+				</tr>
+				<tr>
+					<td><h:outputLabel value="Промени статуса на поръчката: ">
+							<h:commandButton value="Платена поръчка" class="inTableButton"
+								action="#{aktualiziraneNaKlientskaPoru4ka.finishedOrder(true)}"
+								disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or
+					aktualiziraneNaKlientskaPoru4ka.isPaied() or !aktualiziraneNaKlientskaPoru4ka.isPriemchik() or
+					aktualiziraneNaKlientskaPoru4ka.getStatus() != 'завършена' }" />
+							<h:commandButton value="Блокирана поръчка" class="inTableButton"
+								action="#{aktualiziraneNaKlientskaPoru4ka.finishedOrder(false)}"
+								disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed or
+					aktualiziraneNaKlientskaPoru4ka.isPaied() or !aktualiziraneNaKlientskaPoru4ka.isPriemchik() or
+					aktualiziraneNaKlientskaPoru4ka.howManyServiceDone() != 0 or aktualiziraneNaKlientskaPoru4ka.howManySparePartUsed() != 0}" />
+						</h:outputLabel></td>
+				</tr>
+				<tr>
+					<td><h:commandButton value="Запази" class="regButton"
+							style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
+							action="#{aktualiziraneNaKlientskaPoru4ka.saveOrder()}"
+							disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.changingAllowed}" />
+					</td>
+				</tr>
+			</table>
 		</h:form>
-		
+
 		<h:form>
 			<!-- формата е разделена на две, за да не се проверяват данните
 			при натискането на бутоните "Отмени" и "Добави" -->
-		<table class="buttonTable">
-		<tr><td>
-			<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.deselectRow()}" value="Отмени"
-			class="regButton" style="width:80px;height:40px;margin-left:-40px;"
-				disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected}"/>
-				
-			<h:commandButton action="#{aktualiziraneNaKlientskaPoru4ka.goToAdd()}" value="Добави"
-			class="regButton" style="width:80px;height:40px;"
-				disabled="#{!aktualiziraneNaKlientskaPoru4ka.goToAddAllowed}" />
-    		<br />
-    
-    		<h:outputText value="#{aktualiziraneNaKlientskaPoru4ka.errorMessage}"/>
-    		</td></tr>
-	    </table>
+			<table class="buttonTable">
+				<tr>
+					<td><h:commandButton
+							action="#{aktualiziraneNaKlientskaPoru4ka.deselectRow()}"
+							value="Отмени" class="regButton"
+							style="width:80px;height:40px;margin-left:-40px;"
+							disabled="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected}" /> <h:commandButton
+							action="#{aktualiziraneNaKlientskaPoru4ka.goToAdd()}"
+							value="Добави" class="regButton" style="width:80px;height:40px;"
+							disabled="#{!aktualiziraneNaKlientskaPoru4ka.goToAddAllowed}" />
+						<br /> <h:outputText
+							value="#{aktualiziraneNaKlientskaPoru4ka.errorMessage}" /></td>
+				</tr>
+			</table>
 		</h:form>
 	</ui:define>
-	
+
 </ui:composition>
 </html>
