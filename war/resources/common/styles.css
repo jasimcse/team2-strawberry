@@ -30,7 +30,7 @@ table {
 }
 table td{
 	color: #FF3300;
-	text-shadow: 5px 5px 10px #FF3300;
+	/* text-shadow: 5px 5px 10px #FF3300; */
 }
 tr {
 	padding: 0px;
@@ -87,7 +87,7 @@ input[type="text"]{
 	font-weight: bold;
 	background-color:transparent;
 	border: 1px solid #097ec3;
-	text-shadow: 5px 5px 10px #70DB93;
+	/* text-shadow: 5px 5px 10px #70DB93; */
 	-webkit-border-radius: 2px 2px 2px 2px;
 	-moz-border-radius: 2px 2px 2px 2px;
 	border-radius: 2px 2px 2px 2px;
@@ -109,7 +109,7 @@ input[type="text"]:hover{
 	width: 200px;
 	outline: none;
 	color: #FC0000;
-	text-shadow: 5px 5px 10px #FC0000;
+	/* text-shadow: 5px 5px 10px #FC0000; */
 	font-weight: bold;
 	background-color: transparent;
 	border: 1px solid white;
@@ -349,7 +349,7 @@ input[disabled='disabled']:hover{
 	
 	.mainTable label{
 		color: #097ec3;
-		text-shadow: 5px 5px 10px #097ec3;
+		/* text-shadow: 5px 5px 10px #097ec3; */
 		}
 	
 	.selectedRow{
@@ -371,7 +371,7 @@ input[disabled='disabled']:hover{
 	
 	.buttonTable label{
 		color: #097ec3;
-		text-shadow: 5px 5px 10px #097ec3;
+		/* text-shadow: 5px 5px 10px #097ec3; */
 	}
 
 /* Buttons */
@@ -470,7 +470,7 @@ input[disabled='disabled']:hover{
 
 #zap4as label{
 	color: #097ec3;
-	text-shadow: 5px 5px 10px #097ec3;
+	/* text-shadow: 5px 5px 10px #097ec3; */
 }
 
 
