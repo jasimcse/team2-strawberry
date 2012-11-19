@@ -280,6 +280,7 @@ input[disabled='disabled']:hover{
 #leftSection span {
 	display: block;
 	width: 180px;
+	color: #097ec3;
 	margin-top: -10px;
 	margin-right: 28px;
 }
@@ -289,7 +290,7 @@ input[disabled='disabled']:hover{
 	text-align: left;
 	padding: 2px;
 	font-style: italic;
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid #097ec3;
 	-webkit-transition: all 0.4s ease;
 	-moz-transition: all 0.4s ease;
 	-o-transition: all 0.4s ease;
@@ -309,7 +310,7 @@ input[disabled='disabled']:hover{
 #leftSection span {
 	background: #fff;
 	cursor: pointer;
-	border: 1px solid black;
+	border: 1px solid #097ec3;
 	padding: 5px;
 	font-weight: bold;
 	-moz-border-radius: 5px;
