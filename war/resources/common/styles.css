@@ -28,6 +28,10 @@ table {
 	margin: 0px;
 	border-collapse: collapse;
 }
+.errorMsg{
+	color: red;
+	font-weight: bold;
+}
 table td{
 	color: #FF3300;
 	/* text-shadow: 5px 5px 10px #FF3300; */
