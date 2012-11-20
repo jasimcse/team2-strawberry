@@ -28,10 +28,7 @@ table {
 	margin: 0px;
 	border-collapse: collapse;
 }
-.errorMsg{
-	color: red;
-	font-weight: bold;
-}
+
 table td{
 	color: #FF3300;
 	/* text-shadow: 5px 5px 10px #FF3300; */
@@ -68,10 +65,15 @@ tfoot>tr {
 	font-style: italic;
 }
 
-
 .disabledLink {
 	font-weight: bold;
 }
+
+.errorMsg{
+	color: red;
+	font-weight: bold;
+}
+
 #scroolTable{
 	overflow-x: auto;
 	width: 900px;
