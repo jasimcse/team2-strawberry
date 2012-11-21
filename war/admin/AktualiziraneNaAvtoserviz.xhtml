@@ -83,16 +83,24 @@
 							<h:inputText id="name" value="#{aktualiziraneNaAvtoserviz.name}"
 								maxlength="30" required="true"
 								requiredMessage="задължително поле!"
-								readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
-							<h:message for="name" />
+								readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}"
+								validatorMessage="Въведеното име съдържа некоректни символи или е прекалено късо.">
+								<f:validateRegex pattern="^\w{2,50}$" />
+							</h:inputText>
+							<br/>
+							<h:message for="name" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Населено място*">
 							<br />
 							<h:inputText id="city"
 								value="#{aktualiziraneNaAvtoserviz.addressCity}" maxlength="30"
 								required="true" requiredMessage="задължително поле!"
-								readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
-							<h:message for="city" />
+								readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" 
+								validatorMessage="Въведеното населено място съдържа некоректни символи или е прекалено късо.">
+								<f:validateRegex pattern="^[a-zA-Zа-яА-Я]{3,30}$" />
+							</h:inputText>
+							<br/>
+							<h:message for="city" class="errorMsg" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -101,8 +109,12 @@
 							<h:inputText id="address"
 								value="#{aktualiziraneNaAvtoserviz.addressLine}" maxlength="100"
 								required="true" requiredMessage="задължително поле!"
-								readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" />
-							<h:message for="address" />
+								readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}" 
+								validatorMessage="Въведеният адрес е прекалено къс.">
+								<f:validateRegex pattern="^.{5,100}$" />
+							</h:inputText>
+							<br/>
+							<h:message for="address" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Телефонен номер*">
 							<br />
@@ -111,9 +123,10 @@
 								required="true" requiredMessage="задължително поле!"
 								readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}"
 								validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
-								<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)" />
+								<f:validateRegex pattern="^[+]?[0-9]{6,14}$" />
 							</h:inputText>
-							<h:message for="phone" />
+							<br/>
+							<h:message for="phone" class="errorMsg" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -122,12 +135,12 @@
 							<h:inputText id="mail" value="#{aktualiziraneNaAvtoserviz.mail}"
 								maxlength="50" required="true"
 								requiredMessage="задължително поле!"
-								readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}"
 								validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
 								<f:validateRegex
-									pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$" />
+									pattern="^[a-zA-Z][a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$" />
 							</h:inputText>
-							<h:message for="mail" />
+							<br/>
+							<h:message for="mail" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Номер на банковата сметка*">
 							<br />
@@ -135,10 +148,11 @@
 								value="#{aktualiziraneNaAvtoserviz.IBANNumber}" maxlength="30"
 								required="true" requiredMessage="задължително поле!"
 								readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}"
-								validatorMessage="Позволени символи за номер на сметка са главни латински букви и цифри.">
-								<f:validateRegex pattern="^[A-Z0-9]+$" />
+								validatorMessage="Позволени символи за номер на сметка са главни латински букви и цифри. От 10 до 30 символа.">
+								<f:validateRegex pattern="^[A-Z0-9]{10,30}$" />
 							</h:inputText>
-							<h:message for="iban" />
+							<br/>
+							<h:message for="iban" class="errorMsg" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -148,10 +162,11 @@
 								value="#{aktualiziraneNaAvtoserviz.SWIFTCode}" maxlength="20"
 								required="true" requiredMessage="задължително поле!"
 								readonly="#{!aktualiziraneNaAvtoserviz.rowSelected}"
-								validatorMessage="Позволени символи за банков код са главни латински букви и цифри.">
-								<f:validateRegex pattern="^[A-Z0-9]+$" />
+								validatorMessage="Позволени символи за банков код са главни латински букви и цифри. От 8 до 11 символа.">
+								<f:validateRegex pattern="^[A-Z0-9]{8,11}$" />
 							</h:inputText>
-							<h:message for="swiftcode" />
+							<br/>
+							<h:message for="swiftcode" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="ДДС номер">
 							<br />
@@ -162,11 +177,12 @@
 								validatorMessage="ДДС номерът се състои от 11 символа - главни латински букви и цифри.">
 								<f:validateRegex pattern="^[A-Z0-9]{11}$" />
 							</h:inputText>
-							<h:message for="vat" />
+							<br/>
+							<h:message for="vat" class="errorMsg" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
-					<td style="text-align: center"><h:outputLabel
+					<td><h:outputLabel
 							value="Единен идентификационен код (ЕИК)*">
 							<br />
 							<h:inputText id="regnumber"
@@ -177,7 +193,8 @@
 								validatorMessage="ЕИК трябва да се състои от точно 9 цифри.">
 								<f:validateRegex pattern="^[0-9]{9}$" />
 							</h:inputText>
-							<h:message for="regnumber" />
+							<br/>
+							<h:message for="regnumber" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:commandButton value="Запази" class="regButton"
 							style="width:80px;height:40px; margin-left: 80px;margin-top: 25px;"

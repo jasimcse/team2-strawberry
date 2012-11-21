@@ -81,14 +81,12 @@
 							<h:inputText id="name"
 								value="#{aktualiziraneNaPotrebitel.employeeName}"
 								readonly="true" />
-							<h:message for="name" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Фамилия">
 							<br />
 							<h:inputText id="family"
 								value="#{aktualiziraneNaPotrebitel.employeeFamily}"
 								readonly="true" />
-							<h:message for="family" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -97,13 +95,11 @@
 							<h:inputText id="autoserviceName"
 								value="#{aktualiziraneNaPotrebitel.autoserviceName}"
 								readonly="true" />
-							<h:message for="autoserviceName" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Потребителско име">
 							<br />
 							<h:inputText id="username"
 								value="#{aktualiziraneNaPotrebitel.username}" readonly="true" />
-							<h:message for="username" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -128,7 +124,7 @@
 								required="#{not empty param[aktualiziraneNaPotrebitel.changeButton.clientId]}"
 								requiredMessage="задължително поле!"
 								disabled="#{!aktualiziraneNaPotrebitel.changePasswordAllowed}" />
-							<h:message for="newPassword" />
+							<h:message for="newPassword" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Повтори новата парола">
 							<br />
@@ -137,7 +133,7 @@
 								required="#{not empty param[aktualiziraneNaPotrebitel.changeButton.clientId]}"
 								requiredMessage="задължително поле!"
 								disabled="#{!aktualiziraneNaPotrebitel.changePasswordAllowed}" />
-							<h:message for="repeatNewPassword" />
+							<h:message for="repeatNewPassword" class="errorMsg" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>

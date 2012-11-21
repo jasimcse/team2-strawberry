@@ -16,7 +16,6 @@
 							<h:inputText id="platenum"
 								value="#{dobavqneNaKlientskaPoru4ka.vehicle.plateNumber}"
 								maxlength="8" readonly="true" />
-							<h:message for="platenum" />
 						</h:outputLabel></td>
 					<td><h:commandButton value="Избери" class="regButton"
 							style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
@@ -33,14 +32,12 @@
 									value="#{dobavqneNaKlientskaPoru4ka.client.person.name}"
 									maxlength="50" required="false"
 									requiredMessage="задължително поле!" readonly="true" />
-								<h:message for="personname" />
 							</h:outputLabel></td>
 						<td><h:outputLabel value="Фамилия на клиент">
 								<h:inputText id="personfamily"
 									value="#{dobavqneNaKlientskaPoru4ka.client.person.family}"
 									maxlength="50" required="false"
 									requiredMessage="задължително поле!" readonly="true" />
-								<h:message for="personfamily" />
 							</h:outputLabel></td>
 					</tr>
 				</table>
@@ -56,7 +53,6 @@
 									value="#{dobavqneNaKlientskaPoru4ka.client.company.name}"
 									maxlength="100" required="false"
 									requiredMessage="задължително поле!" readonly="true" />
-								<h:message for="companyname" />
 							</h:outputLabel></td>
 					</tr>
 				</table>

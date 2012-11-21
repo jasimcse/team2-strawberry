@@ -19,7 +19,7 @@
 								validatorMessage="Дължината на името не може да надвишава 100 символа">
 								<f:validateLength minimum="0" maximum="100" />
 							</h:inputText>
-							<h:message for="name" />
+							<h:message for="name" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Телефонен номер за обратна връзка">
 							<br />
@@ -28,7 +28,7 @@
 								validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
 								<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)" />
 							</h:inputText>
-							<h:message for="phone" />
+							<h:message for="phone" class="errorMsg" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -95,7 +95,7 @@
 							<br />
 					
 						</h:selectOneRadio>
-						<h:message for="hours" />
+						<h:message for="hours" class="errorMsg" />
 						</span>
 					</h:outputLabel>
 					</span>

@@ -178,10 +178,12 @@ public class AktualiziraneNaRezervna4ast implements Serializable {
 	
 	public void selectRow(SparePart sparePart) {
 		rezervna4ast = sparePart;
+		errorMessage = null;
 	}
 	
 	public void deselectRow() {
 		rezervna4ast = new SparePart();
+		errorMessage = null;
 		readList();
 	}
 	

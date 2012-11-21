@@ -15,7 +15,6 @@
 					<td><h:outputLabel value="Име доставчик*">
 							<h:inputText id="supplierName"
 								value="#{priemaneNa4asti.supplier.name}" readonly="true" />
-							<h:message for="supplierName" />
 						</h:outputLabel></td>
 					<td><h:commandButton value="Избери" class="regButton"
 							style="width:80px;height:40px;margin-left:20px;margin-bottom:20px;"
@@ -28,7 +27,8 @@
 								value="#{priemaneNa4asti.documentNumber}"
 								required="#{not empty param[priemaneNa4asti.writeItButton.clientId]}"
 								requiredMessage="задължително поле!" maxlength="50" />
-							<h:message for="documentNumber" />
+							<br/>
+							<h:message for="documentNumber" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Дата на придружаващия документ*">
 							<br />
@@ -39,7 +39,8 @@
 								converterMessage="Невалидна дата. Пример: 21.12.2012">
 								<f:convertDateTime pattern="dd.MM.yyyy" />
 							</h:inputText>
-							<h:message for="documentDate" />
+							<br/>
+							<h:message for="documentDate" class="errorMsg" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>

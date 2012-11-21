@@ -30,14 +30,14 @@
 									<h:inputText id="searchpersonname"
 										value="#{aktualiziraneNaKlientskaPoru4ka.client.person.name}"
 										maxlength="50" readonly="true" />
-									<h:message for="searchpersonname" />
+									<h:message for="searchpersonname" class="errorMsg" />
 								</h:outputLabel></td>
 							<td><h:outputLabel value="Фамилия на клиент">
 									<br />
 									<h:inputText id="searchpersonfamily"
 										value="#{aktualiziraneNaKlientskaPoru4ka.client.person.family}"
 										maxlength="50" readonly="true" />
-									<h:message for="searchpersonfamily" />
+									<h:message for="searchpersonfamily" class="errorMsg" />
 								</h:outputLabel></td>
 						</tr>
 					</h:panelGroup>
@@ -50,7 +50,7 @@
 									<h:inputText id="searchcompanyname"
 										value="#{aktualiziraneNaKlientskaPoru4ka.client.company.name}"
 										maxlength="100" readonly="true" />
-									<h:message for="searchcompanyname" />
+									<h:message for="searchcompanyname" class="errorMsg" />
 								</h:outputLabel></td>
 						</tr>
 					</h:panelGroup>
@@ -59,7 +59,7 @@
 								<h:inputText id="searchplatenum"
 									value="#{aktualiziraneNaKlientskaPoru4ka.vehicle.plateNumber}"
 									maxlength="8" readonly="true" />
-								<h:message for="searchplatenum" />
+								<h:message for="searchplatenum" class="errorMsg" />
 							</h:outputLabel></td>
 						<td><h:commandButton value="Избери" class="regButton"
 								style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
@@ -81,13 +81,13 @@
 								<h:inputText id="searchempname"
 									value="#{aktualiziraneNaKlientskaPoru4ka.employee.name}"
 									maxlength="50" readonly="true" />
-								<h:message for="searchempname" />
+								<h:message for="searchempname" class="errorMsg" />
 							</h:outputLabel> <h:outputLabel value="Фамилия на служител">
 								<br />
 								<h:inputText id="searchempfamily"
 									value="#{aktualiziraneNaKlientskaPoru4ka.employee.family}"
 									maxlength="50" readonly="true" />
-								<h:message for="searchempfamily" />
+								<h:message for="searchempfamily" class="errorMsg" />
 							</h:outputLabel></td>
 						<td><h:commandButton value="Избери" class="regButton"
 								style="width:80px;height:40px;margin-left:20px;margin-top:20px;"
@@ -255,16 +255,24 @@
 								<h:inputText id="personname"
 									value="#{aktualiziraneNaKlientskaPoru4ka.client.person.name}"
 									maxlength="50" required="false"
-									requiredMessage="задължително поле!" readonly="true" />
-								<h:message for="personname" />
+									requiredMessage="задължително поле!" readonly="true" 
+									validatorMessage="Въведеното име съдържа некоректни символи или е прекалено късо.">
+									<f:validateRegex pattern="^[a-zA-Zа-яА-Я]{2,50}$" />
+								</h:inputText>
+								<br/>
+								<h:message for="personname" class="errorMsg" />
 							</h:outputLabel></td>
 						<td><h:outputLabel value="Фамилия на клиент">
 								<br />
 								<h:inputText id="personfamily"
 									value="#{aktualiziraneNaKlientskaPoru4ka.client.person.family}"
 									maxlength="50" required="false"
-									requiredMessage="задължително поле!" readonly="true" />
-								<h:message for="personfamily" />
+									requiredMessage="задължително поле!" readonly="true" 
+									validatorMessage="Въведената фамилия съдържа некоректни символи или е прекалено къса.">
+									<f:validateRegex pattern="^[a-zA-Zа-яА-Я]{2,50}$" />
+								</h:inputText>
+								<br/>
+								<h:message for="personfamily" class="errorMsg" />
 							</h:outputLabel></td>
 					</tr>
 				</h:panelGroup>
@@ -279,7 +287,6 @@
 									value="#{aktualiziraneNaKlientskaPoru4ka.client.company.name}"
 									maxlength="100" required="false"
 									requiredMessage="задължително поле!" readonly="true" />
-								<h:message for="companyname" />
 							</h:outputLabel></td>
 					</tr>
 				</h:panelGroup>
@@ -289,7 +296,6 @@
 							<h:inputText id="platenum"
 								value="#{aktualiziraneNaKlientskaPoru4ka.vehicle.plateNumber}"
 								maxlength="8" readonly="true" />
-							<h:message for="platenum" />
 						</h:outputLabel></td>
 					<td><h:outputLabel
 							value="Автосервиз, в който се изпълнява поръчката:">
@@ -297,7 +303,6 @@
 							<h:inputText id="autoservice"
 								value="#{aktualiziraneNaKlientskaPoru4ka.autoservice.name}"
 								maxlength="100" readonly="true" />
-							<h:message for="autoservice" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -306,11 +311,9 @@
 							<h:inputText id="empname"
 								value="#{aktualiziraneNaKlientskaPoru4ka.employee.name}"
 								maxlength="50" readonly="true" />
-							<h:message for="empname" />
 							<h:inputText id="empfamily"
 								value="#{aktualiziraneNaKlientskaPoru4ka.employee.family}"
 								maxlength="50" readonly="true" />
-							<h:message for="empfamily" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -510,11 +513,14 @@
 				<tr>
 					<td><h:outputLabel value="Номер на платежно нареждане">
 							<h:inputText id="paynum"
-								value="#{aktualiziraneNaKlientskaPoru4ka.paymentNumber}"
-								maxlength="30"
+								value="#{aktualiziraneNaKlientskaPoru4ka.paymentNumber}" maxlength="30"
 								readonly="#{!aktualiziraneNaKlientskaPoru4ka.rowSelected or !aktualiziraneNaKlientskaPoru4ka.isPriemchik() or
-	    			aktualiziraneNaKlientskaPoru4ka.isPaied()}" />
-							<h:message for="paynum" />
+	    			aktualiziraneNaKlientskaPoru4ka.isPaied()}" 
+								validatorMessage="Номерът на платежното нареждане трябва да се състои само от цифри.">
+								<f:validateRegex pattern="^[0-9]+$" />
+							</h:inputText>
+							<br/>
+							<h:message for="paynum" class="errorMsg" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>

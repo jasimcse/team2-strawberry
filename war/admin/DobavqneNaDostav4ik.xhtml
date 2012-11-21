@@ -20,22 +20,34 @@
 							<br />
 							<h:inputText id="name" value="#{dobavqneNaDostav4ik.name}"
 								maxlength="100" required="true"
-								requiredMessage="задължително поле!" />
-							<h:message for="name" />
+								requiredMessage="задължително поле!" 
+								validatorMessage="Въведеното име съдържа некоректни символи или е прекалено късо.">
+								<f:validateRegex pattern="^[a-zA-zа-яА-Я\s0-9]{2,50}$" />
+							</h:inputText>
+							<br/>
+							<h:message for="name" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Лице за контакт*">
 							<br />
 							<h:inputText id="contactPerson"
 								value="#{dobavqneNaDostav4ik.contactPerson}" maxlength="100"
-								required="true" requiredMessage="задължително поле!" />
-							<h:message for="contactPerson" />
+								required="true" requiredMessage="задължително поле!" 
+								validatorMessage="Въведеното име съдържа некоректни символи или е прекалено късо.">
+								<f:validateRegex pattern="^[a-zA-Zа-яА-Я]{2,50}$" />
+							</h:inputText>
+							<br/>
+							<h:message for="contactPerson" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Населено място*">
 							<br />
 							<h:inputText id="city" value="#{dobavqneNaDostav4ik.addressCity}"
 								maxlength="30" required="true"
-								requiredMessage="задължително поле!" />
-							<h:message for="city" />
+								requiredMessage="задължително поле!" 
+								validatorMessage="Въведеното населено място съдържа некоректни символи или е прекалено късо.">
+								<f:validateRegex pattern="^^[a-zA-Zа-яА-Я]{3,30}$" />
+							</h:inputText>
+							<br/>
+							<h:message for="city" class="errorMsg" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -43,8 +55,12 @@
 							<br />
 							<h:inputText id="address"
 								value="#{dobavqneNaDostav4ik.addressLine}" maxlength="100"
-								required="true" requiredMessage="задължително поле!" />
-							<h:message for="address" />
+								required="true" requiredMessage="задължително поле!" 
+								validatorMessage="Въведеният адрес е прекалено къс.">
+								<f:validateRegex pattern="^.{5,100}$" />
+							</h:inputText>
+							<br/>
+							<h:message for="address" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Електронна поща*">
 							<br />
@@ -53,9 +69,10 @@
 								requiredMessage="задължително поле!"
 								validatorMessage="Електронната поща е невалидна. Пример: potrbitel@mail.bg">
 								<f:validateRegex
-									pattern="^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$" />
+									pattern="^[a-zA-Z][a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$" />
 							</h:inputText>
-							<h:message for="mail" />
+							<br/>
+							<h:message for="mail" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Телефонен номер*">
 							<br />
@@ -63,9 +80,10 @@
 								value="#{dobavqneNaDostav4ik.phoneNumber}" maxlength="15"
 								required="true" requiredMessage="задължително поле!"
 								validatorMessage="Телефонният номер е невалиден. Примери: +359885609456, 082860450">
-								<f:validateRegex pattern="(^[+\d][0-9]{3,14}$)" />
+								<f:validateRegex pattern="^[+]?[0-9]{6,14}$" />
 							</h:inputText>
-							<h:message for="phone" />
+							<br/>
+							<h:message for="phone" class="errorMsg" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -74,20 +92,22 @@
 							<h:inputText id="IBANNumber"
 								value="#{dobavqneNaDostav4ik.IBANNumber}" maxlength="30"
 								required="true" requiredMessage="задължително поле!"
-								validatorMessage="Позволени символи за номер на сметка са главни латински букви и цифри.">
-								<f:validateRegex pattern="^[A-Z0-9]+$" />
+								validatorMessage="Позволени символи за номер на сметка са главни латински букви и цифри. От 10 до 30 символа.">
+								<f:validateRegex pattern="^[A-Z0-9]{10,30}$" />
 							</h:inputText>
-							<h:message for="IBANNumber" />
+							<br/>
+							<h:message for="IBANNumber" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Банков код*">
 							<br />
 							<h:inputText id="SWIFT" value="#{dobavqneNaDostav4ik.SWIFTCode}"
-								maxlength="20" required="true"
+								maxlength="11" required="true"
 								requiredMessage="задължително поле!"
-								validatorMessage="Позволени символи за банков код са главни латински букви и цифри.">
-								<f:validateRegex pattern="^[A-Z0-9]+$" />
+								validatorMessage="Позволени символи за банков код са главни латински букви и цифри. От 8 до 11 символа.">
+								<f:validateRegex pattern="^[A-Z0-9]{8,11}$" />
 							</h:inputText>
-							<h:message for="SWIFT" />
+							<br/>
+							<h:message for="SWIFT" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="ДДС номер">
 							<br />
@@ -96,7 +116,8 @@
 								validatorMessage="ДДС номерът се състои от 11 символа - главни латински букви и цифри.">
 								<f:validateRegex pattern="^[A-Z0-9]{11}$" />
 							</h:inputText>
-							<h:message for="vat" />
+							<br/>
+							<h:message for="vat" class="errorMsg" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -109,7 +130,8 @@
 								validatorMessage="ЕИК трябва да се състои от точно 9 цифри.">
 								<f:validateRegex pattern="^[0-9]{9}$" />
 							</h:inputText>
-							<h:message for="regnumber" />
+							<br/>
+							<h:message for="regnumber" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:commandButton value="Добави" class="regButton"
 							style="width:80px;height:40px;margin-left: 80px;margin-top:20px;"
