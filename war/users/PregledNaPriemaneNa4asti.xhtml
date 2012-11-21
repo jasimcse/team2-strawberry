@@ -151,7 +151,7 @@
 		<h:outputLabel value="Номер на придружаващ документ"><br />
 	    	<h:inputText id="documentNumber" value="#{pregledNaPriemaneNa4asti.documentNumber}" 
 	    		readonly="true" />
-	    	<h:message for="documentNumber" />
+	    	<h:message for="documentNumber" class="errorMsg" />
 	    </h:outputLabel>
 	    </td>
 	    <td>
@@ -160,7 +160,7 @@
 	    		readonly="true">
 	    		<f:convertDateTime pattern="dd.MM.yyyy" />
 	    	</h:inputText>
-	    	<h:message for="documentDate" />
+	    	<h:message for="documentDate" class="errorMsg" />
 	    </h:outputLabel>
 	    </td>
 	    <td>
@@ -169,7 +169,7 @@
 	    		readonly="true">
 	    		<f:convertDateTime pattern="dd.MM.yyyy" />
 	    	</h:inputText>
-	    	<h:message for="deliveryDate" />
+	    	<h:message for="deliveryDate" class="errorMsg" />
 	    </h:outputLabel>
 	    </td>
 	    </tr>
@@ -187,14 +187,14 @@
 		<h:outputLabel value="Номер на платежно нареждане"><br />
 	    	<h:inputText id="paymentNumber" value="#{pregledNaPriemaneNa4asti.paymentNumber}"
 	    		readonly="#{(pregledNaPriemaneNa4asti.status eq 'Платена') or (!pregledNaPriemaneNa4asti.rowSelected)}" />
-	    	<h:message for="paymentNumber" />
+	    	<h:message for="paymentNumber" class="errorMsg" />
 	    </h:outputLabel>
 	    </td>
 		<td>
 		<h:outputLabel value="Обща цена"><br />
 	    	<h:inputText id="fullPrice" value="#{pregledNaPriemaneNa4asti.fullPrice}" 
 	    		readonly="true" />
-	    	<h:message for="fullPrice" />
+	    	<h:message for="fullPrice" class="errorMsg" />
 	    </h:outputLabel>
 	    </td>
 	    </tr>

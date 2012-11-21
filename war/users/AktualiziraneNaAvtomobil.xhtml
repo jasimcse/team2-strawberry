@@ -178,7 +178,8 @@
 							<br />
 							<h:inputText id="vin" value="#{aktualiziraneNaAvtomobil.VIN}"
 								readonly="true" />
-							<h:message for="vin" />
+							<br/>
+							<h:message for="vin" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Номер на двигател*">
 							<br />
@@ -187,10 +188,11 @@
 								required="#{not empty param[aktualiziraneNaAvtomobil.changeButton.clientId]}"
 								requiredMessage="задължително поле!"
 								readonly="#{!aktualiziraneNaAvtomobil.rowSelected}"
-								validatorMessage="Номерът на двигателя се състои от главни латински букви и цифри.">
-								<f:validateRegex pattern="^[A-Z0-9]+$" />
+								validatorMessage="Номерът на двигателя се състои от главни латински букви и цифри. Най-малко 6 символа.">
+								<f:validateRegex pattern="^[A-Z0-9]{6,50}$" />
 							</h:inputText>
-							<h:message for="enginenum" />
+							<br/>
+							<h:message for="enginenum" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Регистрационен номер*">
 							<br />
@@ -199,10 +201,11 @@
 								required="#{not empty param[aktualiziraneNaAvtomobil.changeButton.clientId]}"
 								requiredMessage="задължително поле!"
 								readonly="#{!aktualiziraneNaAvtomobil.rowSelected}"
-								validatorMessage="Регистрационният номер се състои от главни латински букви и цифри.">
-								<f:validateRegex pattern="^[A-Z0-9]+$" />
+								validatorMessage="Регистрационният номер се състои от главни латински букви и цифри. От 5 до 8 символа.">
+								<f:validateRegex pattern="^[A-Z0-9]{5,8}$" />
 							</h:inputText>
-							<h:message for="platenum" />
+							<br/>
+							<h:message for="platenum" class="errorMsg" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -211,14 +214,16 @@
 							<h:inputText id="brand"
 								value="#{aktualiziraneNaAvtomobil.vehicleModel.brand}"
 								readonly="true" />
-							<h:message for="brand" />
+							<br/>
+							<h:message for="brand" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Модел на автомобила">
 							<br />
 							<h:inputText id="model"
 								value="#{aktualiziraneNaAvtomobil.vehicleModel.model}"
 								readonly="true" />
-							<h:message for="model" />
+							<br/>
+							<h:message for="model" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Месеци гаранция">
 							<br />
@@ -274,7 +279,8 @@
 									value="#{aktualiziraneNaAvtomobil.client.person.name}"
 									maxlength="50" required="false"
 									requiredMessage="задължително поле!" readonly="true" />
-								<h:message for="personname" />
+								<br/>
+								<h:message for="personname" class="errorMsg" />
 							</h:outputLabel></td>
 						<td><h:outputLabel value="Фамилия на клиент">
 								<br />
@@ -282,7 +288,8 @@
 									value="#{aktualiziraneNaAvtomobil.client.person.family}"
 									maxlength="50" required="false"
 									requiredMessage="задължително поле!" readonly="true" />
-								<h:message for="personfamily" />
+								<br/>
+								<h:message for="personfamily" class="errorMsg" />
 							</h:outputLabel></td>
 					</tr>
 				</table>
@@ -299,7 +306,8 @@
 									value="#{aktualiziraneNaAvtomobil.client.company.name}"
 									maxlength="100" required="false"
 									requiredMessage="задължително поле!" readonly="true" />
-								<h:message for="companyname" />
+								<br/>
+								<h:message for="companyname" class="errorMsg" />
 							</h:outputLabel></td>
 					</tr>
 				</table>
@@ -315,7 +323,8 @@
 								readonly="#{!aktualiziraneNaAvtomobil.rowSelected}">
 								<f:validateLongRange minimum="0" />
 							</h:inputText>
-							<h:message for="mileage" />
+							<br/>
+							<h:message for="mileage" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:commandButton value="Запази" class="regButton"
 							style="width:80px;height:40px;margin-left:20px;margin-top: 15px;"

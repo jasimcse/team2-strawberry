@@ -151,13 +151,15 @@ public class AktualiziraneNaUsluga implements Serializable {
 		
 		return list;
 	}
-	
+
 	public void selectRow(Service service) {
 		usluga = service;
+		errorMessage = null;
 	}
 	
 	public void deselectRow() {
 		usluga = new Service();
+		errorMessage = null;
 		readList();
 	}
 	

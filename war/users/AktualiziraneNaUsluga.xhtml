@@ -43,13 +43,13 @@
 
 					<h:column>
 						<f:facet name="header">Наименование на услугата</f:facet>
-					#{curr.description}
-				</h:column>
+						#{curr.description}
+					</h:column>
 
 					<h:column>
 						<f:facet name="header">Цена на услугата за час</f:facet>
-					#{curr.priceHour}
-				</h:column>
+						#{curr.priceHour}
+					</h:column>
 
 					<h:column>
 						<f:facet name="header">Промени</f:facet>
@@ -100,17 +100,18 @@
 							<br />
 							<h:inputText id="description"
 								value="#{aktualiziraneNaUsluga.description}" readonly="true" />
-							<h:message for="description" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Цена на услугата за час*">
 							<br />
 							<h:inputText id="priceHour"
 								value="#{aktualiziraneNaUsluga.priceHour}" required="true"
 								requiredMessage="задължително поле!"
-								readonly="#{!aktualiziraneNaUsluga.rowSelected or !aktualiziraneNaUsluga.changingAllowed}">
+								readonly="#{!aktualiziraneNaUsluga.rowSelected or !aktualiziraneNaUsluga.changingAllowed}"
+								validatorMessage="Въвели сте непозволена сума. Максимална стойност 10000.">
 								<f:validateDoubleRange minimum="0" maximum="10000" />
 							</h:inputText>
-							<h:message for="priceHour" />
+							<br/>
+							<h:message for="priceHour" class="errorMsg" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -132,8 +133,10 @@
 							action="#{aktualiziraneNaUsluga.deselectRow()}" value="Отмени"
 							class="regButton"
 							style="width:80px;height:40px;margin-left:-60px;"
-							disabled="#{!aktualiziraneNaUsluga.rowSelected}" /> <br /> <h:outputText
-							value="#{aktualiziraneNaUsluga.errorMessage}" /></td>
+							disabled="#{!aktualiziraneNaUsluga.rowSelected}" />
+						<br/>
+						<h:outputText value="#{aktualiziraneNaUsluga.errorMessage}" />
+					</td>
 				</tr>
 			</table>
 		</h:form>

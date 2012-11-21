@@ -15,7 +15,6 @@
 	    <h:outputLabel value="Номер на рама*"><br />
 	    	<h:inputText id="vin" value="#{dobavqneNaDiagnostika.vehicle.VIN}"
 	    		readonly="true"/>
-	    	<h:message for="vin" />
 	    </h:outputLabel> 
 	    </td>
 	    <td>
@@ -26,16 +25,26 @@
 	    <tr>
 	    <td>
 	    <h:outputLabel value="Пробег (километра)*"><br />
-	    	<h:inputText id="mileage" value="#{dobavqneNaDiagnostika.mileage}"
-	    		required="true"/>
-	    	<h:message for="mileage" requiredMessage="задължително поле!" />
+	    	<h:inputText id="mileage" value="#{dobavqneNaDiagnostika.mileage}" maxlength="7"
+	    		required="true" requiredMessage="задължително поле!"
+				converterMessage="Пробегът трябва да е цяло положително число от порядъка на 0 до 9999999."
+				validatorMessage="Пробегът трябва да е цяло положително число от порядъка на 0 до 9999999." >
+				<f:validateLongRange minimum="0" />
+			</h:inputText>
+	    	<br/>
+	    	<h:message for="mileage" class="errorMsg"/>
 	    </h:outputLabel> 
 	   	</td>
 	    <td>
 	    <h:outputLabel value="Цена на диагностиката*"><br />
 	    	<h:inputText id="price" value="#{dobavqneNaDiagnostika.price}" maxlength="10" 
-	    		required="true" requiredMessage="задължително поле!" />
-	    	<h:message for="price" />
+	    		required="true" requiredMessage="задължително поле!" 
+	    		converterMessage="Цената трябва да е дробно число от порядъка на 0 до 10000."
+	    		validatorMessage="Цената трябва да е дробно число от порядъка на 0 до 10000.">
+	    		<f:validateDoubleRange minimum="0" maximum="10000"/>
+	    	</h:inputText>
+	    	<br/>
+	    	<h:message for="price" class="errorMsg" />
 	    </h:outputLabel>
 	     </td>
 	    <td>

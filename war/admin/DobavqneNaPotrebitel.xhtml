@@ -21,14 +21,12 @@
 							<h:inputText id="name"
 								value="#{dobavqneNaPotrebitel.employeeName}" maxlength="50"
 								readonly="true" />
-							<h:message for="name" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Фамилия*">
 							<br />
 							<h:inputText id="family"
 								value="#{dobavqneNaPotrebitel.employeeFamily}" maxlength="50"
 								readonly="true" />
-							<h:message for="family" />
 						</h:outputLabel></td>
 					<td><h:commandButton
 							action="#{dobavqneNaPotrebitel.chooseEmployee()}"
@@ -56,7 +54,7 @@
 								<f:validateRegex pattern="^[a-zA-Z0-9_\-]{3,50}$" />
 							</h:inputText>
 							<br />
-							<h:message for="username" />
+							<h:message for="username" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Позиция*"
 							style="width:200px;height:48px;text-align:center;">
@@ -70,8 +68,10 @@
 							binding="#{dobavqneNaPotrebitel.addButton}"
 							action="#{dobavqneNaPotrebitel.writeIt()}" value="Добави"
 							class="regButton"
-							style="width:80px;height:40px;margin-left:20px;" /> <h:outputText
-							value="#{dobavqneNaPotrebitel.errorMessage}" /></td>
+							style="width:80px;height:40px;margin-left:20px;" />
+						<br/>
+						<h:outputText value="#{dobavqneNaPotrebitel.errorMessage}" />
+					</td>
 				</tr>
 			</table>
 		</h:form>

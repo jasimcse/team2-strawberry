@@ -116,21 +116,18 @@
 							<h:inputText id="sparePartGroup"
 								value="#{pregledNaNali4niteRezervni4asti.sparePart.sparePartGroup.description}"
 								readonly="true" />
-							<h:message for="sparePartGroup" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Наименование">
 							<br />
 							<h:inputText id="name"
 								value="#{pregledNaNali4niteRezervni4asti.sparePart.name}"
 								readonly="true" />
-							<h:message for="name" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Описание">
 							<br />
 							<h:inputTextarea id="description" rows="1"
 								value="#{pregledNaNali4niteRezervni4asti.sparePart.description}"
 								readonly="true" />
-							<h:message for="description" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -139,21 +136,18 @@
 							<h:inputText id="measuringUnit"
 								value="#{pregledNaNali4niteRezervni4asti.sparePart.measuringUnit}"
 								readonly="true" />
-							<h:message for="measuringUnit" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Налично количество">
 							<br />
 							<h:inputText id="available"
 								value="#{pregledNaNali4niteRezervni4asti.quantityAvailable}"
 								readonly="true" />
-							<h:message for="available" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Резервирано количество">
 							<br />
 							<h:inputText id="reserved"
 								value="#{pregledNaNali4niteRezervni4asti.quantityReserved}"
 								readonly="true" />
-							<h:message for="reserved" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -162,7 +156,6 @@
 							<h:inputText id="ordered"
 								value="#{pregledNaNali4niteRezervni4asti.quantityOrdered}"
 								readonly="true" />
-							<h:message for="ordered" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -171,16 +164,18 @@
 							<h:inputText id="bad"
 								value="#{pregledNaNali4niteRezervni4asti.quantityBad}"
 								readonly="true" />
-							<h:message for="bad" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Бракувай">
 							<br />
 							<h:inputText id="makeBad"
 								value="#{pregledNaNali4niteRezervni4asti.quantityBadRequest}"
-								disabled="#{!pregledNaNali4niteRezervni4asti.rowSelected or !pregledNaNali4niteRezervni4asti.changingAllowed}">
+								disabled="#{!pregledNaNali4niteRezervni4asti.rowSelected or !pregledNaNali4niteRezervni4asti.changingAllowed}"
+								validatorMessage="Броят на бракуваните части трябва да е цяло положително число."
+								converterMessage="Броят на бракуваните части трябва да е цяло положително число.">
 								<f:validateDoubleRange minimum="0" />
 							</h:inputText>
-							<h:message for="bad" />
+							<br/>
+							<h:message for="makeBad" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:commandButton
 							action="#{pregledNaNali4niteRezervni4asti.makeItBad()}"
@@ -195,10 +190,13 @@
 							<h:inputText id="minimum"
 								value="#{pregledNaNali4niteRezervni4asti.quantityMinimum}"
 								readonly="#{!pregledNaNali4niteRezervni4asti.rowSelected}"
-								required="true" requiredMessage="задължително поле!">
+								required="true" requiredMessage="задължително поле!"
+								validatorMessage="Минималното количество трябва да е цяло положително число."
+								converterMessage="Минималното количество трябва да е цяло положително число.">>
 								<f:validateDoubleRange minimum="0" />
 							</h:inputText>
-							<h:message for="minimum" />
+							<br/>
+							<h:message for="minimum" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:commandButton
 							action="#{pregledNaNali4niteRezervni4asti.writeIt()}"

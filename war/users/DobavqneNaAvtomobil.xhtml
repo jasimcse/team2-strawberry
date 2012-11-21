@@ -21,7 +21,8 @@
 								validatorMessage="Номерът на рамата се състои от 17 символа - главни латински букви и цифри.">
 								<f:validateRegex pattern="^[A-Z0-9]{17}$" />
 							</h:inputText>
-							<h:message for="vin" />
+							<br/>
+							<h:message for="vin" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Номер на двигател*">
 							<br />
@@ -29,10 +30,11 @@
 								value="#{dobavqneNaAvtomobil.engineNumber}" maxlength="50"
 								required="#{not empty param[dobavqneNaAvtomobil.addButton.clientId]}"
 								requiredMessage="задължително поле!"
-								validatorMessage="Номерът на двигателя се състои от главни латински букви и цифри.">
-								<f:validateRegex pattern="^[A-Z0-9]+$" />
+								validatorMessage="Номерът на двигателя се състои от главни латински букви и цифри. Най-малко 6 символа.">
+								<f:validateRegex pattern="^[A-Z0-9]{6,50}$" />
 							</h:inputText>
-							<h:message for="enginenum" />
+							<br/>
+							<h:message for="enginenum" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Регистрационен номер*">
 							<br />
@@ -40,10 +42,11 @@
 								value="#{dobavqneNaAvtomobil.plateNumber}" maxlength="8"
 								required="#{not empty param[dobavqneNaAvtomobil.addButton.clientId]}"
 								requiredMessage="задължително поле!"
-								validatorMessage="Регистрационният номер се състои от главни латински букви и цифри.">
-								<f:validateRegex pattern="^[A-Z0-9]+$" />
+								validatorMessage="Регистрационният номер се състои от главни латински букви и цифри. От 5 до 8 символа.">
+								<f:validateRegex pattern="^[A-Z0-9]{5,8}$" />
 							</h:inputText>
-							<h:message for="platenum" />
+							<br/>
+							<h:message for="platenum" class="errorMsg" />
 						</h:outputLabel></td>
 				</tr>
 				<tr>
@@ -53,7 +56,6 @@
 								value="#{dobavqneNaAvtomobil.vehicleModel.brand}" maxlength="50"
 								required="#{not empty param[dobavqneNaAvtomobil.addButton.clientId]}"
 								requiredMessage="задължително поле!" readonly="true" />
-							<h:message for="brand" />
 						</h:outputLabel></td>
 					<td><h:outputLabel value="Модел на автомобила*">
 							<br />
@@ -61,7 +63,6 @@
 								value="#{dobavqneNaAvtomobil.vehicleModel.model}" maxlength="50"
 								required="#{not empty param[dobavqneNaAvtomobil.addButton.clientId]}"
 								requiredMessage="задължително поле!" readonly="true" />
-							<h:message for="model" />
 						</h:outputLabel></td>
 					<td><h:commandButton value="Избери" class="regButton"
 							style="width:80px;height:40px;margin-top:20px;margin-left:80px;"
@@ -80,7 +81,6 @@
 									maxlength="50"
 									required="#{not empty param[dobavqneNaAvtomobil.addButton.clientId]}"
 									requiredMessage="задължително поле!" readonly="true" />
-								<h:message for="personname" />
 							</h:outputLabel></td>
 						<td><h:outputLabel value="Фамилия на клиент">
 								<br />
@@ -89,7 +89,6 @@
 									maxlength="50"
 									required="#{not empty param[dobavqneNaAvtomobil.addButton.clientId]}"
 									requiredMessage="задължително поле!" readonly="true" />
-								<h:message for="personfamily" />
 							</h:outputLabel></td>
 					</tr>
 				</table>
@@ -107,7 +106,6 @@
 									maxlength="100"
 									required="#{not empty param[dobavqneNaAvtomobil.addButton.clientId]}"
 									requiredMessage="задължително поле!" readonly="true" />
-								<h:message for="companyname" />
 							</h:outputLabel></td>
 					</tr>
 				</table>
@@ -119,10 +117,13 @@
 							<br />
 							<h:inputText id="mileage" value="#{dobavqneNaAvtomobil.mileage}"
 								required="#{not empty param[dobavqneNaAvtomobil.addButton.clientId]}"
-								requiredMessage="задължително поле!">
+								requiredMessage="задължително поле!"  maxlength="7"
+								validatorMessage="Пробегът трябва да е цяло положително число от порядъка на 0 до 9999999."
+								converterMessage="Пробегът трябва да е цяло положително число от порядъка на 0 до 9999999.">
 								<f:validateLongRange minimum="0" />
 							</h:inputText>
-							<h:message for="mileage" />
+							<br/>
+							<h:message for="mileage" class="errorMsg" />
 						</h:outputLabel></td>
 					<td><h:commandButton value="Избери Клиент" class="regButton"
 							style="width:120px;height:40px;margin-left:20px;margin-top:20px;"
